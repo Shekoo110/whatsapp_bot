@@ -103,5 +103,3 @@ client.on('message', async message => {
 });
 
 client.initialize();
-
-})();
