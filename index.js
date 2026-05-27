@@ -3,16 +3,66 @@ const {
     useMultiFileAuthState
 } = require('@whiskeysockets/baileys')
 
-const qrcode = require('qrcode-terminal')
 const fs = require('fs')
 const path = require('path')
 const express = require("express")
+const QRCode = require("qrcode")
 
 // ===== تشغيل السيرفر لـ Render =====
 const app = express()
 
+let qrCodeData = ""
+
+// صفحة عرض QR
 app.get("/", (req, res) => {
-    res.send("Bot is running")
+
+    if (qrCodeData) {
+
+        res.send(`
+        <html>
+        <head>
+            <title>WhatsApp Bot QR</title>
+        </head>
+
+        <body style="
+            background:#111;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            flex-direction:column;
+            color:white;
+            font-family:sans-serif;
+        ">
+
+            <h2>امسح QR لتشغيل البوت</h2>
+
+            <img src="${qrCodeData}" width="300" />
+
+        </body>
+        </html>
+        `)
+
+    } else {
+
+        res.send(`
+        <html>
+        <body style="
+            background:#111;
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            font-family:sans-serif;
+        ">
+            <h2>البوت متصل بالفعل ✅</h2>
+        </body>
+        </html>
+        `)
+
+    }
+
 })
 
 app.listen(process.env.PORT || 3000, () => {
@@ -30,20 +80,31 @@ async function startBot() {
     })
 
     // ===== QR =====
-    sock.ev.on('connection.update', (update) => {
+    sock.ev.on('connection.update', async (update) => {
 
         const { connection, qr } = update
 
+        // إنشاء QR داخل الموقع
         if (qr) {
-            qrcode.generate(qr, { small: true })
+
+            qrCodeData = await QRCode.toDataURL(qr)
+
+            console.log("QR READY")
         }
 
+        // عند الاتصال
         if (connection === 'open') {
+
             console.log('البوت اشتغل')
+
+            qrCodeData = ""
         }
 
+        // إعادة التشغيل إذا انقطع
         if (connection === 'close') {
+
             console.log('انقطع الاتصال... إعادة تشغيل')
+
             startBot()
         }
 
@@ -75,6 +136,7 @@ async function startBot() {
             const files = fs.readdirSync(folderPath)
 
             if (files.length === 0) {
+
                 return sock.sendMessage(
                     msg.key.remoteJid,
                     { text: 'لا توجد صور' }
@@ -106,6 +168,7 @@ async function startBot() {
             const files = fs.readdirSync(folderPath)
 
             if (files.length === 0) {
+
                 return sock.sendMessage(
                     msg.key.remoteJid,
                     { text: 'لا توجد صوتيات' }
@@ -122,7 +185,7 @@ async function startBot() {
                 msg.key.remoteJid,
                 {
                     audio: fs.readFileSync(audioPath),
-                    mimetype: 'audio/mp4',
+                    mimetype: 'audio/mpeg',
                     ptt: false
                 }
             )
@@ -139,6 +202,7 @@ async function startBot() {
             const files = fs.readdirSync(folderPath)
 
             if (files.length === 0) {
+
                 return sock.sendMessage(
                     msg.key.remoteJid,
                     { text: 'لا توجد اصوات' }
@@ -155,7 +219,7 @@ async function startBot() {
                 msg.key.remoteJid,
                 {
                     audio: fs.readFileSync(audioPath),
-                    mimetype: 'audio/mp4',
+                    mimetype: 'audio/mpeg',
                     ptt: true
                 }
             )
