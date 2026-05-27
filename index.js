@@ -1,105 +1,100 @@
-const qrcode = require('qrcode-terminal');
-const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
-const puppeteer = require('puppeteer');
-
 const fs = require("fs");
 const path = require("path");
 
-const client = new Client({
-    authStrategy: new LocalAuth(),
-    puppeteer: {
-        headless: true,
-        executablePath: puppeteer.executablePath(),
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox'
-        ]
-    }
-});
+sock.ev.on("messages.upsert", async ({ messages }) => {
 
-client.on('qr', qr => {
-    qrcode.generate(qr, { small: true });
-});
+    const msg = messages[0];
 
-client.on('ready', () => {
-    console.log('البوت اشتغل');
-});
+    if (!msg.message) return;
 
-client.on('message', async message => {
+    const jid = msg.key.remoteJid;
 
-    // ===== .صوره =====
-    if (message.body === '.صوره') {
+    const text =
+        msg.message.conversation ||
+        msg.message.extendedTextMessage?.text;
 
-        const folder = './images';
+    console.log("رسالة:", text);
 
-        const files = fs.readdirSync(folder);
+    // أمر ping
+    if (text === ".ping") {
 
-        const random =
-            files[Math.floor(Math.random() * files.length)];
-
-        const imagePath =
-            path.join(folder, random);
-
-        const media =
-            MessageMedia.fromFilePath(imagePath);
-
-        await client.sendMessage(
-            message.from,
-            media
-        );
+        await sock.sendMessage(jid, {
+            text: "pong 🟢"
+        });
     }
 
-    // ===== .صوت =====
-    if (message.body === '.صوت') {
+    // أمر صورة
+    if (text === ".صوره") {
 
-        const folder = './audio';
-
-        const files = fs.readdirSync(folder);
-
-        const random =
-            files[Math.floor(Math.random() * files.length)];
-
-        const audioPath =
-            path.join(folder, random);
-
-        const media =
-            MessageMedia.fromFilePath(audioPath);
-
-        await client.sendMessage(
-            message.from,
-            media,
-            { sendAudioAsVoice: false }
-        );
-    }
-
-    // ===== .اصوات =====
-    if (message.body === '.اصوات') {
-
-        const folder = './sounds';
+        const folder = "./images";
 
         const files = fs.readdirSync(folder);
 
         if (files.length === 0) {
-            await message.reply('لا توجد اصوات');
-            return;
+            return sock.sendMessage(jid, {
+                text: "لا توجد صور"
+            });
         }
 
-        for (const file of files) {
+        const random =
+            files[Math.floor(Math.random() * files.length)];
 
-            const audioPath =
-                path.join(folder, file);
+        const filePath = path.join(folder, random);
 
-            const media =
-                MessageMedia.fromFilePath(audioPath);
+        await sock.sendMessage(jid, {
+            image: fs.readFileSync(filePath),
+            caption: "📷 صورة"
+        });
+    }
 
-            await client.sendMessage(
-                message.from,
-                media,
-                { sendAudioAsVoice: false }
-            );
+    // أمر صوت
+    if (text === ".صوت") {
+
+        const folder = "./audio";
+
+        const files = fs.readdirSync(folder);
+
+        if (files.length === 0) {
+            return sock.sendMessage(jid, {
+                text: "لا توجد صوتيات"
+            });
         }
+
+        const random =
+            files[Math.floor(Math.random() * files.length)];
+
+        const filePath = path.join(folder, random);
+
+        await sock.sendMessage(jid, {
+            audio: fs.readFileSync(filePath),
+            mimetype: "audio/mp4",
+            ptt: true
+        });
+    }
+
+    // أمر اصوات
+    if (text === ".اصوات") {
+
+        const folder = "./sounds";
+
+        const files = fs.readdirSync(folder);
+
+        if (files.length === 0) {
+            return sock.sendMessage(jid, {
+                text: "لا توجد أصوات"
+            });
+        }
+
+        const random =
+            files[Math.floor(Math.random() * files.length)];
+
+        const filePath = path.join(folder, random);
+
+        await sock.sendMessage(jid, {
+            audio: fs.readFileSync(filePath),
+            mimetype: "audio/mp4",
+            ptt: true
+        });
     }
 
 });
-
-client.initialize();
