@@ -218,9 +218,9 @@ async function startBot() {
             await sock.sendMessage(
                 msg.key.remoteJid,
                 {
-                    audio: fs.readFileSync(audioPath),
-                    mimetype: 'audio/mpeg',
-                    ptt: true
+                    document: fs.readFileSync(audioPath),
+            mimetype: 'audio/mpeg',
+            fileName: randomAudio
                 }
             )
         }
