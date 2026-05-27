@@ -9,13 +9,14 @@ const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-        executablePath: puppeteer.executablePath(),
+        executablePath: '/usr/bin/google-chrome',
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox'
         ]
     }
 });
+
 client.on('qr', qr => {
     qrcode.generate(qr, { small: true });
 });
