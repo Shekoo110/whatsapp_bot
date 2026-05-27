@@ -1,5 +1,7 @@
 const { default: makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys');
 const qrcode = require('qrcode-terminal');
+const fs = require('fs');
+const path = require('path');
 
 async function startBot() {
     const { state, saveCreds } = await useMultiFileAuthState('auth');
@@ -9,116 +11,79 @@ async function startBot() {
     });
 
     sock.ev.on('connection.update', (update) => {
-        const { qr, connection } = update;
+        const { connection, qr } = update;
 
         if (qr) {
             qrcode.generate(qr, { small: true });
         }
 
         if (connection === 'open') {
-            console.log('البوت اشتغل!');
+            console.log('البوت اشتغل');
         }
     });
 
     sock.ev.on('creds.update', saveCreds);
-}
 
-    sock.ev.on("messages.upsert", async ({ messages }) => {
-
+    sock.ev.on('messages.upsert', async ({ messages }) => {
         const msg = messages[0];
 
-        if (!msg.message) return;
-
-        const jid = msg.key.remoteJid;
+        if (!msg.message || !msg.key.remoteJid) return;
 
         const text =
             msg.message.conversation ||
-            msg.message.extendedTextMessage?.text;
+            msg.message.extendedTextMessage?.text ||
+            '';
 
-        console.log("رسالة:", text);
+        const jid = msg.key.remoteJid;
 
-        // ping
-        if (text === ".ping") {
-
-            await sock.sendMessage(jid, {
-                text: "pong 🟢"
-            });
-        }
-
-        // صورة
-        if (text === ".صوره") {
-
-            const folder = "./images";
-
+        // أمر .صوره
+        if (text === '.صوره') {
+            const folder = './images';
             const files = fs.readdirSync(folder);
 
-            if (files.length === 0) {
-                return sock.sendMessage(jid, {
-                    text: "لا توجد صور"
-                });
-            }
+            if (files.length === 0) return;
 
-            const random =
-                files[Math.floor(Math.random() * files.length)];
-
+            const random = files[Math.floor(Math.random() * files.length)];
             const filePath = path.join(folder, random);
 
             await sock.sendMessage(jid, {
-                image: fs.readFileSync(filePath),
-                caption: "📷 صورة"
+                image: fs.readFileSync(filePath)
             });
         }
 
-        // صوت
-        if (text === ".صوت") {
-
-            const folder = "./audio";
-
+        // أمر .صوت
+        if (text === '.صوت') {
+            const folder = './audio';
             const files = fs.readdirSync(folder);
 
-            if (files.length === 0) {
-                return sock.sendMessage(jid, {
-                    text: "لا توجد صوتيات"
-                });
-            }
+            if (files.length === 0) return;
 
-            const random =
-                files[Math.floor(Math.random() * files.length)];
-
+            const random = files[Math.floor(Math.random() * files.length)];
             const filePath = path.join(folder, random);
 
             await sock.sendMessage(jid, {
                 audio: fs.readFileSync(filePath),
-                mimetype: "audio/mp4",
+                mimetype: 'audio/mp4',
                 ptt: true
             });
         }
 
-        // اصوات
-        if (text === ".اصوات") {
-
-            const folder = "./sounds";
-
+        // أمر .اصوات
+        if (text === '.اصوات') {
+            const folder = './sounds';
             const files = fs.readdirSync(folder);
 
-            if (files.length === 0) {
-                return sock.sendMessage(jid, {
-                    text: "لا توجد أصوات"
-                });
-            }
+            if (files.length === 0) return;
 
-            const random =
-                files[Math.floor(Math.random() * files.length)];
-
+            const random = files[Math.floor(Math.random() * files.length)];
             const filePath = path.join(folder, random);
 
             await sock.sendMessage(jid, {
                 audio: fs.readFileSync(filePath),
-                mimetype: "audio/mp4",
-                ptt: true
+                mimetype: 'audio/mp4',
+                ptt: false
             });
         }
-
     });
 }
 
