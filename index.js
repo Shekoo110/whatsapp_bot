@@ -18,8 +18,13 @@ async function startBot() {
         }
 
         if (connection === 'open') {
-            console.log('البوت اشتغل');
-        }
+    console.log('البوت اشتغل');
+}
+
+if (connection === 'close') {
+    console.log('انقطع الاتصال، إعادة تشغيل...');
+    startBot();
+}
     });
 
     sock.ev.on('creds.update', saveCreds);
