@@ -9,7 +9,7 @@ const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-        executablePath: puppeteer.executablePath(),
+        executablePath: await puppeteer.executablePath(),
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox'
@@ -103,3 +103,5 @@ client.on('message', async message => {
 });
 
 client.initialize();
+
+})();
