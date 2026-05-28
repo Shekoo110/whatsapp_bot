@@ -3,71 +3,65 @@ const {
     useMultiFileAuthState
 } = require('@whiskeysockets/baileys')
 
+const qrcode = require('qrcode-terminal')
 const fs = require('fs')
 const path = require('path')
 const express = require("express")
-const QRCode = require("qrcode")
 
 // ===== تشغيل السيرفر لـ Render =====
 const app = express()
 
-let qrCodeData = ""
-
-// صفحة عرض QR
 app.get("/", (req, res) => {
-
-    if (qrCodeData) {
-
-        res.send(`
-        <html>
-        <head>
-            <title>WhatsApp Bot QR</title>
-        </head>
-
-        <body style="
-            background:#111;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            flex-direction:column;
-            color:white;
-            font-family:sans-serif;
-        ">
-
-            <h2>امسح QR لتشغيل البوت</h2>
-
-            <img src="${qrCodeData}" width="300" />
-
-        </body>
-        </html>
-        `)
-
-    } else {
-
-        res.send(`
-        <html>
-        <body style="
-            background:#111;
-            color:white;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            font-family:sans-serif;
-        ">
-            <h2>البوت متصل بالفعل ✅</h2>
-        </body>
-        </html>
-        `)
-
-    }
-
+    res.send("Bot is running")
 })
 
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server running")
 })
+
+// ===== قائمة أسماء الأنمي =====
+const animeNames = [
+'لوفي','زورو','نامي','سانجي','يوسوب','تشوبر','روبين','فرانكي','بروك','جينبي',
+'شانكس','ايس','سابو','لاو','ميهوك','دوفلامينغو','كايدو','بيغ مام','كروكودايل',
+'سموكر','كيزارو','اوكيجي','اكاينو','باغي','بيرونا','هانكوك','ياماتو','كاتاكوري',
+'كيد','كيلر','هوكينز','دريك','بوني','كوبي','غارب','سينغوكو','رايلي','ماركو',
+'تيتش','اينيل','لوتشي','كاكو','كاليفا','موريا','سيزار','فيغابانك','كينيمون',
+'مومونوسكي','أودين','كوين','كينغ','جاك','أوروتشي','هيوري','ريبيكا','فيفي',
+'كاروت','بيدرو','ألبيدا','كورينا','كاريبو','بيبو','شيراهوشي','أرلونغ',
+'كونان','ران','كوغورو','هايبرا','هيجي','كايتو','سونوكو','ساتو','تاكاغي',
+'أكاي','شينتشي','غوكو','فيجيتا','غوهان','ترانكس','غوتين','بيكولو','فريزا',
+'سيل','بوو','بيروس','ويس','برولي','جيرين','كريلين','بولما','بان',
+'إيتشيغو','روكيا','أوريهيمي','تشاد','أوريو','بياكويا','رينجي','توشيرو',
+'أيزن','زاراكي','يورويتشي','كيسكي','غريمجو','الكيورا',
+'تانجيرو','نيزوكو','زينيتسو','إينوسكي','غيو','شينوبو','رينغوكو','أكازا',
+'موزان','كاناو','يوجي','ميغومي','نوبارا','غوجو','سوكونا','غيتو','يوتا',
+'ماكي','توجي','نانامي','ماهيتو','باندا','هاكاري','تودو',
+'إيرين','ميكاسا','أرمين','ليفاي','هانجي','إيروين','راينر','آني','زيك',
+'غابي','فالكو','جان','ساشا','هيستوريا',
+'ناتسو','لوسي','غراي','إيرزا','ويندي','جيلال','غاجيل','ليفي','ماكاروف',
+'ميراجين','لاكسوس','زيريف','اكنولوغيا',
+'غون','كيلوا','كورابيكا','ليوريو','هيسوكا','إيلومي','كرولو','كايتو',
+'ميرويم','بيتو',
+'ناروتو','ساسكي','ساكورا','كاكاشي','إيتاتشي','مادارا','أوبيتو','هاشيراما',
+'ميناتو','جيرايا','تسونادي','أوروتشيمارو','غارا','نيجي','لي','هيناتا',
+'ساي','ديدارا','ساسوري','كيسامي','كونان','باين','ناجاتو','بوروتو',
+'سارادا','ميتسوكي','كاواكي',
+'ديكو','باكوغو','شوتو','أوراراكا','تسويو','مومو','كيريشيما','أولمايت',
+'هوكس','إنديفور','توغا','شيغاراكي',
+'جينتوكي','كاغورا','أوكيتا','هيجيكاتا',
+'سايتاما','جينوس','تاتسوماكي','جارو',
+'ميليوداس','بان','كينغ','ديان','إسكانور','ميرلين',
+'ريمورو','شونا','شيون','بينيمارو',
+'أنوس','أكوا','ميغومين','كازوما',
+'سوبارو','إيميليا','ريم','رام','بيتريس',
+'إيسديث','تاتسومي','أكامي',
+'ليلوك','سوزاكو',
+'تشويا','دازاي','رامبو',
+'تاكيميتشي','مايكي','دراكن','باجي','تشيفويو','كازوتورا','كيساكي'
+]
+
+// عدد الأسماء الافتراضي
+let namesCount = 1
 
 // ===== تشغيل البوت =====
 async function startBot() {
@@ -80,31 +74,20 @@ async function startBot() {
     })
 
     // ===== QR =====
-    sock.ev.on('connection.update', async (update) => {
+    sock.ev.on('connection.update', (update) => {
 
         const { connection, qr } = update
 
-        // إنشاء QR داخل الموقع
         if (qr) {
-
-            qrCodeData = await QRCode.toDataURL(qr)
-
-            console.log("QR READY")
+            qrcode.generate(qr, { small: true })
         }
 
-        // عند الاتصال
         if (connection === 'open') {
-
             console.log('البوت اشتغل')
-
-            qrCodeData = ""
         }
 
-        // إعادة التشغيل إذا انقطع
         if (connection === 'close') {
-
             console.log('انقطع الاتصال... إعادة تشغيل')
-
             startBot()
         }
 
@@ -127,7 +110,6 @@ async function startBot() {
 
         // =========================
         // أمر .صوره
-        // من مجلد images
         // =========================
         if (text === '.صوره') {
 
@@ -136,7 +118,6 @@ async function startBot() {
             const files = fs.readdirSync(folderPath)
 
             if (files.length === 0) {
-
                 return sock.sendMessage(
                     msg.key.remoteJid,
                     { text: 'لا توجد صور' }
@@ -159,7 +140,6 @@ async function startBot() {
 
         // =========================
         // أمر .صوت
-        // من مجلد audio
         // =========================
         if (text === '.صوت') {
 
@@ -168,7 +148,6 @@ async function startBot() {
             const files = fs.readdirSync(folderPath)
 
             if (files.length === 0) {
-
                 return sock.sendMessage(
                     msg.key.remoteJid,
                     { text: 'لا توجد صوتيات' }
@@ -193,7 +172,6 @@ async function startBot() {
 
         // =========================
         // أمر .اصوات
-        // من مجلد sounds
         // =========================
         if (text === '.اصوات') {
 
@@ -202,7 +180,6 @@ async function startBot() {
             const files = fs.readdirSync(folderPath)
 
             if (files.length === 0) {
-
                 return sock.sendMessage(
                     msg.key.remoteJid,
                     { text: 'لا توجد اصوات' }
@@ -221,6 +198,70 @@ async function startBot() {
                     audio: fs.readFileSync(audioPath),
                     mimetype: 'audio/mpeg',
                     ptt: false
+                }
+            )
+        }
+
+        // =========================
+        // أمر .اسم
+        // =========================
+        if (text === '.اسم') {
+
+            namesCount = 1
+
+            await sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    text: '*تم تغيير .كت إلى اسم واحد*'
+                }
+            )
+        }
+
+        // =========================
+        // أمر .اسمين
+        // =========================
+        if (text === '.اسمين') {
+
+            namesCount = 2
+
+            await sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    text: '*تم تغيير .كت إلى اسمين*'
+                }
+            )
+        }
+
+        // =========================
+        // أمر .ثلاث
+        // =========================
+        if (text === '.ثلاث') {
+
+            namesCount = 3
+
+            await sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    text: '*تم تغيير .كت إلى 3 أسماء*'
+                }
+            )
+        }
+
+        // =========================
+        // أمر .كت
+        // =========================
+        if (text === '.كت') {
+
+            const shuffled =
+                animeNames.sort(() => 0.5 - Math.random())
+
+            const names =
+                shuffled.slice(0, namesCount)
+
+            await sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    text: `*${names.join('* , *')}*`
                 }
             )
         }
