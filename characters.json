@@ -1,0 +1,7076 @@
+[
+  {
+    "name": "Chopper",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 87,
+    "rarity": "عادي",
+    "ability": "التحولات",
+    "image": "./characters/chopper_87.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "الهيئة النهائية",
+    "anime": "Attack on Titan",
+    "power": 123,
+    "rarity": "عادي",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_123.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "الوضع الكامل",
+    "anime": "Jujutsu Kaisen",
+    "power": 20,
+    "rarity": "عادي",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_20.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "بعد التدريب",
+    "anime": "Hunter x Hunter",
+    "power": 177,
+    "rarity": "عادي",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_177.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "طور الغضب",
+    "anime": "Jujutsu Kaisen",
+    "power": 50,
+    "rarity": "عادي",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_50.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "نسخة النخبة",
+    "anime": "Naruto",
+    "power": 102,
+    "rarity": "عادي",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_102.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 71,
+    "rarity": "عادي",
+    "ability": "العلاج",
+    "image": "./characters/sakura_71.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "الوضع السريع",
+    "anime": "Black Clover",
+    "power": 46,
+    "rarity": "عادي",
+    "ability": "الظلام",
+    "image": "./characters/yami_46.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "الوضع الكامل",
+    "anime": "Demon Slayer",
+    "power": 175,
+    "rarity": "عادي",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_175.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 103,
+    "rarity": "عادي",
+    "ability": "الانتقال",
+    "image": "./characters/minato_103.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 110,
+    "rarity": "عادي",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_110.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 75,
+    "rarity": "عادي",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_75.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "نسخة المعركة",
+    "anime": "Attack on Titan",
+    "power": 1,
+    "rarity": "عادي",
+    "ability": "السرعة",
+    "image": "./characters/levi_1.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "بعد التدريب",
+    "anime": "Seven Deadly Sins",
+    "power": 81,
+    "rarity": "عادي",
+    "ability": "الشمس",
+    "image": "./characters/escanor_81.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "نسخة النخبة",
+    "anime": "One Punch Man",
+    "power": 186,
+    "rarity": "عادي",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_186.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "نسخة المعركة",
+    "anime": "Jujutsu Kaisen",
+    "power": 125,
+    "rarity": "عادي",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_125.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "النسخة الملكية",
+    "anime": "Black Clover",
+    "power": 63,
+    "rarity": "عادي",
+    "ability": "الظلام",
+    "image": "./characters/yami_63.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "بعد التدريب",
+    "anime": "Dragon Ball",
+    "power": 46,
+    "rarity": "عادي",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_46.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "طور الغضب",
+    "anime": "Black Clover",
+    "power": 60,
+    "rarity": "عادي",
+    "ability": "الماء",
+    "image": "./characters/noelle_60.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 105,
+    "rarity": "عادي",
+    "ability": "الطقس",
+    "image": "./characters/nami_105.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "الوضع السريع",
+    "anime": "Jujutsu Kaisen",
+    "power": 129,
+    "rarity": "عادي",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_129.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الوضع الكامل",
+    "anime": "Seven Deadly Sins",
+    "power": 53,
+    "rarity": "عادي",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_53.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "الوضع السريع",
+    "anime": "Naruto",
+    "power": 187,
+    "rarity": "عادي",
+    "ability": "الرمال",
+    "image": "./characters/gaara_187.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 198,
+    "rarity": "عادي",
+    "ability": "النسخ",
+    "image": "./characters/naruto_198.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "الهيئة النهائية",
+    "anime": "Demon Slayer",
+    "power": 169,
+    "rarity": "عادي",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_169.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 182,
+    "rarity": "عادي",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_182.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "الهيئة القتالية",
+    "anime": "Demon Slayer",
+    "power": 112,
+    "rarity": "عادي",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_112.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 192,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_192.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "القوة القصوى",
+    "anime": "Hunter x Hunter",
+    "power": 135,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_135.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "الوضع الكامل",
+    "anime": "One Punch Man",
+    "power": 65,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_65.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "وضع الصياد",
+    "anime": "Jujutsu Kaisen",
+    "power": 6,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_6.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "طور الغضب",
+    "anime": "Bleach",
+    "power": 83,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_83.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "البداية",
+    "anime": "Jujutsu Kaisen",
+    "power": 155,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_155.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 127,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_127.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "طور الغضب",
+    "anime": "Dragon Ball",
+    "power": 118,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_118.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "الوضع السريع",
+    "anime": "Bleach",
+    "power": 170,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_170.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "الهيئة النهائية",
+    "anime": "Jujutsu Kaisen",
+    "power": 160,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_160.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "النسخة الملكية",
+    "anime": "Attack on Titan",
+    "power": 133,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_133.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "الإصدار المطور",
+    "anime": "One Punch Man",
+    "power": 58,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_58.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 150,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_150.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "الوضع السريع",
+    "anime": "Hunter x Hunter",
+    "power": 70,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_70.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "وضع الصياد",
+    "anime": "One Piece",
+    "power": 61,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_61.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 186,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_186.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "القوة القصوى",
+    "anime": "Black Clover",
+    "power": 111,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_111.jpg"
+  },
+  {
+    "name": "Killua",
+    "form": "طور الغضب",
+    "anime": "Hunter x Hunter",
+    "power": 57,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/killua_57.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 34,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_34.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "وضع الصياد",
+    "anime": "Demon Slayer",
+    "power": 150,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_150.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 95,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_95.jpg"
+  },
+  {
+    "name": "Killua",
+    "form": "الإصدار المطور",
+    "anime": "Hunter x Hunter",
+    "power": 154,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/killua_154.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "الوضع السريع",
+    "anime": "Naruto",
+    "power": 78,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_78.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "البداية",
+    "anime": "Bleach",
+    "power": 63,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_63.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 48,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_48.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "الهيئة النهائية",
+    "anime": "Jujutsu Kaisen",
+    "power": 7,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_7.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "الهيئة النهائية",
+    "anime": "One Punch Man",
+    "power": 147,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_147.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "طور الغضب",
+    "anime": "Black Clover",
+    "power": 116,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_116.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "النسخة الملكية",
+    "anime": "Dragon Ball",
+    "power": 85,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_85.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 176,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_176.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "الوضع السريع",
+    "anime": "Black Clover",
+    "power": 100,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_100.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "الوضع السريع",
+    "anime": "Attack on Titan",
+    "power": 19,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_19.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الوضع السريع",
+    "anime": "Seven Deadly Sins",
+    "power": 67,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_67.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 123,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_123.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 153,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_153.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 148,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_148.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 34,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_34.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "بعد التدريب",
+    "anime": "Black Clover",
+    "power": 119,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_119.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 173,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_173.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "نسخة النخبة",
+    "anime": "Black Clover",
+    "power": 32,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_32.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "الهيئة القتالية",
+    "anime": "One Punch Man",
+    "power": 52,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_52.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 33,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_33.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "وضع الصياد",
+    "anime": "Dragon Ball",
+    "power": 115,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_115.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "الوضع السريع",
+    "anime": "One Punch Man",
+    "power": 170,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_170.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "وضع الصياد",
+    "anime": "Black Clover",
+    "power": 179,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_179.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "النسخة الملكية",
+    "anime": "Seven Deadly Sins",
+    "power": 59,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_59.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "الوضع الكامل",
+    "anime": "Dragon Ball",
+    "power": 187,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_187.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 126,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_126.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "بعد التدريب",
+    "anime": "Bleach",
+    "power": 33,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_33.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "الوضع الكامل",
+    "anime": "Jujutsu Kaisen",
+    "power": 117,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_117.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 65,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_65.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "الهيئة النهائية",
+    "anime": "Demon Slayer",
+    "power": 90,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_90.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "وضع الصياد",
+    "anime": "Jujutsu Kaisen",
+    "power": 91,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_91.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 18,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_18.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 146,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_146.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "الإصدار المطور",
+    "anime": "Hunter x Hunter",
+    "power": 21,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_21.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "الهيئة القتالية",
+    "anime": "Dragon Ball",
+    "power": 24,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_24.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 78,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_78.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 171,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_171.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 158,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_158.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "البداية",
+    "anime": "Jujutsu Kaisen",
+    "power": 87,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_87.jpg"
+  },
+  {
+    "name": "Usopp",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 58,
+    "rarity": "أسطوري",
+    "ability": "القنص",
+    "image": "./characters/usopp_58.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "نسخة النخبة",
+    "anime": "Dragon Ball",
+    "power": 65,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_65.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 45,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_45.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 145,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_145.jpg"
+  },
+  {
+    "name": "Tengen",
+    "form": "الوضع السريع",
+    "anime": "Demon Slayer",
+    "power": 77,
+    "rarity": "أسطوري",
+    "ability": "الصوت",
+    "image": "./characters/tengen_77.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 166,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_166.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "الإصدار المطور",
+    "anime": "Jujutsu Kaisen",
+    "power": 142,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_142.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "الوضع السريع",
+    "anime": "Bleach",
+    "power": 85,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_85.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 139,
+    "rarity": "أسطوري",
+    "ability": "مطاط",
+    "image": "./characters/luffy_139.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "نسخة المعركة",
+    "anime": "Dragon Ball",
+    "power": 126,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_126.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 93,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_93.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "الوضع الكامل",
+    "anime": "Attack on Titan",
+    "power": 114,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_114.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "الوضع الكامل",
+    "anime": "Dragon Ball",
+    "power": 180,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_180.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "الهيئة القتالية",
+    "anime": "Bleach",
+    "power": 183,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_183.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 53,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_53.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 69,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_69.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 52,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_52.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "وضع الصياد",
+    "anime": "Attack on Titan",
+    "power": 122,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_122.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 102,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_102.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "البداية",
+    "anime": "One Piece",
+    "power": 169,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_169.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "الإصدار المطور",
+    "anime": "Black Clover",
+    "power": 38,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_38.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 57,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_57.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "البداية",
+    "anime": "Hunter x Hunter",
+    "power": 43,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_43.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "طور الغضب",
+    "anime": "Hunter x Hunter",
+    "power": 30,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_30.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "النسخة الملكية",
+    "anime": "Bleach",
+    "power": 133,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_133.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الهيئة القتالية",
+    "anime": "Seven Deadly Sins",
+    "power": 29,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_29.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 5,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_5.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "نسخة النخبة",
+    "anime": "Demon Slayer",
+    "power": 89,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_89.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "نسخة النخبة",
+    "anime": "One Punch Man",
+    "power": 14,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_14.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "القوة القصوى",
+    "anime": "Jujutsu Kaisen",
+    "power": 80,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_80.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "الهيئة القتالية",
+    "anime": "Jujutsu Kaisen",
+    "power": 106,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_106.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "نسخة المعركة",
+    "anime": "Seven Deadly Sins",
+    "power": 35,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_35.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "الهيئة القتالية",
+    "anime": "One Punch Man",
+    "power": 138,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_138.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 134,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_134.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "بعد التدريب",
+    "anime": "Bleach",
+    "power": 130,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_130.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "طور الغضب",
+    "anime": "Hunter x Hunter",
+    "power": 197,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_197.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 51,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_51.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "البداية",
+    "anime": "One Piece",
+    "power": 128,
+    "rarity": "أسطوري",
+    "ability": "مطاط",
+    "image": "./characters/luffy_128.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "نسخة المعركة",
+    "anime": "Naruto",
+    "power": 192,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_192.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "الوضع الكامل",
+    "anime": "Jujutsu Kaisen",
+    "power": 118,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_118.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "النسخة الملكية",
+    "anime": "Dragon Ball",
+    "power": 97,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_97.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "الوضع السريع",
+    "anime": "Demon Slayer",
+    "power": 112,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_112.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "الهيئة النهائية",
+    "anime": "Black Clover",
+    "power": 50,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_50.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 117,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_117.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 163,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_163.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 125,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_125.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "الوضع الكامل",
+    "anime": "Black Clover",
+    "power": 193,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_193.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 3,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_3.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "الوضع الكامل",
+    "anime": "Demon Slayer",
+    "power": 159,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_159.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "البداية",
+    "anime": "Bleach",
+    "power": 99,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_99.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "نسخة المعركة",
+    "anime": "Black Clover",
+    "power": 71,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_71.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "الهيئة النهائية",
+    "anime": "Bleach",
+    "power": 173,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_173.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "طور الغضب",
+    "anime": "Jujutsu Kaisen",
+    "power": 48,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_48.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "الإصدار المطور",
+    "anime": "Bleach",
+    "power": 166,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_166.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "الهيئة القتالية",
+    "anime": "Jujutsu Kaisen",
+    "power": 187,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_187.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 143,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_143.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 11,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_11.jpg"
+  },
+  {
+    "name": "Saitama",
+    "form": "نسخة المعركة",
+    "anime": "One Punch Man",
+    "power": 99,
+    "rarity": "أسطوري",
+    "ability": "لكمة واحدة",
+    "image": "./characters/saitama_99.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 172,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_172.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 84,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_84.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "القوة القصوى",
+    "anime": "One Piece",
+    "power": 41,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_41.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 25,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_25.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "النسخة الملكية",
+    "anime": "Bleach",
+    "power": 24,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_24.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "الوضع الكامل",
+    "anime": "Hunter x Hunter",
+    "power": 118,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_118.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "وضع الصياد",
+    "anime": "One Punch Man",
+    "power": 75,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_75.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "النسخة الملكية",
+    "anime": "Attack on Titan",
+    "power": 38,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_38.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 91,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_91.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "القوة القصوى",
+    "anime": "One Piece",
+    "power": 125,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_125.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 96,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_96.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 181,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_181.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "بعد التدريب",
+    "anime": "Jujutsu Kaisen",
+    "power": 7,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_7.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "الإصدار المطور",
+    "anime": "Seven Deadly Sins",
+    "power": 45,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_45.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 173,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_173.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 14,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_14.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 1,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_1.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "بعد التدريب",
+    "anime": "One Punch Man",
+    "power": 198,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_198.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "نسخة المعركة",
+    "anime": "Demon Slayer",
+    "power": 164,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_164.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "الهيئة القتالية",
+    "anime": "Seven Deadly Sins",
+    "power": 68,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_68.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "البداية",
+    "anime": "Hunter x Hunter",
+    "power": 32,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_32.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 74,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_74.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "الوضع الكامل",
+    "anime": "Hunter x Hunter",
+    "power": 6,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_6.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "بعد التدريب",
+    "anime": "Demon Slayer",
+    "power": 19,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_19.jpg"
+  },
+  {
+    "name": "Saitama",
+    "form": "الهيئة القتالية",
+    "anime": "One Punch Man",
+    "power": 129,
+    "rarity": "أسطوري",
+    "ability": "لكمة واحدة",
+    "image": "./characters/saitama_129.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 34,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_34.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "القوة القصوى",
+    "anime": "Dragon Ball",
+    "power": 98,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_98.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 74,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_74.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "طور الغضب",
+    "anime": "Jujutsu Kaisen",
+    "power": 128,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_128.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "الإصدار المطور",
+    "anime": "Hunter x Hunter",
+    "power": 81,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_81.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 140,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_140.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 14,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_14.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 138,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_138.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "طور الغضب",
+    "anime": "Demon Slayer",
+    "power": 109,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_109.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 143,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_143.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "الوضع السريع",
+    "anime": "One Punch Man",
+    "power": 142,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_142.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "النسخة الملكية",
+    "anime": "Attack on Titan",
+    "power": 142,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_142.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "نسخة النخبة",
+    "anime": "Hunter x Hunter",
+    "power": 89,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_89.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "النسخة الملكية",
+    "anime": "Black Clover",
+    "power": 145,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_145.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "وضع الصياد",
+    "anime": "Demon Slayer",
+    "power": 117,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_117.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "الوضع الكامل",
+    "anime": "Dragon Ball",
+    "power": 162,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_162.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "نسخة المعركة",
+    "anime": "Jujutsu Kaisen",
+    "power": 136,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_136.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 176,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_176.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 18,
+    "rarity": "أسطوري",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_18.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 77,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_77.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "بعد التدريب",
+    "anime": "One Punch Man",
+    "power": 109,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_109.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "نسخة المعركة",
+    "anime": "Black Clover",
+    "power": 146,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_146.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "وضع الصياد",
+    "anime": "Hunter x Hunter",
+    "power": 186,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_186.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 25,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_25.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 137,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_137.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "طور الغضب",
+    "anime": "Seven Deadly Sins",
+    "power": 122,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_122.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 636,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_636.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 466,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_466.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 288,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_288.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "طور الغضب",
+    "anime": "Black Clover",
+    "power": 443,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_443.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "وضع الصياد",
+    "anime": "One Punch Man",
+    "power": 389,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_389.jpg"
+  },
+  {
+    "name": "Tengen",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 629,
+    "rarity": "أسطوري",
+    "ability": "الصوت",
+    "image": "./characters/tengen_629.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "الهيئة النهائية",
+    "anime": "Hunter x Hunter",
+    "power": 417,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_417.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "الوضع الكامل",
+    "anime": "Black Clover",
+    "power": 317,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_317.jpg"
+  },
+  {
+    "name": "Itachi",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 457,
+    "rarity": "أسطوري",
+    "ability": "التسوكويومي",
+    "image": "./characters/itachi_457.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "طور الغضب",
+    "anime": "Bleach",
+    "power": 343,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_343.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "بعد التدريب",
+    "anime": "Hunter x Hunter",
+    "power": 386,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_386.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "نسخة المعركة",
+    "anime": "Black Clover",
+    "power": 373,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_373.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 265,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_265.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 339,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_339.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 404,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_404.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "الهيئة القتالية",
+    "anime": "Bleach",
+    "power": 342,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_342.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "بعد التدريب",
+    "anime": "Bleach",
+    "power": 692,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_692.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "نسخة النخبة",
+    "anime": "Black Clover",
+    "power": 549,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_549.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "القوة القصوى",
+    "anime": "Hunter x Hunter",
+    "power": 547,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_547.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "طور الغضب",
+    "anime": "Demon Slayer",
+    "power": 427,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_427.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "القوة القصوى",
+    "anime": "One Piece",
+    "power": 411,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_411.jpg"
+  },
+  {
+    "name": "Killua",
+    "form": "الإصدار المطور",
+    "anime": "Hunter x Hunter",
+    "power": 540,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/killua_540.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 517,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_517.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "وضع الصياد",
+    "anime": "Hunter x Hunter",
+    "power": 365,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_365.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 574,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_574.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "نسخة النخبة",
+    "anime": "Attack on Titan",
+    "power": 356,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_356.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "نسخة المعركة",
+    "anime": "One Punch Man",
+    "power": 366,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_366.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "وضع الصياد",
+    "anime": "One Piece",
+    "power": 426,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_426.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "الهيئة النهائية",
+    "anime": "Dragon Ball",
+    "power": 561,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_561.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "النسخة الملكية",
+    "anime": "Dragon Ball",
+    "power": 610,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_610.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "الوضع السريع",
+    "anime": "Bleach",
+    "power": 348,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_348.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "الإصدار المطور",
+    "anime": "Black Clover",
+    "power": 615,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_615.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 299,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_299.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "طور الغضب",
+    "anime": "Dragon Ball",
+    "power": 414,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_414.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 348,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_348.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "نسخة المعركة",
+    "anime": "Naruto",
+    "power": 557,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_557.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "الوضع الكامل",
+    "anime": "Demon Slayer",
+    "power": 239,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_239.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "الوضع الكامل",
+    "anime": "Demon Slayer",
+    "power": 341,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_341.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "النسخة الملكية",
+    "anime": "Bleach",
+    "power": 208,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_208.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "وضع الصياد",
+    "anime": "Jujutsu Kaisen",
+    "power": 590,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_590.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "الوضع الكامل",
+    "anime": "Dragon Ball",
+    "power": 306,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_306.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "البداية",
+    "anime": "Bleach",
+    "power": 597,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_597.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "وضع الصياد",
+    "anime": "Jujutsu Kaisen",
+    "power": 579,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_579.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "النسخة الملكية",
+    "anime": "One Punch Man",
+    "power": 477,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_477.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "القوة القصوى",
+    "anime": "Attack on Titan",
+    "power": 682,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_682.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "طور الغضب",
+    "anime": "Dragon Ball",
+    "power": 607,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_607.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "نسخة المعركة",
+    "anime": "Naruto",
+    "power": 570,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_570.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الهيئة القتالية",
+    "anime": "Seven Deadly Sins",
+    "power": 451,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_451.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "الإصدار المطور",
+    "anime": "Bleach",
+    "power": 598,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_598.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "طور الغضب",
+    "anime": "Seven Deadly Sins",
+    "power": 383,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_383.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "الهيئة القتالية",
+    "anime": "Dragon Ball",
+    "power": 307,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_307.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "النسخة الملكية",
+    "anime": "Demon Slayer",
+    "power": 320,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_320.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 574,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_574.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 459,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_459.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "طور الغضب",
+    "anime": "Jujutsu Kaisen",
+    "power": 228,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_228.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 672,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_672.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 506,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_506.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "الهيئة النهائية",
+    "anime": "Demon Slayer",
+    "power": 432,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_432.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 542,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_542.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 593,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_593.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "نسخة المعركة",
+    "anime": "Dragon Ball",
+    "power": 342,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_342.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "نسخة المعركة",
+    "anime": "Demon Slayer",
+    "power": 450,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_450.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "الهيئة القتالية",
+    "anime": "Bleach",
+    "power": 212,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_212.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 463,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_463.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "الإصدار المطور",
+    "anime": "Bleach",
+    "power": 240,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_240.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 660,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_660.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 503,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_503.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 413,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_413.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 244,
+    "rarity": "أسطوري",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_244.jpg"
+  },
+  {
+    "name": "Saitama",
+    "form": "الهيئة القتالية",
+    "anime": "One Punch Man",
+    "power": 625,
+    "rarity": "أسطوري",
+    "ability": "لكمة واحدة",
+    "image": "./characters/saitama_625.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "الوضع الكامل",
+    "anime": "Dragon Ball",
+    "power": 525,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_525.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "الوضع السريع",
+    "anime": "Demon Slayer",
+    "power": 324,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_324.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "طور الغضب",
+    "anime": "Black Clover",
+    "power": 463,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_463.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "طور الغضب",
+    "anime": "Bleach",
+    "power": 678,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_678.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 213,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_213.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "الهيئة القتالية",
+    "anime": "Jujutsu Kaisen",
+    "power": 688,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_688.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 586,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_586.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "النسخة الملكية",
+    "anime": "Demon Slayer",
+    "power": 313,
+    "rarity": "أسطوري",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_313.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "نسخة المعركة",
+    "anime": "Hunter x Hunter",
+    "power": 675,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_675.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 520,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_520.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "نسخة المعركة",
+    "anime": "Jujutsu Kaisen",
+    "power": 421,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_421.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "بعد التدريب",
+    "anime": "Bleach",
+    "power": 603,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_603.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "الهيئة النهائية",
+    "anime": "Dragon Ball",
+    "power": 330,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_330.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 255,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_255.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 288,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_288.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 602,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_602.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 248,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_248.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 455,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_455.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 325,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_325.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "نسخة المعركة",
+    "anime": "Jujutsu Kaisen",
+    "power": 338,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_338.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الهيئة النهائية",
+    "anime": "Seven Deadly Sins",
+    "power": 543,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_543.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "البداية",
+    "anime": "Hunter x Hunter",
+    "power": 526,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_526.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 269,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_269.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "وضع الصياد",
+    "anime": "Bleach",
+    "power": 370,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_370.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "البداية",
+    "anime": "One Piece",
+    "power": 610,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_610.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 204,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_204.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "الهيئة النهائية",
+    "anime": "Bleach",
+    "power": 516,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_516.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "الهيئة القتالية",
+    "anime": "Seven Deadly Sins",
+    "power": 566,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_566.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 696,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_696.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "النسخة الملكية",
+    "anime": "Dragon Ball",
+    "power": 437,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_437.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "الهيئة القتالية",
+    "anime": "Dragon Ball",
+    "power": 663,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_663.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "البداية",
+    "anime": "One Piece",
+    "power": 226,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_226.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "الهيئة القتالية",
+    "anime": "One Punch Man",
+    "power": 297,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_297.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 469,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_469.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "بعد التدريب",
+    "anime": "One Punch Man",
+    "power": 415,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_415.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "القوة القصوى",
+    "anime": "Black Clover",
+    "power": 497,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_497.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "نسخة النخبة",
+    "anime": "Naruto",
+    "power": 647,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_647.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "الهيئة النهائية",
+    "anime": "Black Clover",
+    "power": 360,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_360.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "الهيئة القتالية",
+    "anime": "Demon Slayer",
+    "power": 452,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_452.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 367,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_367.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "الإصدار المطور",
+    "anime": "Bleach",
+    "power": 340,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_340.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 279,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_279.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "وضع الصياد",
+    "anime": "Hunter x Hunter",
+    "power": 500,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_500.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "الهيئة النهائية",
+    "anime": "Black Clover",
+    "power": 642,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_642.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 209,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_209.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "الهيئة النهائية",
+    "anime": "Jujutsu Kaisen",
+    "power": 395,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_395.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "الوضع السريع",
+    "anime": "Bleach",
+    "power": 683,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_683.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "النسخة الملكية",
+    "anime": "Demon Slayer",
+    "power": 381,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_381.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "بعد التدريب",
+    "anime": "Demon Slayer",
+    "power": 360,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_360.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 398,
+    "rarity": "أسطوري",
+    "ability": "مطاط",
+    "image": "./characters/luffy_398.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "الوضع السريع",
+    "anime": "Jujutsu Kaisen",
+    "power": 663,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_663.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "بعد التدريب",
+    "anime": "Jujutsu Kaisen",
+    "power": 479,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_479.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "الهيئة النهائية",
+    "anime": "One Punch Man",
+    "power": 327,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_327.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 284,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_284.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 426,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_426.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 653,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_653.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "وضع الصياد",
+    "anime": "Bleach",
+    "power": 302,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_302.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "القوة القصوى",
+    "anime": "Bleach",
+    "power": 552,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_552.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "نسخة النخبة",
+    "anime": "Attack on Titan",
+    "power": 250,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_250.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "بعد التدريب",
+    "anime": "Attack on Titan",
+    "power": 688,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_688.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "الهيئة القتالية",
+    "anime": "Demon Slayer",
+    "power": 648,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_648.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "النسخة الملكية",
+    "anime": "Black Clover",
+    "power": 317,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_317.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "بعد التدريب",
+    "anime": "Black Clover",
+    "power": 364,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_364.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 587,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_587.jpg"
+  },
+  {
+    "name": "Killua",
+    "form": "نسخة النخبة",
+    "anime": "Hunter x Hunter",
+    "power": 527,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/killua_527.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الوضع السريع",
+    "anime": "Seven Deadly Sins",
+    "power": 622,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_622.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 625,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_625.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "الهيئة القتالية",
+    "anime": "Jujutsu Kaisen",
+    "power": 263,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_263.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 467,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_467.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "الهيئة القتالية",
+    "anime": "Bleach",
+    "power": 698,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_698.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "الهيئة القتالية",
+    "anime": "Attack on Titan",
+    "power": 620,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_620.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "الوضع الكامل",
+    "anime": "Bleach",
+    "power": 249,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_249.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 479,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_479.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "الهيئة القتالية",
+    "anime": "Dragon Ball",
+    "power": 659,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_659.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "الوضع السريع",
+    "anime": "Bleach",
+    "power": 590,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_590.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "الوضع السريع",
+    "anime": "Jujutsu Kaisen",
+    "power": 417,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_417.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "الوضع الكامل",
+    "anime": "Dragon Ball",
+    "power": 300,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_300.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 381,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_381.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 441,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_441.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 608,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_608.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 382,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_382.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "الهيئة القتالية",
+    "anime": "One Punch Man",
+    "power": 646,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_646.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "وضع الصياد",
+    "anime": "Attack on Titan",
+    "power": 250,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_250.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "الإصدار المطور",
+    "anime": "Dragon Ball",
+    "power": 642,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_642.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "وضع الصياد",
+    "anime": "Bleach",
+    "power": 411,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_411.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "القوة القصوى",
+    "anime": "Bleach",
+    "power": 691,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_691.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "وضع الصياد",
+    "anime": "Demon Slayer",
+    "power": 506,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_506.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 564,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_564.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 555,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_555.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 223,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_223.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 231,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_231.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "الإصدار المطور",
+    "anime": "Bleach",
+    "power": 681,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_681.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 451,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_451.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 384,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_384.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "البداية",
+    "anime": "One Piece",
+    "power": 483,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_483.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 358,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_358.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "الوضع الكامل",
+    "anime": "One Punch Man",
+    "power": 265,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_265.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "نسخة المعركة",
+    "anime": "Dragon Ball",
+    "power": 319,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_319.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 599,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_599.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "وضع الصياد",
+    "anime": "Dragon Ball",
+    "power": 660,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_660.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "القوة القصوى",
+    "anime": "Dragon Ball",
+    "power": 540,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_540.jpg"
+  },
+  {
+    "name": "Itachi",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 432,
+    "rarity": "أسطوري",
+    "ability": "التسوكويومي",
+    "image": "./characters/itachi_432.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 360,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_360.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 655,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_655.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "نسخة النخبة",
+    "anime": "Attack on Titan",
+    "power": 699,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_699.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "بعد التدريب",
+    "anime": "One Punch Man",
+    "power": 337,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_337.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 339,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_339.jpg"
+  },
+  {
+    "name": "Saitama",
+    "form": "القوة القصوى",
+    "anime": "One Punch Man",
+    "power": 540,
+    "rarity": "أسطوري",
+    "ability": "لكمة واحدة",
+    "image": "./characters/saitama_540.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "نسخة النخبة",
+    "anime": "Naruto",
+    "power": 392,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_392.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "نسخة المعركة",
+    "anime": "Black Clover",
+    "power": 580,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_580.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 228,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_228.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "نسخة المعركة",
+    "anime": "Seven Deadly Sins",
+    "power": 465,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_465.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "الهيئة النهائية",
+    "anime": "Hunter x Hunter",
+    "power": 522,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_522.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "الإصدار المطور",
+    "anime": "Hunter x Hunter",
+    "power": 213,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_213.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "طور الغضب",
+    "anime": "Jujutsu Kaisen",
+    "power": 289,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_289.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "القوة القصوى",
+    "anime": "One Punch Man",
+    "power": 502,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_502.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "القوة القصوى",
+    "anime": "Bleach",
+    "power": 410,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_410.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 692,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_692.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 359,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_359.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 399,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_399.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "القوة القصوى",
+    "anime": "Black Clover",
+    "power": 635,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_635.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "الهيئة النهائية",
+    "anime": "Black Clover",
+    "power": 459,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_459.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "بعد التدريب",
+    "anime": "Hunter x Hunter",
+    "power": 621,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_621.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "الهيئة النهائية",
+    "anime": "Jujutsu Kaisen",
+    "power": 230,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_230.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 254,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_254.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 439,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_439.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 246,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_246.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 1289,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_1289.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "وضع الصياد",
+    "anime": "One Piece",
+    "power": 2547,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_2547.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "نسخة النخبة",
+    "anime": "Dragon Ball",
+    "power": 2729,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_2729.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "بعد التدريب",
+    "anime": "Bleach",
+    "power": 1672,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_1672.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "الهيئة القتالية",
+    "anime": "Demon Slayer",
+    "power": 1568,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_1568.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "طور الغضب",
+    "anime": "Dragon Ball",
+    "power": 1339,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_1339.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 2895,
+    "rarity": "أسطوري",
+    "ability": "مطاط",
+    "image": "./characters/luffy_2895.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 2753,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_2753.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "بعد التدريب",
+    "anime": "Seven Deadly Sins",
+    "power": 2335,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_2335.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "الهيئة القتالية",
+    "anime": "Jujutsu Kaisen",
+    "power": 2604,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_2604.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 2781,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_2781.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "بعد التدريب",
+    "anime": "Dragon Ball",
+    "power": 2023,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_2023.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "نسخة المعركة",
+    "anime": "Black Clover",
+    "power": 1913,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_1913.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 2248,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_2248.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "وضع الصياد",
+    "anime": "Demon Slayer",
+    "power": 1577,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_1577.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "البداية",
+    "anime": "Seven Deadly Sins",
+    "power": 825,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_825.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 1688,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_1688.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "الهيئة النهائية",
+    "anime": "Bleach",
+    "power": 2057,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_2057.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "الهيئة القتالية",
+    "anime": "Demon Slayer",
+    "power": 2627,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_2627.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "بعد التدريب",
+    "anime": "Black Clover",
+    "power": 2299,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_2299.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 2592,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_2592.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "الوضع السريع",
+    "anime": "Naruto",
+    "power": 2841,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_2841.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "طور الغضب",
+    "anime": "One Punch Man",
+    "power": 918,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_918.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "القوة القصوى",
+    "anime": "One Piece",
+    "power": 2654,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_2654.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 1928,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_1928.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 2996,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_2996.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 1119,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_1119.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "الوضع الكامل",
+    "anime": "Bleach",
+    "power": 1079,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_1079.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 1495,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_1495.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "وضع الصياد",
+    "anime": "Dragon Ball",
+    "power": 1417,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_1417.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "الهيئة القتالية",
+    "anime": "Bleach",
+    "power": 2633,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_2633.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 2455,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_2455.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 1129,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_1129.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 1282,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_1282.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 1000,
+    "rarity": "أسطوري",
+    "ability": "مطاط",
+    "image": "./characters/luffy_1000.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 2993,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_2993.jpg"
+  },
+  {
+    "name": "Tengen",
+    "form": "الإصدار المطور",
+    "anime": "Demon Slayer",
+    "power": 2937,
+    "rarity": "أسطوري",
+    "ability": "الصوت",
+    "image": "./characters/tengen_2937.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "نسخة المعركة",
+    "anime": "Hunter x Hunter",
+    "power": 1545,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_1545.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 2938,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_2938.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "نسخة المعركة",
+    "anime": "Hunter x Hunter",
+    "power": 2881,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_2881.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "البداية",
+    "anime": "Seven Deadly Sins",
+    "power": 1489,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_1489.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 2869,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_2869.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "نسخة المعركة",
+    "anime": "Demon Slayer",
+    "power": 2780,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_2780.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "الهيئة القتالية",
+    "anime": "One Punch Man",
+    "power": 2073,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_2073.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "الهيئة النهائية",
+    "anime": "Demon Slayer",
+    "power": 2227,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_2227.jpg"
+  },
+  {
+    "name": "Tengen",
+    "form": "النسخة الملكية",
+    "anime": "Demon Slayer",
+    "power": 2452,
+    "rarity": "أسطوري",
+    "ability": "الصوت",
+    "image": "./characters/tengen_2452.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 1717,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_1717.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "نسخة النخبة",
+    "anime": "Hunter x Hunter",
+    "power": 1883,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_1883.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "نسخة النخبة",
+    "anime": "Naruto",
+    "power": 1758,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_1758.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "القوة القصوى",
+    "anime": "Black Clover",
+    "power": 1649,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_1649.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "القوة القصوى",
+    "anime": "Dragon Ball",
+    "power": 2955,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_2955.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "طور الغضب",
+    "anime": "Hunter x Hunter",
+    "power": 1209,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_1209.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 2847,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_2847.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "الوضع السريع",
+    "anime": "Hunter x Hunter",
+    "power": 2851,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_2851.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "نسخة المعركة",
+    "anime": "Naruto",
+    "power": 1976,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_1976.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "الوضع الكامل",
+    "anime": "Dragon Ball",
+    "power": 2645,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_2645.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "الوضع السريع",
+    "anime": "Bleach",
+    "power": 1232,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_1232.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "البداية",
+    "anime": "Bleach",
+    "power": 793,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_793.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "الهيئة النهائية",
+    "anime": "Demon Slayer",
+    "power": 1175,
+    "rarity": "أسطوري",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_1175.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "النسخة الملكية",
+    "anime": "Attack on Titan",
+    "power": 1302,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_1302.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "نسخة النخبة",
+    "anime": "One Punch Man",
+    "power": 1516,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_1516.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "طور الغضب",
+    "anime": "Jujutsu Kaisen",
+    "power": 2251,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_2251.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 2533,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_2533.jpg"
+  },
+  {
+    "name": "Saitama",
+    "form": "الهيئة النهائية",
+    "anime": "One Punch Man",
+    "power": 1694,
+    "rarity": "أسطوري",
+    "ability": "لكمة واحدة",
+    "image": "./characters/saitama_1694.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 1707,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_1707.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "وضع الصياد",
+    "anime": "Dragon Ball",
+    "power": 1851,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_1851.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 2197,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_2197.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "وضع الصياد",
+    "anime": "Demon Slayer",
+    "power": 2730,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_2730.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الوضع الكامل",
+    "anime": "Seven Deadly Sins",
+    "power": 1913,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_1913.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 2482,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_2482.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "نسخة النخبة",
+    "anime": "Bleach",
+    "power": 2427,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_2427.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "النسخة الملكية",
+    "anime": "Attack on Titan",
+    "power": 1836,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_1836.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 1042,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_1042.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "نسخة المعركة",
+    "anime": "Naruto",
+    "power": 2694,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_2694.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "الهيئة النهائية",
+    "anime": "Attack on Titan",
+    "power": 1874,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_1874.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 2557,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_2557.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "الوضع السريع",
+    "anime": "Attack on Titan",
+    "power": 967,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_967.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "وضع الصياد",
+    "anime": "Jujutsu Kaisen",
+    "power": 1979,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_1979.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "القوة القصوى",
+    "anime": "One Piece",
+    "power": 2267,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_2267.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 2140,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_2140.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 1742,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_1742.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 1161,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_1161.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "الوضع الكامل",
+    "anime": "Demon Slayer",
+    "power": 2147,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_2147.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "النسخة الملكية",
+    "anime": "Attack on Titan",
+    "power": 1625,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_1625.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "الهيئة القتالية",
+    "anime": "Bleach",
+    "power": 1153,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_1153.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 993,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_993.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "الهيئة النهائية",
+    "anime": "Hunter x Hunter",
+    "power": 2709,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_2709.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 2920,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_2920.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "الوضع السريع",
+    "anime": "One Punch Man",
+    "power": 789,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_789.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "الهيئة القتالية",
+    "anime": "Jujutsu Kaisen",
+    "power": 2737,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_2737.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 2739,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_2739.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 757,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_757.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "وضع الصياد",
+    "anime": "Dragon Ball",
+    "power": 2413,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_2413.jpg"
+  },
+  {
+    "name": "Saitama",
+    "form": "الإصدار المطور",
+    "anime": "One Punch Man",
+    "power": 844,
+    "rarity": "أسطوري",
+    "ability": "لكمة واحدة",
+    "image": "./characters/saitama_844.jpg"
+  },
+  {
+    "name": "Usopp",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 1199,
+    "rarity": "أسطوري",
+    "ability": "القنص",
+    "image": "./characters/usopp_1199.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 729,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_729.jpg"
+  },
+  {
+    "name": "Killua",
+    "form": "طور الغضب",
+    "anime": "Hunter x Hunter",
+    "power": 1938,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/killua_1938.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "النسخة الملكية",
+    "anime": "Demon Slayer",
+    "power": 1998,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_1998.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "طور الغضب",
+    "anime": "Hunter x Hunter",
+    "power": 2201,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_2201.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 2853,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_2853.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "البداية",
+    "anime": "One Punch Man",
+    "power": 1558,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_1558.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "نسخة النخبة",
+    "anime": "Naruto",
+    "power": 1584,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_1584.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "الهيئة القتالية",
+    "anime": "Jujutsu Kaisen",
+    "power": 2890,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_2890.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 1309,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_1309.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "الهيئة النهائية",
+    "anime": "Bleach",
+    "power": 1442,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_1442.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "القوة القصوى",
+    "anime": "One Punch Man",
+    "power": 2836,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_2836.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "الإصدار المطور",
+    "anime": "Demon Slayer",
+    "power": 1440,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_1440.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 2849,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_2849.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 881,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_881.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 1695,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_1695.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "بعد التدريب",
+    "anime": "Black Clover",
+    "power": 882,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_882.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "القوة القصوى",
+    "anime": "Bleach",
+    "power": 1680,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_1680.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 1760,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_1760.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "الإصدار المطور",
+    "anime": "Jujutsu Kaisen",
+    "power": 1788,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_1788.jpg"
+  },
+  {
+    "name": "Saitama",
+    "form": "البداية",
+    "anime": "One Punch Man",
+    "power": 1212,
+    "rarity": "أسطوري",
+    "ability": "لكمة واحدة",
+    "image": "./characters/saitama_1212.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "الهيئة القتالية",
+    "anime": "Dragon Ball",
+    "power": 939,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_939.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 842,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_842.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 1169,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_1169.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 1424,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_1424.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "نسخة النخبة",
+    "anime": "Dragon Ball",
+    "power": 2290,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_2290.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 2945,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_2945.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "القوة القصوى",
+    "anime": "Black Clover",
+    "power": 2640,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_2640.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 1101,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_1101.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "النسخة الملكية",
+    "anime": "Bleach",
+    "power": 800,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_800.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 1873,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_1873.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 737,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_737.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "وضع الصياد",
+    "anime": "One Piece",
+    "power": 1210,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_1210.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "نسخة النخبة",
+    "anime": "Bleach",
+    "power": 1128,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_1128.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "النسخة الملكية",
+    "anime": "Black Clover",
+    "power": 829,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_829.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 877,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_877.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "نسخة النخبة",
+    "anime": "Seven Deadly Sins",
+    "power": 1192,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_1192.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "الإصدار المطور",
+    "anime": "Bleach",
+    "power": 1185,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_1185.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 2132,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_2132.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 2172,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_2172.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الهيئة القتالية",
+    "anime": "Seven Deadly Sins",
+    "power": 1910,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_1910.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "النسخة الملكية",
+    "anime": "Dragon Ball",
+    "power": 1920,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_1920.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "نسخة المعركة",
+    "anime": "Naruto",
+    "power": 796,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_796.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "بعد التدريب",
+    "anime": "Dragon Ball",
+    "power": 2047,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_2047.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 1889,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_1889.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "الوضع الكامل",
+    "anime": "Jujutsu Kaisen",
+    "power": 1292,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_1292.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "وضع الصياد",
+    "anime": "Hunter x Hunter",
+    "power": 2936,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_2936.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "الهيئة النهائية",
+    "anime": "Attack on Titan",
+    "power": 1331,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_1331.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 921,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_921.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "وضع الصياد",
+    "anime": "One Piece",
+    "power": 1351,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_1351.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 2635,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_2635.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "نسخة النخبة",
+    "anime": "Demon Slayer",
+    "power": 1047,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_1047.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "الوضع الكامل",
+    "anime": "Black Clover",
+    "power": 2307,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_2307.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "نسخة النخبة",
+    "anime": "Attack on Titan",
+    "power": 2060,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_2060.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 1910,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_1910.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 1943,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_1943.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 785,
+    "rarity": "أسطوري",
+    "ability": "مطاط",
+    "image": "./characters/luffy_785.jpg"
+  },
+  {
+    "name": "Tengen",
+    "form": "الهيئة النهائية",
+    "anime": "Demon Slayer",
+    "power": 2762,
+    "rarity": "أسطوري",
+    "ability": "الصوت",
+    "image": "./characters/tengen_2762.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 2630,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_2630.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 2247,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_2247.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "وضع الصياد",
+    "anime": "One Punch Man",
+    "power": 2183,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_2183.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "نسخة المعركة",
+    "anime": "Naruto",
+    "power": 2197,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_2197.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 2551,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_2551.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "القوة القصوى",
+    "anime": "Dragon Ball",
+    "power": 1503,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_1503.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "نسخة المعركة",
+    "anime": "Jujutsu Kaisen",
+    "power": 2501,
+    "rarity": "أسطوري",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_2501.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "البداية",
+    "anime": "Attack on Titan",
+    "power": 2616,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_2616.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "الوضع السريع",
+    "anime": "Naruto",
+    "power": 1071,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_1071.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "الوضع الكامل",
+    "anime": "Bleach",
+    "power": 1730,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_1730.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "طور الغضب",
+    "anime": "Bleach",
+    "power": 1402,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_1402.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "الهيئة النهائية",
+    "anime": "Jujutsu Kaisen",
+    "power": 2993,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_2993.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 1093,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_1093.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "بعد التدريب",
+    "anime": "Hunter x Hunter",
+    "power": 2808,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_2808.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "الوضع الكامل",
+    "anime": "Hunter x Hunter",
+    "power": 2952,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_2952.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 1319,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_1319.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "الهيئة النهائية",
+    "anime": "Black Clover",
+    "power": 831,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_831.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "وضع الصياد",
+    "anime": "Dragon Ball",
+    "power": 1976,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_1976.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 2689,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_2689.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "الوضع الكامل",
+    "anime": "Hunter x Hunter",
+    "power": 1807,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_1807.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "النسخة الملكية",
+    "anime": "Seven Deadly Sins",
+    "power": 718,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_718.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "الوضع السريع",
+    "anime": "Bleach",
+    "power": 1781,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_1781.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "بعد التدريب",
+    "anime": "Attack on Titan",
+    "power": 2152,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_2152.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "الهيئة القتالية",
+    "anime": "One Punch Man",
+    "power": 2918,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_2918.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "الوضع الكامل",
+    "anime": "Attack on Titan",
+    "power": 2991,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_2991.jpg"
+  },
+  {
+    "name": "Franky",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 1058,
+    "rarity": "أسطوري",
+    "ability": "السايبورغ",
+    "image": "./characters/franky_1058.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "الوضع الكامل",
+    "anime": "Bleach",
+    "power": 1267,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_1267.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "بعد التدريب",
+    "anime": "Jujutsu Kaisen",
+    "power": 1674,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_1674.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 916,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_916.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "الوضع السريع",
+    "anime": "Demon Slayer",
+    "power": 1297,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_1297.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "الوضع الكامل",
+    "anime": "Attack on Titan",
+    "power": 1078,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_1078.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 1434,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_1434.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "وضع الصياد",
+    "anime": "Jujutsu Kaisen",
+    "power": 753,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_753.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 1578,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_1578.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "الإصدار المطور",
+    "anime": "Hunter x Hunter",
+    "power": 2536,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_2536.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "الإصدار المطور",
+    "anime": "Hunter x Hunter",
+    "power": 1410,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_1410.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "الهيئة النهائية",
+    "anime": "Bleach",
+    "power": 2194,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_2194.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "الوضع السريع",
+    "anime": "Seven Deadly Sins",
+    "power": 1768,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_1768.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "وضع الصياد",
+    "anime": "Black Clover",
+    "power": 2474,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_2474.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 1820,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_1820.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 2682,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_2682.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "نسخة النخبة",
+    "anime": "Demon Slayer",
+    "power": 1609,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_1609.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "نسخة المعركة",
+    "anime": "Jujutsu Kaisen",
+    "power": 1483,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_1483.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "بعد التدريب",
+    "anime": "Jujutsu Kaisen",
+    "power": 3965,
+    "rarity": "SSS",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_3965.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "بعد التدريب",
+    "anime": "Attack on Titan",
+    "power": 6162,
+    "rarity": "SSS",
+    "ability": "السرعة",
+    "image": "./characters/levi_6162.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 5966,
+    "rarity": "SSS",
+    "ability": "الركلات",
+    "image": "./characters/sanji_5966.jpg"
+  },
+  {
+    "name": "Usopp",
+    "form": "القوة القصوى",
+    "anime": "One Piece",
+    "power": 6209,
+    "rarity": "SSS",
+    "ability": "القنص",
+    "image": "./characters/usopp_6209.jpg"
+  },
+  {
+    "name": "Yuji",
+    "form": "الهيئة النهائية",
+    "anime": "Jujutsu Kaisen",
+    "power": 3538,
+    "rarity": "SSS",
+    "ability": "اللكمات",
+    "image": "./characters/yuji_3538.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "الوضع الكامل",
+    "anime": "Jujutsu Kaisen",
+    "power": 3303,
+    "rarity": "SSS",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_3303.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 3539,
+    "rarity": "SSS",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_3539.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 5384,
+    "rarity": "SSS",
+    "ability": "العلاج",
+    "image": "./characters/sakura_5384.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "الهيئة النهائية",
+    "anime": "Attack on Titan",
+    "power": 6178,
+    "rarity": "SSS",
+    "ability": "السرعة",
+    "image": "./characters/levi_6178.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "النسخة الملكية",
+    "anime": "Bleach",
+    "power": 3376,
+    "rarity": "SSS",
+    "ability": "البانكاي",
+    "image": "./characters/renji_3376.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 5787,
+    "rarity": "SSS",
+    "ability": "مطاط",
+    "image": "./characters/luffy_5787.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "الوضع الكامل",
+    "anime": "Demon Slayer",
+    "power": 4316,
+    "rarity": "SSS",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_4316.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "نسخة النخبة",
+    "anime": "Bleach",
+    "power": 3211,
+    "rarity": "SSS",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_3211.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "بعد التدريب",
+    "anime": "Hunter x Hunter",
+    "power": 4059,
+    "rarity": "SSS",
+    "ability": "النين",
+    "image": "./characters/gon_4059.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "طور الغضب",
+    "anime": "Hunter x Hunter",
+    "power": 4089,
+    "rarity": "SSS",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_4089.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 3739,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_3739.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "الهيئة النهائية",
+    "anime": "Attack on Titan",
+    "power": 6016,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_6016.jpg"
+  },
+  {
+    "name": "Killua",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 6217,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/killua_6217.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "نسخة النخبة",
+    "anime": "Demon Slayer",
+    "power": 3405,
+    "rarity": "أسطوري",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_3405.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "البداية",
+    "anime": "Seven Deadly Sins",
+    "power": 4295,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_4295.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 3775,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_3775.jpg"
+  },
+  {
+    "name": "Usopp",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 6492,
+    "rarity": "أسطوري",
+    "ability": "القنص",
+    "image": "./characters/usopp_6492.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "وضع الصياد",
+    "anime": "Bleach",
+    "power": 5782,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_5782.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "الإصدار المطور",
+    "anime": "Attack on Titan",
+    "power": 5005,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_5005.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 5850,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_5850.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 6748,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_6748.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "نسخة المعركة",
+    "anime": "Dragon Ball",
+    "power": 6867,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_6867.jpg"
+  },
+  {
+    "name": "Saitama",
+    "form": "وضع الصياد",
+    "anime": "One Punch Man",
+    "power": 3091,
+    "rarity": "أسطوري",
+    "ability": "لكمة واحدة",
+    "image": "./characters/saitama_3091.jpg"
+  },
+  {
+    "name": "Levi",
+    "form": "وضع الصياد",
+    "anime": "Attack on Titan",
+    "power": 6410,
+    "rarity": "أسطوري",
+    "ability": "السرعة",
+    "image": "./characters/levi_6410.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 3515,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_3515.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "القوة القصوى",
+    "anime": "Jujutsu Kaisen",
+    "power": 3776,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_3776.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 5365,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_5365.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "طور الغضب",
+    "anime": "Dragon Ball",
+    "power": 6967,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_6967.jpg"
+  },
+  {
+    "name": "Inosuke",
+    "form": "وضع الصياد",
+    "anime": "Demon Slayer",
+    "power": 4839,
+    "rarity": "أسطوري",
+    "ability": "الوحش",
+    "image": "./characters/inosuke_4839.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 3295,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_3295.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 5647,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_5647.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 3765,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_3765.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 5205,
+    "rarity": "أسطوري",
+    "ability": "مطاط",
+    "image": "./characters/luffy_5205.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "نسخة المعركة",
+    "anime": "One Piece",
+    "power": 5162,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_5162.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "القوة القصوى",
+    "anime": "One Piece",
+    "power": 5893,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_5893.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "نسخة المعركة",
+    "anime": "Hunter x Hunter",
+    "power": 6258,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_6258.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 4046,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_4046.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 4829,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_4829.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "القوة القصوى",
+    "anime": "Attack on Titan",
+    "power": 3863,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_3863.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "القوة القصوى",
+    "anime": "Dragon Ball",
+    "power": 4432,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_4432.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "طور الغضب",
+    "anime": "Dragon Ball",
+    "power": 6815,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_6815.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "نسخة المعركة",
+    "anime": "Hunter x Hunter",
+    "power": 5167,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_5167.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "بعد التدريب",
+    "anime": "Hunter x Hunter",
+    "power": 3583,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_3583.jpg"
+  },
+  {
+    "name": "Chopper",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 5292,
+    "rarity": "أسطوري",
+    "ability": "التحولات",
+    "image": "./characters/chopper_5292.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "الهيئة القتالية",
+    "anime": "Attack on Titan",
+    "power": 6289,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_6289.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "الإصدار المطور",
+    "anime": "Naruto",
+    "power": 5204,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_5204.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "الإصدار المطور",
+    "anime": "Hunter x Hunter",
+    "power": 6072,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_6072.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "النسخة الملكية",
+    "anime": "Dragon Ball",
+    "power": 3059,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_3059.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 6318,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_6318.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "بعد التدريب",
+    "anime": "Demon Slayer",
+    "power": 6522,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_6522.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "طور الغضب",
+    "anime": "Bleach",
+    "power": 6822,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_6822.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "الوضع السريع",
+    "anime": "Demon Slayer",
+    "power": 5086,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_5086.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "بعد التدريب",
+    "anime": "Bleach",
+    "power": 4955,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_4955.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "القوة القصوى",
+    "anime": "Bleach",
+    "power": 6777,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_6777.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 6819,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_6819.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "نسخة النخبة",
+    "anime": "Hunter x Hunter",
+    "power": 5844,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_5844.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "نسخة النخبة",
+    "anime": "One Piece",
+    "power": 6146,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_6146.jpg"
+  },
+  {
+    "name": "Usopp",
+    "form": "الوضع السريع",
+    "anime": "One Piece",
+    "power": 6024,
+    "rarity": "أسطوري",
+    "ability": "القنص",
+    "image": "./characters/usopp_6024.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 5696,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_5696.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "الوضع الكامل",
+    "anime": "Hunter x Hunter",
+    "power": 5196,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_5196.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 3018,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_3018.jpg"
+  },
+  {
+    "name": "Yuno",
+    "form": "بعد التدريب",
+    "anime": "Black Clover",
+    "power": 4378,
+    "rarity": "أسطوري",
+    "ability": "الرياح",
+    "image": "./characters/yuno_4378.jpg"
+  },
+  {
+    "name": "Tengen",
+    "form": "نسخة المعركة",
+    "anime": "Demon Slayer",
+    "power": 3922,
+    "rarity": "أسطوري",
+    "ability": "الصوت",
+    "image": "./characters/tengen_3922.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 5235,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_5235.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "الوضع السريع",
+    "anime": "Bleach",
+    "power": 5165,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_5165.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "الإصدار المطور",
+    "anime": "Jujutsu Kaisen",
+    "power": 4771,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_4771.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 3848,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_3848.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "القوة القصوى",
+    "anime": "Bleach",
+    "power": 3856,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_3856.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "القوة القصوى",
+    "anime": "Black Clover",
+    "power": 6324,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_6324.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "البداية",
+    "anime": "Dragon Ball",
+    "power": 3730,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_3730.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "نسخة المعركة",
+    "anime": "Naruto",
+    "power": 4378,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_4378.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "نسخة المعركة",
+    "anime": "Dragon Ball",
+    "power": 3416,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_3416.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "نسخة النخبة",
+    "anime": "Bleach",
+    "power": 5267,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_5267.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "بعد التدريب",
+    "anime": "Demon Slayer",
+    "power": 6433,
+    "rarity": "أسطوري",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_6433.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "القوة القصوى",
+    "anime": "Attack on Titan",
+    "power": 6358,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_6358.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "الوضع السريع",
+    "anime": "Demon Slayer",
+    "power": 6702,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_6702.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "الهيئة النهائية",
+    "anime": "Jujutsu Kaisen",
+    "power": 5320,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_5320.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "وضع الصياد",
+    "anime": "Jujutsu Kaisen",
+    "power": 6612,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_6612.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "طور الغضب",
+    "anime": "Demon Slayer",
+    "power": 3002,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_3002.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "القوة القصوى",
+    "anime": "Naruto",
+    "power": 4249,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_4249.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "الوضع السريع",
+    "anime": "Dragon Ball",
+    "power": 4211,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_4211.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "الهيئة القتالية",
+    "anime": "One Piece",
+    "power": 4352,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_4352.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "النسخة الملكية",
+    "anime": "Dragon Ball",
+    "power": 3010,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_3010.jpg"
+  },
+  {
+    "name": "Aizen",
+    "form": "القوة القصوى",
+    "anime": "Bleach",
+    "power": 4998,
+    "rarity": "أسطوري",
+    "ability": "الوهم",
+    "image": "./characters/aizen_4998.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "نسخة النخبة",
+    "anime": "Black Clover",
+    "power": 3618,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_3618.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "بعد التدريب",
+    "anime": "Hunter x Hunter",
+    "power": 5824,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_5824.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "البداية",
+    "anime": "Jujutsu Kaisen",
+    "power": 5930,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_5930.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "نسخة المعركة",
+    "anime": "Hunter x Hunter",
+    "power": 6978,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_6978.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "وضع الصياد",
+    "anime": "One Piece",
+    "power": 4397,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_4397.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "الوضع الكامل",
+    "anime": "Demon Slayer",
+    "power": 6188,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_6188.jpg"
+  },
+  {
+    "name": "Itachi",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 6761,
+    "rarity": "أسطوري",
+    "ability": "التسوكويومي",
+    "image": "./characters/itachi_6761.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "طور الغضب",
+    "anime": "Black Clover",
+    "power": 3720,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_3720.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "نسخة النخبة",
+    "anime": "Seven Deadly Sins",
+    "power": 5858,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_5858.jpg"
+  },
+  {
+    "name": "Kenpachi",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 3334,
+    "rarity": "أسطوري",
+    "ability": "القوة الوحشية",
+    "image": "./characters/kenpachi_3334.jpg"
+  },
+  {
+    "name": "Goku",
+    "form": "الهيئة القتالية",
+    "anime": "Dragon Ball",
+    "power": 6441,
+    "rarity": "أسطوري",
+    "ability": "السايان",
+    "image": "./characters/goku_6441.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "نسخة النخبة",
+    "anime": "Jujutsu Kaisen",
+    "power": 5929,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_5929.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 5826,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_5826.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 6601,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_6601.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 4043,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_4043.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 3509,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_3509.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "الوضع الكامل",
+    "anime": "Jujutsu Kaisen",
+    "power": 5867,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_5867.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "نسخة المعركة",
+    "anime": "Jujutsu Kaisen",
+    "power": 3793,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_3793.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 5418,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_5418.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 5443,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_5443.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "الهيئة النهائية",
+    "anime": "Jujutsu Kaisen",
+    "power": 3771,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_3771.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 5478,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_5478.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "الوضع الكامل",
+    "anime": "Dragon Ball",
+    "power": 4913,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_4913.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "نسخة المعركة",
+    "anime": "Bleach",
+    "power": 6945,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_6945.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "الإصدار المطور",
+    "anime": "Black Clover",
+    "power": 3913,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_3913.jpg"
+  },
+  {
+    "name": "Kakashi",
+    "form": "نسخة النخبة",
+    "anime": "Naruto",
+    "power": 6131,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/kakashi_6131.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "بعد التدريب",
+    "anime": "Jujutsu Kaisen",
+    "power": 5124,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_5124.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "الوضع الكامل",
+    "anime": "Naruto",
+    "power": 5334,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_5334.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "البداية",
+    "anime": "Bleach",
+    "power": 3588,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_3588.jpg"
+  },
+  {
+    "name": "Vegeta",
+    "form": "الهيئة النهائية",
+    "anime": "Dragon Ball",
+    "power": 6641,
+    "rarity": "أسطوري",
+    "ability": "الانفجارات",
+    "image": "./characters/vegeta_6641.jpg"
+  },
+  {
+    "name": "Meliodas",
+    "form": "النسخة الملكية",
+    "anime": "Seven Deadly Sins",
+    "power": 4667,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/meliodas_4667.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "الوضع السريع",
+    "anime": "Naruto",
+    "power": 4238,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_4238.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "طور الغضب",
+    "anime": "Bleach",
+    "power": 6317,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_6317.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "الهيئة النهائية",
+    "anime": "One Piece",
+    "power": 4033,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_4033.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "الهيئة النهائية",
+    "anime": "Attack on Titan",
+    "power": 3417,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_3417.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 3496,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_3496.jpg"
+  },
+  {
+    "name": "Sasuke",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 5437,
+    "rarity": "أسطوري",
+    "ability": "الشارينغان",
+    "image": "./characters/sasuke_5437.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "وضع الصياد",
+    "anime": "Demon Slayer",
+    "power": 6510,
+    "rarity": "أسطوري",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_6510.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "بعد التدريب",
+    "anime": "Hunter x Hunter",
+    "power": 6580,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_6580.jpg"
+  },
+  {
+    "name": "Yuta",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 4398,
+    "rarity": "أسطوري",
+    "ability": "ريكا",
+    "image": "./characters/yuta_4398.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "الوضع الكامل",
+    "anime": "One Piece",
+    "power": 6665,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_6665.jpg"
+  },
+  {
+    "name": "Zoro",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 3017,
+    "rarity": "أسطوري",
+    "ability": "السيوف الثلاثة",
+    "image": "./characters/zoro_3017.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "بعد التدريب",
+    "anime": "Naruto",
+    "power": 6403,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_6403.jpg"
+  },
+  {
+    "name": "Rock Lee",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 3663,
+    "rarity": "أسطوري",
+    "ability": "التايجتسو",
+    "image": "./characters/rocklee_3663.jpg"
+  },
+  {
+    "name": "Kurapika",
+    "form": "طور الغضب",
+    "anime": "Hunter x Hunter",
+    "power": 5885,
+    "rarity": "أسطوري",
+    "ability": "السلاسل",
+    "image": "./characters/kurapika_5885.jpg"
+  },
+  {
+    "name": "Brook",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 4510,
+    "rarity": "أسطوري",
+    "ability": "الموسيقى",
+    "image": "./characters/brook_4510.jpg"
+  },
+  {
+    "name": "Meruem",
+    "form": "البداية",
+    "anime": "Hunter x Hunter",
+    "power": 4555,
+    "rarity": "أسطوري",
+    "ability": "ملك النمل",
+    "image": "./characters/meruem_4555.jpg"
+  },
+  {
+    "name": "Naruto",
+    "form": "الهيئة النهائية",
+    "anime": "Naruto",
+    "power": 3961,
+    "rarity": "أسطوري",
+    "ability": "النسخ",
+    "image": "./characters/naruto_3961.jpg"
+  },
+  {
+    "name": "Hinata",
+    "form": "النسخة الملكية",
+    "anime": "Naruto",
+    "power": 6018,
+    "rarity": "أسطوري",
+    "ability": "البياكوغان",
+    "image": "./characters/hinata_6018.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "القوة القصوى",
+    "anime": "Dragon Ball",
+    "power": 6141,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_6141.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "النسخة الملكية",
+    "anime": "Attack on Titan",
+    "power": 5627,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_5627.jpg"
+  },
+  {
+    "name": "Zenitsu",
+    "form": "الهيئة القتالية",
+    "anime": "Demon Slayer",
+    "power": 5377,
+    "rarity": "أسطوري",
+    "ability": "الرعد",
+    "image": "./characters/zenitsu_5377.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "الوضع السريع",
+    "anime": "Black Clover",
+    "power": 3847,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_3847.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "الهيئة القتالية",
+    "anime": "Bleach",
+    "power": 4559,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_4559.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "الإصدار المطور",
+    "anime": "Bleach",
+    "power": 3488,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_3488.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "النسخة الملكية",
+    "anime": "One Piece",
+    "power": 3293,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_3293.jpg"
+  },
+  {
+    "name": "Luffy",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 4569,
+    "rarity": "أسطوري",
+    "ability": "مطاط",
+    "image": "./characters/luffy_4569.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "نسخة المعركة",
+    "anime": "Demon Slayer",
+    "power": 4893,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_4893.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "وضع الصياد",
+    "anime": "Bleach",
+    "power": 3701,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_3701.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "الإصدار المطور",
+    "anime": "Demon Slayer",
+    "power": 4804,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_4804.jpg"
+  },
+  {
+    "name": "Eren",
+    "form": "وضع الصياد",
+    "anime": "Attack on Titan",
+    "power": 5997,
+    "rarity": "أسطوري",
+    "ability": "العملاق",
+    "image": "./characters/eren_5997.jpg"
+  },
+  {
+    "name": "Gojo",
+    "form": "النسخة الملكية",
+    "anime": "Jujutsu Kaisen",
+    "power": 5354,
+    "rarity": "أسطوري",
+    "ability": "اللانهاية",
+    "image": "./characters/gojo_5354.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "الوضع الكامل",
+    "anime": "Bleach",
+    "power": 4528,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_4528.jpg"
+  },
+  {
+    "name": "Nobara",
+    "form": "الوضع السريع",
+    "anime": "Jujutsu Kaisen",
+    "power": 3332,
+    "rarity": "أسطوري",
+    "ability": "المسامير",
+    "image": "./characters/nobara_3332.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "وضع الصياد",
+    "anime": "Naruto",
+    "power": 4626,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_4626.jpg"
+  },
+  {
+    "name": "Sanji",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 6028,
+    "rarity": "أسطوري",
+    "ability": "الركلات",
+    "image": "./characters/sanji_6028.jpg"
+  },
+  {
+    "name": "Tengen",
+    "form": "الإصدار المطور",
+    "anime": "Demon Slayer",
+    "power": 6746,
+    "rarity": "أسطوري",
+    "ability": "الصوت",
+    "image": "./characters/tengen_6746.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "الهيئة النهائية",
+    "anime": "Bleach",
+    "power": 5070,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_5070.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "الوضع الكامل",
+    "anime": "Black Clover",
+    "power": 3903,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_3903.jpg"
+  },
+  {
+    "name": "Minato",
+    "form": "طور الغضب",
+    "anime": "Naruto",
+    "power": 4377,
+    "rarity": "أسطوري",
+    "ability": "الانتقال",
+    "image": "./characters/minato_4377.jpg"
+  },
+  {
+    "name": "Robin",
+    "form": "الإصدار المطور",
+    "anime": "One Piece",
+    "power": 6029,
+    "rarity": "أسطوري",
+    "ability": "الأذرع",
+    "image": "./characters/robin_6029.jpg"
+  },
+  {
+    "name": "Rengoku",
+    "form": "الهيئة النهائية",
+    "anime": "Demon Slayer",
+    "power": 5901,
+    "rarity": "أسطوري",
+    "ability": "اللهب",
+    "image": "./characters/rengoku_5901.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "الوضع السريع",
+    "anime": "Dragon Ball",
+    "power": 4762,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_4762.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "طور الغضب",
+    "anime": "Dragon Ball",
+    "power": 4507,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_4507.jpg"
+  },
+  {
+    "name": "Killua",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 4837,
+    "rarity": "أسطوري",
+    "ability": "البرق",
+    "image": "./characters/killua_4837.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "القوة القصوى",
+    "anime": "Bleach",
+    "power": 4572,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_4572.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "طور الغضب",
+    "anime": "One Piece",
+    "power": 6331,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_6331.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "الهيئة النهائية",
+    "anime": "Hunter x Hunter",
+    "power": 6282,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_6282.jpg"
+  },
+  {
+    "name": "Gaara",
+    "form": "نسخة النخبة",
+    "anime": "Naruto",
+    "power": 3818,
+    "rarity": "أسطوري",
+    "ability": "الرمال",
+    "image": "./characters/gaara_3818.jpg"
+  },
+  {
+    "name": "Yhwach",
+    "form": "الإصدار المطور",
+    "anime": "Bleach",
+    "power": 3712,
+    "rarity": "أسطوري",
+    "ability": "المستقبل",
+    "image": "./characters/yhwach_3712.jpg"
+  },
+  {
+    "name": "Megumi",
+    "form": "بعد التدريب",
+    "anime": "Jujutsu Kaisen",
+    "power": 4715,
+    "rarity": "أسطوري",
+    "ability": "الظلال",
+    "image": "./characters/megumi_4715.jpg"
+  },
+  {
+    "name": "Madara",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 4720,
+    "rarity": "أسطوري",
+    "ability": "السوسانو",
+    "image": "./characters/madara_4720.jpg"
+  },
+  {
+    "name": "Muichiro",
+    "form": "القوة القصوى",
+    "anime": "Demon Slayer",
+    "power": 5253,
+    "rarity": "أسطوري",
+    "ability": "الضباب",
+    "image": "./characters/muichiro_5253.jpg"
+  },
+  {
+    "name": "Gon",
+    "form": "الهيئة القتالية",
+    "anime": "Hunter x Hunter",
+    "power": 3995,
+    "rarity": "أسطوري",
+    "ability": "النين",
+    "image": "./characters/gon_3995.jpg"
+  },
+  {
+    "name": "Mikasa",
+    "form": "الإصدار المطور",
+    "anime": "Attack on Titan",
+    "power": 6337,
+    "rarity": "أسطوري",
+    "ability": "السيوف",
+    "image": "./characters/mikasa_6337.jpg"
+  },
+  {
+    "name": "Jinbe",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 5623,
+    "rarity": "أسطوري",
+    "ability": "الكاراتيه المائي",
+    "image": "./characters/jinbe_5623.jpg"
+  },
+  {
+    "name": "Genos",
+    "form": "الهيئة النهائية",
+    "anime": "One Punch Man",
+    "power": 4169,
+    "rarity": "أسطوري",
+    "ability": "المدافع",
+    "image": "./characters/genos_4169.jpg"
+  },
+  {
+    "name": "Chrollo",
+    "form": "البداية",
+    "anime": "Hunter x Hunter",
+    "power": 6383,
+    "rarity": "أسطوري",
+    "ability": "سرقة القدرات",
+    "image": "./characters/chrollo_6383.jpg"
+  },
+  {
+    "name": "Frieza",
+    "form": "الإصدار المطور",
+    "anime": "Dragon Ball",
+    "power": 6646,
+    "rarity": "أسطوري",
+    "ability": "الطاقة المدمرة",
+    "image": "./characters/frieza_6646.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "الهيئة القتالية",
+    "anime": "Naruto",
+    "power": 4260,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_4260.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "الهيئة القتالية",
+    "anime": "Dragon Ball",
+    "power": 4332,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_4332.jpg"
+  },
+  {
+    "name": "Tanjiro",
+    "form": "النسخة الملكية",
+    "anime": "Demon Slayer",
+    "power": 4445,
+    "rarity": "أسطوري",
+    "ability": "تنفس الماء",
+    "image": "./characters/tanjiro_4445.jpg"
+  },
+  {
+    "name": "Nami",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 3997,
+    "rarity": "أسطوري",
+    "ability": "الطقس",
+    "image": "./characters/nami_3997.jpg"
+  },
+  {
+    "name": "Sakura",
+    "form": "البداية",
+    "anime": "Naruto",
+    "power": 6365,
+    "rarity": "أسطوري",
+    "ability": "العلاج",
+    "image": "./characters/sakura_6365.jpg"
+  },
+  {
+    "name": "Gohan",
+    "form": "القوة القصوى",
+    "anime": "Dragon Ball",
+    "power": 4767,
+    "rarity": "أسطوري",
+    "ability": "الغضب",
+    "image": "./characters/gohan_4767.jpg"
+  },
+  {
+    "name": "Sukuna",
+    "form": "طور الغضب",
+    "anime": "Jujutsu Kaisen",
+    "power": 5949,
+    "rarity": "أسطوري",
+    "ability": "اللعنات",
+    "image": "./characters/sukuna_5949.jpg"
+  },
+  {
+    "name": "Usopp",
+    "form": "بعد التدريب",
+    "anime": "One Piece",
+    "power": 4429,
+    "rarity": "أسطوري",
+    "ability": "القنص",
+    "image": "./characters/usopp_4429.jpg"
+  },
+  {
+    "name": "Escanor",
+    "form": "نسخة المعركة",
+    "anime": "Seven Deadly Sins",
+    "power": 6486,
+    "rarity": "أسطوري",
+    "ability": "الشمس",
+    "image": "./characters/escanor_6486.jpg"
+  },
+  {
+    "name": "Noelle",
+    "form": "نسخة المعركة",
+    "anime": "Black Clover",
+    "power": 4210,
+    "rarity": "أسطوري",
+    "ability": "الماء",
+    "image": "./characters/noelle_4210.jpg"
+  },
+  {
+    "name": "Garou",
+    "form": "بعد التدريب",
+    "anime": "One Punch Man",
+    "power": 3175,
+    "rarity": "أسطوري",
+    "ability": "نسخ القوى",
+    "image": "./characters/garou_3175.jpg"
+  },
+  {
+    "name": "Piccolo",
+    "form": "نسخة النخبة",
+    "anime": "Dragon Ball",
+    "power": 3962,
+    "rarity": "أسطوري",
+    "ability": "الكي",
+    "image": "./characters/piccolo_3962.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "القوة القصوى",
+    "anime": "Hunter x Hunter",
+    "power": 3878,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_3878.jpg"
+  },
+  {
+    "name": "Ichigo",
+    "form": "بعد التدريب",
+    "anime": "Bleach",
+    "power": 3911,
+    "rarity": "أسطوري",
+    "ability": "الزانباكتو",
+    "image": "./characters/ichigo_3911.jpg"
+  },
+  {
+    "name": "Rukia",
+    "form": "الهيئة النهائية",
+    "anime": "Bleach",
+    "power": 4651,
+    "rarity": "أسطوري",
+    "ability": "الجليد",
+    "image": "./characters/rukia_4651.jpg"
+  },
+  {
+    "name": "Renji",
+    "form": "نسخة النخبة",
+    "anime": "Bleach",
+    "power": 6886,
+    "rarity": "أسطوري",
+    "ability": "البانكاي",
+    "image": "./characters/renji_6886.jpg"
+  },
+  {
+    "name": "Yami",
+    "form": "الإصدار المطور",
+    "anime": "Black Clover",
+    "power": 3896,
+    "rarity": "أسطوري",
+    "ability": "الظلام",
+    "image": "./characters/yami_3896.jpg"
+  },
+  {
+    "name": "Asta",
+    "form": "الهيئة القتالية",
+    "anime": "Black Clover",
+    "power": 5550,
+    "rarity": "أسطوري",
+    "ability": "مضاد السحر",
+    "image": "./characters/asta_5550.jpg"
+  },
+  {
+    "name": "Hisoka",
+    "form": "النسخة الملكية",
+    "anime": "Hunter x Hunter",
+    "power": 6741,
+    "rarity": "أسطوري",
+    "ability": "بانجي غام",
+    "image": "./characters/hisoka_6741.jpg"
+  }
+]
