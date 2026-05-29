@@ -635,25 +635,8 @@ return sock.sendMessage(
 ⚡ القوة: ${randomCharacter.power}
 🌀 الأنمي: ${randomCharacter.anime}`
     }
-)
-
-                    caption:
-
-`🎉 حصلت على شخصية
-
-👤 ${randomCharacter.name}
-
-⚡ ${randomCharacter.power}
-
-💎 ${randomCharacter.rarity}
-
-🔥 ${randomCharacter.ability}
-
-🎟️ السحبات:
-${players[userId].pulls}`
-                }
-            )
-        }
+    )
+}
 
         // =========================
         // .شخصياتي
