@@ -600,13 +600,42 @@ async function startBot() {
 
             savePlayers(players)
 
-            return sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    image:
-                    fs.readFileSync(
-                        randomCharacter.image
-                    ),
+            // مسار الصورة
+const imagePath =
+    path.join(__dirname, randomCharacter.image)
+
+// التحقق هل الصورة موجودة
+if (!fs.existsSync(imagePath)) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ الصورة غير موجودة
+
+الاسم:
+${randomCharacter.name}
+
+المسار:
+${randomCharacter.image}`
+        }
+    )
+}
+
+// إرسال الشخصية
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: fs.readFileSync(imagePath),
+
+        caption:
+`🎴 ${randomCharacter.name}
+
+✨ الندرة: ${randomCharacter.rarity}
+⚡ القوة: ${randomCharacter.power}
+🌀 الأنمي: ${randomCharacter.anime}`
+    }
+)
 
                     caption:
 
