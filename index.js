@@ -559,7 +559,6 @@ async function startBot() {
     console.log('نوع الشخصيات:', typeof characters)
     console.log('عدد الشخصيات:', characters?.length)
                 
-    let player = await Player.findOne({ userId })
 
     if (!player) {
 
