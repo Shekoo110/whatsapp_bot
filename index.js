@@ -12,6 +12,7 @@ const mongoose = require('mongoose')
 
 const Player = require('./models/Player')
 const Market = require('./models/Market')
+const Shop = require('./models/Shop')
 
 const characters = require('./characters.json')
 
