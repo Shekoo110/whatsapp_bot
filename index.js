@@ -790,16 +790,12 @@ ${players[userId].money}`
 
     } catch (err) {
 
-        console.log(
-            'Sell error:',
-            err
-        )
+        console.log('Sell error:', err)
 
         return safeSend(
             msg.key.remoteJid,
             {
-                text:
-                '❌ حدث خطأ أثناء البيع'
+                text: '❌ حدث خطأ أثناء البيع'
             }
         )
     }
@@ -811,71 +807,71 @@ ${players[userId].money}`
 
 if (text.startsWith('.مزاد')) {
 
-            const args =
-            text.split(' ')
+    const args =
+    text.split(' ')
 
-            const charName = args[1]
-            const charPower =
-            Number(args[2])
+    const charName = args[1]
+    const charPower =
+    Number(args[2])
 
-            const price =
-            Number(args[3])
+    const price =
+    Number(args[3])
 
-            let players = loadPlayers()
-            let market = loadMarket()
+    let players = loadPlayers()
+    let market = loadMarket()
 
-            const charIndex =
+    const charIndex =
 
-            players[userId]
-            .characters.findIndex(
+    players[userId]
+    .characters.findIndex(
 
-                c =>
+        c =>
 
-                c.name === charName
+        c.name === charName
 
-                &&
+        &&
 
-                c.power === charPower
-            )
+        c.power === charPower
+    )
 
-            if (charIndex === -1) {
+    if (charIndex === -1) {
 
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ الشخصية غير موجودة'
-                    }
-                )
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ الشخصية غير موجودة'
             }
+        )
+    }
 
-            const character =
+    const character =
 
-            players[userId]
-            .characters[charIndex]
+    players[userId]
+    .characters[charIndex]
 
-            market.push({
+    market.push({
 
-                seller: userId,
+        seller: userId,
 
-                character,
+        character,
 
-                price
-            })
+        price
+    })
 
-            players[userId]
-            .characters.splice(
-                charIndex,
-                1
-            )
+    players[userId]
+    .characters.splice(
+        charIndex,
+        1
+    )
 
-            savePlayers(players)
-            saveMarket(market)
+    savePlayers(players)
+    saveMarket(market)
 
-            return sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    text:
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
 
 `🏪 تم وضع الشخصية في السوق
 
@@ -885,9 +881,9 @@ if (text.startsWith('.مزاد')) {
 
 💰 السعر:
 ${price}`
-                }
-            )
         }
+    )
+}
 
         // =========================
         // .السوق
