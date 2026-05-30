@@ -1027,33 +1027,42 @@ ${price}`
     try {
 
         const args = text.split(' ')
+
         const charName = args[1]
         const charPower = Number(args[2])
 
-        const target =
-            msg.message?.extendedTextMessage?.contextInfo?.participant
+        const mentioned =
+            msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
 
-        if (!target) {
+        if (!mentioned || !mentioned[0]) {
             return safeSend(msg.key.remoteJid, {
-                text: '❌ قم بالرد على الشخص الذي تريد قتاله'
+                text: '❌ استخدم منشن\n\nمثال:\n.قتال Hashirama 2300 @user'
             })
         }
 
-        let players = safeLoadPlayers()
+        const target = mentioned[0]
 
-        if (!players[userId]) {
-            players[userId] = createPlayer()
+        const me = await Player.findOne({ userId })
+        const enemy = await Player.findOne({ userId: target })
+
+        if (!me) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا تملك حساباً'
+            })
         }
 
-        if (!players[target]) {
-            players[target] = createPlayer()
+        if (!enemy) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ الخصم لا يملك حساباً'
+            })
         }
 
-        players[userId].characters = players[userId].characters || []
-        players[target].characters = players[target].characters || []
+        me.characters = me.characters || []
+        enemy.characters = enemy.characters || []
 
-        const myCharacter = players[userId].characters.find(c =>
-            c.name === charName && c.power === charPower
+        const myCharacter = me.characters.find(c =>
+            c.name.toLowerCase() === charName.toLowerCase() &&
+            Number(c.power) === charPower
         )
 
         if (!myCharacter) {
@@ -1062,47 +1071,85 @@ ${price}`
             })
         }
 
-        // ⚔️ حساب الهجوم
-        let attack = myCharacter.power + Math.floor(Math.random() * 200)
-
-        // 💨 تفادي
-        const dodgeChance = Math.random() * 100
-        if (dodgeChance <= (players[target].dodge || 0)) {
+        if (enemy.characters.length === 0) {
             return safeSend(msg.key.remoteJid, {
-                text: '💨 الخصم تفادى الهجوم'
+                text: '❌ الخصم لا يملك شخصيات'
             })
         }
 
-        // 💥 كريتكل
-        const critChance = Math.random() * 100
-        if (critChance <= (players[userId].crit || 0)) {
-            attack *= 2
+        const enemyCharacter =
+            enemy.characters[
+                Math.floor(Math.random() * enemy.characters.length)
+            ]
+
+        const myAttack =
+            myCharacter.power +
+            Math.floor(Math.random() * 300)
+
+        const enemyAttack =
+            enemyCharacter.power +
+            Math.floor(Math.random() * 300)
+
+        const rewards = {
+            'عادي': 100,
+            'ممتاز': 300,
+            'اسطوري': 1000,
+            'SSS': 3000
         }
 
-        // ❤️ حساب الضرر
-        const targetHp = players[target].hp || 10000
-        const damage = Math.max(0, Math.floor(attack - (targetHp / 100)))
+        let winner = ''
+        let reward = 0
 
-        players[target].hp = targetHp - damage
+        if (myAttack >= enemyAttack) {
 
-        // 🏆 لو مات الخصم
-        if (players[target].hp <= 0) {
-            players[target].hp = 10000
+            winner = myCharacter.name
 
-            players[userId].money = (players[userId].money || 0) + 500
-            players[userId].xp = (players[userId].xp || 0) + 100
+            reward =
+                rewards[enemyCharacter.rarity] || 100
+
+            me.money = (me.money || 0) + reward
+
+            await me.save()
+
+        } else {
+
+            winner = enemyCharacter.name
+
+            reward =
+                rewards[myCharacter.rarity] || 100
+
+            enemy.money = (enemy.money || 0) + reward
+
+            await enemy.save()
         }
-
-        safeSavePlayers(players)
 
         return safeSend(msg.key.remoteJid, {
             text:
-`⚔️ ━━〔 𝐁𝐀𝐓𝐓𝐋𝐄 𝐑𝐄𝐒𝐔𝐋𝐓 〕━━ ⚔️
+`⚔️ ━━〔 𝐁𝐀𝐓𝐓𝐋𝐄 〕━━ ⚔️
 
-🧿 الاسم: ${myCharacter.name}
-⚡ القوة: ${myCharacter.power}
-💥 الضرر: ${damage}
-❤️ HP الخصم: ${players[target].hp}`
+🧿 شخصيتك:
+${myCharacter.name}
+
+⚡ قوتها:
+${myCharacter.power}
+
+━━━━━━━━━━━━━━━
+
+🎯 شخصية الخصم:
+${enemyCharacter.name}
+
+⚡ قوتها:
+${enemyCharacter.power}
+
+━━━━━━━━━━━━━━━
+
+🏆 الفائز:
+${winner}
+
+💰 الجائزة:
+${reward}
+
+❗ لم يتم حذف أي شخصية`
         })
 
     } catch (err) {
