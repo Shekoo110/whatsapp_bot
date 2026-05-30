@@ -575,7 +575,7 @@ async function startBot() {
     if (chance <= 5) {
         rarity = 'SSS'
     } else if (chance <= 15) {
-        rarity = 'أسطوري'
+        rarity = 'اسطوري'
     } else if (chance <= 40) {
         rarity = 'نادر'
     }
