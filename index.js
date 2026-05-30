@@ -1254,13 +1254,34 @@ if (text === '.متجر') {
                 ]
         }
 
-        const myAttack =
-            myCharacter.power +
-            Math.floor(Math.random() * 300)
+        let myAttack =
+    myCharacter.power +
+    Math.floor(Math.random() * 300)
 
-        const enemyAttack =
-            enemyCharacter.power +
-            Math.floor(Math.random() * 300)
+let enemyAttack =
+    enemyCharacter.power +
+    Math.floor(Math.random() * 300)
+
+let abilityActivated = false
+
+const powerDiff =
+    enemyCharacter.power - myCharacter.power
+
+if (
+    myCharacter.ability === 'التحويل' &&
+    powerDiff >= 100 &&
+    powerDiff <= 200
+) {
+
+    const chance = Math.random() * 100
+
+    if (chance <= 30) {
+
+        abilityActivated = true
+
+        myAttack = enemyAttack + 1
+    }
+}
 
         const rewards = {
             'عادي': 100,
