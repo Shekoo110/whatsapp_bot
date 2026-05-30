@@ -1057,6 +1057,24 @@ ${price}`
             })
         }
 
+        // إعادة تعيين القتالات كل 24 ساعة
+        const now = Date.now()
+        const cooldown = 24 * 60 * 60 * 1000
+
+        if (!me.dailyBattles) me.dailyBattles = 5
+        if (!me.lastBattleReset) me.lastBattleReset = now
+
+        if (now - me.lastBattleReset >= cooldown) {
+            me.dailyBattles = 5
+            me.lastBattleReset = now
+        }
+
+        if (me.dailyBattles <= 0) {
+            return safeSend(msg.key.remoteJid, {
+                text: '⏳ انتهت القتالات اليومية (5/5)'
+            })
+        }
+
         me.characters = me.characters || []
         enemy.characters = enemy.characters || []
 
@@ -1077,10 +1095,32 @@ ${price}`
             })
         }
 
-        const enemyCharacter =
-            enemy.characters[
-                Math.floor(Math.random() * enemy.characters.length)
-            ]
+        // اختيار شخصية الخصم
+        const sortedChars =
+            [...enemy.characters].sort((a, b) => b.power - a.power)
+
+        const chance = Math.random() * 100
+
+        let enemyCharacter
+
+        if (chance <= 30) {
+
+            // 30% أقوى شخصية
+            enemyCharacter = sortedChars[0]
+
+        } else if (chance <= 70) {
+
+            // 40% أضعف شخصية
+            enemyCharacter = sortedChars[sortedChars.length - 1]
+
+        } else {
+
+            // 30% عشوائي
+            enemyCharacter =
+                sortedChars[
+                    Math.floor(Math.random() * sortedChars.length)
+                ]
+        }
 
         const myAttack =
             myCharacter.power +
@@ -1097,8 +1137,10 @@ ${price}`
             'SSS': 3000
         }
 
-        let winner = ''
+        let winner
         let reward = 0
+
+        me.dailyBattles -= 1
 
         if (myAttack >= enemyAttack) {
 
@@ -1109,8 +1151,6 @@ ${price}`
 
             me.money = (me.money || 0) + reward
 
-            await me.save()
-
         } else {
 
             winner = enemyCharacter.name
@@ -1119,9 +1159,10 @@ ${price}`
                 rewards[myCharacter.rarity] || 100
 
             enemy.money = (enemy.money || 0) + reward
-
-            await enemy.save()
         }
+
+        await me.save()
+        await enemy.save()
 
         return safeSend(msg.key.remoteJid, {
             text:
@@ -1130,7 +1171,7 @@ ${price}`
 🧿 شخصيتك:
 ${myCharacter.name}
 
-⚡ قوتها:
+⚡ القوة:
 ${myCharacter.power}
 
 ━━━━━━━━━━━━━━━
@@ -1138,7 +1179,7 @@ ${myCharacter.power}
 🎯 شخصية الخصم:
 ${enemyCharacter.name}
 
-⚡ قوتها:
+⚡ القوة:
 ${enemyCharacter.power}
 
 ━━━━━━━━━━━━━━━
@@ -1148,6 +1189,9 @@ ${winner}
 
 💰 الجائزة:
 ${reward}
+
+🎟️ القتالات المتبقية:
+${me.dailyBattles}/5
 
 ❗ لم يتم حذف أي شخصية`
         })
