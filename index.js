@@ -548,7 +548,6 @@ async function startBot() {
 
         if (text === '.اسحب') {
 
-            if (text === '.اسحب') {
 
     console.log('بدأ السحب')
 
@@ -653,8 +652,7 @@ async function startBot() {
 🌌 𝑨𝒏𝒊𝒎𝒆 ➤ ${randomCharacter.anime}
 
 ╰━━━━━━━━━━━━━━━━━━━━━━╯`
-    }
-    )
+    })
 }
 
         // =========================
@@ -1116,6 +1114,8 @@ ${price}`
         })
     }
 }
+
+    })
 
 }
 
