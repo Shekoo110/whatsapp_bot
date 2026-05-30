@@ -505,135 +505,95 @@ async function startBot() {
 
         if (text === '.اسحب') {
 
-            let players = loadPlayers()
+    let players = loadPlayers()
 
-            if (!players[userId]) {
+    if (!players[userId]) {
+        players[userId] = createPlayer()
+    }
 
-                players[userId] =
-                createPlayer()
-            }
+    if (players[userId].characters.length >= 30) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ الحد الأقصى 30 شخصية'
+        })
+    }
 
-            if (
-                players[userId]
-                .characters.length >= 30
-            ) {
+    const now = Date.now()
+    const cooldown = 24 * 60 * 60 * 1000
 
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ الحد الأقصى 30 شخصية'
-                    }
-                )
-            }
+    if (now - players[userId].lastReset >= cooldown) {
+        players[userId].pulls = 5
+        players[userId].lastReset = now
+    }
 
-            const now = Date.now()
+    if (players[userId].pulls <= 0) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '⏳ انتهت السحبات اليومية'
+        })
+    }
 
-            const cooldown =
-            24 * 60 * 60 * 1000
+    const chance = Math.random() * 100
 
-            if (
-                now -
-                players[userId].lastReset
-                >= cooldown
-            ) {
+    let rarity = 'عادي'
 
-                players[userId].pulls = 5
+    if (chance <= 5) {
+        rarity = 'SSS'
+    } else if (chance <= 15) {
+        rarity = 'أسطوري'
+    } else if (chance <= 40) {
+        rarity = 'نادر'
+    }
 
-                players[userId].lastReset = now
-            }
+    const filteredCharacters = characters.filter(
+        c => c.rarity === rarity
+    )
 
-            if (
-                players[userId].pulls <= 0
-            ) {
+    // 🔥 حماية من التعليق
+    if (!filteredCharacters || filteredCharacters.length === 0) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: `❌ لا توجد شخصيات بهذا التصنيف: ${rarity}`
+        })
+    }
 
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '⏳ انتهت السحبات اليومية'
-                    }
-                )
-            }
+    const randomCharacter =
+        filteredCharacters[
+            Math.floor(Math.random() * filteredCharacters.length)
+        ]
 
-            const chance =
-            Math.random() * 100
+    if (!randomCharacter) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ حدث خطأ في اختيار الشخصية'
+        })
+    }
 
-            let rarity = 'عادي'
+    players[userId].characters.push(randomCharacter)
+    players[userId].pulls -= 1
 
-            if (chance <= 5) {
+    savePlayers(players)
 
-                rarity = 'SSS'
-            }
+    const imagePath = path.join(__dirname, randomCharacter.image)
 
-            else if (chance <= 15) {
-
-                rarity = 'أسطوري'
-            }
-
-            else if (chance <= 40) {
-
-                rarity = 'نادر'
-            }
-
-            const filteredCharacters =
-
-            characters.filter(
-                c => c.rarity === rarity
-            )
-
-            const randomCharacter =
-
-            filteredCharacters[
-                Math.floor(
-                    Math.random() *
-                    filteredCharacters.length
-                )
-            ]
-
-            players[userId]
-            .characters.push(
-                randomCharacter
-            )
-
-            players[userId].pulls -= 1
-
-            savePlayers(players)
-
-            // مسار الصورة
-const imagePath =
-    path.join(__dirname, randomCharacter.image)
-
-// التحقق هل الصورة موجودة
-if (!fs.existsSync(imagePath)) {
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
+    if (!fs.existsSync(imagePath)) {
+        return sock.sendMessage(msg.key.remoteJid, {
             text:
 `❌ الصورة غير موجودة
 
-الاسم:
-${randomCharacter.name}
+الاسم: ${randomCharacter.name}
+المسار: ${randomCharacter.image}`
+        })
+    }
 
-المسار:
-${randomCharacter.image}`
-        }
-    )
-}
-
-// إرسال الشخصية
-return sock.sendMessage(
-    msg.key.remoteJid,
-    {
+    return sock.sendMessage(msg.key.remoteJid, {
         image: fs.readFileSync(imagePath),
 
         caption:
-`🎴 ${randomCharacter.name}
+`╭━━〔 ✦ 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑 𝐑𝐄𝐒𝐔𝐋𝐓 ✦ 〕━━╮
 
-✨ الندرة: ${randomCharacter.rarity}
-⚡ القوة: ${randomCharacter.power}
-🌀 الأنمي: ${randomCharacter.anime}`
+🧿 𝑵𝒂𝒎𝒆 ➤ ${randomCharacter.name}
+🌟 𝑹𝒂𝒓𝒊𝒕𝒚 ➤ ${randomCharacter.rarity}
+⚔️ 𝑷𝒐𝒘𝒆𝒓 ➤ ${randomCharacter.power}
+🌌 𝑨𝒏𝒊𝒎𝒆 ➤ ${randomCharacter.anime}
+
+╰━━━━━━━━━━━━━━━━━━━━━━╯`
     }
     )
 }
