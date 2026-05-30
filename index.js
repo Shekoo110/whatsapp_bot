@@ -7,6 +7,47 @@ const fs = require('fs')
 const path = require('path')
 const express = require("express")
 const QRCode = require("qrcode")
+const safeSend = async (jid, data) => {
+    try {
+        return await sock.sendMessage(jid, data)
+    } catch (e) {
+        console.log('Send error:', e)
+    }
+}
+
+const safeLoadPlayers = () => {
+    try {
+        let players = loadPlayers()
+        return players || {}
+    } catch (e) {
+        return {}
+    }
+}
+
+const safeSavePlayers = (players) => {
+    try {
+        savePlayers(players)
+    } catch (e) {
+        console.log('Save error players')
+    }
+}
+
+const safeLoadMarket = () => {
+    try {
+        let market = loadMarket()
+        return market || []
+    } catch (e) {
+        return []
+    }
+}
+
+const safeSaveMarket = (market) => {
+    try {
+        saveMarket(market)
+    } catch (e) {
+        console.log('Save error market')
+    }
+}
 
 // =========================
 // ملفات اللعبة
@@ -99,7 +140,7 @@ const animeNames = [
 'أرلونغ','هاتشي','باولي','فوكسي',
 
 'كونان','ران','كوغورو','هايبرا','أغاسا','هيجي','كايتو','سونوكو','ساتو','تاكاغي',
-'تشيبا','ميغوري','جين','فودكا','فيرموث','بوربون','كير','شوكيتشي','ماري',
+'تشيبا','ميغوري','جين','فودكا','فيرموث','بوربون','كير,'ماري',
 'ماسومي','أكاي','يوساكو','يوكو','ميتسوهيكو','غينتا','أيومي','سيرا','جودي',
 'كاميل','أندريه','إيري','كازوها','موميجي','شينتشي','كيد','كورودا','واكاسا',
 'روم','ري','أزوسا','سوبارو','أكيمي','أتسوشي','ماكوتو','يامامورا',
@@ -604,48 +645,50 @@ async function startBot() {
 
         if (text === '.شخصياتي') {
 
-            let players = loadPlayers()
+    try {
 
-            if (
-                !players[userId]
-                ||
-                players[userId]
-                .characters.length === 0
-            ) {
+        let players = safeLoadPlayers()
 
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ لا تملك شخصيات'
-                    }
-                )
-            }
-
-            let list =
-            '🎴 شخصياتك:\n\n'
-
-            players[userId]
-            .characters.forEach(c => {
-
-                list +=
-
-`👤 ${c.name}
-⚡ ${c.power}
-💎 ${c.rarity}
-
-━━━━━━━━━━
-
-`
-            })
-
-            return sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    text: list
-                }
-            )
+        if (!players[userId]) {
+            players[userId] = createPlayer()
         }
+
+        // 🔥 ضمان عدم التعليق بسبب undefined
+        players[userId].characters = players[userId].characters || []
+
+        if (players[userId].characters.length === 0) {
+            return safeSend(msg.key.remoteJid, {
+                text: '📭 لا توجد شخصيات لديك'
+            })
+        }
+
+        let txt =
+`👤 ━━〔 𝐘𝐎𝐔𝐑 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑𝐒 〕━━ 👤\n\n`
+
+        players[userId].characters.forEach((c, i) => {
+
+            txt +=
+`#${i + 1}
+🧿 الاسم: ${c.name}
+🌟 الندرة: ${c.rarity}
+⚔️ القوة: ${c.power}
+🌌 الأنمي: ${c.anime}
+
+━━━━━━━━━━━━━━━\n`
+        })
+
+        return safeSend(msg.key.remoteJid, {
+            text: txt
+        })
+
+    } catch (err) {
+        console.log('my characters error:', err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ في عرض الشخصيات'
+        })
+    }
+}
 
         // =========================
         // .بيع
@@ -653,72 +696,117 @@ async function startBot() {
 
         if (text.startsWith('.بيع')) {
 
-            const args =
-            text.split(' ')
+    try {
 
-            const charName = args[1]
-            const charPower =
-            Number(args[2])
+        let players = safeLoadPlayers()
 
-            let players = loadPlayers()
+        if (!players[userId]) {
+            players[userId] = createPlayer()
+        }
 
-            const charIndex =
+        players[userId].characters =
+            players[userId].characters || []
 
+        players[userId].money =
+            players[userId].money || 0
+
+        const args = text.split(' ')
+
+        const charName = args[1]
+        const charPower = Number(args[2])
+
+        if (!charName || isNaN(charPower)) {
+
+            return safeSend(
+                msg.key.remoteJid,
+                {
+                    text:
+`❌ استخدم الأمر هكذا
+
+.بيع اسم_الشخصية القوة
+
+مثال:
+.بيع لوفي 1500`
+                }
+            )
+        }
+
+        const charIndex =
             players[userId]
-            .characters.findIndex(
+            .characters
+            .findIndex(
 
                 c =>
 
-                c.name === charName
-
-                &&
+                c.name === charName &&
 
                 c.power === charPower
             )
 
-            if (charIndex === -1) {
+        if (charIndex === -1) {
 
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ الشخصية غير موجودة'
-                    }
-                )
-            }
-
-            const soldCharacter =
-
-            players[userId]
-            .characters[charIndex]
-
-            players[userId].money +=
-            soldCharacter.power
-
-            players[userId]
-            .characters.splice(
-                charIndex,
-                1
-            )
-
-            savePlayers(players)
-
-            return sock.sendMessage(
+            return safeSend(
                 msg.key.remoteJid,
                 {
                     text:
-
-`💰 تم البيع
-
-👤 ${soldCharacter.name}
-
-⚡ ${soldCharacter.power}
-
-🪙 مالك:
-${players[userId].money}`
+                    '❌ الشخصية غير موجودة لديك'
                 }
             )
         }
+
+        const character =
+            players[userId]
+            .characters[charIndex]
+
+        const sellPrice =
+            Math.max(
+                100,
+                Math.floor(character.power / 2)
+            )
+
+        players[userId].money += sellPrice
+
+        players[userId]
+        .characters
+        .splice(charIndex, 1)
+
+        safeSavePlayers(players)
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`💰 ━━〔 𝐒𝐄𝐋𝐋 𝐒𝐔𝐂𝐂𝐄𝐒𝐒 〕━━ 💰
+
+🧿 الاسم: ${character.name}
+
+🌟 الندرة: ${character.rarity}
+
+⚔️ القوة: ${character.power}
+
+💵 سعر البيع: ${sellPrice}
+
+💳 رصيدك الحالي:
+${players[userId].money}`
+            }
+        )
+
+    } catch (err) {
+
+        console.log(
+            'Sell error:',
+            err
+        )
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ حدث خطأ أثناء البيع'
+            }
+        )
+    }
 
         // =========================
         // .مزاد
@@ -810,48 +898,45 @@ ${price}`
 
         if (text === '.السوق') {
 
-            let market = loadMarket()
+    try {
 
-            if (market.length === 0) {
+        let market = safeLoadMarket()
 
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ السوق فارغ'
-                    }
-                )
-            }
-
-            let marketText =
-            '🏪 السوق:\n\n'
-
-            market.forEach(
-                (item, index) => {
-
-                    marketText +=
-
-`${index + 1}️⃣
-
-👤 ${item.character.name}
-
-⚡ ${item.character.power}
-
-💰 ${item.price}
-
-━━━━━━━━━━
-
-`
-                }
-            )
-
-            return sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    text: marketText
-                }
-            )
+        if (!market.length) {
+            return safeSend(msg.key.remoteJid, {
+                text: '📭 السوق فارغ حالياً'
+            })
         }
+
+        let txt =
+`🛒 ━━〔 𝐌𝐀𝐑𝐊𝐄𝐓 𝐒𝐓𝐎𝐑𝐄 〕━━ 🛒\n\n`
+
+        market.forEach((item, i) => {
+
+            if (!item || !item.character) return
+
+            txt +=
+`#${i + 1}
+🧿 الاسم: ${item.character.name}
+⚡ القوة: ${item.character.power}
+💰 السعر: ${item.price}
+
+━━━━━━━━━━━━━━━\n`
+        })
+
+        return safeSend(msg.key.remoteJid, {
+            text: txt
+        })
+
+    } catch (err) {
+
+        console.log('Market error:', err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ في عرض السوق'
+        })
+    }
+}
 
         // =========================
         // .شراء
@@ -859,78 +944,65 @@ ${price}`
 
         if (text.startsWith('.شراء')) {
 
-            const args =
-            text.split(' ')
+    try {
 
-            const itemNumber =
-            Number(args[1]) - 1
+        let players = safeLoadPlayers()
+        let market = safeLoadMarket()
 
-            let players = loadPlayers()
-            let market = loadMarket()
+        const args = text.split(' ')
+        const itemNumber = Number(args[1]) - 1
 
-            const item =
-            market[itemNumber]
+        const item = market[itemNumber]
 
-            if (!item) {
-
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ العنصر غير موجود'
-                    }
-                )
-            }
-
-            if (!players[userId]) {
-
-                players[userId] =
-                createPlayer()
-            }
-
-            if (
-                players[userId].money
-                < item.price
-            ) {
-
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ لا تملك مال كافي'
-                    }
-                )
-            }
-
-            players[userId].money -=
-            item.price
-
-            players[item.seller].money +=
-            item.price
-
-            players[userId]
-            .characters.push(
-                item.character
-            )
-
-            market.splice(itemNumber, 1)
-
-            savePlayers(players)
-            saveMarket(market)
-
-            return sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    text:
-
-`✅ تم شراء الشخصية
-
-👤 ${item.character.name}
-
-⚡ ${item.character.power}`
-                }
-            )
+        if (!item || !item.character) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ العنصر غير موجود'
+            })
         }
+
+        if (!players[userId]) {
+            players[userId] = createPlayer()
+        }
+
+        players[userId].characters = players[userId].characters || []
+        players[userId].money = players[userId].money || 0
+
+        if (players[userId].money < item.price) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا تملك مال كافي'
+            })
+        }
+
+        // 💰 خصم المال
+        players[userId].money -= item.price
+
+        // 👤 إضافة الشخصية
+        players[userId].characters.push(item.character)
+
+        // 🗑️ حذف من السوق
+        market.splice(itemNumber, 1)
+
+        safeSavePlayers(players)
+        safeSaveMarket(market)
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`✅ تم الشراء بنجاح
+
+🧿 الاسم: ${item.character.name}
+⚡ القوة: ${item.character.power}
+💰 السعر: ${item.price}`
+        })
+
+    } catch (err) {
+
+        console.log('Buy error:', err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء عملية الشراء'
+        })
+    }
+}
 
         // =========================
         // .قتال
@@ -938,140 +1010,96 @@ ${price}`
 
         if (text.startsWith('.قتال')) {
 
-            const args =
-            text.split(' ')
+    try {
 
-            const charName =
-            args[1]
+        const args = text.split(' ')
+        const charName = args[1]
+        const charPower = Number(args[2])
 
-            const charPower =
-            Number(args[2])
+        const target =
+            msg.message?.extendedTextMessage?.contextInfo?.participant
 
-            const target =
-            msg.message.extendedTextMessage
-            ?.contextInfo?.participant
-
-            if (!target) {
-
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ قم بالرد على الشخص'
-                    }
-                )
-            }
-
-            let players = loadPlayers()
-
-            if (!players[target]) {
-
-                players[target] =
-                createPlayer()
-            }
-
-            const myCharacter =
-
-            players[userId]
-            .characters.find(
-
-                c =>
-
-                c.name === charName
-
-                &&
-
-                c.power === charPower
-            )
-
-            if (!myCharacter) {
-
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '❌ الشخصية غير موجودة'
-                    }
-                )
-            }
-
-            let attack =
-
-            myCharacter.power +
-
-            Math.floor(
-                Math.random() * 200
-            )
-
-            const dodgeChance =
-            Math.random() * 100
-
-            if (
-                dodgeChance <=
-                players[target].dodge
-            ) {
-
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    {
-                        text:
-                        '💨 الخصم تفادى الهجوم'
-                    }
-                )
-            }
-
-            const critChance =
-            Math.random() * 100
-
-            if (
-                critChance <=
-                players[userId].crit
-            ) {
-
-                attack *= 2
-            }
-
-            const damage =
-            Math.floor(
-                attack -
-                (players[target].hp / 100)
-            )
-
-            players[target].hp -= damage
-
-            if (
-                players[target].hp <= 0
-            ) {
-
-                players[target].hp = 10000
-
-                players[userId].money += 500
-
-                players[userId].xp += 100
-            }
-
-            savePlayers(players)
-
-            return sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    text:
-
-`⚔️ نتيجة القتال
-
-👤 ${myCharacter.name}
-
-⚡ القوة:
-${myCharacter.power}
-
-💥 الضرر:
-${damage}
-
-❤️ HP الخصم:
-${players[target].hp}`
-                }
-            )
+        if (!target) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ قم بالرد على الشخص الذي تريد قتاله'
+            })
         }
+
+        let players = safeLoadPlayers()
+
+        if (!players[userId]) {
+            players[userId] = createPlayer()
+        }
+
+        if (!players[target]) {
+            players[target] = createPlayer()
+        }
+
+        players[userId].characters = players[userId].characters || []
+        players[target].characters = players[target].characters || []
+
+        const myCharacter = players[userId].characters.find(c =>
+            c.name === charName && c.power === charPower
+        )
+
+        if (!myCharacter) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ الشخصية غير موجودة لديك'
+            })
+        }
+
+        // ⚔️ حساب الهجوم
+        let attack = myCharacter.power + Math.floor(Math.random() * 200)
+
+        // 💨 تفادي
+        const dodgeChance = Math.random() * 100
+        if (dodgeChance <= (players[target].dodge || 0)) {
+            return safeSend(msg.key.remoteJid, {
+                text: '💨 الخصم تفادى الهجوم'
+            })
+        }
+
+        // 💥 كريتكل
+        const critChance = Math.random() * 100
+        if (critChance <= (players[userId].crit || 0)) {
+            attack *= 2
+        }
+
+        // ❤️ حساب الضرر
+        const targetHp = players[target].hp || 10000
+        const damage = Math.max(0, Math.floor(attack - (targetHp / 100)))
+
+        players[target].hp = targetHp - damage
+
+        // 🏆 لو مات الخصم
+        if (players[target].hp <= 0) {
+            players[target].hp = 10000
+
+            players[userId].money = (players[userId].money || 0) + 500
+            players[userId].xp = (players[userId].xp || 0) + 100
+        }
+
+        safeSavePlayers(players)
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`⚔️ ━━〔 𝐁𝐀𝐓𝐓𝐋𝐄 𝐑𝐄𝐒𝐔𝐋𝐓 〕━━ ⚔️
+
+🧿 الاسم: ${myCharacter.name}
+⚡ القوة: ${myCharacter.power}
+💥 الضرر: ${damage}
+❤️ HP الخصم: ${players[target].hp}`
+        })
+
+    } catch (err) {
+
+        console.log('Fight error:', err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء القتال'
+        })
+    }
+}
 
     })
 
