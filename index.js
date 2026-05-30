@@ -715,18 +715,6 @@ if (text === '.شخصياتي') {
 
     try {
 
-        let players = safeLoadPlayers()
-
-        if (!players[userId]) {
-            players[userId] = createPlayer()
-        }
-
-        players[userId].characters =
-            players[userId].characters || []
-
-        players[userId].money =
-            players[userId].money || 0
-
         const args = text.split(' ')
 
         const charName = args[1]
@@ -734,65 +722,55 @@ if (text === '.شخصياتي') {
 
         if (!charName || isNaN(charPower)) {
 
-            return safeSend(
-                msg.key.remoteJid,
-                {
-                    text:
+            return safeSend(msg.key.remoteJid, {
+                text:
 `❌ استخدم الأمر هكذا
 
 .بيع اسم_الشخصية القوة
 
 مثال:
 .بيع لوفي 1500`
-                }
-            )
+            })
         }
 
+        let player = await Player.findOne({ userId })
+
+        if (!player) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا تملك حساباً'
+            })
+        }
+
+        player.characters = player.characters || []
+
         const charIndex =
-            players[userId]
-            .characters
-            .findIndex(
-
-                c =>
-
-                c.name === charName &&
-
-                c.power === charPower
+            player.characters.findIndex(c =>
+                c.name.toLowerCase() === charName.toLowerCase() &&
+                Number(c.power) === charPower
             )
 
         if (charIndex === -1) {
 
-            return safeSend(
-                msg.key.remoteJid,
-                {
-                    text:
-                    '❌ الشخصية غير موجودة لديك'
-                }
-            )
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ الشخصية غير موجودة لديك'
+            })
         }
 
-        const character =
-            players[userId]
-            .characters[charIndex]
+        const character = player.characters[charIndex]
 
-        const sellPrice =
-            Math.max(
-                100,
-                Math.floor(character.power / 2)
-            )
+        const sellPrice = Math.max(
+            100,
+            Math.floor(character.power / 2)
+        )
 
-        players[userId].money += sellPrice
+        player.money = (player.money || 0) + sellPrice
 
-        players[userId]
-        .characters
-        .splice(charIndex, 1)
+        player.characters.splice(charIndex, 1)
 
-        safeSavePlayers(players)
+        await player.save()
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
+        return safeSend(msg.key.remoteJid, {
+            text:
 
 `💰 ━━〔 𝐒𝐄𝐋𝐋 𝐒𝐔𝐂𝐂𝐄𝐒𝐒 〕━━ 💰
 
@@ -805,22 +783,19 @@ if (text === '.شخصياتي') {
 💵 سعر البيع: ${sellPrice}
 
 💳 رصيدك الحالي:
-${players[userId].money}`
-            }
-        )
+${player.money}`
+        })
 
     } catch (err) {
 
         console.log('Sell error:', err)
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text: '❌ حدث خطأ أثناء البيع'
-            }
-        )
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء البيع'
+        })
     }
 }
+
 
 // =========================
 // .مزاد
@@ -828,83 +803,66 @@ ${players[userId].money}`
 
 if (text.startsWith('.مزاد')) {
 
-    const args =
-    text.split(' ')
+    try {
 
-    const charName = args[1]
-    const charPower =
-    Number(args[2])
+        const args = text.split(' ')
 
-    const price =
-    Number(args[3])
+        const charName = args[1]
+        const charPower = Number(args[2])
+        const price = Number(args[3])
 
-    let players = loadPlayers()
-    let market = loadMarket()
+        if (!charName || isNaN(charPower) || isNaN(price)) {
 
-    const charIndex =
-
-    players[userId]
-    .characters.findIndex(
-
-        c =>
-
-        c.name === charName
-
-        &&
-
-        c.power === charPower
-    )
-
-    if (charIndex === -1) {
-
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
+            return safeSend(msg.key.remoteJid, {
                 text:
-                '❌ الشخصية غير موجودة'
-            }
-        )
-    }
+`❌ استخدم الأمر هكذا
 
-    const character =
+.مزاد اسم_الشخصية القوة السعر
 
-    players[userId]
-    .characters[charIndex]
+مثال:
+.مزاد Hashirama 2300 5000`
+            })
+        }
 
-    market.push({
+        let player = await Player.findOne({ userId })
 
-        seller: userId,
+        if (!player) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا تملك حساباً'
+            })
+        }
 
-        character,
+        player.characters = player.characters || []
 
-        price
-    })
+        const charIndex =
+            player.characters.findIndex(c =>
+                c.name.toLowerCase() === charName.toLowerCase() &&
+                Number(c.power) === charPower
+            )
 
-    players[userId]
-    .characters.splice(
-        charIndex,
-        1
-    )
+        if (charIndex === -1) {
 
-    savePlayers(players)
-    saveMarket(market)
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ الشخصية غير موجودة لديك'
+            })
+        }
 
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
+        const character = player.characters[charIndex]
+
+        await Market.create({
+            seller: userId,
+            character,
+            price
+        })
+
+        player.characters.splice(charIndex, 1)
+
+        await player.save()
+
+        return safeSend(msg.key.remoteJid, {
             text:
 
-`🏪 تم وضع الشخصية في السوق
-
-👤 ${character.name}
-
-⚡ ${character.power}
-
-💰 السعر:
-${price}`
-        }
-    )
-}
+`
 
         // =========================
         // .السوق
@@ -914,29 +872,44 @@ ${price}`
 
     try {
 
-        let market = safeLoadMarket()
+        const market = await Market.find()
 
         if (!market.length) {
             return safeSend(msg.key.remoteJid, {
-                text: '📭 السوق فارغ حالياً'
+                text:
+`╭━━━〔 🏪 السوق العالمي 〕━━━╮
+
+📭 لا توجد شخصيات معروضة حالياً
+
+╰━━━━━━━━━━━━━━━━━━╯`
             })
         }
 
         let txt =
-`🛒 ━━〔 𝐌𝐀𝐑𝐊𝐄𝐓 𝐒𝐓𝐎𝐑𝐄 〕━━ 🛒\n\n`
+`╔══════════════╗
+      🏪 السوق العالمي
+╚══════════════╝
+
+`
 
         market.forEach((item, i) => {
 
-            if (!item || !item.character) return
-
             txt +=
-`#${i + 1}
-🧿 الاسم: ${item.character.name}
-⚡ القوة: ${item.character.power}
-💰 السعر: ${item.price}
+`╭─〔 #${i + 1} 〕─╮
+🧿 الاسم : ${item.character.name}
+🌟 الندرة : ${item.character.rarity}
+⚔️ القوة : ${item.character.power}
+💰 السعر : ${item.price}
+╰──────────╯
 
-━━━━━━━━━━━━━━━\n`
+`
         })
+
+        txt +=
+`━━━━━━━━━━━━━━━━━━
+💡 للشراء:
+
+.شراء رقم_العرض`
 
         return safeSend(msg.key.remoteJid, {
             text: txt
