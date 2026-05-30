@@ -577,7 +577,7 @@ async function startBot() {
     } else if (chance <= 15) {
         rarity = 'اسطوري'
     } else if (chance <= 40) {
-        rarity = 'نادر'
+        rarity = 'ممتاز'
     }
 
     const filteredCharacters = characters.filter(
