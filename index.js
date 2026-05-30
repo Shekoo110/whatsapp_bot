@@ -548,6 +548,17 @@ async function startBot() {
 
         if (text === '.اسحب') {
 
+            if (text === '.اسحب') {
+
+    console.log('بدأ السحب')
+
+    let player = await Player.findOne({ userId })
+
+    console.log('تم جلب اللاعب')
+
+    console.log('نوع الشخصيات:', typeof characters)
+    console.log('عدد الشخصيات:', characters?.length)
+                
     let player = await Player.findOne({ userId })
 
     if (!player) {
@@ -651,7 +662,6 @@ async function startBot() {
         // .شخصياتي
         // =========================
 
-        const Player = require('./models/Player')
 
 if (text === '.شخصياتي') {
 
