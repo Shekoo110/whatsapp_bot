@@ -56,9 +56,6 @@ const safeSaveMarket = (market) => {
 // ملفات اللعبة
 // =========================
 
-const characters =
-require('./characters.json')
-
 const playersFile =
 './players.json'
 
