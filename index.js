@@ -10,6 +10,9 @@ const QRCode = require("qrcode")
 
 const mongoose = require('mongoose')
 
+const Player = require('./models/Player')
+const Market = require('./models/Market')
+
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected'))
 .catch(err => console.log('MongoDB Error:', err))
