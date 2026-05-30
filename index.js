@@ -652,20 +652,22 @@ async function startBot() {
         // .شخصياتي
         // =========================
 
-        if (text === '.شخصياتي') {
+        const Player = require('./models/Player')
+
+if (text === '.شخصياتي') {
 
     try {
 
-        let players = safeLoadPlayers()
+        let player = await Player.findOne({ userId })
 
-        if (!players[userId]) {
-            players[userId] = createPlayer()
+        if (!player) {
+            player = await Player.create({
+                userId,
+                characters: []
+            })
         }
 
-        // 🔥 ضمان عدم التعليق بسبب undefined
-        players[userId].characters = players[userId].characters || []
-
-        if (players[userId].characters.length === 0) {
+        if (!player.characters || player.characters.length === 0) {
             return safeSend(msg.key.remoteJid, {
                 text: '📭 لا توجد شخصيات لديك'
             })
@@ -674,7 +676,7 @@ async function startBot() {
         let txt =
 `👤 ━━〔 𝐘𝐎𝐔𝐑 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑𝐒 〕━━ 👤\n\n`
 
-        players[userId].characters.forEach((c, i) => {
+        player.characters.forEach((c, i) => {
 
             txt +=
 `#${i + 1}
