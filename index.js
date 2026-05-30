@@ -7,13 +7,7 @@ const fs = require('fs')
 const path = require('path')
 const express = require("express")
 const QRCode = require("qrcode")
-const safeSend = async (jid, data) => {
-    try {
-        return await sock.sendMessage(jid, data)
-    } catch (e) {
-        console.log('Send error:', e)
-    }
-}
+
 
 const safeLoadPlayers = () => {
     try {
@@ -300,6 +294,13 @@ async function startBot() {
     const sock = makeWASocket({
         auth: state
     })
+    const safeSend = async (jid, data) => {
+    try {
+        return await sock.sendMessage(jid, data)
+    } catch (e) {
+        console.log('Send error:', e)
+    }
+    }
 
     // ===== QR =====
 
@@ -802,7 +803,7 @@ ${players[userId].money}`
             }
         )
     }
-
+        }
         // =========================
         // .مزاد
         // =========================
@@ -1094,7 +1095,11 @@ ${price}`
             text: '❌ حدث خطأ أثناء القتال'
         })
     }
+})
+
 }
+
+startBot()
 
 
 startBot()
