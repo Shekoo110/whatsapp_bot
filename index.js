@@ -257,14 +257,6 @@ function loadMarket() {
     )
 }
 
-function saveMarket(data) {
-
-    fs.writeFileSync(
-        marketFile,
-        JSON.stringify(data, null, 2)
-    )
-}
-
 function createPlayer() {
 
     return {
@@ -286,6 +278,70 @@ function createPlayer() {
         level: 1,
 
         money: 0
+    }
+}
+
+// =========================
+// متجر الشخصيات
+// =========================
+
+async function generateShop() {
+
+    const shopItems = await Shop.find()
+
+    if (shopItems.length > 0) {
+
+        const age =
+            Date.now() - shopItems[0].createdAt
+
+        if (age < 24 * 60 * 60 * 1000)
+            return
+    }
+
+    await Shop.deleteMany({})
+
+    for (let i = 0; i < 10; i++) {
+
+        let rarity = 'عادي'
+
+        const chance = Math.random() * 100
+
+        if (chance <= 10)
+            rarity = 'SSS'
+        else if (chance <= 20)
+            rarity = 'اسطوري'
+        else if (chance <= 40)
+            rarity = 'ممتاز'
+
+        const pool =
+            characters.filter(
+                c => c.rarity === rarity
+            )
+
+        if (!pool.length) continue
+
+        const character =
+            pool[
+                Math.floor(
+                    Math.random() * pool.length
+                )
+            ]
+
+        let price = character.power * 2
+
+        if (rarity === 'ممتاز')
+            price = character.power * 3
+
+        if (rarity === 'اسطوري')
+            price = character.power * 5
+
+        if (rarity === 'SSS')
+            price = character.power * 8
+
+        await Shop.create({
+            character,
+            price
+        })
     }
 }
 
@@ -934,52 +990,82 @@ if (text.startsWith('.مزاد')) {
 
     try {
 
-        let players = safeLoadPlayers()
-        let market = safeLoadMarket()
-
         const args = text.split(' ')
         const itemNumber = Number(args[1]) - 1
+
+        let market = safeLoadMarket()
 
         const item = market[itemNumber]
 
         if (!item || !item.character) {
+
             return safeSend(msg.key.remoteJid, {
-                text: '❌ العنصر غير موجود'
+                text: '❌ العرض غير موجود'
             })
         }
 
-        if (!players[userId]) {
-            players[userId] = createPlayer()
-        }
+        let player = await Player.findOne({ userId })
 
-        players[userId].characters = players[userId].characters || []
-        players[userId].money = players[userId].money || 0
+        if (!player) {
 
-        if (players[userId].money < item.price) {
-            return safeSend(msg.key.remoteJid, {
-                text: '❌ لا تملك مال كافي'
+            player = new Player({
+                userId,
+                characters: [],
+                money: 0
             })
         }
 
-        // 💰 خصم المال
-        players[userId].money -= item.price
+        player.characters = player.characters || []
+        player.money = player.money || 0
 
-        // 👤 إضافة الشخصية
-        players[userId].characters.push(item.character)
+        if (player.money < item.price) {
 
-        // 🗑️ حذف من السوق
+            return safeSend(msg.key.remoteJid, {
+                text:
+`❌ لا تملك مالاً كافياً
+
+💰 المطلوب: ${item.price}
+💳 رصيدك: ${player.money}`
+            })
+        }
+
+        player.money -= item.price
+
+        player.characters.push(item.character)
+
+        await player.save()
+
         market.splice(itemNumber, 1)
 
-        safeSavePlayers(players)
         safeSaveMarket(market)
 
         return safeSend(msg.key.remoteJid, {
             text:
-`✅ تم الشراء بنجاح
 
-🧿 الاسم: ${item.character.name}
-⚡ القوة: ${item.character.power}
-💰 السعر: ${item.price}`
+`╔════════════════════╗
+      🛒 𝐏𝐔𝐑𝐂𝐇𝐀𝐒𝐄
+╚════════════════════╝
+
+✅ تم شراء الشخصية بنجاح
+
+🧿 الاسم :
+${item.character.name}
+
+🌟 الندرة :
+${item.character.rarity}
+
+⚔️ القوة :
+${item.character.power}
+
+💰 السعر :
+${item.price}
+
+💳 رصيدك الحالي :
+${player.money}
+
+━━━━━━━━━━━━━━━
+
+🎉 تمت إضافة الشخصية إلى مجموعتك`
         })
 
     } catch (err) {
@@ -992,6 +1078,78 @@ if (text.startsWith('.مزاد')) {
     }
 }
 
+// =========================
+// .شراء
+// =========================
+
+if (text === '.متجر') {
+
+    try {
+
+        await generateShop()
+
+        const shop = await Shop.find()
+
+        if (!shop.length) {
+
+            return safeSend(
+                msg.key.remoteJid,
+                {
+                    text: '❌ لا توجد شخصيات في المتجر حالياً'
+                }
+            )
+        }
+
+        let txt =
+`╔════════════════════╗
+        🏪 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑 𝐒𝐇𝐎𝐏
+╚════════════════════╝
+
+🎁 يتم تجديد المتجر كل 24 ساعة
+
+━━━━━━━━━━━━━━━━━━
+
+`
+
+        shop.forEach((item, i) => {
+
+            txt +=
+`╭────〔 ${i + 1} 〕────╮
+🧿 الاسم : ${item.character.name}
+🌟 الندرة : ${item.character.rarity}
+⚔️ القوة : ${item.character.power}
+💰 السعر : ${item.price}
+╰────────────────╯
+
+`
+        })
+
+        txt +=
+`━━━━━━━━━━━━━━━━━━
+
+🛒 للشراء:
+
+.شراءمتجر رقم_العرض
+
+مثال:
+.شراءمتجر 1`
+
+        return safeSend(
+            msg.key.remoteJid,
+            { text: txt }
+        )
+
+    } catch (err) {
+
+        console.log('Shop error:', err)
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ حدث خطأ أثناء فتح المتجر'
+            })
+    }
+}
         // =========================
         // .قتال
         // =========================
