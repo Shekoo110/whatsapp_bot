@@ -8,7 +8,11 @@ const path = require('path')
 const express = require("express")
 const QRCode = require("qrcode")
 
+const mongoose = require('mongoose')
 
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => console.log('✅ MongoDB Connected'))
+.catch(err => console.log('MongoDB Error:', err))
 const safeLoadPlayers = () => {
     try {
         let players = loadPlayers()
