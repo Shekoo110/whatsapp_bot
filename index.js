@@ -9,7 +9,7 @@ const express = require("express")
 const QRCode = require("qrcode")
 
 const mongoose = require('mongoose')
-
+const bosses = require('./bosses')
 const Player = require('./models/Player')
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
