@@ -1184,76 +1184,81 @@ ${price}
 
         if (text.startsWith('.شراء')) {
 
-    try {
+try {
 
-        const args = text.split(' ')
-        const itemNumber = Number(args[1]) - 1
+    const args = text.split(' ')
+    const itemNumber = Number(args[1]) - 1
 
-        let market = safeLoadMarket()
+    const market = await Market.find()
 
-        const item = market[itemNumber]
+    const item = market[itemNumber]
 
-        if (!item || !item.character) {
+    if (!item || !item.character) {
 
-            return safeSend(msg.key.remoteJid, {
-                text: '❌ العرض غير موجود'
-            })
-        }
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ العرض غير موجود'
+        })
+    }
 
-        let player = await Player.findOne({ userId })
+    let player = await Player.findOne({ userId })
 
-        if (!player) {
+    if (!player) {
 
-            player = new Player({
-                userId,
-                characters: [],
-                money: 0
-            })
-        }
+        player = new Player({
+            userId,
+            characters: [],
+            money: 0
+        })
+    }
 
-        player.characters = player.characters || []
-        player.money = player.money || 0
+    player.characters = player.characters || []
+    player.money = player.money || 0
 
-        if (player.money < item.price) {
+    if (player.money < item.price) {
 
-            return safeSend(msg.key.remoteJid, {
-                text:
+        return safeSend(msg.key.remoteJid, {
+            text:
+
 `❌ لا تملك مالاً كافياً
 
 💰 المطلوب: ${item.price}
 💳 رصيدك: ${player.money}`
-            })
-        }
-
-        player.money -= item.price
-
-player.characters.push(item.character)
-
-// 💰 تحويل المال للبائع
-const seller = await Player.findOne({
-userId: item.seller
 })
-
-if (seller) {
-
-seller.money =
-    (seller.money || 0) + item.price
-
-await seller.save()
-
 }
 
-await player.save()
+    if (player.characters.length >= 30) {
 
-market.splice(itemNumber, 1)
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ وصلت للحد الأقصى (30 شخصية)'
+        })
+    }
 
-safeSaveMarket(market)
+    player.money -= item.price
 
-return safeSend(msg.key.remoteJid, {
-text:
+    player.characters.push(item.character)
+
+    // تحويل المال للبائع
+    const seller = await Player.findOne({
+        userId: item.seller
+    })
+
+    if (seller) {
+
+        seller.money =
+            (seller.money || 0) + item.price
+
+        await seller.save()
+    }
+
+    await player.save()
+
+    await Market.findByIdAndDelete(item._id)
+
+    return safeSend(msg.key.remoteJid, {
+        text:
 
 `╔════════════════════╗
-      🛒 𝐏𝐔𝐑𝐂𝐇𝐀𝐒𝐄
+🛒 𝐏𝐔𝐑𝐂𝐇𝐀𝐒𝐄
 ╚════════════════════╝
 
 ✅ تم شراء الشخصية بنجاح
@@ -1276,18 +1281,18 @@ ${player.money}
 ━━━━━━━━━━━━━━━
 
 🎉 تمت إضافة الشخصية إلى مجموعتك`
-        })
+})
 
-    } catch (err) {
+} catch (err) {
 
-        console.log('Buy error:', err)
+    console.log('Buy error:', err)
 
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ حدث خطأ أثناء عملية الشراء'
-        })
-    }
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ حدث خطأ أثناء عملية الشراء'
+    })
 }
 
+}
 // =========================
 // .شراء
 // =========================
