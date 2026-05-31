@@ -2181,8 +2181,7 @@ if (now - me.lastFightReset >= cooldown) {
             return safeSend(msg.key.remoteJid, {
                 text: '⏳ انتهت القتالات اليومية (5/5)'
             })
-        }
-
+        
         me.characters = me.characters || []
         enemy.characters = enemy.characters || []
 
