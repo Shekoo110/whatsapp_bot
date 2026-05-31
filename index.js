@@ -2131,9 +2131,10 @@ ${me.fights}/5`
 
         const args = text.split(' ')
 
-        const charName = args[1]
-        const charPower = Number(args[2])
+const charPower = Number(args[args.length - 1])
 
+const charName =
+    args.slice(1, -1).join(' ')
         const mentioned =
             msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
 
