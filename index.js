@@ -2930,6 +2930,10 @@ await sock.sendMessage(
     }
 )
 
-}
+} // نهاية distributeBossRewards
+
+}) // نهاية messages.upsert
+
+} // نهاية startBot
 
 startBot()
