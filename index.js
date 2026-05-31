@@ -2320,9 +2320,12 @@ await me.save()
 const updatedMe = await Player.findOne({ userId })
 
 await enemy.save()
+        const winnerCharacter =
+    winner === myCharacter.name
+        ? myCharacter
+        : enemyCharacter
 
-return safeSend(msg.key.remoteJid, {
-            text:
+const battleMessage =
 `╔══════════════════════╗
         ⚔️ 𝐄𝐏𝐈𝐂 𝐁𝐀𝐓𝐓𝐋𝐄 ⚔️
 ╚══════════════════════╝
@@ -2375,7 +2378,26 @@ ${updatedMe.fights}/5
 ╔══════════════════════╗
         🔥 𝐁𝐀𝐓𝐓𝐋𝐄 𝐄𝐍𝐃 🔥
 ╚══════════════════════╝`
-        })
+
+if (
+    winnerCharacter.image &&
+    fs.existsSync(winnerCharacter.image)
+) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: fs.readFileSync(
+                winnerCharacter.image
+            ),
+            caption: battleMessage
+        }
+    )
+}
+
+return safeSend(msg.key.remoteJid, {
+    text: battleMessage
+    })
+}
 
     } catch (err) {
 
