@@ -890,7 +890,7 @@ ${currentBoss.name}
 ${currentBoss.hp}/${currentBoss.maxHp}`
     }
 )
-        }
+}
         
         if (text === '.زعيم') {
 
@@ -905,7 +905,7 @@ return sock.sendMessage(
     {
         image: {
             url: currentBoss.image
-        },
+        }
 
         caption:
 
