@@ -639,7 +639,7 @@ async function startBot() {
     }
 
     const now = Date.now()
-    const cooldown = 24 * 60 * 60 * 1000
+    const cooldown = 3 * 60 * 60 * 1000
 
     if (now - player.lastReset >= cooldown) {
         player.pulls = 5
@@ -1427,7 +1427,7 @@ if (text === '.متجر') {
 
         // إعادة تعيين القتالات كل 24 ساعة
         const now = Date.now()
-        const cooldown = 24 * 60 * 60 * 1000
+        const cooldown = 3 * 60 * 60 * 1000
 
         if (!me.dailyBattles) me.dailyBattles = 5
         if (!me.lastBattleReset) me.lastBattleReset = now
