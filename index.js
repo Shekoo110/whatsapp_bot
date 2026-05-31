@@ -350,6 +350,27 @@ async function generateShop() {
     }
 }
 
+async function spawnBoss(sock, groupId) {
+
+    currentBoss = {
+        ...bosses[Math.floor(Math.random() * bosses.length)]
+    }
+
+    await Boss.deleteMany({})
+    await Boss.create(currentBoss)
+
+    await sock.sendMessage(groupId, {
+        text: `🔥 ظهر زعيم عالمي جديد!
+
+👑 ${currentBoss.name}
+
+❤️ ${currentBoss.hp}/${currentBoss.maxHp}
+
+⚔️ استخدم .زعيم للمعلومات
+🗡️ استخدم .هجوم للمشاركة`
+    })
+}
+
 // =========================
 // تشغيل البوت
 // =========================
@@ -2960,28 +2981,6 @@ ${ranking}
 )
 
 } // نهاية distributeBossRewards
-
-
-async function spawnBoss(sock, groupId) {
-
-    currentBoss = {
-        ...bosses[Math.floor(Math.random() * bosses.length)]
-    }
-
-    await Boss.deleteMany({})
-    await Boss.create(currentBoss)
-
-    await sock.sendMessage(groupId, {
-        text: `🔥 ظهر زعيم عالمي جديد!
-
-👑 ${currentBoss.name}
-
-❤️ ${currentBoss.hp}/${currentBoss.maxHp}
-
-⚔️ استخدم .زعيم للمعلومات
-🗡️ استخدم .هجوم للمشاركة`
-    })
-}
 
 }) // نهاية messages.upsert
 
