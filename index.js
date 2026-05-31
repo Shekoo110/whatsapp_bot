@@ -1540,13 +1540,8 @@ if (!me || !enemy) {
     })
 }
 
-if (typeof me.fights !== 'number') {
-    me.fights = 5
-}
-
-if (!me.lastFightReset) {
-    me.lastFightReset = Date.now()
-}
+if (me.fights == null) me.fights = 5
+if (!me.lastFightReset) me.lastFightReset = Date.now()
 
 await me.save()
 
