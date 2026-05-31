@@ -905,11 +905,9 @@ return sock.sendMessage(
     {
         image: {
             url: currentBoss.image
-        }
+        },
 
-        caption:
-
-`👑 الزعيم العالمي
+        caption: `👑 الزعيم العالمي
 
 🧿 الاسم:
 ${currentBoss.name}
@@ -946,10 +944,9 @@ ${currentBoss.ability.description}
 2500 مال
 500 XP
 شخصية ممتازة`
-}
+    }
 )
-}
-
+        }
         // =========================
         // .اسحب
         // =========================
