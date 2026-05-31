@@ -606,76 +606,80 @@ async function startBot() {
 
         if (text === '.اسحب') {
 
+console.log('بدأ السحب')
 
-    console.log('بدأ السحب')
+let player = await Player.findOne({ userId })
 
-    let player = await Player.findOne({ userId })
+console.log('تم جلب اللاعب')
 
-    console.log('تم جلب اللاعب')
+console.log('نوع الشخصيات:', typeof characters)
+console.log('عدد الشخصيات:', characters?.length)
 
-    console.log('نوع الشخصيات:', typeof characters)
-    console.log('عدد الشخصيات:', characters?.length)
-                
+if (!player) {
 
-    if (!player) {
+    player = new Player({
+        userId,
+        pulls: 5,
+        lastReset: Math.floor(Date.now() / (30 * 60 * 1000)),
+        characters: [],
+        hp: 10000,
+        crit: 5,
+        dodge: 3,
+        xp: 0,
+        level: 1,
+        money: 0
+    })
+}
 
-        player = new Player({
-            userId,
-            pulls: 5,
-            lastReset: Date.now(),
-            characters: [],
-            hp: 10000,
-            crit: 5,
-            dodge: 3,
-            xp: 0,
-            level: 1,
-            money: 0
-        })
-    }
+if (player.characters.length >= 30) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: '❌ الحد الأقصى 30 شخصية'
+    })
+}
 
-    if (player.characters.length >= 30) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: '❌ الحد الأقصى 30 شخصية'
-        })
-    }
+const cooldown = 30 * 60 * 1000
 
-    const now = Date.now()
-    const cooldown = 30 * 60 * 1000
-    if (now - player.lastReset >= cooldown) {
-        player.pulls = 5
-        player.lastReset = now
-    }
+const currentPeriod =
+    Math.floor(Date.now() / cooldown)
 
-    
+if (player.lastReset !== currentPeriod) {
+
+    player.pulls = 5
+    player.lastReset = currentPeriod
+
+    await player.save()
+}
+
 if (player.pulls <= 0) {
 
     const remaining =
-        cooldown - (now - player.lastReset)
-
-    const hours =
-        Math.floor(remaining / (1000 * 60 * 60))
+        cooldown - (Date.now() % cooldown)
 
     const minutes =
         Math.floor(
-            (remaining % (1000 * 60 * 60))
-            / (1000 * 60)
+            remaining / (1000 * 60)
+        )
+
+    const seconds =
+        Math.floor(
+            (remaining % (1000 * 60)) / 1000
         )
 
     return sock.sendMessage(msg.key.remoteJid, {
         text:
-`⏳ انتهت السحبات اليومية
+
+`⏳ انتهت السحبات
 
 🕒 الوقت المتبقي:
 
-${hours} ساعة
 ${minutes} دقيقة
+${seconds} ثانية
 
-🎁 تتجدد السحبات تلقائياً بعد 30 دقيقة`
-    })
+🎁 تتجدد السحبات تلقائياً كل 30 دقيقة`
+})
 }
 
-
-    let luckBonus = 0
+let luckBonus = 0
 
 if ((player.level || 1) >= 10) {
     luckBonus = 3
@@ -695,43 +699,57 @@ if (chance <= 5) {
     rarity = 'ممتاز'
 }
 
-    const filteredCharacters =
-        characters.filter(c => c.rarity === rarity)
+const filteredCharacters =
+    characters.filter(
+        c => c.rarity === rarity
+    )
 
-    if (!filteredCharacters.length) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: `❌ لا توجد شخصيات بهذا التصنيف: ${rarity}`
-        })
-    }
+if (!filteredCharacters.length) {
 
-    const randomCharacter =
-        filteredCharacters[
-            Math.floor(Math.random() * filteredCharacters.length)
-        ]
+    return sock.sendMessage(msg.key.remoteJid, {
+        text:
 
-    player.characters.push(randomCharacter)
-   player.pulls -= 1
+"❌ لا توجد شخصيات بهذا التصنيف: ${rarity}"
+})
+}
 
-    await player.save()
+const randomCharacter =
+    filteredCharacters[
+        Math.floor(
+            Math.random() *
+            filteredCharacters.length
+        )
+    ]
 
-    const imagePath =
-        path.join(__dirname, randomCharacter.image)
+player.characters.push(randomCharacter)
 
-    if (!fs.existsSync(imagePath)) {
+player.pulls -= 1
 
-        return sock.sendMessage(msg.key.remoteJid, {
-            text:
+await player.save()
+
+const imagePath =
+    path.join(
+        __dirname,
+        randomCharacter.image
+    )
+
+if (!fs.existsSync(imagePath)) {
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        text:
+
 `❌ الصورة غير موجودة
 
 الاسم: ${randomCharacter.name}
 المسار: ${randomCharacter.image}`
-        })
-    }
+})
+}
 
-    return sock.sendMessage(msg.key.remoteJid, {
-        image: fs.readFileSync(imagePath),
+return sock.sendMessage(msg.key.remoteJid, {
+    image: fs.readFileSync(imagePath),
 
-        caption:
+    caption:
+
 `╭━━〔 ✦ 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑 𝐑𝐄𝐒𝐔𝐋𝐓 ✦ 〕━━╮
 
 🧿 𝑵𝒂𝒎𝒆 ➤ ${randomCharacter.name}
@@ -739,8 +757,10 @@ if (chance <= 5) {
 ⚔️ 𝑷𝒐𝒘𝒆𝒓 ➤ ${randomCharacter.power}
 🌌 𝑨𝒏𝒊𝒎𝒆 ➤ ${randomCharacter.anime}
 
+🎟️ السحبات المتبقية ➤ ${player.pulls}/5
+
 ╰━━━━━━━━━━━━━━━━━━━━━━╯`
-    })
+})
 }
 
         // =========================
