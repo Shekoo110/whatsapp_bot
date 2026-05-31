@@ -639,14 +639,13 @@ async function startBot() {
     }
 
     const now = Date.now()
-    const cooldown = 3 * 60 * 60 * 1000
-
+    const cooldown = 30 * 60 * 1000
     if (now - player.lastReset >= cooldown) {
         player.pulls = 5
         player.lastReset = now
     }
 
-    /*
+    
 if (player.pulls <= 0) {
 
     const remaining =
@@ -654,8 +653,8 @@ if (player.pulls <= 0) {
 
     ...
 }
-*/
-/*
+
+
 const hours =
     Math.floor(remaining / (1000 * 60 * 60))
 
@@ -677,7 +676,7 @@ ${minutes} دقيقة
 🎁 تتجدد السحبات تلقائياً بعد 24 ساعة`
 })
 }
-*/
+
 
     let luckBonus = 0
 
@@ -714,7 +713,7 @@ if (chance <= 5) {
         ]
 
     player.characters.push(randomCharacter)
- //   player.pulls -= 1
+   player.pulls -= 1
 
     await player.save()
 
@@ -1433,7 +1432,7 @@ if (text === '.متجر') {
 
         // إعادة تعيين القتالات كل 24 ساعة
         const now = Date.now()
-        const cooldown = 3 * 60 * 60 * 1000
+        const cooldown = const cooldown = 30 * 60 * 1000
 
         if (!me.dailyBattles) me.dailyBattles = 5
         if (!me.lastBattleReset) me.lastBattleReset = now
