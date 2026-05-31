@@ -704,14 +704,11 @@ if (
     )
 
     return safeSend(
-        msg.key.remoteJid,
-        {
-            text:
-
-"⏳ انتظر ${left} ثانية قبل الهجوم مرة أخرى"
-}
+    msg.key.remoteJid,
+    {
+        text: `⏳ انتظر ${left} ثانية قبل الهجوم مرة أخرى`
+    }
 )
-}
 
 me.lastBossAttack = now
 
@@ -2938,5 +2935,5 @@ await sock.sendMessage(
 }
 )
 }
-
+})
 startBot()
