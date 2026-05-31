@@ -13,7 +13,7 @@ const bosses = require('./bosses')
 const Player = require('./models/Player')
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
-
+let currentBoss = null
 const allCharacters = require('./characters.json')
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected'))
@@ -605,6 +605,18 @@ async function startBot() {
             )
         }
 
+        if (text === '.بوس') {
+
+    currentBoss = bosses[Math.floor(Math.random() * bosses.length)]
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: `🔥 ظهر زعيم عالمي!
+
+👑 ${currentBoss.name}
+استخدم .زعيم لعرض المعلومات`
+    })
+        }
+        
 if (text === '.جوائز') {
 
 return safeSend(msg.key.remoteJid, {
