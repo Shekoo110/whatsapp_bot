@@ -53,12 +53,16 @@ const PlayerSchema = new mongoose.Schema({
         default: 0
     },
 
-    dailyBattles: {
+    // =========================
+    // نظام القتالات اليومي
+    // =========================
+
+    fights: {
         type: Number,
         default: 5
     },
 
-    lastBattleReset: {
+    lastFightReset: {
         type: Number,
         default: Date.now
     }
