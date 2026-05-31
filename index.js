@@ -1333,7 +1333,6 @@ if (
     abilityMessage =
         `✨ تم تفعيل قدرة ${myCharacter.ability}`
 }
-}
 
         const rewards = {
             'عادي': 100,
