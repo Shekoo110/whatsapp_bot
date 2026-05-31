@@ -2166,11 +2166,9 @@ const charName =
 const cooldown = 30 * 60 * 1000
 
 if (me.fights == null) me.fights = 5
-}
 
 if (!me.lastFightReset) {
     me.lastFightReset = now
-
 }
 
 if (now - me.lastFightReset >= cooldown) {
