@@ -2165,21 +2165,21 @@ const charName =
         const now = Date.now()
 const cooldown = 30 * 60 * 1000
 
-if (me.dailyBattles == null) {
-    me.dailyBattles = 5
+if (me.fights == null) me.fights = 5
 }
 
-if (!me.lastBattleReset) {
-    me.lastBattleReset = now
+if (!me.lastFightReset) {
+    me.lastFightReset = now
+
 }
 
-if (now - me.lastBattleReset >= cooldown) {
-    me.dailyBattles = 5
-    me.lastBattleReset = now
+if (now - me.lastFightReset >= cooldown) {
+    me.fights = 5
+    me.lastFightReset = now
     await me.save()
 }
 
-        if (me.dailyBattles <= 0) {
+        if (me.fights <= 0)
             return safeSend(msg.key.remoteJid, {
                 text: '⏳ انتهت القتالات اليومية (5/5)'
             })
@@ -2316,7 +2316,7 @@ while (me.xp >= me.level * 100) {
     me.level += 1
 }
 
-me.dailyBattles = Math.max(0, (me.dailyBattles || 0) - 1)
+me.fights = Math.max(0, (me.fights || 0) - 1)
 
 await me.save()
 
@@ -2368,7 +2368,7 @@ ${winner}
 ${reward}
 
 🎟️ القتالات المتبقية:
-${me.dailyBattles}/5
+${updatedMe.fights}/5
 
 ━━━━━━━━━━━━━━━━━━
 
