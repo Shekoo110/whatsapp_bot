@@ -2397,7 +2397,7 @@ if (
 return safeSend(msg.key.remoteJid, {
     text: battleMessage
     })
-}
+
 
     } catch (err) {
 
