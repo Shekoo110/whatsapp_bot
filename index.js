@@ -1979,6 +1979,7 @@ const enemyAbility =
         Math.floor(Math.random() * enemyPool.length)
     ]
 
+enemyAbilityName = enemyAbility[0]
 enemyAbilityDescription = enemyAbility[1]
 
 const oldMyAttack = myAttack
@@ -1991,8 +1992,8 @@ enemyAttack = myAttack
 
 myAttack = oldMyAttack
 
-    let winner
-    let reward
+let winner
+let reward
 
     if (myAttack >= enemyAttack) {
 
