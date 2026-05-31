@@ -651,7 +651,7 @@ if (player.pulls <= 0) {
     const remaining =
         cooldown - (now - player.lastReset)
 
-    ...
+
 }
 
 
