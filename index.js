@@ -884,6 +884,7 @@ if (text.startsWith('.مزاد')) {
         let player = await Player.findOne({ userId })
 
         if (!player) {
+
             return safeSend(msg.key.remoteJid, {
                 text: '❌ لا تملك حساباً'
             })
@@ -904,7 +905,8 @@ if (text.startsWith('.مزاد')) {
             })
         }
 
-        const character = player.characters[charIndex]
+        const character =
+            player.characters[charIndex]
 
         await Market.create({
             seller: userId,
@@ -918,6 +920,42 @@ if (text.startsWith('.مزاد')) {
 
         return safeSend(msg.key.remoteJid, {
             text:
+
+`╔════════════════════╗
+        🏪 𝐀𝐔𝐂𝐓𝐈𝐎𝐍
+╚════════════════════╝
+
+✅ تم عرض الشخصية في السوق
+
+🧿 الاسم :
+${character.name}
+
+🌟 الندرة :
+${character.rarity}
+
+⚔️ القوة :
+${character.power}
+
+💰 السعر :
+${price}
+
+━━━━━━━━━━━━━━━━━━
+
+🛒 يمكن للاعبين الآن شراء الشخصية
+
+💡 للعرض:
+.السوق`
+        })
+
+    } catch (err) {
+
+        console.log('Auction error:', err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء إنشاء المزاد'
+        })
+    }
+}
 
 `
 
