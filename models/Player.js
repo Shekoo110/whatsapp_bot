@@ -65,6 +65,20 @@ const PlayerSchema = new mongoose.Schema({
     lastFightReset: {
         type: Number,
         default: Date.now
+    },
+
+    // =========================
+    // نظام الزعيم العالمي
+    // =========================
+
+    bossDamage: {
+        type: Number,
+        default: 0
+    },
+
+    lastBossAttack: {
+        type: Number,
+        default: 0
     }
 
 })
