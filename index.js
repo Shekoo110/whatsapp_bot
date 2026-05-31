@@ -772,7 +772,21 @@ if (Math.random() <= 0.15) {
 currentBoss.hp -= damage
 
 if (currentBoss.hp < 0)
-    currentBoss.hp = 0
+currentBoss.hp = 0
+
+if (currentBoss.hp <= 0) {
+
+currentBoss.hp = 0
+
+await distributeBossRewards(
+    msg.key.remoteJid
+)
+
+currentBoss = null
+
+return
+
+}
 
 me.bossDamage =
     (me.bossDamage || 0) + damage
