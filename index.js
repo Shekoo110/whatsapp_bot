@@ -2911,9 +2911,7 @@ for (const player of players) {
 await sock.sendMessage(
     groupId,
     {
-        text:
-
-`🏆 تم هزيمة الزعيم العالمي!
+        text: `🏆 تم هزيمة الزعيم العالمي!
 
 🥇 المركز الأول
 💰 10000 مال
