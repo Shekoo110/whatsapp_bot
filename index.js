@@ -1263,24 +1263,20 @@ let enemyAttack =
     Math.floor(Math.random() * 300)
 
 let abilityActivated = false
-
-const powerDiff =
-    enemyCharacter.power - myCharacter.power
+let abilityMessage = ''
 
 if (
-    myCharacter.ability === 'التحويل' &&
-    powerDiff >= 100 &&
-    powerDiff <= 200
+    myCharacter.ability &&
+    Math.random() * 100 <= (myCharacter.abilityChance || 0)
 ) {
 
-    const chance = Math.random() * 100
+    abilityActivated = true
 
-    if (chance <= 30) {
+    myAttack += (myCharacter.abilityBoost || 0)
 
-        abilityActivated = true
-
-        myAttack = enemyAttack + 1
-    }
+    abilityMessage =
+        `✨ تم تفعيل قدرة ${myCharacter.ability}`
+}
 }
 
         const rewards = {
