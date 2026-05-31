@@ -404,7 +404,13 @@ async function startBot() {
 
     sock.ev.on('messages.upsert', async ({ messages }) => {
 
-        const msg = messages[0]
+    const msg = messages[0]
+
+    console.log('CHAT ID:', msg.key.remoteJid)
+
+    if (!msg.message) return
+
+    // باقي الكود
 
         if (!msg.message || !msg.key.remoteJid) return
 
