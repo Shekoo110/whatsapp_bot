@@ -2929,8 +2929,8 @@ await sock.sendMessage(
 ✨ شخصية ممتازة
 
 🎉 تم توزيع الجوائز بنجاح`
-}
-)
+})
+
 }
 
 startBot()
