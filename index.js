@@ -2761,8 +2761,6 @@ return safeSend(msg.key.remoteJid, {
     }
 }
 
-    })
-}
 
 async function distributeBossRewards(
     sock,
