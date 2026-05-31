@@ -1265,14 +1265,34 @@ let enemyAttack =
 let abilityActivated = false
 let abilityMessage = ''
 
+let abilityChance = 50
+let abilityBoost = 0.50
+
+if (myCharacter.rarity === 'ممتاز') {
+    abilityChance = 35
+    abilityBoost = 0.35
+}
+
+if (myCharacter.rarity === 'اسطوري') {
+    abilityChance = 20
+    abilityBoost = 0.20
+}
+
+if (myCharacter.rarity === 'SSS') {
+    abilityChance = 10
+    abilityBoost = 0.10
+}
+
 if (
     myCharacter.ability &&
-    Math.random() * 100 <= (myCharacter.abilityChance || 0)
+    Math.random() * 100 <= abilityChance
 ) {
 
     abilityActivated = true
 
-    myAttack += (myCharacter.abilityBoost || 0)
+    myAttack += Math.floor(
+        myCharacter.power * abilityBoost
+    )
 
     abilityMessage =
         `✨ تم تفعيل قدرة ${myCharacter.ability}`
@@ -1337,13 +1357,20 @@ ${enemyCharacter.name}
 ⚡ القوة:
 ${enemyCharacter.power}
 
+━━━━━━━━━━━━━━━━━━
+
 ${abilityActivated
 ? `✨ تم تفعيل قدرة ${myCharacter.ability} ✨
 
-`
-: ''}━━━━━━━━━━━━━━━━━━
+⚡ حصلت الشخصية على تعزيز قتالي
 
-🏆 الفائز:
+━━━━━━━━━━━━━━━━━━
+`
+: ''}
+
+🏆 𝐖𝐈𝐍𝐍𝐄𝐑
+
+👑 الفائز:
 ${winner}
 
 💰 المكافأة:
@@ -1358,7 +1385,7 @@ ${me.dailyBattles}/5
 ❗ لا توجد خسارة شخصيات في هذا القتال
 
 ╔══════════════════════╗
-      🔥 𝐁𝐀𝐓𝐓𝐋𝐄 𝐄𝐍𝐃 🔥
+        🔥 𝐁𝐀𝐓𝐓𝐋𝐄 𝐄𝐍𝐃 🔥
 ╚══════════════════════╝`
         })
 
