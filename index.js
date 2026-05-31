@@ -2958,7 +2958,11 @@ ${ranking}
         mentions
     }
 )
-    async function spawnBoss(sock, groupId) {
+
+} // نهاية distributeBossRewards
+
+
+async function spawnBoss(sock, groupId) {
 
     currentBoss = {
         ...bosses[Math.floor(Math.random() * bosses.length)]
@@ -2977,9 +2981,7 @@ ${ranking}
 ⚔️ استخدم .زعيم للمعلومات
 🗡️ استخدم .هجوم للمشاركة`
     })
-    }
-
-} // نهاية distributeBossRewards
+}
 
 }) // نهاية messages.upsert
 
