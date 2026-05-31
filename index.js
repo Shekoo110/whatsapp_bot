@@ -839,31 +839,16 @@ if (Math.random() <= 0.15) {
 
 currentBoss.hp -= damage
 
+if (currentBoss.hp < 0) {
+    currentBoss.hp = 0
+}
+
 await Boss.updateOne(
     {},
     {
         hp: currentBoss.hp
     }
 )
-
-if (currentBoss.hp < 0)
-currentBoss.hp = 0
-
-if (currentBoss.hp <= 0) {
-
-currentBoss.hp = 0
-
-await distributeBossRewards(
-    msg.key.remoteJid
-)
-
-await Boss.deleteMany({})
-
-currentBoss = null
-
-return
-
-}
 
 me.bossDamage =
     (me.bossDamage || 0) + damage
@@ -872,23 +857,16 @@ await me.save()
 
 if (currentBoss.hp <= 0) {
 
-    currentBoss.hp = 0
+    await distributeBossRewards(
+        sock,
+        msg.key.remoteJid
+    )
 
-    return safeSend(
-        msg.key.remoteJid,
-        {
-            text:
+    await Boss.deleteMany({})
 
-`🏆 تم هزيمة الزعيم!
+    currentBoss = null
 
-👑 ${currentBoss.name}
-
-💥 الضربة القاضية بواسطة:
-${strongest.name}
-
-🎁 سيتم توزيع الجوائز قريباً`
-}
-)
+    return
 }
 
 return safeSend(
@@ -913,9 +891,8 @@ ${currentBoss.name}
 
 ❤️ المتبقي:
 ${currentBoss.hp}/${currentBoss.maxHp}`
-}
+    }
 )
-}
 
         if (text === '.زعيم') {
 
