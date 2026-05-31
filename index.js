@@ -10,6 +10,7 @@ const QRCode = require("qrcode")
 
 const mongoose = require('mongoose')
 const bosses = require('./bosses')
+const Boss = require('./models/Boss')
 const Player = require('./models/Player')
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
@@ -353,6 +354,13 @@ async function generateShop() {
 
 async function startBot() {
 
+    const savedBoss = await Boss.findOne()
+
+    if (savedBoss) {
+        currentBoss = savedBoss
+        console.log('✅ تم تحميل الزعيم المحفوظ')
+    }
+
     const { state, saveCreds } =
         await useMultiFileAuthState('auth')
 
@@ -609,7 +617,13 @@ async function startBot() {
 
         if (text === '.بوس') {
 
-    currentBoss = bosses[Math.floor(Math.random() * bosses.length)]
+    currentBoss = {
+    ...bosses[Math.floor(Math.random() * bosses.length)]
+}
+
+await Boss.deleteMany({})
+
+await Boss.create(currentBoss)
 
     return sock.sendMessage(msg.key.remoteJid, {
         text: `🔥 ظهر زعيم عالمي!
@@ -825,6 +839,13 @@ if (Math.random() <= 0.15) {
 
 currentBoss.hp -= damage
 
+await Boss.updateOne(
+    {},
+    {
+        hp: currentBoss.hp
+    }
+)
+
 if (currentBoss.hp < 0)
 currentBoss.hp = 0
 
@@ -835,6 +856,8 @@ currentBoss.hp = 0
 await distributeBossRewards(
     msg.key.remoteJid
 )
+
+await Boss.deleteMany({})
 
 currentBoss = null
 
