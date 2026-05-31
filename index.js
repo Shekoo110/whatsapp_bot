@@ -52,6 +52,93 @@ const safeSaveMarket = (market) => {
         console.log('Save error market')
     }
 }
+// =========================
+// .عرض
+// =========================
+
+if (text.startsWith('.عرض')) {
+
+try {
+
+    const args = text.split(' ')
+
+    const number = Number(args[1]) - 1
+
+    if (isNaN(number)) {
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ استخدم: .عرض رقم_الشخصية'
+        })
+    }
+
+    let player = await Player.findOne({ userId })
+
+    if (!player || !player.characters?.length) {
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا تملك شخصيات'
+        })
+    }
+
+    const character = player.characters[number]
+
+    if (!character) {
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ رقم الشخصية غير موجود'
+        })
+    }
+
+    const imagePath =
+        path.join(__dirname, character.image)
+
+    if (!fs.existsSync(imagePath)) {
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+
+`❌ صورة الشخصية غير موجودة
+
+الاسم: ${character.name}
+المسار: ${character.image}`
+})
+}
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        image: fs.readFileSync(imagePath),
+
+        caption:
+
+`╔════════════════════╗
+🖼️ 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑
+╚════════════════════╝
+
+🧿 الاسم:
+${character.name}
+
+🌟 الندرة:
+${character.rarity}
+
+⚔️ القوة:
+${character.power}
+
+🌌 الأنمي:
+${character.anime}
+
+✨ القدرة:
+${character.ability || 'لا توجد'}`
+})
+
+} catch (err) {
+
+    console.log('Show Character Error:', err)
+
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ حدث خطأ أثناء عرض الشخصية'
+    })
+}
+
+}
 
 // =========================
 // ملفات اللعبة
