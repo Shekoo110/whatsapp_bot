@@ -2906,29 +2906,63 @@ for (const player of players) {
     await player.save()
 }
 
+const mentions = players.map(p => p.userId)
+
+let ranking = ''
+
+players.forEach((p, i) => {
+
+    ranking +=
+`${i + 1}- @${p.userId.split('@')[0]}
+💥 الضرر: ${p.bossDamage}
+
+`
+})
+
 await sock.sendMessage(
     groupId,
     {
         text: `🏆 تم هزيمة الزعيم العالمي!
 
 🥇 المركز الأول
-💰 10000 مال
-⭐ 1000 XP
-👑 شخصية اسطورية
+@${players[0]?.userId.split('@')[0] || 'لا يوجد'}
 
 🥈 المركز الثاني
-💰 5000 مال
-⭐ 500 XP
-🎲 فرصة اسطوري أو ممتاز
+@${players[1]?.userId.split('@')[0] || 'لا يوجد'}
 
-🥉 المركز الثالث وما بعده
-💰 2500 مال
-⭐ 500 XP
-✨ شخصية ممتازة
+🥉 المركز الثالث
+@${players[2]?.userId.split('@')[0] || 'لا يوجد'}
 
-🎉 تم توزيع الجوائز بنجاح`
+━━━━━━━━━━━━━━━━━━
+
+📊 ترتيب جميع المشاركين
+
+${ranking}
+
+🎉 تم توزيع الجوائز بنجاح`,
+        mentions
     }
 )
+    async function spawnBoss(sock, groupId) {
+
+    currentBoss = {
+        ...bosses[Math.floor(Math.random() * bosses.length)]
+    }
+
+    await Boss.deleteMany({})
+    await Boss.create(currentBoss)
+
+    await sock.sendMessage(groupId, {
+        text: `🔥 ظهر زعيم عالمي جديد!
+
+👑 ${currentBoss.name}
+
+❤️ ${currentBoss.hp}/${currentBoss.maxHp}
+
+⚔️ استخدم .زعيم للمعلومات
+🗡️ استخدم .هجوم للمشاركة`
+    })
+    }
 
 } // نهاية distributeBossRewards
 
