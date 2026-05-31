@@ -2279,7 +2279,7 @@ if (
         let reward = 0
 
         me.dailyBattles -= 1
-
+await me.save()
         if (myAttack >= enemyAttack) {
 
     winner = myCharacter.name
