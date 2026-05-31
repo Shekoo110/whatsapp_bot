@@ -1510,6 +1510,368 @@ if (text === '.متجر') {
             })
     }
 }
+        
+// =========================
+// .قتال_مجموع
+// =========================
+        
+        
+if (text.startsWith('.قتال_مجموع')) {
+
+try {
+
+    const mentioned =
+        msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
+
+    if (!mentioned || !mentioned[0]) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ استخدم منشن\n\nمثال:\n.قتال_مجموع @user'
+        })
+    }
+
+    const targetId = mentioned[0]
+
+    const me = await Player.findOne({ userId })
+    const enemy = await Player.findOne({ userId: targetId })
+
+    if (!me || !enemy) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ أحد اللاعبين لا يملك حساباً'
+        })
+    }
+
+    if (!me.characters?.length) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا تملك شخصيات'
+        })
+    }
+
+    if (!enemy.characters?.length) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ الخصم لا يملك شخصيات'
+        })
+    }
+
+    let myPower =
+        me.characters.reduce(
+            (sum, c) => sum + Number(c.power || 0),
+            0
+        )
+
+    let enemyPower =
+        enemy.characters.reduce(
+            (sum, c) => sum + Number(c.power || 0),
+            0
+        )
+
+    let myAttack = myPower
+    let enemyAttack = enemyPower
+
+    let abilityName = 'بدون'
+    let abilityTier = 'عادية'
+
+    // =========================
+// القدرات العادية 50%
+// =========================
+let reducedReward = false
+    
+const common = [
+
+['🔥 غضب المحارب', () => {
+    myAttack += Math.floor(myAttack * 0.30)
+}],
+
+['💥 الضربة الحرجة', () => {
+    myAttack += Math.floor(myAttack * 0.50)
+}],
+
+['🛡️ درع الحماية', () => {
+    enemyAttack -= Math.floor(enemyAttack * 0.25)
+}],
+
+['🔄 الكاونتر', () => {
+    enemyAttack -= Math.floor(enemyAttack * 0.20)
+}],
+
+['🃏 نين متطور', () => {
+    myAttack += Math.floor(myAttack * 0.40)
+}],
+
+['🌊 تنفس الماء', () => {
+    myAttack += Math.floor(myAttack * 0.45)
+}],
+
+['🔵 طور الناسك', () => {
+    myAttack += Math.floor(myAttack * 0.35)
+}]
+
+]
+
+// =========================
+// القدرات النادرة 30%
+// =========================
+
+const rare = [
+
+['🍈 أكل فاكهة شيطان', () => {
+    myAttack += Math.floor(myAttack * 0.50)
+}],
+
+['⚔️ بانكاي', () => {
+    myAttack += Math.floor(myAttack * 0.40)
+}],
+
+['⚔️ هاكي التصلب المتقدم', () => {
+    myAttack += Math.floor(myAttack * 0.55)
+}],
+
+['🟡 سوبر سايان', () => {
+    myAttack += Math.floor(myAttack * 0.60)
+}],
+
+['⚡ تنفس البرق', () => {
+    myAttack += Math.floor(myAttack * 0.70)
+}],
+
+['👁️ مانغيكيو شارينغان', () => {
+    myAttack += Math.floor(myAttack * 0.45)
+}],
+
+['👑 قوة الكوينشي', () => {
+    myAttack += Math.floor(myAttack * 0.50)
+}],
+
+['⚡ الغريزة الفائقة', () => {
+
+    if (Math.random() <= 0.30) {
+        enemyAttack = 0
+    }
+
+}],
+
+['🌪️ الاستبدال (ناروتو)', () => {
+
+    enemyAttack = 0
+
+}]
+
+]
+
+// =========================
+// القدرات الأسطورية 15%
+// =========================
+
+const legendary = [
+
+['🔴 سوبر سايان غود', () => {
+    myAttack += Math.floor(myAttack * 0.90)
+}],
+
+['🔥 تنفس الشمس', () => {
+    myAttack += Math.floor(myAttack * 0.90)
+}],
+
+['👑 هاكي الملوك', () => {
+    enemyAttack -= Math.floor(enemyAttack * 0.25)
+}],
+
+['🖤 أنتي ماجيك', () => {
+    enemyAttack -= Math.floor(enemyAttack * 0.40)
+}],
+
+['👁️ العين الشاملة', () => {
+    enemyAttack -= Math.floor(enemyAttack * 0.30)
+}],
+
+['🔥 أماتيراسو', () => {
+    enemyAttack -= Math.floor(enemyAttack * 0.20)
+}],
+
+['⚔️ سوسانو الكامل', () => {
+    myAttack += Math.floor(myAttack * 0.90)
+}],
+
+['👑 ملك السحر', () => {
+    myAttack += Math.floor(myAttack * 0.90)
+}],
+
+['👑 ملك اللعنات', () => {
+    myAttack += Math.floor(myAttack * 1.00)
+}],
+
+['⚙️ جير 5', () => {
+    myAttack += Math.floor(myAttack * 0.80)
+}],
+
+['♾️ اللانهاية', () => {
+    enemyAttack -= Math.floor(enemyAttack * 0.40)
+}]
+
+]
+
+// =========================
+// القدرات الملحمية 5%
+// =========================
+
+const epic = [
+
+['🐉 نيكا', () => {
+    myAttack += Math.floor(myAttack * 1.00)
+}],
+
+['🌀 كسر الحدود', () => {
+    myAttack += Math.floor(myAttack * 2.00)
+}],
+
+['🎲 الحظ المطلق', () => {
+    myAttack *= 2
+}],
+
+['🌟 قوة البطل المختار', () => {
+    myAttack *= 2
+}],
+
+['🌌 الصحوة الكاملة', () => {
+    myAttack *= 2.5
+}],
+
+['👊 البوابة الثامنة', () => {
+
+    myAttack += Math.floor(myAttack * 0.70)
+
+    reducedReward = true
+
+}]
+
+]
+
+    const tierChance = Math.random() * 100
+
+    let selectedPool
+
+    if (tierChance <= 50) {
+        selectedPool = common
+        abilityTier = 'عادية'
+    } else if (tierChance <= 80) {
+        selectedPool = rare
+        abilityTier = 'نادرة'
+    } else if (tierChance <= 95) {
+        selectedPool = legendary
+        abilityTier = 'أسطورية'
+    } else {
+        selectedPool = epic
+        abilityTier = 'ملحمية'
+    }
+
+    const ability =
+        selectedPool[
+            Math.floor(Math.random() * selectedPool.length)
+        ]
+
+    abilityName = ability[0]
+    ability[1]()
+
+    myAttack += Math.floor(Math.random() * 1000)
+    enemyAttack += Math.floor(Math.random() * 1000)
+
+    let winner
+    let reward
+
+    if (myAttack >= enemyAttack) {
+
+    winner = 'أنت'
+
+    reward =
+        Math.max(
+            500,
+            Math.floor(enemyPower / 10)
+        )
+
+    if (reducedReward) {
+
+        reward =
+            Math.floor(reward * 0.70)
+
+    }
+
+    me.money =
+        (me.money || 0) + reward
+
+    me.xp =
+        (me.xp || 0) + 100
+
+
+
+    } else {
+
+        winner = 'الخصم'
+
+        reward = 0
+    }
+
+    while (
+        (me.xp || 0) >=
+        (me.level || 1) * 500
+    ) {
+        me.xp -= (me.level || 1) * 500
+        me.level += 1
+    }
+
+    await me.save()
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+
+`⚔️ ══〔 𝐆𝐑𝐀𝐍𝐃 𝐁𝐀𝐓𝐓𝐋𝐄 〕══ ⚔️
+
+👤 مجموع قوتك:
+${myPower}
+
+👥 مجموع قوة الخصم:
+${enemyPower}
+
+━━━━━━━━━━━━━━━━━━
+
+✨ القدرة المفعلة:
+${abilityName}
+
+🏷️ التصنيف:
+${abilityTier}
+
+━━━━━━━━━━━━━━━━━━
+
+⚔️ قوتك النهائية:
+${Math.floor(myAttack)}
+
+🛡️ قوة الخصم النهائية:
+${Math.floor(enemyAttack)}
+
+━━━━━━━━━━━━━━━━━━
+
+🏆 الفائز:
+${winner}
+
+💰 المكافأة:
+${reward}
+
+🎖️ المستوى:
+${me.level}
+
+⭐ الخبرة:
+${me.xp}`
+})
+
+} catch (err) {
+
+    console.log(err)
+
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ حدث خطأ أثناء القتال'
+    })
+}
+
+}
+        
         // =========================
         // .قتال
         // =========================
