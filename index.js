@@ -1428,8 +1428,7 @@ if (text === '.متجر') {
 
         // إعادة تعيين القتالات كل 24 ساعة
         const now = Date.now()
-        const cooldown = const cooldown = 30 * 60 * 1000
-
+        const cooldown = 30 * 60 * 1000
         if (!me.dailyBattles) me.dailyBattles = 5
         if (!me.lastBattleReset) me.lastBattleReset = now
 
