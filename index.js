@@ -1219,16 +1219,30 @@ ${price}
 
         player.money -= item.price
 
-        player.characters.push(item.character)
+player.characters.push(item.character)
 
-        await player.save()
+// 💰 تحويل المال للبائع
+const seller = await Player.findOne({
+userId: item.seller
+})
 
-        market.splice(itemNumber, 1)
+if (seller) {
 
-        safeSaveMarket(market)
+seller.money =
+    (seller.money || 0) + item.price
 
-        return safeSend(msg.key.remoteJid, {
-            text:
+await seller.save()
+
+}
+
+await player.save()
+
+market.splice(itemNumber, 1)
+
+safeSaveMarket(market)
+
+return safeSend(msg.key.remoteJid, {
+text:
 
 `╔════════════════════╗
       🛒 𝐏𝐔𝐑𝐂𝐇𝐀𝐒𝐄
