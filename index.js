@@ -1611,9 +1611,11 @@ ${minutes} دقيقة
     let enemyAttack = enemyPower
 
     let myAbilityName = 'بدون'
+let myAbilityDescription = 'لا يوجد'
 let myAbilityTier = 'عادية'
 
 let enemyAbilityName = 'بدون'
+let enemyAbilityDescription = 'لا يوجد'
 let enemyAbilityTier = 'عادية'
 
     // =========================
@@ -1657,50 +1659,82 @@ const common = [
 // القدرات النادرة 30%
 // =========================
 
-const rare = [
-
-['🍈 أكل فاكهة شيطان', () => {
+[
+'🍈 أكل فاكهة شيطان',
+'يزيد القوة بنسبة 50%',
+() => {
     myAttack += Math.floor(myAttack * 0.50)
-}],
+}
+],
 
-['⚔️ بانكاي', () => {
+[
+'⚔️ بانكاي',
+'يزيد القوة بنسبة 40%',
+() => {
     myAttack += Math.floor(myAttack * 0.40)
-}],
+}
+],
 
-['⚔️ هاكي التصلب المتقدم', () => {
+[
+'⚔️ هاكي التصلب المتقدم',
+'يزيد القوة بنسبة 55%',
+() => {
     myAttack += Math.floor(myAttack * 0.55)
-}],
+}
+],
 
-['🟡 سوبر سايان', () => {
+[
+'🟡 سوبر سايان',
+'يزيد القوة بنسبة 60%',
+() => {
     myAttack += Math.floor(myAttack * 0.60)
-}],
+}
+],
 
-['⚡ تنفس البرق', () => {
+[
+'⚡ تنفس البرق',
+'يزيد القوة بنسبة 70%',
+() => {
     myAttack += Math.floor(myAttack * 0.70)
-}],
+}
+],
 
-['👁️ مانغيكيو شارينغان', () => {
+[
+'👁️ مانغيكيو شارينغان',
+'يزيد القوة بنسبة 45%',
+() => {
     myAttack += Math.floor(myAttack * 0.45)
-}],
+}
+],
 
-['👑 قوة الكوينشي', () => {
+[
+'👑 قوة الكوينشي',
+'يزيد القوة بنسبة 50%',
+() => {
     myAttack += Math.floor(myAttack * 0.50)
-}],
+}
+],
 
-['⚡ الغريزة الفائقة', () => {
+[
+'⚡ الغريزة الفائقة',
+'فرصة 30% لتفادي الهجوم بالكامل',
+() => {
 
     if (Math.random() <= 0.30) {
         enemyAttack = 0
     }
 
-}],
+}
+],
 
-['🌪️ الاستبدال (ناروتو)', () => {
+[
+'🌪️ الاستبدال (ناروتو)',
+'يتفادى هجوم الخصم بالكامل مرة واحدة',
+() => {
 
     enemyAttack = 0
 
-}]
-
+}
 ]
 
 // =========================
@@ -1709,49 +1743,93 @@ const rare = [
 
 const legendary = [
 
-['🔴 سوبر سايان غود', () => {
+[
+'🔴 سوبر سايان غود',
+'يزيد القوة بنسبة 90%',
+() => {
     myAttack += Math.floor(myAttack * 0.90)
-}],
+}
+],
 
-['🔥 تنفس الشمس', () => {
+[
+'🔥 تنفس الشمس',
+'يزيد القوة بنسبة 90%',
+() => {
     myAttack += Math.floor(myAttack * 0.90)
-}],
+}
+],
 
-['👑 هاكي الملوك', () => {
+[
+'👑 هاكي الملوك',
+'يضعف قوة الخصم بنسبة 25%',
+() => {
     enemyAttack -= Math.floor(enemyAttack * 0.25)
-}],
+}
+],
 
-['🖤 أنتي ماجيك', () => {
+[
+'🖤 أنتي ماجيك',
+'يقلل قوة الخصم بنسبة 40%',
+() => {
     enemyAttack -= Math.floor(enemyAttack * 0.40)
-}],
+}
+],
 
-['👁️ العين الشاملة', () => {
+[
+'👁️ العين الشاملة',
+'تكشف نقطة ضعف الخصم وتقلل قوته 30%',
+() => {
     enemyAttack -= Math.floor(enemyAttack * 0.30)
-}],
+}
+],
 
-['🔥 أماتيراسو', () => {
+[
+'🔥 أماتيراسو',
+'يحرق الخصم ويقلل قوته 20%',
+() => {
     enemyAttack -= Math.floor(enemyAttack * 0.20)
-}],
+}
+],
 
-['⚔️ سوسانو الكامل', () => {
+[
+'⚔️ سوسانو الكامل',
+'يزيد القوة بنسبة 90%',
+() => {
     myAttack += Math.floor(myAttack * 0.90)
-}],
+}
+],
 
-['👑 ملك السحر', () => {
+[
+'👑 ملك السحر',
+'يزيد القوة بنسبة 90%',
+() => {
     myAttack += Math.floor(myAttack * 0.90)
-}],
+}
+],
 
-['👑 ملك اللعنات', () => {
+[
+'👑 ملك اللعنات',
+'يزيد القوة بنسبة 100%',
+() => {
     myAttack += Math.floor(myAttack * 1.00)
-}],
+}
+],
 
-['⚙️ جير 5', () => {
+[
+'⚙️ جير 5',
+'يزيد القوة بنسبة 80%',
+() => {
     myAttack += Math.floor(myAttack * 0.80)
-}],
+}
+],
 
-['♾️ اللانهاية', () => {
+[
+'♾️ اللانهاية',
+'تقلل قوة الخصم بنسبة 40%',
+() => {
     enemyAttack -= Math.floor(enemyAttack * 0.40)
-}]
+}
+]
 
 ]
 
@@ -1761,33 +1839,54 @@ const legendary = [
 
 const epic = [
 
-['🐉 نيكا', () => {
+[
+'🐉 نيكا',
+'يزيد القوة بنسبة 100%',
+() => {
     myAttack += Math.floor(myAttack * 1.00)
-}],
+}
+],
 
-['🌀 كسر الحدود', () => {
+[
+'🌀 كسر الحدود',
+'يزيد القوة بنسبة 200%',
+() => {
     myAttack += Math.floor(myAttack * 2.00)
-}],
+}
+],
 
-['🎲 الحظ المطلق', () => {
+[
+'🎲 الحظ المطلق',
+'يضاعف القوة ×2',
+() => {
     myAttack *= 2
-}],
+}
+],
 
-['🌟 قوة البطل المختار', () => {
+[
+'🌟 قوة البطل المختار',
+'يضاعف القوة ×2',
+() => {
     myAttack *= 2
-}],
+}
+],
 
-['🌌 الصحوة الكاملة', () => {
+[
+'🌌 الصحوة الكاملة',
+'يضاعف القوة ×2.5',
+() => {
     myAttack *= 2.5
-}],
+}
+],
 
-['👊 البوابة الثامنة', () => {
-
+[
+'👊 البوابة الثامنة',
+'يزيد القوة 70% لكن تقل المكافأة 30%',
+() => {
     myAttack += Math.floor(myAttack * 0.70)
-
     reducedReward = true
-
-}]
+}
+]
 
 ]
 
@@ -1815,9 +1914,10 @@ const epic = [
     ]
 
 myAbilityName = ability[0]
+myAbilityDescription = ability[1]
 myAbilityTier = abilityTier
 
-ability[1]()
+ability[2]()
 
 const enemyTierChance = Math.random() * 100
 
@@ -1849,13 +1949,13 @@ const enemyAbility =
         Math.floor(Math.random() * enemyPool.length)
     ]
 
-enemyAbilityName = enemyAbility[0]
+enemyAbilityDescription = enemyAbility[1]
 
 const oldMyAttack = myAttack
 
 myAttack = enemyAttack
 
-enemyAbility[1]()
+enemyAbility[2]()
 
 enemyAttack = myAttack
 
@@ -1931,6 +2031,9 @@ ${enemyPower}
 ✨ قدرتك:
 ${myAbilityName}
 
+📖 الوصف:
+${myAbilityDescription}
+
 🏷️ التصنيف:
 ${myAbilityTier}
 
@@ -1938,6 +2041,9 @@ ${myAbilityTier}
 
 ✨ قدرة الخصم:
 ${enemyAbilityName}
+
+📖 الوصف:
+${enemyAbilityDescription}
 
 🏷️ التصنيف:
 ${enemyAbilityTier}
@@ -1962,7 +2068,10 @@ ${reward}
 ${me.level}
 
 ⭐ الخبرة:
-${me.xp}`
+${me.xp}
+
+⚔️ القتالات المتبقية:
+${me.fights}/5`
 })
 
 } catch (err) {
