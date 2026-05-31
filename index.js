@@ -2162,14 +2162,21 @@ ${me.fights}/5`
 
         // إعادة تعيين القتالات كل 24 ساعة
         const now = Date.now()
-        const cooldown = 30 * 60 * 1000
-        if (!me.dailyBattles) me.dailyBattles = 5
-        if (!me.lastBattleReset) me.lastBattleReset = now
+const cooldown = 30 * 60 * 1000
 
-        if (now - me.lastBattleReset >= cooldown) {
-            me.dailyBattles = 5
-            me.lastBattleReset = now
-        }
+if (me.dailyBattles == null) {
+    me.dailyBattles = 5
+}
+
+if (!me.lastBattleReset) {
+    me.lastBattleReset = now
+}
+
+if (now - me.lastBattleReset >= cooldown) {
+    me.dailyBattles = 5
+    me.lastBattleReset = now
+    await me.save()
+}
 
         if (me.dailyBattles <= 0) {
             return safeSend(msg.key.remoteJid, {
@@ -2278,8 +2285,8 @@ if (
         let winner
         let reward = 0
 
-        me.dailyBattles -= 1
-await me.save()
+        
+
         if (myAttack >= enemyAttack) {
 
     winner = myCharacter.name
@@ -2290,26 +2297,30 @@ await me.save()
     me.money = (me.money || 0) + reward
 
     me.xp = (me.xp || 0) + 50
-        } else {
 
-            winner = enemyCharacter.name
+} else {
 
-            reward =
-                rewards[myCharacter.rarity] || 100
+    winner = enemyCharacter.name
 
-            enemy.money = (enemy.money || 0) + reward
-        }
-        while (me.xp >= me.level * 100) {
+    reward =
+        rewards[myCharacter.rarity] || 100
+
+    enemy.money = (enemy.money || 0) + reward
+}
+
+while (me.xp >= me.level * 100) {
 
     me.xp -= me.level * 100
 
     me.level += 1
-        }
+}
 
-        await me.save()
-        await enemy.save()
+me.dailyBattles -= 1
 
-        return safeSend(msg.key.remoteJid, {
+await me.save()
+await enemy.save()
+
+return safeSend(msg.key.remoteJid, {
             text:
 `╔══════════════════════╗
         ⚔️ 𝐄𝐏𝐈𝐂 𝐁𝐀𝐓𝐓𝐋𝐄 ⚔️
