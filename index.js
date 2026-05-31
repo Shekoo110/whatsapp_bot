@@ -782,17 +782,15 @@ if (Math.random() <= 0.15) {
     await safeSend(
         msg.key.remoteJid,
         {
-            text:
-
-`👑 ${currentBoss.name}
+            text: `👑 ${currentBoss.name}
 
 ✨ فعل القدرة الخاصة
 
 ⚡ ${currentBoss.ability.name}
 
 📖 ${currentBoss.ability.description}`
-}
-)
+        }
+    )
 
     if (
         currentBoss.ability.effect === "heal"
@@ -870,9 +868,7 @@ if (currentBoss.hp <= 0) {
 return safeSend(
     msg.key.remoteJid,
     {
-        text:
-
-`⚔️ هجوم على الزعيم
+        text: `⚔️ هجوم على الزعيم
 
 🧿 الشخصية:
 ${strongest.name}
