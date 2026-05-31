@@ -952,87 +952,101 @@ ${player.money}
 
         if (text.startsWith('.بيع')) {
 
-    try {
+try {
 
-        const args = text.split(' ')
+    const args = text.split(' ').slice(1)
 
-        const charName = args[1]
-        const charPower = Number(args[2])
+    if (!args.length) {
 
-        if (!charName || isNaN(charPower)) {
+        return safeSend(msg.key.remoteJid, {
+            text:
 
-            return safeSend(msg.key.remoteJid, {
-                text:
 `❌ استخدم الأمر هكذا
 
-.بيع اسم_الشخصية القوة
+.بيع 1
 
-مثال:
-.بيع لوفي 1500`
-            })
-        }
+أو
 
-        let player = await Player.findOne({ userId })
+.بيع 1 2 3 4`
+})
+}
 
-        if (!player) {
-            return safeSend(msg.key.remoteJid, {
-                text: '❌ لا تملك حساباً'
-            })
-        }
+    let player = await Player.findOne({ userId })
 
-        player.characters = player.characters || []
+    if (!player) {
 
-        const charIndex =
-            player.characters.findIndex(c =>
-                c.name.toLowerCase() === charName.toLowerCase() &&
-                Number(c.power) === charPower
-            )
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا تملك حساباً'
+        })
+    }
 
-        if (charIndex === -1) {
+    player.characters = player.characters || []
 
-            return safeSend(msg.key.remoteJid, {
-                text: '❌ الشخصية غير موجودة لديك'
-            })
-        }
+    const indexes =
+        [...new Set(
+            args
+                .map(x => Number(x) - 1)
+                .filter(x => !isNaN(x))
+        )]
+        .sort((a, b) => b - a)
 
-        const character = player.characters[charIndex]
+    let totalMoney = 0
+    let soldCount = 0
+
+    for (const index of indexes) {
+
+        const character =
+            player.characters[index]
+
+        if (!character)
+            continue
 
         const sellPrice = Math.max(
             100,
             Math.floor(character.power / 2)
         )
 
-        player.money = (player.money || 0) + sellPrice
+        totalMoney += sellPrice
+        soldCount++
 
-        player.characters.splice(charIndex, 1)
+        player.characters.splice(index, 1)
+    }
 
-        await player.save()
+    if (soldCount === 0) {
 
         return safeSend(msg.key.remoteJid, {
-            text:
+            text: '❌ لم يتم العثور على شخصيات صالحة للبيع'
+        })
+    }
+
+    player.money =
+        (player.money || 0) + totalMoney
+
+    await player.save()
+
+    return safeSend(msg.key.remoteJid, {
+        text:
 
 `💰 ━━〔 𝐒𝐄𝐋𝐋 𝐒𝐔𝐂𝐂𝐄𝐒𝐒 〕━━ 💰
 
-🧿 الاسم: ${character.name}
+✅ تم بيع ${soldCount} شخصية
 
-🌟 الندرة: ${character.rarity}
-
-⚔️ القوة: ${character.power}
-
-💵 سعر البيع: ${sellPrice}
+💵 إجمالي الأرباح:
+${totalMoney}
 
 💳 رصيدك الحالي:
 ${player.money}`
-        })
+})
 
-    } catch (err) {
+} catch (err) {
 
-        console.log('Sell error:', err)
+    console.log('Sell error:', err)
 
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ حدث خطأ أثناء البيع'
-        })
-    }
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ حدث خطأ أثناء البيع'
+    })
+}
+
 }
 
 
