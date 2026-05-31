@@ -8,6 +8,8 @@ const path = require('path')
 const express = require("express")
 const QRCode = require("qrcode")
 
+console.log('Bot starting...')
+
 const mongoose = require('mongoose')
 const bosses = require('./bosses')
 const Boss = require('./models/Boss')
@@ -2926,7 +2928,8 @@ await sock.sendMessage(
 
 🎉 تم توزيع الجوائز بنجاح`
     }
-    }) 
+)
 
-}       
+}
+
 startBot()
