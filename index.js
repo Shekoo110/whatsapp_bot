@@ -655,18 +655,18 @@ if (player.pulls <= 0) {
     ...
 }
 */
+/*
+const hours =
+    Math.floor(remaining / (1000 * 60 * 60))
 
-    const hours =
-        Math.floor(remaining / (1000 * 60 * 60))
+const minutes =
+    Math.floor(
+        (remaining % (1000 * 60 * 60))
+        / (1000 * 60)
+    )
 
-    const minutes =
-        Math.floor(
-            (remaining % (1000 * 60 * 60))
-            / (1000 * 60)
-        )
-
-    return sock.sendMessage(msg.key.remoteJid, {
-        text:
+return sock.sendMessage(msg.key.remoteJid, {
+    text:
 `⏳ انتهت السحبات اليومية
 
 🕒 الوقت المتبقي:
@@ -675,8 +675,9 @@ ${hours} ساعة
 ${minutes} دقيقة
 
 🎁 تتجدد السحبات تلقائياً بعد 24 ساعة`
-    })
+})
 }
+*/
 
     let luckBonus = 0
 
