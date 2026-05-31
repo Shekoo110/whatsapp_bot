@@ -2936,5 +2936,3 @@ await sock.sendMessage(
 }
 
 startBot()
-
-startBot()
