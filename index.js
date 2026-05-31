@@ -646,10 +646,15 @@ async function startBot() {
         player.lastReset = now
     }
 
-    if (player.pulls <= 0) {
+    /*
+if (player.pulls <= 0) {
 
     const remaining =
         cooldown - (now - player.lastReset)
+
+    ...
+}
+*/
 
     const hours =
         Math.floor(remaining / (1000 * 60 * 60))
@@ -708,7 +713,7 @@ if (chance <= 5) {
         ]
 
     player.characters.push(randomCharacter)
-    player.pulls -= 1
+ //   player.pulls -= 1
 
     await player.save()
 
