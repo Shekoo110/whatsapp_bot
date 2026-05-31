@@ -763,6 +763,158 @@ if (text === '.شخصياتي') {
         })
     }
 }
+        
+// =========================
+// .رصيدي
+// =========================
+
+if (text === '.رصيدي') {
+
+    try {
+
+        let player = await Player.findOne({ userId })
+
+        if (!player) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا تملك حساباً'
+            })
+        }
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+
+`╔════════════════════╗
+        💰 𝐏𝐑𝐎𝐅𝐈𝐋𝐄
+╚════════════════════╝
+
+💳 الرصيد:
+
+${player.money || 0}
+
+━━━━━━━━━━━━━━━━━━
+
+🎖️ المستوى:
+
+${player.level || 1}
+
+⚔️ القتالات المتبقية:
+
+${player.dailyBattles || 0}/5
+
+╔════════════════════╗
+      🌟 𝐏𝐋𝐀𝐘𝐄𝐑 𝐈𝐍𝐅𝐎
+╚════════════════════╝`
+        })
+
+    } catch (err) {
+
+        console.log('Balance error:', err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء جلب بياناتك'
+        })
+    }
+}
+        
+ // =========================
+// .شراءمتجر
+// =========================
+
+if (text.startsWith('.شراءمتجر')) {
+
+    try {
+
+        const args = text.split(' ')
+        const itemNumber = Number(args[1]) - 1
+
+        const shop = await Shop.find()
+
+        const item = shop[itemNumber]
+
+        if (!item) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ العرض غير موجود'
+            })
+        }
+
+        let player = await Player.findOne({ userId })
+
+        if (!player) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا تملك حساباً'
+            })
+        }
+
+        player.money = player.money || 0
+        player.characters = player.characters || []
+
+        if (player.money < item.price) {
+
+            return safeSend(msg.key.remoteJid, {
+                text:
+`❌ لا تملك مالاً كافياً
+
+💰 المطلوب: ${item.price}
+💳 رصيدك: ${player.money}`
+            })
+        }
+
+        if (player.characters.length >= 30) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ وصلت للحد الأقصى (30 شخصية)'
+            })
+        }
+
+        player.money -= item.price
+
+        player.characters.push(item.character)
+
+        await player.save()
+
+        await Shop.findByIdAndDelete(item._id)
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+
+`╔════════════════════╗
+        🏪 𝐒𝐇𝐎𝐏
+╚════════════════════╝
+
+✅ تم شراء الشخصية بنجاح
+
+🧿 الاسم:
+${item.character.name}
+
+🌟 الندرة:
+${item.character.rarity}
+
+⚔️ القوة:
+${item.character.power}
+
+💰 السعر:
+${item.price}
+
+💳 رصيدك الحالي:
+${player.money}
+
+━━━━━━━━━━━━━━━━━━
+
+🎉 تمت إضافة الشخصية إلى مجموعتك`
+        })
+
+    } catch (err) {
+
+        console.log('Shop Buy Error:', err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء الشراء'
+        })
+    }
+}
 
         // =========================
         // .بيع
@@ -1348,13 +1500,14 @@ if (
 
         if (myAttack >= enemyAttack) {
 
-            winner = myCharacter.name
+    winner = myCharacter.name
 
-            reward =
-                rewards[enemyCharacter.rarity] || 100
+    reward =
+        rewards[enemyCharacter.rarity] || 100
 
-            me.money = (me.money || 0) + reward
+    me.money = (me.money || 0) + reward
 
+    me.xp = (me.xp || 0) + 50
         } else {
 
             winner = enemyCharacter.name
@@ -1363,6 +1516,12 @@ if (
                 rewards[myCharacter.rarity] || 100
 
             enemy.money = (enemy.money || 0) + reward
+        }
+        while (me.xp >= me.level * 100) {
+
+    me.xp -= me.level * 100
+
+    me.level += 1
         }
 
         await me.save()
