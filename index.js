@@ -652,17 +652,25 @@ async function startBot() {
         })
     }
 
-    const chance = Math.random() * 100
+    let luckBonus = 0
 
-    let rarity = 'عادي'
+if ((player.level || 1) >= 10) {
+    luckBonus = 3
+}
 
-    if (chance <= 5) {
-        rarity = 'SSS'
-    } else if (chance <= 15) {
-        rarity = 'اسطوري'
-    } else if (chance <= 40) {
-        rarity = 'ممتاز'
-    }
+let chance = Math.random() * 100
+
+chance -= luckBonus
+
+let rarity = 'عادي'
+
+if (chance <= 5) {
+    rarity = 'SSS'
+} else if (chance <= 15) {
+    rarity = 'اسطوري'
+} else if (chance <= 40) {
+    rarity = 'ممتاز'
+}
 
     const filteredCharacters =
         characters.filter(c => c.rarity === rarity)
