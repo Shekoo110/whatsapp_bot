@@ -620,7 +620,7 @@ if (!player) {
     player = new Player({
         userId,
         pulls: 5,
-        lastReset: Math.floor(Date.now() / (30 * 60 * 1000)),
+        lastReset: Date.now(),
         characters: [],
         hp: 10000,
         crit: 5,
@@ -1532,8 +1532,51 @@ try {
     const targetId = mentioned[0]
 
     const me = await Player.findOne({ userId })
-    const enemy = await Player.findOne({ userId: targetId })
+const enemy = await Player.findOne({ userId: targetId })
 
+if (!me || !enemy) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ أحد اللاعبين لا يملك حساباً'
+    })
+}
+
+const now = Date.now()
+const fightCooldown = 30 * 60 * 1000
+
+if (
+    now - (me.lastFightReset || 0)
+    >= fightCooldown
+) {
+
+    me.fights = 5
+    me.lastFightReset = now
+
+    await me.save()
+}
+    if ((me.fights || 0) <= 0) {
+
+    const remaining =
+        fightCooldown -
+        (now - me.lastFightReset)
+
+    const minutes =
+        Math.floor(
+            remaining / (1000 * 60)
+        )
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`❌ انتهت محاولات القتال
+
+⚔️ المتبقي: 0/5
+
+🕒 الوقت المتبقي:
+${minutes} دقيقة
+
+🔄 تتجدد المحاولات كل 30 دقيقة`
+    })
+    }
+    
     if (!me || !enemy) {
         return safeSend(msg.key.remoteJid, {
             text: '❌ أحد اللاعبين لا يملك حساباً'
@@ -1844,26 +1887,35 @@ myAttack = oldMyAttack
     me.xp =
         (me.xp || 0) + 100
 
+} else {
 
+    winner = 'الخصم'
 
-    } else {
+    reward =
+        Math.max(
+            500,
+            Math.floor(myPower / 10)
+        )
 
-        winner = 'الخصم'
+    enemy.money =
+        (enemy.money || 0) + reward
 
-        reward = 0
-    }
+    await enemy.save()
+}
 
     while (
-        (me.xp || 0) >=
-        (me.level || 1) * 500
-    ) {
-        me.xp -= (me.level || 1) * 500
-        me.level += 1
-    }
+    (me.xp || 0) >=
+    (me.level || 1) * 500
+) {
+    me.xp -= (me.level || 1) * 500
+    me.level += 1
+}
 
-    await me.save()
+me.fights -= 1
 
-    return safeSend(msg.key.remoteJid, {
+await me.save()
+
+return safeSend(msg.key.remoteJid, {
         text:
 
 `⚔️ ══〔 𝐆𝐑𝐀𝐍𝐃 𝐁𝐀𝐓𝐓𝐋𝐄 〕══ ⚔️
