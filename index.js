@@ -1540,12 +1540,21 @@ if (!me || !enemy) {
     })
 }
 
+if (typeof me.fights !== 'number') {
+    me.fights = 5
+}
+
+if (!me.lastFightReset) {
+    me.lastFightReset = Date.now()
+}
+
+await me.save()
+
 const now = Date.now()
 const fightCooldown = 30 * 60 * 1000
 
 if (
-    now - (me.lastFightReset || 0)
-    >= fightCooldown
+    now - me.lastFightReset >= fightCooldown
 ) {
 
     me.fights = 5
@@ -1553,7 +1562,8 @@ if (
 
     await me.save()
 }
-    if ((me.fights || 0) <= 0) {
+
+if ((me.fights || 0) <= 0) {
 
     const remaining =
         fightCooldown -
@@ -1575,7 +1585,7 @@ ${minutes} دقيقة
 
 🔄 تتجدد المحاولات كل 30 دقيقة`
     })
-    }
+}
     
     if (!me || !enemy) {
         return safeSend(msg.key.remoteJid, {
