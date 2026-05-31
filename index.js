@@ -14,9 +14,7 @@ const Player = require('./models/Player')
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
 
-const characters = require('./characters.json')
-const allCharacters =
-    require('./characters.json')
+const allCharacters = require('./characters.json')
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected'))
 .catch(err => console.log('MongoDB Error:', err))
@@ -2750,7 +2748,177 @@ return safeSend(msg.key.remoteJid, {
 }
 
     })
+async function distributeBossRewards(groupId) {
 
+const players = await Player.find({
+    bossDamage: { $gt: 0 }
+})
+
+if (!players.length) return
+
+players.sort(
+    (a, b) =>
+    (b.bossDamage || 0) -
+    (a.bossDamage || 0)
+)
+
+const first = players[0]
+const second = players[1]
+
+if (first) {
+
+    first.money += 10000
+    first.xp += 1000
+
+    const legendaryChars =
+        allCharacters.filter(
+            c => c.rarity === "اسطوري"
+        )
+
+    if (legendaryChars.length) {
+
+        const reward =
+            legendaryChars[
+                Math.floor(
+                    Math.random() *
+                    legendaryChars.length
+                )
+            ]
+
+        first.characters.push(
+            JSON.parse(
+                JSON.stringify(reward)
+            )
+        )
+    }
+
+    await first.save()
+}
+
+if (second) {
+
+    second.money += 5000
+    second.xp += 500
+
+    const roll =
+        Math.random() * 100
+
+    if (roll <= 30) {
+
+        const legendaryChars =
+            allCharacters.filter(
+                c => c.rarity === "اسطوري"
+            )
+
+        if (legendaryChars.length) {
+
+            const reward =
+                legendaryChars[
+                    Math.floor(
+                        Math.random() *
+                        legendaryChars.length
+                    )
+                ]
+
+            second.characters.push(
+                JSON.parse(
+                    JSON.stringify(reward)
+                )
+            )
+        }
+
+    } else if (roll <= 80) {
+
+        const epicChars =
+            allCharacters.filter(
+                c => c.rarity === "ممتاز"
+            )
+
+        if (epicChars.length) {
+
+            const reward =
+                epicChars[
+                    Math.floor(
+                        Math.random() *
+                        epicChars.length
+                    )
+                ]
+
+            second.characters.push(
+                JSON.parse(
+                    JSON.stringify(reward)
+                )
+            )
+        }
+    }
+
+    await second.save()
+}
+
+for (let i = 2; i < players.length; i++) {
+
+    const player = players[i]
+
+    player.money += 2500
+    player.xp += 500
+
+    const epicChars =
+        allCharacters.filter(
+            c => c.rarity === "ممتاز"
+        )
+
+    if (epicChars.length) {
+
+        const reward =
+            epicChars[
+                Math.floor(
+                    Math.random() *
+                    epicChars.length
+                )
+            ]
+
+        player.characters.push(
+            JSON.parse(
+                JSON.stringify(reward)
+            )
+        )
+    }
+
+    await player.save()
+}
+
+for (const player of players) {
+
+    player.bossDamage = 0
+
+    await player.save()
+}
+
+await sock.sendMessage(
+    groupId,
+    {
+        text:
+
+`🏆 تم هزيمة الزعيم العالمي!
+
+🥇 المركز الأول
+💰 10000 مال
+⭐ 1000 XP
+👑 شخصية اسطورية
+
+🥈 المركز الثاني
+💰 5000 مال
+⭐ 500 XP
+🎲 فرصة اسطوري أو ممتاز
+
+🥉 المركز الثالث وما بعده
+💰 2500 مال
+⭐ 500 XP
+✨ شخصية ممتازة
+
+🎉 تم توزيع الجوائز بنجاح`
+}
+)
 }
 
 startBot()
