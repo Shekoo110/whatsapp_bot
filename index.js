@@ -1567,8 +1567,11 @@ try {
     let myAttack = myPower
     let enemyAttack = enemyPower
 
-    let abilityName = 'بدون'
-    let abilityTier = 'عادية'
+    let myAbilityName = 'بدون'
+let myAbilityTier = 'عادية'
+
+let enemyAbilityName = 'بدون'
+let enemyAbilityTier = 'عادية'
 
     // =========================
 // القدرات العادية 50%
@@ -1764,15 +1767,56 @@ const epic = [
     }
 
     const ability =
-        selectedPool[
-            Math.floor(Math.random() * selectedPool.length)
-        ]
+    selectedPool[
+        Math.floor(Math.random() * selectedPool.length)
+    ]
 
-    abilityName = ability[0]
-    ability[1]()
+myAbilityName = ability[0]
+myAbilityTier = abilityTier
 
-    myAttack += Math.floor(Math.random() * 1000)
-    enemyAttack += Math.floor(Math.random() * 1000)
+ability[1]()
+
+const enemyTierChance = Math.random() * 100
+
+let enemyPool
+
+if (enemyTierChance <= 50) {
+
+    enemyPool = common
+    enemyAbilityTier = 'عادية'
+
+} else if (enemyTierChance <= 80) {
+
+    enemyPool = rare
+    enemyAbilityTier = 'نادرة'
+
+} else if (enemyTierChance <= 95) {
+
+    enemyPool = legendary
+    enemyAbilityTier = 'أسطورية'
+
+} else {
+
+    enemyPool = epic
+    enemyAbilityTier = 'ملحمية'
+}
+
+const enemyAbility =
+    enemyPool[
+        Math.floor(Math.random() * enemyPool.length)
+    ]
+
+enemyAbilityName = enemyAbility[0]
+
+const oldMyAttack = myAttack
+
+myAttack = enemyAttack
+
+enemyAbility[1]()
+
+enemyAttack = myAttack
+
+myAttack = oldMyAttack
 
     let winner
     let reward
@@ -1832,11 +1876,19 @@ ${enemyPower}
 
 ━━━━━━━━━━━━━━━━━━
 
-✨ القدرة المفعلة:
-${abilityName}
+✨ قدرتك:
+${myAbilityName}
 
 🏷️ التصنيف:
-${abilityTier}
+${myAbilityTier}
+
+━━━━━━━━━━━━━━━━━━
+
+✨ قدرة الخصم:
+${enemyAbilityName}
+
+🏷️ التصنيف:
+${enemyAbilityTier}
 
 ━━━━━━━━━━━━━━━━━━
 
