@@ -2764,7 +2764,11 @@ return safeSend(msg.key.remoteJid, {
     })
 }
 
-async function distributeBossRewards(groupId) {
+async function distributeBossRewards(
+    sock,
+    groupId
+) {
+
 const players = await Player.find({
     bossDamage: { $gt: 0 }
 })
