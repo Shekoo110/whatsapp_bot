@@ -858,9 +858,8 @@ await me.save()
 if (currentBoss.hp <= 0) {
 
     await distributeBossRewards(
-        sock,
-        msg.key.remoteJid
-    )
+    msg.key.remoteJid
+)
 
     await Boss.deleteMany({})
 
@@ -893,7 +892,8 @@ ${currentBoss.name}
 ${currentBoss.hp}/${currentBoss.maxHp}`
     }
 )
-
+        }
+        
         if (text === '.زعيم') {
 
 if (!currentBoss) {
@@ -2937,7 +2937,6 @@ await sock.sendMessage(
 🎉 تم توزيع الجوائز بنجاح`
 }
 )
-
 }
 
 startBot()
