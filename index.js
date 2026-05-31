@@ -606,6 +606,284 @@ async function startBot() {
             )
         }
 
+        if (text === '.هجوم') {
+
+if (!currentBoss) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ لا يوجد زعيم حالياً'
+    })
+}
+
+const me = await Player.findOne({ userId })
+
+if (!me || !me.characters.length) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ لا تملك شخصيات'
+    })
+}
+
+const now = Date.now()
+
+if (
+    me.lastBossAttack &&
+    now - me.lastBossAttack < 30000
+) {
+
+    const left = Math.ceil(
+        (30000 -
+        (now - me.lastBossAttack))
+        / 1000
+    )
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+"⏳ انتظر ${left} ثانية قبل الهجوم مرة أخرى"
+}
+)
+}
+
+me.lastBossAttack = now
+
+const strongest = me.characters.sort(
+    (a, b) => b.power - a.power
+)[0]
+
+let damage = strongest.power
+
+let abilityText = ""
+
+const roll = Math.random() * 100
+
+if (roll <= 15) {
+
+    damage *= 2
+
+    abilityText =
+
+`🔥 قدرة مفعلة
+
+⚡ ضربة حرجة
+
+📖 ضاعف الضرر ×2`
+}
+
+else if (roll <= 25) {
+
+    damage = Math.floor(
+        damage * 1.5
+    )
+
+    abilityText =
+
+`👑 قدرة مفعلة
+
+⚡ هاكي الملك
+
+📖 زاد الضرر 50%`
+}
+
+else if (roll <= 33) {
+
+    damage += 1000
+
+    abilityText =
+
+`✨ قدرة مفعلة
+
+⚡ استيقاظ
+
+📖 زاد الضرر 1000`
+}
+
+else if (roll <= 45) {
+
+    damage *= 2
+
+    abilityText =
+
+`⚡ قدرة مفعلة
+
+⚡ سرعة خارقة
+
+📖 حصلت على هجمة إضافية`
+}
+
+if (Math.random() <= 0.15) {
+
+    await safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`👑 ${currentBoss.name}
+
+✨ فعل القدرة الخاصة
+
+⚡ ${currentBoss.ability.name}
+
+📖 ${currentBoss.ability.description}`
+}
+)
+
+    if (
+        currentBoss.ability.effect === "heal"
+    ) {
+        currentBoss.hp += 5000
+    }
+
+    if (
+        currentBoss.ability.effect === "bigHeal"
+    ) {
+        currentBoss.hp += 10000
+    }
+
+    if (
+        currentBoss.hp >
+        currentBoss.maxHp
+    ) {
+        currentBoss.hp =
+        currentBoss.maxHp
+    }
+
+    if (
+        currentBoss.ability.effect === "halfDamage"
+    ) {
+        damage =
+        Math.floor(damage / 2)
+    }
+
+    if (
+        currentBoss.ability.effect === "dodge"
+    ) {
+        damage = 0
+    }
+
+    if (
+        currentBoss.ability.effect === "reduceDamage"
+    ) {
+        damage =
+        Math.floor(damage * 0.7)
+    }
+}
+
+currentBoss.hp -= damage
+
+if (currentBoss.hp < 0)
+    currentBoss.hp = 0
+
+me.bossDamage =
+    (me.bossDamage || 0) + damage
+
+await me.save()
+
+if (currentBoss.hp <= 0) {
+
+    currentBoss.hp = 0
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🏆 تم هزيمة الزعيم!
+
+👑 ${currentBoss.name}
+
+💥 الضربة القاضية بواسطة:
+${strongest.name}
+
+🎁 سيتم توزيع الجوائز قريباً`
+}
+)
+}
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+`⚔️ هجوم على الزعيم
+
+🧿 الشخصية:
+${strongest.name}
+
+💥 الضرر:
+${damage}
+
+${abilityText}
+
+━━━━━━━━━━━━━━━━━━
+
+👑 الزعيم:
+${currentBoss.name}
+
+❤️ المتبقي:
+${currentBoss.hp}/${currentBoss.maxHp}`
+}
+)
+}
+
+        if (text === '.زعيم') {
+
+if (!currentBoss) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ لا يوجد زعيم عالمي حالياً'
+    })
+}
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: {
+            url: currentBoss.image
+        },
+
+        caption:
+
+`👑 الزعيم العالمي
+
+🧿 الاسم:
+${currentBoss.name}
+
+❤️ الصحة:
+${currentBoss.hp}/${currentBoss.maxHp}
+
+━━━━━━━━━━━━━━━━━━
+
+✨ القدرة الخاصة:
+${currentBoss.ability.name}
+
+📖 الوصف:
+${currentBoss.ability.description}
+
+━━━━━━━━━━━━━━━━━━
+
+⚔️ استخدم .هجوم لمهاجمة الزعيم
+
+🏆 الجوائز:
+
+🥇 الأول:
+10000 مال
+1000 XP
+شخصية أسطورية
+
+🥈 الثاني:
+5000 مال
+500 XP
+30% أسطوري
+50% ممتاز
+
+🥉 الثالث وما بعده:
+2500 مال
+500 XP
+شخصية ممتازة`
+}
+)
+}
+
         // =========================
         // .اسحب
         // =========================
