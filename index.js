@@ -393,10 +393,25 @@ async function startBot() {
 
         if (connection === 'open') {
 
-            console.log('البوت اشتغل')
+    console.log('البوت اشتغل')
 
-            qrCodeData = ""
+    qrCodeData = ""
+
+    const GROUP_ID = "120363020823525909@g.us"
+
+    await spawnBoss(sock, GROUP_ID)
+
+    setInterval(async () => {
+
+        if (!currentBoss) {
+
+            await spawnBoss(sock, GROUP_ID)
+
         }
+
+    }, 60 * 60 * 1000) // ساعة
+
+}
 
         if (connection === 'close') {
 
