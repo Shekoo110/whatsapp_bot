@@ -2165,7 +2165,8 @@ const charName =
         const now = Date.now()
 const cooldown = 30 * 60 * 1000
 
-if (me.dailyBattles == null) me.dailyBattles = 5
+if (me.dailyBattles == null) {
+    me.dailyBattles = 5
 }
 
 if (!me.lastBattleReset) {
