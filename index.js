@@ -855,6 +855,7 @@ await me.save()
 if (currentBoss.hp <= 0) {
 
     await distributeBossRewards(
+    sock,
     msg.key.remoteJid
 )
 
