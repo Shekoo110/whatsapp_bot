@@ -15,7 +15,8 @@ const Market = require('./models/Market')
 const Shop = require('./models/Shop')
 
 const characters = require('./characters.json')
-
+const allCharacters =
+    require('./characters.json')
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected'))
 .catch(err => console.log('MongoDB Error:', err))
