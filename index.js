@@ -3965,17 +3965,18 @@ while (
 
     levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`
 
-    const ability = levelAbilities[me.level]
+const ability = levelAbilities[me.level]
 
-    if (ability) {
+if (ability) {
 
-        if (!me.specialAbilities)
-            me.specialAbilities = []
+    if (!me.specialAbilities)
+        me.specialAbilities = []
 
-        if (!me.specialAbilities.includes(ability.name)) {
+    if (!me.specialAbilities.includes(ability.name)) {
 
-            me.specialAbilities.push(ability.name)
-switch (me.level) {
+        me.specialAbilities.push(ability.name)
+
+        switch (me.level) {
 
     case 5:
         me.critBonus += 2
