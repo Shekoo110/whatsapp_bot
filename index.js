@@ -1525,6 +1525,22 @@ if (reward.xp)
 if (reward.draws)
     player.pulls += reward.draws
 
+// حفظ الجوائز أيضاً في MongoDB
+if (reward.money)
+    dbPlayer.money =
+        (dbPlayer.money || 0) +
+        reward.money
+
+if (reward.xp)
+    dbPlayer.xp =
+        (dbPlayer.xp || 0) +
+        reward.xp
+
+if (reward.draws)
+    dbPlayer.pulls =
+        (dbPlayer.pulls || 0) +
+        reward.draws
+
 if (reward.box) {
 
     if (!player.boxes)
@@ -1533,6 +1549,8 @@ if (reward.box) {
     player.boxes[reward.box] =
         (player.boxes[reward.box] || 0) + 1
 }
+
+await dbPlayer.save()
 
 player.attackBonus += 5
 
