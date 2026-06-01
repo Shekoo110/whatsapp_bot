@@ -801,7 +801,10 @@ async function startBot() {
     if (!floor) return
 
     await sock.sendMessage(msg.key.remoteJid, {
-        text: `🏰 برج الأبطال
+    image: {
+        url: floor.image
+    },
+    caption: `🏰 برج الأبطال
 
 📍 الطابق الحالي: ${floor.floor}/30
 
@@ -815,7 +818,7 @@ ${player.usedCharacters.length}/30
 👑 ملك الأبطال
 
 استعمل .طابق للقتال`
-    })
+})
         }
 
         // =========================
@@ -943,60 +946,92 @@ ${player.usedCharacters.length}/30
 
         if (text === '.بروفايل') {
 
+try {
+
     let player = await Player.findOne({ userId })
 
     if (!player) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            { text: '❌ لا يوجد حساب' }
-        )
+
+        player = await Player.create({
+            userId
+        })
     }
+
+    const characters =
+        Array.isArray(player.characters)
+            ? player.characters
+            : []
 
     let strongest = null
 
-    if (
-        player.characters &&
-        player.characters.length > 0
-    ) {
-        strongest = player.characters.reduce(
+    if (characters.length > 0) {
+
+        strongest = characters.reduce(
             (a, b) =>
-                a.power > b.power ? a : b
+                Number(a.power || 0) >
+                Number(b.power || 0)
+                    ? a
+                    : b
         )
     }
 
     let profilePic = null
 
     try {
-        profilePic = await sock.profilePictureUrl(
-            userId,
-            'image'
-        )
-    } catch (err) {
+
+        profilePic =
+            await sock.profilePictureUrl(
+                userId,
+                'image'
+            )
+
+    } catch (e) {
         profilePic = null
     }
 
     const profileText =
+
 `👤 الملف الشخصي
 
-🎖️ اللقب: ${player.title || 'لا يوجد'}
+🎖️ اللقب:
+${player.title || 'لا يوجد'}
 
-⭐ المستوى: ${player.level}
-✨ الخبرة: ${player.xp}
+⭐ المستوى:
+${player.level || 1}
 
-💰 المال: ${player.money}
-🎟️ السحبات: ${player.pulls}
+✨ الخبرة:
+${player.xp || 0}
 
-❤️ HP: ${player.hp}
+💰 المال:
+${player.money || 0}
 
-⚔️ هجوم إضافي: ${player.attackBonus || 0}%
-🛡️ دفاع إضافي: ${player.defenseBonus || 0}%
-💨 سرعة إضافية: ${player.speedBonus || 0}%
-💖 HP إضافي: ${player.hpBonus || 0}%
+🎟️ السحبات:
+${player.pulls || 0}
 
-🏰 الطابق الحالي: ${player.towerFloor || 1}/30
+❤️ HP:
+${player.hp || 10000}
+
+━━━━━━━━━━━━━━
+
+⚔️ هجوم إضافي:
+${player.attackBonus || 0}%
+
+🛡️ دفاع إضافي:
+${player.defenseBonus || 0}%
+
+💨 سرعة إضافية:
+${player.speedBonus || 0}%
+
+💖 HP إضافي:
+${player.hpBonus || 0}%
+
+━━━━━━━━━━━━━━
+
+🏰 الطابق الحالي:
+${player.towerFloor || 1}/30
 
 🧿 الشخصيات:
-${player.characters.length}/${player.maxCharacters}
+${characters.length}/${player.maxCharacters || 30}
 
 👑 ضرر الزعيم:
 ${player.bossDamage || 0}
@@ -1016,7 +1051,7 @@ ${strongest ? strongest.power : '-'}`
 
     if (profilePic) {
 
-        return sock.sendMessage(
+        return await sock.sendMessage(
             msg.key.remoteJid,
             {
                 image: {
@@ -1027,10 +1062,25 @@ ${strongest ? strongest.power : '-'}`
         )
     }
 
-    return sock.sendMessage(
+    return await sock.sendMessage(
         msg.key.remoteJid,
         {
             text: profileText
+        }
+    )
+
+} catch (err) {
+
+    console.log(
+        'PROFILE ERROR:',
+        err
+    )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ حدث خطأ أثناء فتح البروفايل'
         }
     )
 }
@@ -1447,7 +1497,10 @@ if (reward.box)
 return sock.sendMessage(
     msg.key.remoteJid,
     {
-        text:
+        image: {
+            url: floor.image
+        },
+        caption:
 
 `🏆 تم اجتياز الطابق ${floor.floor}
 
@@ -1476,7 +1529,7 @@ ${rewardText}
 ${player.towerFloor}`
     }
 )
-        }
+}
 
         if (text === '.متجرالسحبات') {
 
