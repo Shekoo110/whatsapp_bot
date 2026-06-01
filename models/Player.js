@@ -79,6 +79,55 @@ const PlayerSchema = new mongoose.Schema({
     lastBossAttack: {
         type: Number,
         default: 0
+    },
+
+    // =========================
+    // نظام البرج
+    // =========================
+
+    towerFloor: {
+        type: Number,
+        default: 1
+    },
+
+    usedCharacters: {
+        type: Array,
+        default: []
+    },
+
+    towerCompleted: {
+        type: Boolean,
+        default: false
+    },
+
+    attackBonus: {
+        type: Number,
+        default: 0
+    },
+
+    defenseBonus: {
+        type: Number,
+        default: 0
+    },
+
+    hpBonus: {
+        type: Number,
+        default: 0
+    },
+
+    speedBonus: {
+        type: Number,
+        default: 0
+    },
+
+    maxCharacters: {
+        type: Number,
+        default: 30
+    },
+
+    title: {
+        type: String,
+        default: null
     }
 
 })
