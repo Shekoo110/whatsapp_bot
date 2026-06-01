@@ -179,6 +179,76 @@ function getTowerReward(floor) {
             return null
     }
 }
+
+function getRandomCharacterByBox(boxType) {
+
+    let pool = []
+
+    switch (boxType) {
+
+        case 'basic':
+            pool = characters.filter(
+                c => c.rarity === 'عادي' || c.rarity === 'ممتاز'
+            )
+            break
+
+        case 'rare':
+            pool = characters.filter(
+                c =>
+                    c.rarity === 'عادي' ||
+                    c.rarity === 'ممتاز' ||
+                    c.rarity === 'أسطوري'
+            )
+            break
+
+        case 'epic':
+            pool = characters.filter(
+                c =>
+                    c.rarity === 'ممتاز' ||
+                    c.rarity === 'أسطوري'
+            )
+            break
+
+        case 'legendary':
+            pool = characters.filter(
+                c => c.rarity === 'أسطوري'
+            )
+            break
+
+        case 'sss_chance':
+
+            if (Math.random() < 0.05) {
+                pool = characters.filter(
+                    c => c.rarity === 'SSS'
+                )
+            } else {
+                pool = characters.filter(
+                    c => c.rarity === 'أسطوري'
+                )
+            }
+
+            break
+
+        case 'sss_high':
+
+            if (Math.random() < 0.30) {
+                pool = characters.filter(
+                    c => c.rarity === 'SSS'
+                )
+            } else {
+                pool = characters.filter(
+                    c => c.rarity === 'أسطوري'
+                )
+            }
+
+            break
+    }
+
+    return pool[
+        Math.floor(Math.random() * pool.length)
+    ]
+}
+
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected'))
 .catch(err => console.log('MongoDB Error:', err))
@@ -871,6 +941,93 @@ ${player.usedCharacters.length}/30
             )
         }
 
+        if (text.startsWith('.فتح ')) {
+
+    let player = await Player.findOne({ userId })
+
+    if (!player)
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ لا يوجد حساب' }
+        )
+
+    const boxType =
+        text.split(' ')[1]
+
+    if (
+        !player.boxes ||
+        !player.boxes[boxType] ||
+        player.boxes[boxType] <= 0
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا تملك هذا الصندوق'
+            }
+        )
+    }
+
+    const character =
+        getRandomCharacterByBox(boxType)
+
+    player.boxes[boxType]--
+
+const alreadyOwned =
+    player.characters.some(
+        c =>
+            c.name === character.name &&
+            c.form === character.form
+    )
+
+if (alreadyOwned) {
+
+    const compensation =
+        Math.floor(character.power * 2)
+
+    player.money += compensation
+
+    await player.save()
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`♻️ حصلت على شخصية مكررة
+
+🧿 ${character.name}
+
+💰 تم تحويلها إلى
+
+${compensation} مال`
+        }
+    )
+}
+
+player.characters.push(character)
+
+await player.save()
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🎁 تم فتح الصندوق!
+
+🧿 الشخصية:
+${character.name}
+
+🌟 الندرة:
+${character.rarity}
+
+⚔️ القوة:
+${character.power}
+
+🌌 الأنمي:
+${character.anime}`
+        }
+    )
+}
+
         if (text.startsWith('.طابق')) {
 
     const players = loadPlayers()
@@ -978,7 +1135,14 @@ if (reward.xp)
 
 if (reward.draws)
     player.pulls += reward.draws
+if (reward.box) {
 
+    if (!player.boxes)
+        player.boxes = {}
+
+    player.boxes[reward.box] =
+        (player.boxes[reward.box] || 0) + 1
+}
     player.attackBonus += 5
 
     if (floor.floor === 30) {
@@ -1038,6 +1202,180 @@ ${rewardText}
 ${player.towerFloor}`
     }
 )
+        }
+
+        if (text === '.متجرالسحبات') {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🛒 ═══〔 متجر السحبات 〕═══
+
+📦 Basic Box
+🎟️ السعر: 5 سحبات
+
+📦 Rare Box
+🎟️ السعر: 10 سحبات
+
+📦 Epic Box
+🎟️ السعر: 20 سحبة
+
+📦 Legendary Box
+🎟️ السعر: 35 سحبة
+
+📦 SSS Chance Box
+🎟️ السعر: 60 سحبة
+
+📦 SSS High Box
+🎟️ السعر: 100 سحبة
+
+━━━━━━━━━━━━━━
+
+🌟 شخصية ممتازة عشوائية
+🎟️ السعر: 15 سحبة
+
+👑 شخصية أسطورية عشوائية
+🎟️ السعر: 40 سحبة
+
+🔥 شخصية SSS عشوائية
+🎟️ السعر: 150 سحبة
+
+━━━━━━━━━━━━━━
+
+🛍️ الشراء:
+
+.شراء basic
+.شراء rare
+.شراء epic
+.شراء legendary
+.شراء ssschance
+.شراء ssshigh
+
+.شراء ممتاز
+.شراء اسطوري
+.شراء sss`
+        }
+    )
+        }
+
+        if (text.startsWith('.شراءصندوق ')) {
+
+    let player = await Player.findOne({ userId })
+
+    if (!player) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لم يتم العثور على حسابك'
+        })
+    }
+
+    if (!player.boxes) {
+        player.boxes = {}
+    }
+
+    const args = text.split(' ')
+    const item = args[1]?.toLowerCase()
+
+    const prices = {
+        basic: 5,
+        rare: 10,
+        epic: 20,
+        legendary: 35,
+        ssschance: 60,
+        ssshigh: 100
+    }
+
+    const names = {
+        basic: '📦 Basic',
+        rare: '📦 Rare',
+        epic: '📦 Epic',
+        legendary: '📦 Legendary',
+        ssschance: '📦 SSS Chance',
+        ssshigh: '📦 SSS High'
+    }
+
+    if (!prices[item]) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+`❌ الصندوق غير موجود
+
+📦 basic
+📦 rare
+📦 epic
+📦 legendary
+📦 ssschance
+📦 ssshigh`
+        })
+    }
+
+    if (player.pulls < prices[item]) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+`❌ ليس لديك سحبات كافية
+
+🎟️ المطلوب: ${prices[item]}
+🎟️ لديك: ${player.pulls}`
+        })
+    }
+
+    player.pulls -= prices[item]
+
+    player.boxes[item] = (player.boxes[item] || 0) + 1
+
+    await player.save()
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        text:
+`✅ تم شراء الصندوق بنجاح
+
+${names[item]}
+
+🎟️ السعر: ${prices[item]} سحبة
+🎟️ المتبقي: ${player.pulls} سحبة
+
+📦 عدد هذا الصندوق:
+${player.boxes[item]}`
+    })
+        }
+
+        if (text === '.صناديقي') {
+
+    let player = await Player.findOne({ userId })
+
+    if (!player) {
+        player = await Player.create({ userId })
+    }
+
+    if (!player.boxes) {
+        player.boxes = {
+            basic: 0,
+            rare: 0,
+            epic: 0,
+            legendary: 0,
+            sss_chance: 0,
+            sss_high: 0
+        }
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🎁 ════〔 صناديقك 〕════
+
+📦 Basic: ${player.boxes.basic || 0}
+
+📦 Rare: ${player.boxes.rare || 0}
+
+📦 Epic: ${player.boxes.epic || 0}
+
+📦 Legendary: ${player.boxes.legendary || 0}
+
+📦 SSS Chance: ${player.boxes.sss_chance || 0}
+
+📦 SSS High: ${player.boxes.sss_high || 0}`
+        }
+    )
         }
 
         if (text === '.بوس') {
