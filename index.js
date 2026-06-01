@@ -3891,10 +3891,6 @@ let reward
 
     await enemy.save()
 }
-
-    let levelUpMessage = ''
-
-while (
     let levelUpMessage = ''
 
 while (
