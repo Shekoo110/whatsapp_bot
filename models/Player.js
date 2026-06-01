@@ -13,6 +13,12 @@ const PlayerSchema = new mongoose.Schema({
         default: 5
     },
 
+    // تذاكر متجر البرج
+    towerTickets: {
+        type: Number,
+        default: 0
+    },
+
     lastReset: {
         type: Number,
         default: Date.now
