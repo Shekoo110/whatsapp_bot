@@ -3751,17 +3751,75 @@ let reward
     await enemy.save()
 }
 
-    while (
+    let levelUpMessage = ''
+
+while (
+    let levelUpMessage = ''
+
+while (
     (me.xp || 0) >=
     (me.level || 1) * 500
 ) {
+
     me.xp -= (me.level || 1) * 500
     me.level += 1
+
+    levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`
+
+    const ability = levelAbilities[me.level]
+
+    if (ability) {
+
+        if (!me.specialAbilities)
+            me.specialAbilities = []
+
+        if (!me.specialAbilities.includes(ability.name)) {
+
+            me.specialAbilities.push(ability.name)
+
+            levelUpMessage +=
+`✨ قدرة جديدة
+
+${ability.name}
+
+📜 ${ability.description}
+
+🎯 نسبة التفعيل:
+${ABILITY_CHANCE}% أثناء القتال
+
+`
+        }
+    }
+
+    if (me.level % 10 === 0) {
+
+        me.maxCharacters =
+            (me.maxCharacters || 30) + 5
+
+        levelUpMessage +=
+`📦 زيادة المخزون
+
+➕ +5 شخصيات
+
+📦 السعة الجديدة:
+${me.maxCharacters}
+
+`
+    }
 }
 
 me.fights -= 1
 
 await me.save()
+    if (levelUpMessage) {
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: levelUpMessage
+        }
+    )
+    }
 
 return safeSend(msg.key.remoteJid, {
         text:
