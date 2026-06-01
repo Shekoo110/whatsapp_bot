@@ -1572,31 +1572,183 @@ if (floor.floor === 30) {
 
     player.maxCharacters =
         (player.maxCharacters || 30) + 5
-}
+if (text.startsWith('.طابق')) {
 
-await player.save()
+    let player = await Player.findOne({ userId })
 
-let rewardText = ''
+    if (!player) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا تملك حساباً'
+        })
+    }
 
-if (reward.money)
-    rewardText += `💰 المال: +${reward.money}\n`
+    if (player.towerCompleted) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '👑 لقد أكملت البرج بالفعل'
+        })
+    }
 
-if (reward.xp)
-    rewardText += `⭐ الخبرة: +${reward.xp}\n`
+    const args = text.trim().split(/\s+/)
 
-if (reward.draws)
-    rewardText += `🎟️ السحبات: +${reward.draws}\n`
+    if (args.length < 3) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+`❌ استخدم:
 
-if (reward.box)
-    rewardText += `🎁 الصندوق: ${reward.box}\n`
+.طابق رقم_الطابق رقم_الشخصية
 
-return sock.sendMessage(
-    msg.key.remoteJid,
-    {
-        image: {
-            url: floor.image
-        },
-        caption:
+مثال:
+.طابق 1 1`
+        })
+    }
+
+    const floorNumber = Number(args[1])
+    const charNumber = Number(args[2]) - 1
+
+    if (
+        isNaN(floorNumber) ||
+        isNaN(charNumber)
+    ) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ يجب إدخال أرقام صحيحة'
+        })
+    }
+
+    if (floorNumber !== player.towerFloor) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+`❌ الطابق الحالي لديك هو ${player.towerFloor}`
+        })
+    }
+
+    const floor = towerFloors.find(
+        f => f.floor === floorNumber
+    )
+
+    if (!floor) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ هذا الطابق غير موجود'
+        })
+    }
+
+    const character =
+        player.characters?.[charNumber]
+
+    if (!character) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ الشخصية غير موجودة'
+        })
+    }
+
+    if (
+        player.usedCharacters?.includes(
+            character.name
+        )
+    ) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+            '❌ هذه الشخصية استعملتها سابقاً في البرج'
+        })
+    }
+
+    const finalPower = Math.floor(
+        character.power *
+        (
+            1 +
+            (player.attackBonus || 0) / 100
+        )
+    )
+
+    if (finalPower < floor.power) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+
+`❌ فشل الطابق ${floor.floor}
+
+⚔️ قوة الشخصية:
+${finalPower}
+
+🏰 المطلوب:
+${floor.power}`
+            }
+        )
+    }
+
+    if (!player.usedCharacters)
+        player.usedCharacters = []
+
+    player.usedCharacters.push(
+        character.name
+    )
+
+    const reward =
+        getTowerReward(floor.floor)
+
+    player.towerFloor++
+
+    if (reward.money)
+        player.money += reward.money
+
+    if (reward.xp)
+        player.xp += reward.xp
+
+    if (reward.draws)
+        player.pulls += reward.draws
+
+    if (reward.box) {
+
+        if (!player.boxes)
+            player.boxes = {}
+
+        player.boxes[reward.box] =
+            (player.boxes[reward.box] || 0) + 1
+    }
+
+    player.attackBonus =
+        (player.attackBonus || 0) + 5
+
+    if (floor.floor === 30) {
+
+        player.towerCompleted = true
+        player.title = '👑 ملك الأبطال'
+
+        player.attackBonus =
+            (player.attackBonus || 0) + 10
+
+        player.maxCharacters =
+            (player.maxCharacters || 30) + 5
+    }
+
+    await player.save()
+
+    let rewardText = ''
+
+    if (reward.money)
+        rewardText +=
+            `💰 المال: +${reward.money}\n`
+
+    if (reward.xp)
+        rewardText +=
+            `⭐ الخبرة: +${reward.xp}\n`
+
+    if (reward.draws)
+        rewardText +=
+            `🎟️ السحبات: +${reward.draws}\n`
+
+    if (reward.box)
+        rewardText +=
+            `🎁 الصندوق: ${reward.box}\n`
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: floor.image
+            },
+            caption:
 
 `🏆 تم اجتياز الطابق ${floor.floor}
 
@@ -1623,8 +1775,8 @@ ${rewardText}
 
 🏰 الطابق التالي:
 ${player.towerFloor}`
-}
-)
+        }
+    )
 }
 
         if (text === '.متجرالسحبات') {
