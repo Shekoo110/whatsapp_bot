@@ -3952,11 +3952,11 @@ while (
 
     me.level += 1
 
-    if (me.level >= 100) {
-        me.level = 100
-        me.xp = 0
-        break
-    }
+    if (me.level > 100) {
+    me.level = 100
+    me.xp = 0
+    break
+}
 
     levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`
 
