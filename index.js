@@ -4075,6 +4075,63 @@ ${ABILITY_CHANCE}% أثناء القتال
     }
 
     if (me.level % 10 === 0) {
+
+    me.maxCharacters =
+        (me.maxCharacters || 30) + 5
+
+    levelUpMessage +=
+`📦 زيادة المخزون
+
+➕ +5 شخصيات
+
+📦 السعة الجديدة:
+${me.maxCharacters}
+
+`
+
+    switch (me.level) {
+
+        case 10:
+            me.boxes.basic += 5
+            break
+
+        case 20:
+            me.boxes.rare += 3
+            break
+
+        case 30:
+            me.boxes.rare += 5
+            break
+
+        case 40:
+            me.boxes.epic += 2
+            break
+
+        case 50:
+            me.boxes.epic += 4
+            break
+
+        case 60:
+            me.boxes.legendary += 1
+            break
+
+        case 70:
+            me.boxes.legendary += 2
+            break
+
+        case 80:
+            me.boxes.legendary += 3
+            break
+
+        case 90:
+            me.boxes.sss_chance += 1
+            break
+
+        case 100:
+            me.boxes.sss_high += 1
+            break
+    }
+}
 switch (me.level) {
 
     case 10:
