@@ -4413,13 +4413,67 @@ if (now - me.lastFightReset >= cooldown) {
     (me.level * 5) +
     Math.floor(Math.random() * 300)
 
+myAttack = Math.floor(
+    myAttack *
+    (1 + (me.attackBonus || 0) / 100)
+)
+
 let enemyAttack =
     enemyCharacter.power +
     (enemy.level * 5) +
     Math.floor(Math.random() * 300)
+
+// بونص الدفاع
+enemyAttack = Math.floor(
+    enemyAttack *
+    (1 - (me.defenseBonus || 0) / 100)
+)
+        
         let finalMyAttack = myAttack
 let finalEnemyAttack = enemyAttack
 
+const critChance =
+    5 + (me.critBonus || 0)
+
+if (Math.random() * 100 <= critChance) {
+
+    finalMyAttack *= 2
+
+    abilityActivated = true
+
+    abilityMessage +=
+`\n⚡ ضربة حرجة ×2`
+}
+        const dodgeChance =
+    me.dodgeBonus || 0
+
+if (Math.random() * 100 <= dodgeChance) {
+
+    finalEnemyAttack = 0
+
+    abilityActivated = true
+
+    abilityMessage +=
+`\n💨 مراوغة كاملة`
+}
+        if (
+    finalEnemyAttack > 0 &&
+    (me.reflectBonus || 0) > 0
+) {
+
+    const reflectedDamage = Math.floor(
+        finalEnemyAttack *
+        (me.reflectBonus || 0) / 100
+    )
+
+    finalMyAttack += reflectedDamage
+
+    abilityActivated = true
+
+    abilityMessage +=
+`\n🔄 عكس ضرر +${reflectedDamage}`
+        }
+        
 let abilityActivated = false
 let abilityMessage = ''
 
@@ -4463,7 +4517,7 @@ for (let ab of me.allAbilities) {
 
         
 
-        if (myAttack >= enemyAttack) {
+        if (finalMyAttack >= finalEnemyAttack) {
 
     winner = myCharacter.name
 
@@ -4492,7 +4546,21 @@ while (me.xp >= me.level * 100) {
 }
 
 me.fights = Math.max(0, (me.fights || 0) - 1)
+        
+if ((me.lifestealBonus || 0) > 0) {
 
+    const heal = Math.floor(
+        finalMyAttack *
+        (me.lifestealBonus || 0) / 100
+    )
+
+    me.hp = (me.hp || 10000) + heal
+
+    abilityActivated = true
+
+    abilityMessage +=
+`\n🩸 امتصاص حياة +${heal} HP`
+}
 await me.save()
 
 const updatedMe = await Player.findOne({ userId })
