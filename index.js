@@ -2372,22 +2372,19 @@ if (text === '.شخصياتي') {
 
 if (text === '.رصيدي') {
 
-try {
+    try {
 
-    let player = await Player.findOne({ userId })
+        let player = await Player.findOne({ userId })
 
-    if (!player) {
+        if (!player) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا تملك حساباً'
+            })
+        }
 
         return safeSend(msg.key.remoteJid, {
-            text: '❌ لا تملك حساباً'
-        })
-    }
-
-    return safeSend(msg.key.remoteJid, {
-        text:
-
-return safeSend(msg.key.remoteJid, {
-    text:
+            text:
 
 `╔════════════════════╗
 💰 𝐏𝐑𝐎𝐅𝐈𝐋𝐄
@@ -2413,21 +2410,21 @@ ${player.level || 1}
 
 ⚔️ القتالات المتبقية:
 
-${player.dailyBattles || 0}/5
+${player.fights || 0}/5
 
 ╔════════════════════╗
 🌟 𝐏𝐋𝐀𝐘𝐄𝐑 𝐈𝐍𝐅𝐎
 ╚════════════════════╝`
-})
+        })
 
-} catch (err) {
+    } catch (err) {
 
-    console.log('Balance error:', err)
+        console.log('Balance error:', err)
 
-    return safeSend(msg.key.remoteJid, {
-        text: '❌ حدث خطأ أثناء جلب بياناتك'
-    })
-}
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء جلب بياناتك'
+        })
+    }
 
 }
         
