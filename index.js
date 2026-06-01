@@ -3955,9 +3955,9 @@ while (
     me.money = (me.money || 0) + 500
 
     levelUpMessage +=
-`💰 حصلت على 500 مال
+`💰 حصلت على 500 مال\n`
 
-    if (me.level > 100) {
+    if (me.level >= 100) {
     me.level = 100
     me.xp = 0
     break
@@ -4092,140 +4092,57 @@ ${me.maxCharacters}
     switch (me.level) {
 
         case 10:
-            me.boxes.basic += 5
-            break
+    me.boxes.basic += 5
+    levelUpMessage += `🎁 حصلت على 5 صناديق عادية\n`
+    break
 
-        case 20:
-            me.boxes.rare += 3
-            break
+case 20:
+    me.boxes.rare += 3
+    levelUpMessage += `🎁 حصلت على 3 صناديق نادرة\n`
+    break
 
-        case 30:
-            me.boxes.rare += 5
-            break
+case 30:
+    me.boxes.rare += 5
+    levelUpMessage += `🎁 حصلت على 5 صناديق نادرة\n`
+    break
 
-        case 40:
-            me.boxes.epic += 2
-            break
+case 40:
+    me.boxes.epic += 2
+    levelUpMessage += `🎁 حصلت على 2 صندوق ملحمي\n`
+    break
 
-        case 50:
-            me.boxes.epic += 4
-            break
+case 50:
+    me.boxes.epic += 4
+    levelUpMessage += `🎁 حصلت على 4 صناديق ملحمية\n`
+    break
 
-        case 60:
-            me.boxes.legendary += 1
-            break
+case 60:
+    me.boxes.legendary += 1
+    levelUpMessage += `🎁 حصلت على صندوق أسطوري\n`
+    break
 
-        case 70:
-            me.boxes.legendary += 2
-            break
+case 70:
+    me.boxes.legendary += 2
+    levelUpMessage += `🎁 حصلت على 2 صندوق أسطوري\n`
+    break
 
-        case 80:
-            me.boxes.legendary += 3
-            break
+case 80:
+    me.boxes.legendary += 3
+    levelUpMessage += `🎁 حصلت على 3 صناديق أسطورية\n`
+    break
 
-        case 90:
-            me.boxes.sss_chance += 1
-            break
+case 90:
+    me.boxes.sss_chance += 1
+    levelUpMessage += `🎁 حصلت على صندوق فرصة SSS\n`
+    break
 
-        case 100:
-            me.boxes.sss_high += 1
-            break
+case 100:
+    me.boxes.sss_high += 1
+    levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`
+    break
     }
 }
-switch (me.level) {
-
-    case 10:
-        me.boxes.basic += 3
-        levelUpMessage +=
-`📦 مكافأة لفل 10
-
-🎁 3 صناديق عادية
-
-`
-        break
-
-    case 20:
-        me.boxes.rare += 2
-        levelUpMessage +=
-`📦 مكافأة لفل 20
-
-🎁 2 صندوق نادر
-
-`
-        break
-
-    case 30:
-        me.boxes.rare += 5
-        levelUpMessage +=
-`📦 مكافأة لفل 30
-
-🎁 5 صناديق نادرة
-
-`
-        break
-
-    case 40:
-        me.boxes.epic += 2
-        levelUpMessage +=
-`📦 مكافأة لفل 40
-
-🎁 2 صندوق ملحمي
-
-`
-        break
-
-    case 50:
-        me.boxes.epic += 5
-        levelUpMessage +=
-`📦 مكافأة لفل 50
-
-🎁 5 صناديق ملحمية
-
-`
-        break
-
-    case 60:
-        me.boxes.legendary += 1
-        levelUpMessage +=
-`📦 مكافأة لفل 60
-
-🎁 صندوق أسطوري
-
-`
-        break
-
-    case 70:
-        me.boxes.legendary += 2
-        levelUpMessage +=
-`📦 مكافأة لفل 70
-
-🎁 2 صندوق أسطوري
-
-`
-        break
-
-    case 80:
-        me.boxes.legendary += 3
-        levelUpMessage +=
-`📦 مكافأة لفل 80
-
-🎁 3 صناديق أسطورية
-
-`
-        break
-
-    case 90:
-        me.boxes.sss_chance += 1
-        levelUpMessage +=
-`📦 مكافأة لفل 90
-
-🎁 صندوق فرصة SSS
-
-`
-        break
-
-    case 100:
-        me.boxes.sss_high += 1
+    
         levelUpMessage +=
 `👑 مكافأة لفل 100
 
