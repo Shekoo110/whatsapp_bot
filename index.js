@@ -56,7 +56,129 @@ const towerFloors = [
     { floor: 29, power: 3900 },
     { floor: 30, power: 5000 }
 ]
+function getTowerReward(floor) {
 
+    switch (floor) {
+
+        case 1:
+            return { draws: 1, xp: 100 }
+
+        case 2:
+            return { draws: 1, xp: 100 }
+
+        case 3:
+            return { draws: 1, xp: 100 }
+
+        case 4:
+            return { draws: 1, xp: 100 }
+
+        case 5:
+            return {
+                money: 500,
+                xp: 500,
+                box: 'basic'
+            }
+
+        case 6:
+            return { draws: 1, xp: 150 }
+
+        case 7:
+            return { draws: 1, xp: 150 }
+
+        case 8:
+            return { draws: 1, xp: 150 }
+
+        case 9:
+            return { draws: 1, xp: 150 }
+
+        case 10:
+            return {
+                money: 1000,
+                xp: 1000,
+                box: 'rare'
+            }
+
+        case 11:
+            return { draws: 1, xp: 200 }
+
+        case 12:
+            return { draws: 1, xp: 200 }
+
+        case 13:
+            return { draws: 1, xp: 200 }
+
+        case 14:
+            return { draws: 1, xp: 200 }
+
+        case 15:
+            return {
+                money: 1500,
+                xp: 2000,
+                box: 'epic'
+            }
+
+        case 16:
+            return { draws: 1, xp: 300 }
+
+        case 17:
+            return { draws: 1, xp: 300 }
+
+        case 18:
+            return { draws: 1, xp: 300 }
+
+        case 19:
+            return { draws: 1, xp: 300 }
+
+        case 20:
+            return {
+                money: 2000,
+                xp: 3000,
+                box: 'legendary'
+            }
+
+        case 21:
+            return { draws: 1, xp: 400 }
+
+        case 22:
+            return { draws: 1, xp: 400 }
+
+        case 23:
+            return { draws: 1, xp: 400 }
+
+        case 24:
+            return { draws: 1, xp: 400 }
+
+        case 25:
+            return {
+                money: 3000,
+                xp: 5000,
+                box: 'sss_chance'
+            }
+
+        case 26:
+            return { draws: 1, xp: 500 }
+
+        case 27:
+            return { draws: 1, xp: 500 }
+
+        case 28:
+            return { draws: 1, xp: 500 }
+
+        case 29:
+            return { draws: 1, xp: 500 }
+
+        case 30:
+            return {
+                money: 4000,
+                xp: 10000,
+                box: 'sss_high',
+                title: '👑 ملك الأبطال'
+            }
+
+        default:
+            return null
+    }
+}
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected'))
 .catch(err => console.log('MongoDB Error:', err))
@@ -747,6 +869,175 @@ ${player.usedCharacters.length}/30
                     `*${names.join('* , *')}*`
                 }
             )
+        }
+
+        if (text.startsWith('.طابق')) {
+
+    const players = loadPlayers()
+
+    if (!players[userId]) {
+        players[userId] = createPlayer()
+    }
+
+    const player = players[userId]
+
+    if (player.towerCompleted) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '👑 لقد أكملت البرج بالفعل'
+        })
+    }
+
+    const floor = towerFloors.find(
+        f => f.floor === player.towerFloor
+    )
+
+    if (!floor) return
+
+    const args = text.split(' ')
+    const charNumber = Number(args[1]) - 1
+
+    if (isNaN(charNumber)) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+`❌ استخدم:
+
+.طابق رقم_الشخصية
+
+مثال:
+.طابق 1`
+        })
+    }
+
+    let dbPlayer =
+        await Player.findOne({ userId })
+
+    if (!dbPlayer) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا تملك شخصيات'
+        })
+    }
+
+    const character =
+        dbPlayer.characters[charNumber]
+
+    if (!character) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ الشخصية غير موجودة'
+        })
+    }
+
+    if (
+        player.usedCharacters.includes(
+            character.name
+        )
+    ) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+            '❌ هذه الشخصية استعملتها سابقاً في البرج'
+        })
+    }
+
+    const finalPower =
+        Math.floor(
+            character.power *
+            (
+                1 +
+                (player.attackBonus || 0) / 100
+            )
+        )
+
+    if (finalPower < floor.power) {
+
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+
+`❌ فشل الطابق ${floor.floor}
+
+⚔️ قوة الشخصية:
+${finalPower}
+
+🏰 المطلوب:
+${floor.power}`
+        })
+    }
+
+    player.usedCharacters.push(
+    character.name
+)
+
+const reward =
+    getTowerReward(floor.floor)
+
+player.towerFloor++
+
+if (reward.money)
+    player.money += reward.money
+
+if (reward.xp)
+    player.xp += reward.xp
+
+if (reward.draws)
+    player.pulls += reward.draws
+
+    player.attackBonus += 5
+
+    if (floor.floor === 30) {
+
+        player.towerCompleted = true
+        player.title = '👑 ملك الأبطال'
+
+        player.attackBonus += 10
+        player.maxCharacters += 5
+    }
+
+    savePlayers(players)
+
+    let rewardText = ''
+
+if (reward.money)
+    rewardText += `💰 المال: +${reward.money}\n`
+
+if (reward.xp)
+    rewardText += `⭐ الخبرة: +${reward.xp}\n`
+
+if (reward.draws)
+    rewardText += `🎟️ السحبات: +${reward.draws}\n`
+
+if (reward.box)
+    rewardText += `🎁 الصندوق: ${reward.box}\n`
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🏆 تم اجتياز الطابق ${floor.floor}
+
+🧿 الشخصية المستخدمة:
+${character.name}
+
+⚔️ القوة النهائية:
+${finalPower}
+
+━━━━━━━━━━━━━━
+
+🎁 الجوائز
+
+${rewardText}
+
+📈 المكافآت الدائمة
+
+⚔️ هجوم: ${player.attackBonus}%
+🛡️ دفاع: ${player.defenseBonus}%
+❤️ HP: ${player.hpBonus}%
+💨 سرعة: ${player.speedBonus}%
+
+━━━━━━━━━━━━━━
+
+🏰 الطابق التالي:
+${player.towerFloor}`
+    }
+)
         }
 
         if (text === '.بوس') {
