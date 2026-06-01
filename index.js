@@ -1229,8 +1229,8 @@ ${player.hpBonus || 0}%
 🏰 الطابق الحالي:
 ${player.towerFloor || 1}/30
 
-🧿 الشخصيات:
-${characters.length}/${player.maxCharacters || 30}
+📦 المخزون:
+${player.characters.length}/${player.maxCharacters || 30}
 
 👑 ضرر الزعيم:
 ${player.bossDamage || 0}
@@ -1300,7 +1300,24 @@ ${strongest ? strongest.power : '-'}`
 }
 
 }
+        
+if (text === '.قدراتي') {
 
+    const me = await Player.findOne({ userId })
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✨ قدراتك
+
+${me.specialAbilities.join('\n') || 'لا توجد قدرات'}
+
+📊 عدد القدرات:
+${me.specialAbilities.length}`
+        }
+    )
+}
         // =========================
         // .كت
         // =========================
