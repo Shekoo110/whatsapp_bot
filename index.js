@@ -770,43 +770,49 @@ async function startBot() {
 
         if (text === '.البرج') {
 
-const players = loadPlayers()
+    let player =
+        await Player.findOne({ userId })
 
-if (!players[userId]) {
-    players[userId] = createPlayer()
-    savePlayers(players)
-}
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا تملك حساباً'
+            }
+        )
+    }
 
-const player = players[userId]
-
-if (player.towerCompleted) {
-    return await sock.sendMessage(msg.key.remoteJid, {
-        text: `👑 لقد أكملت برج الأبطال
+    if (player.towerCompleted) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: `👑 لقد أكملت برج الأبطال
 
 🏆 اللقب: ${player.title}
 
 🏰 الطابق: 30/30
 
-⚔️ هجوم إضافي: ${player.attackBonus}%
-🛡️ دفاع إضافي: ${player.defenseBonus}%
-❤️ صحة إضافية: ${player.hpBonus}%
-⚡ سرعة إضافية: ${player.speedBonus}%`
-})
-}
+⚔️ هجوم إضافي: ${player.attackBonus || 0}%
+🛡️ دفاع إضافي: ${player.defenseBonus || 0}%
+❤️ صحة إضافية: ${player.hpBonus || 0}%
+⚡ سرعة إضافية: ${player.speedBonus || 0}%`
+            }
+        )
+    }
 
-const floor = towerFloors.find(
-    f => f.floor === player.towerFloor
-)
+    const floor = towerFloors.find(
+        f => f.floor === player.towerFloor
+    )
 
-if (!floor) return
+    if (!floor) return
 
-return await sock.sendMessage(
-    msg.key.remoteJid,
-    {
-        image: {
-            url: floor.image
-        },
-        caption: `🏰 برج الأبطال
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: floor.image
+            },
+            caption: `🏰 برج الأبطال
 
 📍 الطابق الحالي: ${floor.floor}/30
 
@@ -814,14 +820,15 @@ return await sock.sendMessage(
 ${floor.power}
 
 👥 الشخصيات المستخدمة:
-${player.usedCharacters.length}/30
+${player.usedCharacters?.length || 0}/30
 
 🏆 اللقب النهائي:
 👑 ملك الأبطال
 
-استعمل .طابق للقتال`
-}
-)
+استعمل:
+.طابق ${player.towerFloor} رقم_الشخصية`
+        }
+    )
 }
 
         // =========================
