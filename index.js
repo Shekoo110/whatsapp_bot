@@ -1528,8 +1528,55 @@ if (
 if (floorNumber !== player.towerFloor) {
     return sock.sendMessage(msg.key.remoteJid, {
         text:
-        `❌ الطابق الحالي لديك هو ${player.towerFloor}`
+if (text.startsWith('.طابق')) {
+
+const players = loadPlayers()
+
+if (!players[userId]) {
+    players[userId] = createPlayer()
+}
+
+const player = players[userId]
+
+if (player.towerCompleted) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: '👑 لقد أكملت البرج بالفعل'
     })
+}
+
+const args = text.trim().split(/\s+/)
+
+if (args.length < 3) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text:
+
+`❌ استخدم:
+
+.طابق رقم_الطابق رقم_الشخصية
+
+مثال:
+.طابق 1 1`
+})
+}
+
+const floorNumber = Number(args[1])
+const charNumber = Number(args[2]) - 1
+
+if (
+    isNaN(floorNumber) ||
+    isNaN(charNumber)
+) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: '❌ يجب إدخال أرقام صحيحة'
+    })
+}
+
+if (floorNumber !== player.towerFloor) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text:
+
+"❌ الطابق الحالي لديك هو ${player.towerFloor}"
+})
 }
 
 const floor = towerFloors.find(
@@ -1542,7 +1589,7 @@ if (!floor) {
     })
 }
 
-let dbPlayer =
+const dbPlayer =
     await Player.findOne({ userId })
 
 if (!dbPlayer) {
@@ -1571,19 +1618,20 @@ if (
     })
 }
 
-const finalPower =
-    Math.floor(
-        character.power *
-        (
-            1 +
-            (player.attackBonus || 0) / 100
-        )
+const finalPower = Math.floor(
+    character.power *
+    (
+        1 +
+        (player.attackBonus || 0) / 100
     )
+)
 
 if (finalPower < floor.power) {
 
-    return sock.sendMessage(msg.key.remoteJid, {
-        text:
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
 
 `❌ فشل الطابق ${floor.floor}
 
@@ -1592,7 +1640,8 @@ ${finalPower}
 
 🏰 المطلوب:
 ${floor.power}`
-})
+}
+)
 }
 
 player.usedCharacters.push(
