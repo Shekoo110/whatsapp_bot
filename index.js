@@ -2250,7 +2250,9 @@ if (randomCharacter.rarity === 'SSS') {
     }
 
     return sock.sendMessage(msg.key.remoteJid, {
-        image: fs.readFileSync(imagePath),
+        image: {
+            url: randomCharacter.image
+        },
         caption:
 `🌌 ═══════〔 إيقاظ أسطوري 〕═══════ 🌌
 
