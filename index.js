@@ -2228,26 +2228,16 @@ player.pulls -= 1
 
 await player.save()
 
-const imagePath = path.join(
-    __dirname,
-    randomCharacter.image
-)
+let imagePath = null
+
+if (randomCharacter.rarity !== 'SSS') {
+    imagePath = path.join(
+        __dirname,
+        randomCharacter.image
+    )
+}
 
 if (randomCharacter.rarity === 'SSS') {
-
-    if (!fs.existsSync(imagePath)) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text:
-`🌌 ═══════〔 إيقاظ أسطوري 〕═══════ 🌌
-
-👑 ${randomCharacter.name}
-
-🌟 التصنيف : SSS
-⚔️ القوة : ${randomCharacter.power}
-
-🌌 الأنمي : ${randomCharacter.anime}`
-        })
-    }
 
     return sock.sendMessage(msg.key.remoteJid, {
         image: {
