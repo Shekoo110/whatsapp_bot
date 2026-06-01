@@ -3965,7 +3965,8 @@ while (
 
     levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`
 
-const ability = levelAbilities[me.level]
+const lvl = Math.max(5, Math.floor(me.level / 5) * 5)
+const ability = levelAbilities[lvl]
 
 if (ability) {
 
