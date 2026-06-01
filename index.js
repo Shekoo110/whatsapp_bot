@@ -4164,7 +4164,7 @@ case 100:
 ${me.maxCharacters}
 
 `
-    }
+   }
 }
 
 me.fights -= 1
