@@ -2228,11 +2228,53 @@ player.pulls -= 1
 
 await player.save()
 
-const imagePath =
-    path.join(
-        __dirname,
-        randomCharacter.image
-    )
+const imagePath = path.join(
+    __dirname,
+    randomCharacter.image
+)
+
+if (randomCharacter.rarity === 'SSS') {
+
+    if (!fs.existsSync(imagePath)) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text:
+`🌌 ═══════〔 إيقاظ أسطوري 〕═══════ 🌌
+
+👑 ${randomCharacter.name}
+
+🌟 التصنيف : SSS
+⚔️ القوة : ${randomCharacter.power}
+
+🌌 الأنمي : ${randomCharacter.anime}`
+        })
+    }
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        image: fs.readFileSync(imagePath),
+        caption:
+`🌌 ═══════〔 إيقاظ أسطوري 〕═══════ 🌌
+
+⚡ اهتزت الأبعاد!
+🔥 طاقة هائلة تم اكتشافها!
+
+━━━━━━━━━━━━━━
+
+👑 ${randomCharacter.name}
+
+🌟 التصنيف : SSS
+⚔️ القوة : ${randomCharacter.power}
+
+━━━━━━━━━━━━━━
+
+🎊 مبارك!
+
+لقد حصلت على إحدى أندر الشخصيات في اللعبة
+
+🌌 الأنمي : ${randomCharacter.anime}
+
+🏆 هذه الشخصية تمتلك قوة تتجاوز حدود الأساطير`
+    })
+}
 
 if (!fs.existsSync(imagePath)) {
 
