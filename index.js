@@ -1037,6 +1037,9 @@ ${player.money || 0}
 🎟️ السحبات:
 ${player.pulls || 0}
 
+🎫 تذاكر المتجر:
+${player.towerTickets || 0}
+
 ❤️ HP:
 ${player.hp || 10000}
 
