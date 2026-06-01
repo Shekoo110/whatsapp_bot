@@ -951,6 +951,8 @@ ${player.usedCharacters.length}/30
 
 try {
 
+    console.time('PROFILE')
+
     let player = await Player.findOne({ userId })
 
     if (!player) {
@@ -960,37 +962,54 @@ try {
         })
     }
 
-    const characters =
-        Array.isArray(player.characters)
-            ? player.characters
-            : []
+    const characters = Array.isArray(player.characters)
+        ? player.characters
+        : []
 
     let strongest = null
 
-    if (characters.length > 0) {
+    for (const char of characters) {
 
-        strongest = characters.reduce(
-            (a, b) =>
-                Number(a.power || 0) >
-                Number(b.power || 0)
-                    ? a
-                    : b
-        )
+        if (
+            !strongest ||
+            Number(char.power || 0) >
+            Number(strongest.power || 0)
+        ) {
+            strongest = char
+        }
     }
+
+    console.timeLog(
+        'PROFILE',
+        'PLAYER LOADED'
+    )
 
     let profilePic = null
 
     try {
 
-        profilePic =
-            await sock.profilePictureUrl(
+        profilePic = await Promise.race([
+            sock.profilePictureUrl(
                 userId,
                 'image'
+            ),
+            new Promise(resolve =>
+                setTimeout(
+                    () => resolve(null),
+                    5000
+                )
             )
+        ])
 
     } catch (e) {
+
         profilePic = null
     }
+
+    console.timeLog(
+        'PROFILE',
+        'PHOTO CHECKED'
+    )
 
     const profileText =
 
@@ -1054,23 +1073,38 @@ ${strongest ? strongest.power : '-'}`
 
     if (profilePic) {
 
-        return await sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                image: {
-                    url: profilePic
-                },
-                caption: profileText
-            }
-        )
+        try {
+
+            await sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    image: {
+                        url: profilePic
+                    },
+                    caption: profileText
+                }
+            )
+
+            console.timeEnd('PROFILE')
+            return
+
+        } catch (e) {
+
+            console.log(
+                'PROFILE IMAGE ERROR:',
+                e
+            )
+        }
     }
 
-    return await sock.sendMessage(
+    await sock.sendMessage(
         msg.key.remoteJid,
         {
             text: profileText
         }
     )
+
+    console.timeEnd('PROFILE')
 
 } catch (err) {
 
@@ -1079,7 +1113,7 @@ ${strongest ? strongest.power : '-'}`
         err
     )
 
-    return sock.sendMessage(
+    return await sock.sendMessage(
         msg.key.remoteJid,
         {
             text:
@@ -1088,7 +1122,7 @@ ${strongest ? strongest.power : '-'}`
     )
 }
 
-} // نهاية .بروفايل
+}
 
         // =========================
         // .كت
