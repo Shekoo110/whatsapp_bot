@@ -2070,8 +2070,6 @@ const strongest = me.characters.sort(
 
 let damage = strongest.power
 
-let damage = strongest.power
-
 // بونص الهجوم
 damage = Math.floor(
     damage * (1 + (me.attackBonus || 0) / 100)
