@@ -646,18 +646,24 @@ async function startBot() {
     }
 
     const { state, saveCreds } =
-        await useMultiFileAuthState('auth')
+    await useMultiFileAuthState('auth')
 
-    const sock = makeWASocket({
-        auth: state
-    })
-    const safeSend = async (jid, data) => {
+const sock = makeWASocket({
+    auth: state
+})
+
+sock.ev.on(
+    'creds.update',
+    saveCreds
+)
+
+const safeSend = async (jid, data) => {
     try {
         return await sock.sendMessage(jid, data)
     } catch (e) {
         console.log('Send error:', e)
     }
-    }
+}
 
     // ===== QR =====
 
