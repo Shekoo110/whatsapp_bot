@@ -106,6 +106,10 @@ const PlayerSchema = new mongoose.Schema({
         default: false
     },
 
+    // =========================
+    // بونصات القدرات
+    // =========================
+
     attackBonus: {
         type: Number,
         default: 0
@@ -121,9 +125,34 @@ const PlayerSchema = new mongoose.Schema({
         default: 0
     },
 
-    speedBonus: {
+    critBonus: {
         type: Number,
         default: 0
+    },
+
+    dodgeBonus: {
+        type: Number,
+        default: 0
+    },
+
+    reflectBonus: {
+        type: Number,
+        default: 0
+    },
+
+    lifestealBonus: {
+        type: Number,
+        default: 0
+    },
+
+    bossDamageBonus: {
+        type: Number,
+        default: 0
+    },
+
+    specialAbilities: {
+        type: [String],
+        default: []
     },
 
     maxCharacters: {
