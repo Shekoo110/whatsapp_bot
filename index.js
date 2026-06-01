@@ -2053,6 +2053,11 @@ const strongest = me.characters.sort(
 
 let damage = strongest.power
 
+// بونص الهجوم من اللفلات
+damage = Math.floor(
+    damage * (1 + (me.attackBonus || 0) / 100)
+)
+
 let abilityText = ""
 
 const roll = Math.random() * 100
