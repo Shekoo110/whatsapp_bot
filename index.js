@@ -1559,18 +1559,22 @@ if (reward.box) {
 
 await dbPlayer.save()
 
-player.attackBonus += 5
+player.attackBonus =
+    (player.attackBonus || 0) + 5
 
 if (floor.floor === 30) {
 
     player.towerCompleted = true
     player.title = '👑 ملك الأبطال'
 
-    player.attackBonus += 10
-    player.maxCharacters += 5
+    player.attackBonus =
+        (player.attackBonus || 0) + 10
+
+    player.maxCharacters =
+        (player.maxCharacters || 30) + 5
 }
 
-savePlayers(players)
+await player.save()
 
 let rewardText = ''
 
