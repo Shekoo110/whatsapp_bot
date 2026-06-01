@@ -2413,10 +2413,20 @@ if (!player) {
     })
 }
 
-if (player.characters.length >= 30) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: '❌ الحد الأقصى 30 شخصية'
-    })
+if (
+    player.characters.length >=
+    (player.maxCharacters || 30)
+) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ المخزون ممتلئ
+
+📦 السعة:
+${player.maxCharacters || 30}`
+        }
+    )
 }
 
 const cooldown = 30 * 60 * 1000
@@ -3196,12 +3206,21 @@ try {
 })
 }
 
-    if (player.characters.length >= 30) {
+    if (
+    player.characters.length >=
+    (player.maxCharacters || 30)
+) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ المخزون ممتلئ
 
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ وصلت للحد الأقصى (30 شخصية)'
-        })
-    }
+📦 السعة الحالية:
+${player.maxCharacters || 30}`
+        }
+    )
+}
 
     player.money -= item.price
 
