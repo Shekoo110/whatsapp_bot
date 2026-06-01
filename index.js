@@ -1391,7 +1391,7 @@ ${character.anime}`
     )
 }
 
-        if (text.startsWith('.طابق')) {
+if (text.startsWith('.طابق')) {
 
     const players = loadPlayers()
 
