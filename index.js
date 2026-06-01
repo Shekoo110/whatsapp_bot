@@ -3943,11 +3943,20 @@ let reward
 
 while (
     (me.xp || 0) >=
-    (me.level || 1) * 500
+    Math.floor(300 + ((me.level || 1) * 150))
 ) {
 
-    me.xp -= (me.level || 1) * 500
+    me.xp -= Math.floor(
+        300 + ((me.level || 1) * 150)
+    )
+
     me.level += 1
+
+    if (me.level >= 100) {
+        me.level = 100
+        me.xp = 0
+        break
+    }
 
     levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`
 
