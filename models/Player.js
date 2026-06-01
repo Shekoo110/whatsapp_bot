@@ -128,6 +128,43 @@ const PlayerSchema = new mongoose.Schema({
     title: {
         type: String,
         default: null
+    },
+
+    // =========================
+    // الصناديق
+    // =========================
+
+    boxes: {
+
+        basic: {
+            type: Number,
+            default: 0
+        },
+
+        rare: {
+            type: Number,
+            default: 0
+        },
+
+        epic: {
+            type: Number,
+            default: 0
+        },
+
+        legendary: {
+            type: Number,
+            default: 0
+        },
+
+        sss_chance: {
+            type: Number,
+            default: 0
+        },
+
+        sss_high: {
+            type: Number,
+            default: 0
+        }
     }
 
 })
