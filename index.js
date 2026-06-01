@@ -2935,6 +2935,11 @@ for (let i = 2; i < players.length; i++) {
     await player.save()
 }
 
+const rankingData = players.map(p => ({
+    userId: p.userId,
+    damage: p.bossDamage || 0
+}))
+
 for (const player of players) {
 
     player.bossDamage = 0
@@ -2946,11 +2951,11 @@ const mentions = players.map(p => p.userId)
 
 let ranking = ''
 
-players.forEach((p, i) => {
+rankingData.forEach((p, i) => {
 
     ranking +=
 `${i + 1}- @${p.userId.split('@')[0]}
-💥 الضرر: ${p.bossDamage}
+💥 الضرر: ${p.damage}
 
 `
 })
@@ -2963,11 +2968,29 @@ await sock.sendMessage(
 🥇 المركز الأول
 @${players[0]?.userId.split('@')[0] || 'لا يوجد'}
 
+🎁 الجوائز:
+💰 10000 مال
+⭐ 1000 XP
+👑 شخصية أسطورية
+
+━━━━━━━━━━━━━━━━━━
+
 🥈 المركز الثاني
 @${players[1]?.userId.split('@')[0] || 'لا يوجد'}
 
-🥉 المركز الثالث
-@${players[2]?.userId.split('@')[0] || 'لا يوجد'}
+🎁 الجوائز:
+💰 5000 مال
+⭐ 500 XP
+🎲 فرصة أسطوري أو ممتاز
+
+━━━━━━━━━━━━━━━━━━
+
+🥉 المركز الثالث وما بعده
+
+🎁 الجوائز:
+💰 2500 مال
+⭐ 500 XP
+✨ شخصية ممتازة
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -2976,6 +2999,7 @@ await sock.sendMessage(
 ${ranking}
 
 🎉 تم توزيع الجوائز بنجاح`,
+
         mentions
     }
 )
