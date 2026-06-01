@@ -20,6 +20,43 @@ let currentBoss = null
 const allCharacters = require('./characters.json')
 const characters = allCharacters
 
+const towerFloors = [
+    { floor: 1, power: 100 },
+    { floor: 2, power: 200 },
+    { floor: 3, power: 300 },
+    { floor: 4, power: 400 },
+    { floor: 5, power: 500 },
+    { floor: 6, power: 600 },
+    { floor: 7, power: 700 },
+    { floor: 8, power: 800 },
+    { floor: 9, power: 900 },
+    { floor: 10, power: 1000 },
+
+    { floor: 11, power: 1100 },
+    { floor: 12, power: 1200 },
+    { floor: 13, power: 1300 },
+    { floor: 14, power: 1400 },
+    { floor: 15, power: 1500 },
+
+    { floor: 16, power: 1600 },
+    { floor: 17, power: 1700 },
+    { floor: 18, power: 1800 },
+    { floor: 19, power: 1900 },
+    { floor: 20, power: 2500 },
+
+    { floor: 21, power: 2600 },
+    { floor: 22, power: 2700 },
+    { floor: 23, power: 2800 },
+    { floor: 24, power: 2900 },
+    { floor: 25, power: 3500 },
+
+    { floor: 26, power: 3600 },
+    { floor: 27, power: 3700 },
+    { floor: 28, power: 3800 },
+    { floor: 29, power: 3900 },
+    { floor: 30, power: 5000 }
+]
+
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected'))
 .catch(err => console.log('MongoDB Error:', err))
@@ -267,22 +304,31 @@ function createPlayer() {
     return {
 
         pulls: 5,
-
         lastReset: Date.now(),
 
         characters: [],
 
         hp: 10000,
-
         crit: 5,
-
         dodge: 3,
 
         xp: 0,
-
         level: 1,
+        money: 0,
 
-        money: 0
+        // نظام البرج
+        towerFloor: 1,
+        usedCharacters: [],
+        towerCompleted: false,
+
+        attackBonus: 0,
+        defenseBonus: 0,
+        hpBonus: 0,
+        speedBonus: 0,
+
+        maxCharacters: 30,
+
+        title: null
     }
 }
 
@@ -505,6 +551,56 @@ async function startBot() {
                     fs.readFileSync(imagePath)
                 }
             )
+        }
+
+        if (text === '.البرج') {
+
+    const players = loadPlayers()
+
+    if (!players[userId]) {
+        players[userId] = createPlayer()
+        savePlayers(players)
+    }
+
+    const player = players[userId]
+
+    if (player.towerCompleted) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: `👑 لقد أكملت برج الأبطال
+
+🏆 اللقب: ${player.title}
+
+🏰 الطابق: 30/30
+
+⚔️ هجوم إضافي: ${player.attackBonus}%
+🛡️ دفاع إضافي: ${player.defenseBonus}%
+❤️ صحة إضافية: ${player.hpBonus}%
+⚡ سرعة إضافية: ${player.speedBonus}%`
+        })
+    }
+
+    const floor = towerFloors.find(
+        f => f.floor === player.towerFloor
+    )
+
+    if (!floor) return
+
+    await sock.sendMessage(msg.key.remoteJid, {
+        text: `🏰 برج الأبطال
+
+📍 الطابق الحالي: ${floor.floor}/30
+
+⚔️ القوة المطلوبة:
+${floor.power}
+
+👥 الشخصيات المستخدمة:
+${player.usedCharacters.length}/30
+
+🏆 اللقب النهائي:
+👑 ملك الأبطال
+
+استعمل .طابق للقتال`
+    })
         }
 
         // =========================
