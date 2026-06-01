@@ -1209,8 +1209,17 @@ ${player.attackBonus || 0}%
 🛡️ دفاع إضافي:
 ${player.defenseBonus || 0}%
 
-💨 سرعة إضافية:
-${player.speedBonus || 0}%
+🎯 كريت إضافي:
+${player.critBonus || 0}%
+
+💨 مراوغة إضافية:
+${player.dodgeBonus || 0}%
+
+🪞 عكس الضرر:
+${player.reflectBonus || 0}%
+
+🩸 امتصاص الحياة:
+${player.lifestealBonus || 0}%
 
 💖 HP إضافي:
 ${player.hpBonus || 0}%
