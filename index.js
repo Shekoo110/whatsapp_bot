@@ -4030,21 +4030,45 @@ const charName =
         const target = mentioned[0]
 
         const me = await Player.findOne({ userId })
-        const enemy = await Player.findOne({ userId: target })
+const enemy = await Player.findOne({ userId: target })
 
-        if (!me) {
-            return safeSend(msg.key.remoteJid, {
-                text: '❌ لا تملك حساباً'
-            })
+// ❌ التحقق أولاً
+if (!me) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ لا تملك حساباً'
+    })
+}
+
+if (!enemy) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ الخصم لا يملك حساباً'
+    })
+}
+
+// ✅ بعد التحقق فقط
+me.abilities = me.abilities || []
+enemy.abilities = enemy.abilities || []
+function getLevelAbilities(level) {
+    const result = []
+
+    for (let lvl in levelAbilities) {
+        if (level >= lvl) {
+            result.push(levelAbilities[lvl])
         }
+    }
 
-        if (!enemy) {
-            return safeSend(msg.key.remoteJid, {
-                text: '❌ الخصم لا يملك حساباً'
-            })
-        }
+    return result
+}
 
-        // إعادة تعيين القتالات كل 24 ساعة
+// تجهيز قدرات اللفل
+me.levelAbilities = getLevelAbilities(me.level || 1)
+enemy.levelAbilities = getLevelAbilities(enemy.level || 1)
+
+// 🔥 هنا تضيف الدمج
+me.allAbilities = [...me.abilities, ...me.levelAbilities]
+enemy.allAbilities = [...enemy.abilities, ...enemy.levelAbilities]
+        
+        // إعادة تعيين القتالات كل 3 ساعات
         const now = Date.now()
 const cooldown = 30 * 60 * 1000
 
@@ -4114,46 +4138,45 @@ if (now - me.lastFightReset >= cooldown) {
 
         let myAttack =
     myCharacter.power +
+    (me.level * 5) +
     Math.floor(Math.random() * 300)
 
 let enemyAttack =
     enemyCharacter.power +
+    (enemy.level * 5) +
     Math.floor(Math.random() * 300)
+        let finalMyAttack = myAttack
+let finalEnemyAttack = enemyAttack
 
 let abilityActivated = false
 let abilityMessage = ''
 
-let abilityChance = 50
-let abilityBoost = 0.50
+for (let ab of me.allAbilities) {
 
-if (myCharacter.rarity === 'ممتاز') {
-    abilityChance = 35
-    abilityBoost = 0.35
-}
+    // ⚔️ attack boost
+    if (ab.type === "attack") {
+        finalMyAttack += finalMyAttack * ab.value / 100
+    }
 
-if (myCharacter.rarity === 'اسطوري') {
-    abilityChance = 20
-    abilityBoost = 0.20
-}
+    // 🛡️ defense (يقلل ضرر الخصم)
+    if (ab.type === "defense") {
+        finalEnemyAttack -= finalEnemyAttack * ab.value / 100
+    }
 
-if (myCharacter.rarity === 'SSS') {
-    abilityChance = 10
-    abilityBoost = 0.10
-}
+    // ⚡ crit
+    if (ab.type === "crit") {
+        if (Math.random() * 100 < ab.value) {
+            finalMyAttack *= 2
+            abilityActivated = true
+            abilityMessage = `⚡ كريتيكال من ${ab.name}`
+        }
+    }
 
-if (
-    myCharacter.ability &&
-    Math.random() * 100 <= abilityChance
-) {
-
-    abilityActivated = true
-
-    myAttack += Math.floor(
-        myCharacter.power * abilityBoost
-    )
-
-    abilityMessage =
-        `✨ تم تفعيل قدرة ${myCharacter.ability}`
+    // 💀 lifesteal (اختياري لاحقًا)
+    if (ab.type === "lifesteal") {
+        let heal = finalMyAttack * ab.value / 100
+        me.hp = (me.hp || 100) + heal
+    }
 }
 
         const rewards = {
