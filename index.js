@@ -2380,6 +2380,9 @@ try {
     return safeSend(msg.key.remoteJid, {
         text:
 
+return safeSend(msg.key.remoteJid, {
+    text:
+
 `╔════════════════════╗
 💰 𝐏𝐑𝐎𝐅𝐈𝐋𝐄
 ╚════════════════════╝
@@ -2391,6 +2394,10 @@ ${player.money || 0}
 🎟️ السحبات:
 
 ${player.pulls || 0}
+
+🎫 تذاكر المتجر:
+
+${player.towerTickets || 0}
 
 ━━━━━━━━━━━━━━━━━━
 
