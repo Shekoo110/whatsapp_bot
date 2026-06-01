@@ -1513,9 +1513,10 @@ ${floor.power}`
     if (reward.money)
         player.money += reward.money
 
-    if (reward.xp)
-        player.xp += reward.xp
-
+    if (reward.draws)
+    player.towerTickets =
+        (player.towerTickets || 0) +
+        reward.draws
     if (reward.draws)
         player.pulls += reward.draws
 
@@ -1554,9 +1555,8 @@ ${floor.power}`
 `⭐ الخبرة: +${reward.xp}\n`
 
     if (reward.draws)
-        rewardText +=
-`🎟️ السحبات: +${reward.draws}\n`
-
+    rewardText +=
+`🎫 تذاكر المتجر: +${reward.draws}\n`
     if (reward.box)
         rewardText +=
 `🎁 الصندوق: ${reward.box}\n`
@@ -1598,42 +1598,41 @@ ${player.towerFloor}`
     )
 }
 
-        if (text === '.متجرالسحبات') {
+        if (text === '.متجرالتذاكر') {
 
     return sock.sendMessage(
         msg.key.remoteJid,
         {
             text:
-`🛒 ═══〔 متجر السحبات 〕═══
+`🛒 ═══〔 متجر التذاكر 〕═══
 
 📦 Basic Box
-🎟️ السعر: 5 سحبات
+🎫 السعر: 5 تذاكر متجر
 
 📦 Rare Box
-🎟️ السعر: 10 سحبات
+🎫 السعر: 10 تذاكر متجر
 
 📦 Epic Box
-🎟️ السعر: 20 سحبة
+🎫 السعر: 20 تذكرة متجر
 
 📦 Legendary Box
-🎟️ السعر: 35 سحبة
+🎫 السعر: 35 تذكرة متجر
 
 📦 SSS Chance Box
-🎟️ السعر: 60 سحبة
+🎫 السعر: 60 تذكرة متجر
 
 📦 SSS High Box
-🎟️ السعر: 100 سحبة
-
+🎫 السعر: 100 تذكرة متجر
 ━━━━━━━━━━━━━━
 
 🌟 شخصية ممتازة عشوائية
-🎟️ السعر: 15 سحبة
+🎫 السعر: 15 تذكرة متجر
 
 👑 شخصية أسطورية عشوائية
-🎟️ السعر: 40 سحبة
+🎫 السعر: 40 تذكرة متجر
 
 🔥 شخصية SSS عشوائية
-🎟️ السعر: 150 سحبة
+🎫 السعر: 150 تذكرة متجر
 
 ━━━━━━━━━━━━━━
 
@@ -1655,42 +1654,47 @@ ${player.towerFloor}`
 
         if (text.startsWith('.شراءصندوق ')) {
 
-    let player = await Player.findOne({ userId })
+let player = await Player.findOne({ userId })
 
-    if (!player) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: '❌ لم يتم العثور على حسابك'
-        })
-    }
+if (!player) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: '❌ لم يتم العثور على حسابك'
+    })
+}
 
-    if (!player.boxes) {
-        player.boxes = {}
-    }
+if (!player.boxes) {
+    player.boxes = {}
+}
 
-    const args = text.split(' ')
-    const item = args[1]?.toLowerCase()
+if (!player.towerTickets) {
+    player.towerTickets = 0
+}
 
-    const prices = {
-        basic: 5,
-        rare: 10,
-        epic: 20,
-        legendary: 35,
-        ssschance: 60,
-        ssshigh: 100
-    }
+const args = text.split(' ')
+const item = args[1]?.toLowerCase()
 
-    const names = {
-        basic: '📦 Basic',
-        rare: '📦 Rare',
-        epic: '📦 Epic',
-        legendary: '📦 Legendary',
-        ssschance: '📦 SSS Chance',
-        ssshigh: '📦 SSS High'
-    }
+const prices = {
+    basic: 5,
+    rare: 10,
+    epic: 20,
+    legendary: 35,
+    ssschance: 60,
+    ssshigh: 100
+}
 
-    if (!prices[item]) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text:
+const names = {
+    basic: '📦 Basic',
+    rare: '📦 Rare',
+    epic: '📦 Epic',
+    legendary: '📦 Legendary',
+    ssschance: '📦 SSS Chance',
+    ssshigh: '📦 SSS High'
+}
+
+if (!prices[item]) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text:
+
 `❌ الصندوق غير موجود
 
 📦 basic
@@ -1699,38 +1703,41 @@ ${player.towerFloor}`
 📦 legendary
 📦 ssschance
 📦 ssshigh`
-        })
-    }
+})
+}
 
-    if (player.pulls < prices[item]) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text:
-`❌ ليس لديك سحبات كافية
-
-🎟️ المطلوب: ${prices[item]}
-🎟️ لديك: ${player.pulls}`
-        })
-    }
-
-    player.pulls -= prices[item]
-
-    player.boxes[item] = (player.boxes[item] || 0) + 1
-
-    await player.save()
-
+if (player.towerTickets < prices[item]) {
     return sock.sendMessage(msg.key.remoteJid, {
         text:
+
+`❌ ليس لديك تذاكر متجر كافية
+
+🎫 المطلوب: ${prices[item]}
+🎫 لديك: ${player.towerTickets}`
+})
+}
+
+player.towerTickets -= prices[item]
+
+player.boxes[item] =
+    (player.boxes[item] || 0) + 1
+
+await player.save()
+
+return sock.sendMessage(msg.key.remoteJid, {
+    text:
+
 `✅ تم شراء الصندوق بنجاح
 
 ${names[item]}
 
-🎟️ السعر: ${prices[item]} سحبة
-🎟️ المتبقي: ${player.pulls} سحبة
+🎫 السعر: ${prices[item]} تذكرة متجر
+🎫 المتبقي: ${player.towerTickets}
 
 📦 عدد هذا الصندوق:
 ${player.boxes[item]}`
-    })
-        }
+})
+}
 
         if (text === '.صناديقي') {
 
