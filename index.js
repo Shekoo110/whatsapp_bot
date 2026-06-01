@@ -20,6 +20,151 @@ let currentBoss = null
 const allCharacters = require('./characters.json')
 const characters = allCharacters
 
+const ABILITY_CHANCE = 30
+const levelAbilities = {
+
+5: {
+    name: "👁️ شارينغان",
+    type: "crit",
+    value: 5,
+    description: "5% ضربة حرجة إضافية"
+},
+
+10: {
+    name: "🛡️ صلابة الحديد",
+    type: "defense",
+    value: 5,
+    description: "تقليل الضرر 5%"
+},
+
+15: {
+    name: "⚔️ عين الصقر",
+    type: "crit",
+    value: 5,
+    description: "زيادة فرصة الضربة الحرجة"
+},
+
+20: {
+    name: "🔥 لهب التنين",
+    type: "reflect",
+    value: 5,
+    description: "إرجاع 5% من الضرر"
+},
+
+25: {
+    name: "🌑 رينيغان",
+    type: "lifesteal",
+    value: 5,
+    description: "استعادة 5% من الضرر"
+},
+
+30: {
+    name: "💀 سوسانو",
+    type: "attack",
+    value: 10,
+    description: "زيادة الهجوم 10%"
+},
+
+35: {
+    name: "🦅 غرائز المقاتل",
+    type: "dodge",
+    value: 10,
+    description: "زيادة المراوغة 10%"
+},
+
+40: {
+    name: "👑 هاكي الملك",
+    type: "stun",
+    value: 5,
+    description: "5% شل الخصم"
+},
+
+45: {
+    name: "🐉 تنين الأساطير",
+    type: "bossDamage",
+    value: 10,
+    description: "ضرر إضافي ضد الزعيم"
+},
+
+50: {
+    name: "☄️ قوة الكواكب",
+    type: "attack",
+    value: 15,
+    description: "زيادة الهجوم 15%"
+},
+
+55: {
+    name: "❄️ تجميد الزمن",
+    type: "freeze",
+    value: 5,
+    description: "5% تجميد الخصم"
+},
+
+60: {
+    name: "⚔️ سيد المعارك",
+    type: "crit",
+    value: 10,
+    description: "10% ضربة حرجة"
+},
+
+65: {
+    name: "🛡️ درع العمالقة",
+    type: "defense",
+    value: 10,
+    description: "تقليل الضرر 10%"
+},
+
+70: {
+    name: "🌋 غضب البركان",
+    type: "reflect",
+    value: 10,
+    description: "عكس 10% من الضرر"
+},
+
+75: {
+    name: "👹 قوة الشياطين",
+    type: "attack",
+    value: 20,
+    description: "زيادة الهجوم 20%"
+},
+
+80: {
+    name: "🌌 بوابة الأبعاد",
+    type: "dodge",
+    value: 15,
+    description: "15% مراوغة"
+},
+
+85: {
+    name: "🌩️ سيد العواصف",
+    type: "reflect",
+    value: 15,
+    description: "يعكس 15% من الضرر على الخصم"
+},
+
+90: {
+    name: "💎 الجسد الماسي",
+    type: "defense",
+    value: 15,
+    description: "تقليل الضرر 15%"
+},
+
+95: {
+    name: "🔥 ملك الجحيم",
+    type: "lifesteal",
+    value: 15,
+    description: "استعادة 15% من الضرر"
+},
+
+100: {
+    name: "🌟 الحاكم المطلق",
+    type: "ultimate",
+    value: 25,
+    description: "زيادة جميع الإحصائيات 25%"
+}
+
+}
+
 const towerFloors = [
     { floor: 1, power: 100, image: "https://i.ibb.co/Fkrdc9TV/what-is-an-underground-prison-cell-called-1.jpg" },
     { floor: 2, power: 200, image: "https://i.ibb.co/Fkrdc9TV/what-is-an-underground-prison-cell-called-1.jpg" },
@@ -531,15 +676,22 @@ function createPlayer() {
         level: 1,
         money: 0,
 
-        // نظام البرج
         towerFloor: 1,
         usedCharacters: [],
         towerCompleted: false,
 
         attackBonus: 0,
         defenseBonus: 0,
+
+        critBonus: 0,
+        dodgeBonus: 0,
+        reflectBonus: 0,
+        lifestealBonus: 0,
+        bossDamageBonus: 0,
+
+        specialAbilities: [],
+
         hpBonus: 0,
-        speedBonus: 0,
 
         maxCharacters: 30,
 
