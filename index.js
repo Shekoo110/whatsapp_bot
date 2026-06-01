@@ -1400,180 +1400,6 @@ ${character.anime}`
 
 if (text.startsWith('.طابق')) {
 
-const players = loadPlayers()
-
-if (!players[userId]) {
-    players[userId] = createPlayer()
-}
-
-const player = players[userId]
-
-if (player.towerCompleted) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: '👑 لقد أكملت البرج بالفعل'
-    })
-}
-
-const args = text.trim().split(/\s+/)
-
-if (args.length < 3) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text:
-
-`❌ استخدم:
-
-.طابق رقم_الطابق رقم_الشخصية
-
-مثال:
-.طابق 1 1`
-})
-}
-
-const floorNumber = Number(args[1])
-const charNumber = Number(args[2]) - 1
-
-if (
-    isNaN(floorNumber) ||
-    isNaN(charNumber)
-) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: '❌ يجب إدخال أرقام صحيحة'
-    })
-}
-
-if (floorNumber !== player.towerFloor) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text:
-
-"❌ الطابق الحالي لديك هو ${player.towerFloor}"
-})
-}
-
-const floor = towerFloors.find(
-    f => f.floor === floorNumber
-)
-
-if (!floor) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: '❌ هذا الطابق غير موجود'
-    })
-}
-
-const dbPlayer =
-    await Player.findOne({ userId })
-
-if (!dbPlayer) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: '❌ لا تملك شخصيات'
-    })
-}
-
-const character =
-    dbPlayer.characters?.[charNumber]
-
-if (!character) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: '❌ الشخصية غير موجودة'
-    })
-}
-
-if (
-    player.usedCharacters.includes(
-        character.name
-    )
-) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text:
-        '❌ هذه الشخصية استعملتها سابقاً في البرج'
-    })
-}
-
-const finalPower = Math.floor(
-    character.power *
-    (
-        1 +
-        (player.attackBonus || 0) / 100
-    )
-)
-
-if (finalPower < floor.power) {
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-
-`❌ فشل الطابق ${floor.floor}
-
-⚔️ قوة الشخصية:
-${finalPower}
-
-🏰 المطلوب:
-${floor.power}`
-}
-)
-}
-
-player.usedCharacters.push(
-    character.name
-)
-
-const reward =
-    getTowerReward(floor.floor)
-
-player.towerFloor++
-
-if (reward.money)
-    player.money += reward.money
-
-if (reward.xp)
-    player.xp += reward.xp
-
-if (reward.draws)
-    player.pulls += reward.draws
-
-// حفظ الجوائز أيضاً في MongoDB
-if (reward.money)
-    dbPlayer.money =
-        (dbPlayer.money || 0) +
-        reward.money
-
-if (reward.xp)
-    dbPlayer.xp =
-        (dbPlayer.xp || 0) +
-        reward.xp
-
-if (reward.draws)
-    dbPlayer.pulls =
-        (dbPlayer.pulls || 0) +
-        reward.draws
-
-if (reward.box) {
-
-    if (!player.boxes)
-        player.boxes = {}
-
-    player.boxes[reward.box] =
-        (player.boxes[reward.box] || 0) + 1
-}
-
-await dbPlayer.save()
-
-player.attackBonus =
-    (player.attackBonus || 0) + 5
-
-if (floor.floor === 30) {
-
-    player.towerCompleted = true
-    player.title = '👑 ملك الأبطال'
-
-    player.attackBonus =
-        (player.attackBonus || 0) + 10
-
-    player.maxCharacters =
-        (player.maxCharacters || 30) + 5
-if (text.startsWith('.طابق')) {
-
     let player = await Player.findOne({ userId })
 
     if (!player) {
@@ -1647,7 +1473,7 @@ if (text.startsWith('.طابق')) {
     ) {
         return sock.sendMessage(msg.key.remoteJid, {
             text:
-            '❌ هذه الشخصية استعملتها سابقاً في البرج'
+'❌ هذه الشخصية استعملتها سابقاً في البرج'
         })
     }
 
@@ -1660,12 +1486,10 @@ if (text.startsWith('.طابق')) {
     )
 
     if (finalPower < floor.power) {
-
         return sock.sendMessage(
             msg.key.remoteJid,
             {
                 text:
-
 `❌ فشل الطابق ${floor.floor}
 
 ⚔️ قوة الشخصية:
@@ -1676,9 +1500,6 @@ ${floor.power}`
             }
         )
     }
-
-    if (!player.usedCharacters)
-        player.usedCharacters = []
 
     player.usedCharacters.push(
         character.name
@@ -1700,8 +1521,9 @@ ${floor.power}`
 
     if (reward.box) {
 
-        if (!player.boxes)
+        if (!player.boxes) {
             player.boxes = {}
+        }
 
         player.boxes[reward.box] =
             (player.boxes[reward.box] || 0) + 1
@@ -1715,11 +1537,8 @@ ${floor.power}`
         player.towerCompleted = true
         player.title = '👑 ملك الأبطال'
 
-        player.attackBonus =
-            (player.attackBonus || 0) + 10
-
-        player.maxCharacters =
-            (player.maxCharacters || 30) + 5
+        player.attackBonus += 10
+        player.maxCharacters += 5
     }
 
     await player.save()
@@ -1728,19 +1547,19 @@ ${floor.power}`
 
     if (reward.money)
         rewardText +=
-            `💰 المال: +${reward.money}\n`
+`💰 المال: +${reward.money}\n`
 
     if (reward.xp)
         rewardText +=
-            `⭐ الخبرة: +${reward.xp}\n`
+`⭐ الخبرة: +${reward.xp}\n`
 
     if (reward.draws)
         rewardText +=
-            `🎟️ السحبات: +${reward.draws}\n`
+`🎟️ السحبات: +${reward.draws}\n`
 
     if (reward.box)
         rewardText +=
-            `🎁 الصندوق: ${reward.box}\n`
+`🎁 الصندوق: ${reward.box}\n`
 
     return sock.sendMessage(
         msg.key.remoteJid,
