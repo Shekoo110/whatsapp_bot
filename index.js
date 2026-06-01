@@ -180,6 +180,21 @@ function getTowerReward(floor) {
     }
 }
 
+function getRandomCharacterByRarity(rarity) {
+
+    const list = characters.filter(
+        c => c.rarity === rarity
+    )
+
+    if (!list.length) return null
+
+    return list[
+        Math.floor(
+            Math.random() * list.length
+        )
+    ]
+}
+
 function getRandomCharacterByBox(boxType) {
 
     let pool = []
@@ -918,6 +933,100 @@ ${player.usedCharacters.length}/30
             )
         }
 
+        if (text === '.بروفايل') {
+
+    let player = await Player.findOne({ userId })
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ لا يوجد حساب' }
+        )
+    }
+
+    let strongest = null
+
+    if (
+        player.characters &&
+        player.characters.length > 0
+    ) {
+        strongest = player.characters.reduce(
+            (a, b) =>
+                a.power > b.power ? a : b
+        )
+    }
+
+    let profilePic = null
+
+    try {
+        profilePic = await sock.profilePictureUrl(
+            userId,
+            'image'
+        )
+    } catch (err) {
+        profilePic = null
+    }
+
+    const profileText =
+`👤 الملف الشخصي
+
+🎖️ اللقب: ${player.title || 'لا يوجد'}
+
+⭐ المستوى: ${player.level}
+✨ الخبرة: ${player.xp}
+
+💰 المال: ${player.money}
+🎟️ السحبات: ${player.pulls}
+
+❤️ HP: ${player.hp}
+
+⚔️ هجوم إضافي: ${player.attackBonus || 0}%
+🛡️ دفاع إضافي: ${player.defenseBonus || 0}%
+💨 سرعة إضافية: ${player.speedBonus || 0}%
+💖 HP إضافي: ${player.hpBonus || 0}%
+
+🏰 الطابق الحالي: ${player.towerFloor || 1}/30
+
+🧿 الشخصيات:
+${player.characters.length}/${player.maxCharacters}
+
+👑 ضرر الزعيم:
+${player.bossDamage || 0}
+
+━━━━━━━━━━━━━━
+
+🏆 أقوى شخصية
+
+🧿 الاسم:
+${strongest ? strongest.name : 'لا يوجد'}
+
+🌟 الندرة:
+${strongest ? strongest.rarity : '-'}
+
+⚔️ القوة:
+${strongest ? strongest.power : '-'}`
+
+    if (profilePic) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                image: {
+                    url: profilePic
+                },
+                caption: profileText
+            }
+        )
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: profileText
+        }
+    )
+}
+
         // =========================
         // .كت
         // =========================
@@ -939,6 +1048,163 @@ ${player.usedCharacters.length}/30
                     `*${names.join('* , *')}*`
                 }
             )
+        }
+
+        if (text.startsWith('.فتحبكج ')) {
+
+    let player = await Player.findOne({ userId })
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ لا يوجد حساب' }
+        )
+    }
+
+    const boxType =
+        text.replace('.فتحبكج ', '')
+            .trim()
+            .toLowerCase()
+
+    if (
+        !player.boxes ||
+        !player.boxes[boxType] ||
+        player.boxes[boxType] <= 0
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا تملك هذا البكج'
+            }
+        )
+    }
+
+    let rarity
+    const chance = Math.random() * 100
+
+    switch (boxType) {
+
+        case 'basic':
+            rarity =
+                chance <= 20
+                    ? 'ممتاز'
+                    : 'عادي'
+            break
+
+        case 'rare':
+            if (chance <= 5)
+                rarity = 'اسطوري'
+            else if (chance <= 50)
+                rarity = 'ممتاز'
+            else
+                rarity = 'عادي'
+            break
+
+        case 'epic':
+            rarity =
+                chance <= 25
+                    ? 'اسطوري'
+                    : 'ممتاز'
+            break
+
+        case 'legendary':
+            rarity = 'اسطوري'
+            break
+
+        case 'sss_chance':
+            rarity =
+                chance <= 5
+                    ? 'SSS'
+                    : 'اسطوري'
+            break
+
+        case 'sss_high':
+            rarity =
+                chance <= 30
+                    ? 'SSS'
+                    : 'اسطوري'
+            break
+
+        default:
+            return sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    text: '❌ نوع البكج غير معروف'
+                }
+            )
+    }
+
+    const list =
+        characters.filter(
+            c => c.rarity === rarity
+        )
+
+    if (!list.length) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: `❌ لا توجد شخصيات ${rarity}`
+            }
+        )
+    }
+
+    const character =
+        list[
+            Math.floor(
+                Math.random() * list.length
+            )
+        ]
+
+    player.boxes[boxType]--
+
+    player.characters.push(character)
+
+    await player.save()
+
+    const imagePath =
+        path.join(
+            __dirname,
+            character.image
+        )
+
+    if (!fs.existsSync(imagePath)) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`🎁 تم فتح البكج
+
+🧿 ${character.name}
+🌟 ${character.rarity}
+⚔️ ${character.power}
+
+❌ صورة الشخصية غير موجودة`
+            }
+        )
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: fs.readFileSync(imagePath),
+
+            caption:
+`🎁 ═══〔 تم فتح البكج 〕═══
+
+🧿 الاسم: ${character.name}
+
+🌟 الندرة: ${character.rarity}
+
+⚔️ القوة: ${character.power}
+
+🌌 الأنمي: ${character.anime}
+
+📦 البكج: ${boxType}
+
+🎉 تمت إضافة الشخصية إلى مخزونك`
+        }
+    )
         }
 
         if (text.startsWith('.فتح ')) {
