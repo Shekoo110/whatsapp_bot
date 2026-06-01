@@ -3901,7 +3901,7 @@ myAttack = oldMyAttack
 let winner
 let reward
 
-    if (myAttack >= enemyAttack) {
+if (finalMyAttack >= finalEnemyAttack) {
 
     winner = 'أنت'
 
