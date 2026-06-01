@@ -2053,16 +2053,25 @@ const strongest = me.characters.sort(
 
 let damage = strongest.power
 
-// بونص الهجوم من اللفلات
+let damage = strongest.power
+
+// بونص الهجوم
 damage = Math.floor(
     damage * (1 + (me.attackBonus || 0) / 100)
 )
 
+// بونص ضرر الزعيم
+damage = Math.floor(
+    damage * (1 + (me.bossDamageBonus || 0) / 100)
+)
+
 let abilityText = ""
+
+const critChance = 15 + (me.critBonus || 0)
 
 const roll = Math.random() * 100
 
-if (roll <= 15) {
+if (roll <= critChance) {
 
     damage *= 2
 
@@ -2286,6 +2295,20 @@ if (Math.random() <= 0.15) {
 }
 
 currentBoss.hp -= damage
+            if ((me.lifestealBonus || 0) > 0) {
+
+    const heal = Math.floor(
+        damage * (me.lifestealBonus || 0) / 100
+    )
+
+    me.hp = (me.hp || 10000) + heal
+
+    abilityText += `
+
+🩸 امتصاص الحياة
+
+❤️ استعدت ${heal} HP`
+            }
 
 if (currentBoss.hp < 0) {
     currentBoss.hp = 0
