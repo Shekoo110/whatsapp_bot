@@ -2845,7 +2845,10 @@ if (text.startsWith('.شراءمتجر')) {
             })
         }
 
-        if (player.characters.length >= 30) {
+      if (
+    player.characters.length >=
+    (player.maxCharacters || 30)
+) {
 
             return safeSend(msg.key.remoteJid, {
                 text: '❌ وصلت للحد الأقصى (30 شخصية)'
