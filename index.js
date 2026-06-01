@@ -2101,6 +2101,119 @@ else if (roll <= 45) {
 
 📖 حصلت على هجمة إضافية`
 }
+            const abilityRoll = Math.random() * 100
+
+// شارينغان
+if (
+    me.specialAbilities?.includes("👁️ شارينغان") &&
+    abilityRoll <= ABILITY_CHANCE
+) {
+    damage *= 2
+
+    abilityText += `
+
+👁️ شارينغان
+
+💥 ضربة حرجة ×2`
+}
+
+// عين الصقر
+if (
+    me.specialAbilities?.includes("⚔️ عين الصقر") &&
+    abilityRoll <= ABILITY_CHANCE
+) {
+    damage = Math.floor(damage * 1.2)
+
+    abilityText += `
+
+⚔️ عين الصقر
+
+🎯 +20% ضرر`
+}
+
+// سوسانو
+if (
+    me.specialAbilities?.includes("💀 سوسانو") &&
+    abilityRoll <= ABILITY_CHANCE
+) {
+    damage = Math.floor(damage * 1.1)
+
+    abilityText += `
+
+💀 سوسانو
+
+⚔️ +10% ضرر`
+}
+
+// تنين الأساطير
+if (
+    me.specialAbilities?.includes("🐉 تنين الأساطير") &&
+    abilityRoll <= ABILITY_CHANCE
+) {
+    damage = Math.floor(damage * 1.1)
+
+    abilityText += `
+
+🐉 تنين الأساطير
+
+👑 ضرر إضافي ضد الزعيم`
+}
+
+// قوة الكواكب
+if (
+    me.specialAbilities?.includes("☄️ قوة الكواكب") &&
+    abilityRoll <= ABILITY_CHANCE
+) {
+    damage = Math.floor(damage * 1.15)
+
+    abilityText += `
+
+☄️ قوة الكواكب
+
+🌠 +15% ضرر`
+}
+
+// سيد المعارك
+if (
+    me.specialAbilities?.includes("⚔️ سيد المعارك") &&
+    abilityRoll <= ABILITY_CHANCE
+) {
+    damage = Math.floor(damage * 1.25)
+
+    abilityText += `
+
+⚔️ سيد المعارك
+
+💥 +25% ضرر`
+}
+
+// قوة الشياطين
+if (
+    me.specialAbilities?.includes("👹 قوة الشياطين") &&
+    abilityRoll <= ABILITY_CHANCE
+) {
+    damage = Math.floor(damage * 1.2)
+
+    abilityText += `
+
+👹 قوة الشياطين
+
+🔥 +20% ضرر`
+}
+
+// الحاكم المطلق
+if (
+    me.specialAbilities?.includes("🌟 الحاكم المطلق") &&
+    abilityRoll <= ABILITY_CHANCE
+) {
+    damage = Math.floor(damage * 1.5)
+
+    abilityText += `
+
+🌟 الحاكم المطلق
+
+⚡ +50% ضرر`
+}
 
 if (Math.random() <= 0.15) {
 
