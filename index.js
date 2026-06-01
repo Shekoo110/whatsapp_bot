@@ -770,18 +770,18 @@ async function startBot() {
 
         if (text === '.البرج') {
 
-    const players = loadPlayers()
+const players = loadPlayers()
 
-    if (!players[userId]) {
-        players[userId] = createPlayer()
-        savePlayers(players)
-    }
+if (!players[userId]) {
+    players[userId] = createPlayer()
+    savePlayers(players)
+}
 
-    const player = players[userId]
+const player = players[userId]
 
-    if (player.towerCompleted) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: `👑 لقد أكملت برج الأبطال
+if (player.towerCompleted) {
+    return await sock.sendMessage(msg.key.remoteJid, {
+        text: `👑 لقد أكملت برج الأبطال
 
 🏆 اللقب: ${player.title}
 
@@ -791,20 +791,22 @@ async function startBot() {
 🛡️ دفاع إضافي: ${player.defenseBonus}%
 ❤️ صحة إضافية: ${player.hpBonus}%
 ⚡ سرعة إضافية: ${player.speedBonus}%`
-        })
-    }
+})
+}
 
-    const floor = towerFloors.find(
-        f => f.floor === player.towerFloor
-    )
+const floor = towerFloors.find(
+    f => f.floor === player.towerFloor
+)
 
-    if (!floor) return
+if (!floor) return
 
-    await sock.sendMessage(msg.key.remoteJid, {
-    image: {
-        url: floor.image
-    },
-    caption: `🏰 برج الأبطال
+return await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: {
+            url: floor.image
+        },
+        caption: `🏰 برج الأبطال
 
 📍 الطابق الحالي: ${floor.floor}/30
 
@@ -818,8 +820,9 @@ ${player.usedCharacters.length}/30
 👑 ملك الأبطال
 
 استعمل .طابق للقتال`
-})
-        }
+}
+)
+}
 
         // =========================
         // .صوت
