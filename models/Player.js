@@ -8,84 +8,38 @@ const PlayerSchema = new mongoose.Schema({
         unique: true
     },
 
-    pulls: {
-        type: Number,
-        default: 5
-    },
-
-    towerTickets: {
-        type: Number,
-        default: 0
-    },
-
-    lastReset: {
-        type: Number,
-        default: Date.now
-    },
-
     // =========================
-    // Characters
+    // BASIC
     // =========================
+    pulls: { type: Number, default: 5 },
+    towerTickets: { type: Number, default: 0 },
+    lastReset: { type: Number, default: Date.now },
+
     characters: {
         type: Array,
         default: []
     },
 
     // =========================
-    // HP SYSTEM (PvP)
+    // HP SYSTEM (PvP CORE)
     // =========================
-    hp: {
-        type: Number,
-        default: 10000
-    },
+    hp: { type: Number, default: 10000 },
+    maxHp: { type: Number, default: 10000 },
 
-    maxHp: {
-        type: Number,
-        default: 10000
-    },
+    crit: { type: Number, default: 5 },
+    dodge: { type: Number, default: 3 },
 
-    crit: {
-        type: Number,
-        default: 5
-    },
+    xp: { type: Number, default: 0 },
+    level: { type: Number, default: 1 },
 
-    dodge: {
-        type: Number,
-        default: 3
-    },
-
-    xp: {
-        type: Number,
-        default: 0
-    },
-
-    level: {
-        type: Number,
-        default: 1
-    },
-
-    money: {
-        type: Number,
-        default: 0
-    },
+    money: { type: Number, default: 0 },
 
     // =========================
     // PvP SYSTEM
     // =========================
-    mmr: {
-        type: Number,
-        default: 1000
-    },
-
-    wins: {
-        type: Number,
-        default: 0
-    },
-
-    losses: {
-        type: Number,
-        default: 0
-    },
+    mmr: { type: Number, default: 1000 },
+    wins: { type: Number, default: 0 },
+    losses: { type: Number, default: 0 },
 
     rank: {
         type: String,
@@ -98,38 +52,21 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // Daily fights
+    // DAILY SYSTEM
     // =========================
-    fights: {
-        type: Number,
-        default: 5
-    },
-
-    lastFightReset: {
-        type: Number,
-        default: Date.now
-    },
+    fights: { type: Number, default: 5 },
+    lastFightReset: { type: Number, default: Date.now },
 
     // =========================
-    // Boss system
+    // BOSS SYSTEM
     // =========================
-    bossDamage: {
-        type: Number,
-        default: 0
-    },
-
-    lastBossAttack: {
-        type: Number,
-        default: 0
-    },
+    bossDamage: { type: Number, default: 0 },
+    lastBossAttack: { type: Number, default: 0 },
 
     // =========================
-    // Tower system
+    // TOWER SYSTEM
     // =========================
-    towerFloor: {
-        type: Number,
-        default: 1
-    },
+    towerFloor: { type: Number, default: 1 },
 
     usedCharacters: {
         type: Array,
@@ -142,15 +79,18 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // Bonuses (from skills / passives)
+    // BONUSES (PvP Boosts)
     // =========================
     attackBonus: { type: Number, default: 0 },
     defenseBonus: { type: Number, default: 0 },
     hpBonus: { type: Number, default: 0 },
+
     critBonus: { type: Number, default: 0 },
     dodgeBonus: { type: Number, default: 0 },
+
     reflectBonus: { type: Number, default: 0 },
     lifestealBonus: { type: Number, default: 0 },
+
     bossDamageBonus: { type: Number, default: 0 },
 
     specialAbilities: {
@@ -161,25 +101,11 @@ const PlayerSchema = new mongoose.Schema({
     // =========================
     // EQUIPMENT SYSTEM 🔥
     // =========================
-
     equipment: {
-        weapon: {
-            type: Object,
-            default: null
-        },
-        armor: {
-            type: Object,
-            default: null
-        },
-        accessory: {
-            type: Object,
-            default: null
-        }
+        weapon: { type: Object, default: null },
+        armor: { type: Object, default: null },
+        accessory: { type: Object, default: null }
     },
-
-    // =========================
-    // INVENTORY SYSTEM
-    // =========================
 
     inventory: {
         type: [
@@ -201,13 +127,10 @@ const PlayerSchema = new mongoose.Schema({
         default: []
     },
 
-    maxInventory: {
-        type: Number,
-        default: 20
-    },
+    maxInventory: { type: Number, default: 20 },
 
     // =========================
-    // SHOP DATA (optional but powerful)
+    // SHOP SYSTEM
     // =========================
     shop: {
         items: {
@@ -221,20 +144,13 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // Misc
+    // MISC
     // =========================
-    maxCharacters: {
-        type: Number,
-        default: 30
-    },
-
-    title: {
-        type: String,
-        default: null
-    },
+    maxCharacters: { type: Number, default: 30 },
+    title: { type: String, default: null },
 
     // =========================
-    // Boxes
+    // BOXES
     // =========================
     boxes: {
         basic: { type: Number, default: 0 },
