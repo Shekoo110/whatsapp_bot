@@ -883,6 +883,7 @@ async function startBot() {
         }, 60 * 60 * 1000)
     }
 
+    // حفظ الجلسة
     sock.ev.on('creds.update', saveCreds)
 
     const safeSend = async (jid, data) => {
@@ -919,30 +920,21 @@ async function startBot() {
         if (connection === 'close') {
             console.log('انقطع الاتصال')
 
-            // 🔥 مهم: تأخير قبل إعادة التشغيل
             setTimeout(() => {
                 startBot()
             }, 5000)
         }
     })
-}
-startBot()
 
     // =========================
-    // استقبال الرسائل
+    // استقبال الرسائل (داخل startBot)
     // =========================
-
     sock.ev.on('messages.upsert', async ({ messages }) => {
 
-    const msg = messages[0]
+        const msg = messages[0]
+        if (!msg?.message) return
 
-    console.log('CHAT ID:', msg.key.remoteJid)
-
-    if (!msg.message) return
-
-    // باقي الكود
-
-        if (!msg.message || !msg.key.remoteJid) return
+        console.log('CHAT ID:', msg.key.remoteJid)
 
         const text =
             msg.message.conversation ||
@@ -953,6 +945,21 @@ startBot()
         const userId =
             msg.key.participant ||
             msg.key.remoteJid
+
+        // 🔥 هنا تبدأ الأوامر
+
+        if (text.startsWith('.بوت')) {
+            await safeSend(msg.key.remoteJid, {
+                text: '🤖 البوت يعمل بنجاح'
+            })
+        }
+
+    })
+
+}
+
+// تشغيل البوت
+startBot()
 
         // =========================
         // .صوره
