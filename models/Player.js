@@ -105,6 +105,11 @@ const PlayerSchema = new mongoose.Schema({
         default: Date.now
     },
 
+    lastPvP: {
+        type: Number,
+        default: 0
+    },
+
     // =========================
     // Boss system
     // =========================
@@ -154,6 +159,26 @@ const PlayerSchema = new mongoose.Schema({
     specialAbilities: {
         type: [String],
         default: []
+    },
+
+    // =========================
+    // EQUIPMENT SYSTEM (NEW 🔥)
+    // =========================
+
+    equipment: {
+        weapon: { type: Object, default: null },
+        armor: { type: Object, default: null },
+        accessory: { type: Object, default: null }
+    },
+
+    inventory: {
+        type: Array,
+        default: []
+    },
+
+    maxInventory: {
+        type: Number,
+        default: 20
     },
 
     maxCharacters: {
