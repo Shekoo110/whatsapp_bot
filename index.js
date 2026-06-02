@@ -16,6 +16,68 @@ const Boss = require('./models/Boss')
 const Player = require('./models/Player')
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
+// require / imports هنا
+const Shop = require('./models/Shop')
+
+// 👇 هنا تضعها
+async function generateShop() {
+
+    await Shop.deleteMany()
+
+    const rarities = [
+        { name: 'عادي', chance: 50 },
+        { name: 'ممتاز', chance: 30 },
+        { name: 'اسطوري', chance: 15 },
+        { name: 'SSS', chance: 5 }
+    ]
+
+    const getRandomRarity = () => {
+
+        let rand = Math.random() * 100
+        let sum = 0
+
+        for (let r of rarities) {
+            sum += r.chance
+            if (rand <= sum) return r.name
+        }
+
+        return 'عادي'
+    }
+
+    let shopItems = []
+
+    for (let i = 0; i < 5; i++) {
+
+        const rarity = getRandomRarity()
+
+        const characters = allCharacters.filter(c =>
+            c.rarity === rarity
+        )
+
+        if (!characters.length) continue
+
+        const character =
+            characters[Math.floor(Math.random() * characters.length)]
+
+        const priceMultiplier = {
+            'عادي': 1000,
+            'ممتاز': 3000,
+            'اسطوري': 8000,
+            'SSS': 20000
+        }
+
+        const price =
+            priceMultiplier[rarity] +
+            Math.floor(Math.random() * 1000)
+
+        shopItems.push({
+            character,
+            price
+        })
+    }
+
+    await Shop.insertMany(shopItems)
+}
 let currentBoss = null
 const allCharacters = require('./characters.json')
 const characters = allCharacters
@@ -707,13 +769,12 @@ async function generateShop() {
 
     const shopItems = await Shop.find()
 
+    // ⏳ إذا المتجر موجود ومضى أقل من ساعة، لا تعيد التوليد
     if (shopItems.length > 0) {
 
-        const age =
-            Date.now() - shopItems[0].createdAt
+        const age = Date.now() - shopItems[0].createdAt
 
-        if (age < 24 * 60 * 60 * 1000)
-            return
+        if (age < 60 * 60 * 1000) return
     }
 
     await Shop.deleteMany({})
@@ -731,19 +792,14 @@ async function generateShop() {
         else if (chance <= 40)
             rarity = 'ممتاز'
 
-        const pool =
-            characters.filter(
-                c => c.rarity === rarity
-            )
+        const pool = characters.filter(
+            c => c.rarity === rarity
+        )
 
         if (!pool.length) continue
 
         const character =
-            pool[
-                Math.floor(
-                    Math.random() * pool.length
-                )
-            ]
+            pool[Math.floor(Math.random() * pool.length)]
 
         let price = character.power * 2
 
@@ -798,11 +854,21 @@ async function startBot() {
     }
 
     const { state, saveCreds } =
-    await useMultiFileAuthState('auth')
+        await useMultiFileAuthState('auth')
 
-const sock = makeWASocket({
-    auth: state
-})
+    const sock = makeWASocket({
+        auth: state,
+        // باقي الإعدادات
+    })
+
+    // 👇 هنا بالضبط
+    await generateShop()
+
+    setInterval(async () => {
+        await generateShop()
+        console.log("🏪 Shop refreshed automatically")
+    }, 60 * 60 * 1000)
+}
 
 sock.ev.on(
     'creds.update',
@@ -2043,21 +2109,20 @@ ${player.boxes[item]}`
 
         if (text === '.بوس') {
 
-    currentBoss = {
-    ...bosses[Math.floor(Math.random() * bosses.length)]
-}
-
-await Boss.deleteMany({})
-
-await Boss.create(currentBoss)
+    if (!currentBoss) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '⏳ لا يوجد زعيم حالياً'
+        })
+    }
 
     return sock.sendMessage(msg.key.remoteJid, {
-        text: `🔥 ظهر زعيم عالمي!
+        text: `🔥 الزعيم الحالي:
 
 👑 ${currentBoss.name}
-استخدم .زعيم لعرض المعلومات`
+
+💀 استخدم .زعيم لمواجهته`
     })
-        }
+}
         
 if (text === '.جوائز') {
 
@@ -3172,11 +3237,11 @@ if (text.startsWith('.مزاد')) {
 
     try {
 
-        const args = text.split(' ')
+        const args = text.trim().split(' ')
 
-        const charName = args[1]
-        const charPower = Number(args[2])
-        const price = Number(args[3])
+const price = Number(args.pop())
+const charPower = Number(args.pop())
+const charName = args.slice(1).join(' ')
 
         if (!charName || isNaN(charPower) || isNaN(price)) {
 
@@ -3203,10 +3268,10 @@ if (text.startsWith('.مزاد')) {
         player.characters = player.characters || []
 
         const charIndex =
-            player.characters.findIndex(c =>
-                c.name.toLowerCase() === charName.toLowerCase() &&
-                Number(c.power) === charPower
-            )
+    player.characters.findIndex(c =>
+        c.name.toLowerCase().trim() === charName.toLowerCase().trim() &&
+        Number(c.power) === charPower
+    )
 
         if (charIndex === -1) {
 
@@ -3460,8 +3525,6 @@ if (text === '.متجر') {
 
     try {
 
-        await generateShop()
-
         const shop = await Shop.find()
 
         if (!shop.length) {
@@ -3479,7 +3542,7 @@ if (text === '.متجر') {
         🏪 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑 𝐒𝐇𝐎𝐏
 ╚════════════════════╝
 
-🎁 يتم تجديد المتجر كل 24 ساعة
+🎁 يتم تجديد المتجر كل ساعة
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -3521,7 +3584,8 @@ if (text === '.متجر') {
             msg.key.remoteJid,
             {
                 text: '❌ حدث خطأ أثناء فتح المتجر'
-            })
+            }
+        )
     }
 }
         
