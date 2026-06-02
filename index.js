@@ -3525,6 +3525,9 @@ if (!me || !enemy) {
     });
 }
 
+me.rewardedLevels = me.rewardedLevels || [];
+me.specialAbilities = me.specialAbilities || [];
+    
     if (me.fights == null) me.fights = 5;
 if (!me.lastFightReset) me.lastFightReset = Date.now();
 
@@ -3708,20 +3711,19 @@ if (tierChance <= 50) {
 
     let levelUpMessage = '';
 
-    while ((me.xp || 0) >= Math.floor(300 + (me.level * 150))) {
-        me.xp -= Math.floor(300 + (me.level * 150));
-        me.level += 1;
-        me.money += 500;
-        levelUpMessage += `💰 حصلت على 500 مال\n`;
-        if (me.level >= 100) {
-            me.level = 100;
-            me.xp = 0;
-            break;
-        }
-    }
+while ((me.xp || 0) >= Math.floor(300 + (me.level * 150))) {
+    me.xp -= Math.floor(300 + (me.level * 150));
+    me.level += 1;
+    me.money += 500;
+    levelUpMessage += `💰 حصلت على 500 مال\n`;
 
-    me.fights -= 1;
-await me.save();
+    if (me.level >= 100) {
+        me.level = 100;
+        me.xp = 0;
+        break;
+    }
+} // ← هذا القوس مهم
+    
 
 const ability = levelAbilities[me.level];
 
@@ -3779,7 +3781,9 @@ ${me.maxCharacters}
 `;
 }
 
-    if (!me.rewardedLevels.includes(me.level)) {
+    me.rewardedLevels = me.rewardedLevels || [];
+
+if (!me.rewardedLevels.includes(me.level)) {
 
     switch (me.level) {
 
