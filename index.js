@@ -4225,7 +4225,9 @@ ${levelUpMessage}`,
 }
 
 return safeSend(msg.key.remoteJid, {
-        text:
+  text: battleMessage,
+  mentions: [userId]
+})
 
 `⚔️ ══〔 𝐆𝐑𝐀𝐍𝐃 𝐁𝐀𝐓𝐓𝐋𝐄 〕══ ⚔️
 
@@ -4267,8 +4269,8 @@ ${Math.floor(enemyAttack)}
 
 ━━━━━━━━━━━━━━━━━━
 
-🏆 الفائز:
-${winner}
+👑 الفائز:
+@${winnerId.split('@')[0]}
 
 💰 المكافأة:
 ${reward}
