@@ -3703,7 +3703,7 @@ if (now - me.lastFightReset >= fightCooldown) {
     let enemyPower =
         enemy.characters.reduce((sum, c) => sum + Number(c.power || 0), 0);
 
-    let myAttack = myPower;
+    let myAttack = myPower
 let enemyAttack = enemyPower;
 
 let myAbilityName = 'بدون';
@@ -3910,9 +3910,8 @@ ${me.maxCharacters}
 `;
 }
 
-    me.rewardedLevels = me.rewardedLevels || [];
-
-me.boxes = me.boxes || {
+    me.rewardedLevels ||= [];
+me.boxes ||= {
     basic: 0,
     rare: 0,
     epic: 0,
@@ -3920,7 +3919,7 @@ me.boxes = me.boxes || {
     sss_chance: 0,
     sss_high: 0
 };
-    
+
 if (!me.rewardedLevels.includes(currentLevel)) {
 
     switch (currentLevel) {
@@ -4057,18 +4056,19 @@ ${me.fights}/5`;
 
 return safeSend(msg.key.remoteJid, {
     text: battleMessage,
-    mentions: [winnerId || msg.key.participant || targetId]
+    mentions: [winnerId || userId || targetId]
 });
 
 } catch (err) {
+
     console.log(err);
 
     return safeSend(msg.key.remoteJid, {
-      text: '❌ حدث خطأ أثناء القتال'
+        text: '❌ حدث خطأ أثناء القتال'
     });
-  }
 
 }
+} // نهاية .قتال_مجموع
         
         // =========================
         // .قتال
