@@ -1485,6 +1485,44 @@ if (text.startsWith('.قتال pvp')) {
         text: log
     })
 }
+        const isAttackerWin = winner.userId === attacker.userId
+
+if (isAttackerWin) {
+
+    attacker.wins = (attacker.wins || 0) + 1
+    defender.losses = (defender.losses || 0) + 1
+
+    attacker.mmr += 25
+    defender.mmr = Math.max(0, defender.mmr - 15)
+
+} else {
+
+    defender.wins = (defender.wins || 0) + 1
+    attacker.losses = (attacker.losses || 0) + 1
+
+    defender.mmr += 25
+    attacker.mmr = Math.max(0, attacker.mmr - 15)
+}
+// =========================
+// RANK UPDATE (هنا بالضبط)
+// =========================
+attacker.rank = getRank(attacker.mmr)
+defender.rank = getRank(defender.mmr)
+
+// =========================
+// SAVE
+// =========================
+await attacker.save()
+await defender.save()
+        // =========================
+// 🏁 عرض النتيجة هنا
+// =========================
+
+log += `\n🏆 الفائز: ${winner.userId.split('@')[0]}\n`
+log += `📊 الرانك الجديد:\n`
+log += `🥇 ${attacker.userId.split('@')[0]}: ${attacker.rank} (${attacker.mmr})\n`
+log += `🥈 ${defender.userId.split('@')[0]}: ${defender.rank} (${defender.mmr})\n`
+        
 attacker.lastPvP = now
 await attacker.save()
         return safeSend(msg.key.remoteJid, {
