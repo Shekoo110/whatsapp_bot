@@ -3998,20 +3998,18 @@ myAbility[2]();
   let levelUpMessage = '';
 
   while ((me.xp || 0) >= Math.floor(300 + (me.level * 150))) {
+  me.xp -= Math.floor(300 + (me.level * 150));
+  me.level += 1;
+  me.money += 500;
 
-    me.xp -= Math.floor(300 + (me.level * 150));
-    me.level += 1;
+  levelUpMessage += `💰 حصلت على 500 مال\n`;
 
-    me.money += 500;
-
-    levelUpMessage += `💰 حصلت على 500 مال\n`;
-
-    if (me.level >= 100) {
-      me.level = 100;
-      me.xp = 0;
-      break;
-    }
+  if (me.level >= 100) {
+    me.level = 100;
+    me.xp = 0;
+    break;
   }
+}
 
   await me.save();
 
@@ -4022,9 +4020,6 @@ myAbility[2]();
     
 levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`
 
-const ability = (me.level % 5 === 0)
-  ? levelAbilities?.[me.level]
-  : null;
 
 if (ability) {
 
