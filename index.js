@@ -3526,17 +3526,14 @@ if (!me || !enemy) {
 }
 
     if (me.fights == null) me.fights = 5;
-    if (!me.lastFightReset) me.lastFightReset = Date.now();
+if (!me.lastFightReset) me.lastFightReset = Date.now();
 
-    await me.save();
+const now = Date.now();
+const fightCooldown = 30 * 60 * 1000;
 
-    const now = Date.now();
-    const fightCooldown = 30 * 60 * 1000;
-
-    if (now - me.lastFightReset >= fightCooldown) {
-        me.fights = 5;
-        me.lastFightReset = now;
-        await me.save();
+if (now - me.lastFightReset >= fightCooldown) {
+    me.fights = 5;
+    me.lastFightReset = now;
     }
 
     if ((me.fights || 0) <= 0) {
