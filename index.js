@@ -5,6 +5,8 @@ const {
 
 const fs = require('fs')
 const path = require('path')
+
+const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
 const QRCode = require("qrcode")
 
@@ -13,7 +15,7 @@ console.log('Bot starting...')
 const mongoose = require('mongoose')
 const bosses = require('./bosses')
 const getRank = require('./utils/rank')
-const { calculateDamage } = require('./utils/pvp')
+
 const Boss = require('./models/Boss')
 const Player = require('./models/Player')
 const abilityIcons = {
