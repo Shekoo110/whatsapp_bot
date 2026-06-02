@@ -1224,6 +1224,111 @@ ${player.usedCharacters?.length || 0}/30
             )
         }
 
+if (text.startsWith('.قتال pvp')) {
+
+    const now = Date.now()
+
+    if (attacker.lastPvP && now - attacker.lastPvP < 30000) {
+        return safeSend(msg.key.remoteJid, {
+            text: '⏳ لازم تنتظر 30 ثانية قبل قتال جديد'
+        })
+    }
+
+    const mentionedJid = msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+
+    if (!mentionedJid) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ مثال: .قتال pvp @user'
+        })
+    }
+
+    const attacker = await Player.findOne({ userId })
+    const defender = await Player.findOne({ userId: mentionedJid })
+
+    if (!attacker || !defender) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لاعب غير موجود'
+        })
+    }
+
+    let hp1 = attacker.hp + (attacker.hpBonus || 0)
+    let hp2 = defender.hp + (defender.hpBonus || 0)
+
+    let log = `⚔️ PvP احترافي بدأ!\n
+@${userId.split('@')[0]} VS @${mentionedJid.split('@')[0]}\n\n`
+
+    let turn = true
+
+    while (hp1 > 0 && hp2 > 0) {
+
+        await new Promise(r => setTimeout(r, 1500))
+
+        if (turn) {
+
+            let dmg = calculateDamageAdvanced(attacker, defender)
+
+            // 🛡️ dodge
+            if (Math.random() * 100 < defender.dodge) {
+                log += `💨 ${defender.userId.split('@')[0]} تفادى الضربة!\n`
+            } else {
+
+                hp2 -= dmg.totalDamage
+
+                // 🩸 lifesteal
+                const heal = Math.floor(dmg.totalDamage * (attacker.lifestealBonus / 100))
+                hp1 += heal
+
+                log += `⚔️ هجوم: -${dmg.totalDamage} ${dmg.crit ? "(CRIT)" : ""}\n`
+                if (heal > 0) log += `🩸 استرجاع +${heal} HP\n`
+            }
+
+        } else {
+
+            let dmg = calculateDamageAdvanced(defender, attacker)
+
+            if (Math.random() * 100 < attacker.dodge) {
+                log += `💨 ${attacker.userId.split('@')[0]} تفادى الضربة!\n`
+            } else {
+
+                hp1 -= dmg.totalDamage
+
+                const heal = Math.floor(dmg.totalDamage * (defender.lifestealBonus / 100))
+                hp2 += heal
+
+                log += `⚔️ هجوم: -${dmg.totalDamage} ${dmg.crit ? "(CRIT)" : ""}\n`
+                if (heal > 0) log += `🩸 استرجاع +${heal} HP\n`
+            }
+        }
+
+        turn = !turn
+    }
+
+    const winner = hp1 > 0 ? attacker : defender
+    const loser = hp1 > 0 ? defender : attacker
+
+    winner.wins += 1
+    loser.losses += 1
+
+    winner.mmr += 30
+    loser.mmr -= 20
+
+    winner.lastPvP = now
+    attacker.lastPvP = now
+
+    await winner.save()
+    await loser.save()
+
+    return safeSend(msg.key.remoteJid, {
+        text: `${log}
+
+🏆 الفائز:
+@${winner.userId.split('@')[0]}
+
+📊 +MMR: +30
+📉 -MMR: -20`
+    })
+}
+        
         if (text === '.بروفايل') {
 
 try {
