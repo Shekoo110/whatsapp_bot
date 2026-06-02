@@ -3863,8 +3863,8 @@ ${me.maxCharacters}
 } // 🔴 هذا مهم جدًا لازم تنقفل هنا
 
 me.fights -= 1;
-
-
+await me.save();
+            
 if (levelUpMessage) {
     await sock.sendMessage(
         msg.key.remoteJid,
@@ -3934,7 +3934,7 @@ ${me.fights}/5`;
 
 return safeSend(msg.key.remoteJid, {
     text: battleMessage,
-    mentions: [targetId]
+    mentions: [msg.key.participant]
 });
 
 } // 🔴 إغلاق try
