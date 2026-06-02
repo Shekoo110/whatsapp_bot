@@ -1380,7 +1380,8 @@ ${player.usedCharacters?.length || 0}/30
     })
 }
 
-if (text.startsWith('.قتال pvp')) {
+
+    if (text.startsWith('.قتال pvp')) {
 
     const attacker = await Player.findOne({ userId })
 
@@ -1407,22 +1408,33 @@ if (text.startsWith('.قتال pvp')) {
         })
     }
 
+    // =========================
+    // 🛡️ حماية
+    // =========================
+    if (attacker.userId === defender.userId) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا يمكنك قتال نفسك'
+        })
+    }
+
     const now = Date.now()
 
     if (attacker.lastPvP && now - attacker.lastPvP < 30000) {
         return safeSend(msg.key.remoteJid, {
-            text: '⏳ لازم تنتظر 30 ثانية قبل قتال جديد'
+            text: '⏳ لازم تنتظر 30 ثانية'
         })
     }
 
     attacker.lastPvP = now
-    await attacker.save()
 
+    // =========================
+    // تجهيز القتال
+    // =========================
     let attackerTurn = attacker
     let defenderTurn = defender
 
     let turn = 1
-    let log = ""
+    let log = `⚔️ PvP بدأ!\n\n@${attacker.userId.split('@')[0]} VS @${defender.userId.split('@')[0]}\n`
 
     // =========================
     // 🔥 TURN LOOP
@@ -1434,7 +1446,6 @@ if (text.startsWith('.قتال pvp')) {
         const moveType = Math.random()
 
         let skillType = "normal"
-
         if (moveType > 0.85) skillType = "ultimate"
         else if (moveType > 0.55) skillType = "skill"
 
@@ -1446,9 +1457,7 @@ if (text.startsWith('.قتال pvp')) {
 
         } else {
 
-            const baseDamage = attackerTurn.attack || 500
-
-            let damage = baseDamage
+            let damage = attackerTurn.attack || 500
 
             if (skillType === "skill") damage *= 1.5
             if (skillType === "ultimate") damage *= 2.5
@@ -1465,6 +1474,7 @@ if (text.startsWith('.قتال pvp')) {
             log += `⚔️ ${attackerTurn.userId.split('@')[0]} استخدم ${skillType} وضرب ${Math.floor(damage)}\n`
         }
 
+        // 🔄 تبديل الأدوار
         const temp = attackerTurn
         attackerTurn = defenderTurn
         defenderTurn = temp
@@ -1473,290 +1483,82 @@ if (text.startsWith('.قتال pvp')) {
     }
 
     // =========================
-    // 🏁 نهاية القتال
+    // 🏁 النتيجة
     // =========================
-
     const winner =
         attackerTurn.hp > 0 ? attackerTurn : defenderTurn
 
-    log += `\n🏆 الفائز: ${winner.userId.split('@')[0]}`
+    const isAttackerWin = winner.userId === attacker.userId
 
-    await sock.sendMessage(msg.key.remoteJid, {
-        text: log
-    })
-}
-        const isAttackerWin = winner.userId === attacker.userId
+    // =========================
+    // 🏆 MMR SYSTEM
+    // =========================
+    if (isAttackerWin) {
+        attacker.wins += 1
+        defender.losses += 1
 
-if (isAttackerWin) {
-
-    attacker.wins = (attacker.wins || 0) + 1
-    defender.losses = (defender.losses || 0) + 1
-
-    attacker.mmr += 25
-    defender.mmr = Math.max(0, defender.mmr - 15)
-
-} else {
-
-    defender.wins = (defender.wins || 0) + 1
-    attacker.losses = (attacker.losses || 0) + 1
-
-    defender.mmr += 25
-    attacker.mmr = Math.max(0, attacker.mmr - 15)
-}
-// =========================
-// RANK UPDATE (هنا بالضبط)
-// =========================
-attacker.rank = getRank(attacker.mmr)
-defender.rank = getRank(defender.mmr)
-
-// 🎁 الصناديق
-givePvPBoxes(attacker)
-givePvPBoxes(defender)
-
-// =========================
-// SAVE
-// =========================
-await attacker.save()
-await defender.save()
-        
-let moneyReward = 0
-let xpReward = 0
-
-// =========================
-// 💰 + ⭐ حسب الفوز
-// =========================
-if (isAttackerWin) {
-
-    attacker.wins += 1
-    defender.losses += 1
-
-    moneyReward = 1000 + attacker.mmr / 5
-    xpReward = 200 + attacker.mmr / 10
-
-    attacker.money += Math.floor(moneyReward)
-    attacker.xp += Math.floor(xpReward)
-
-} else {
-
-    defender.wins += 1
-    attacker.losses += 1
-
-    moneyReward = 1000 + defender.mmr / 5
-    xpReward = 200 + defender.mmr / 10
-
-    defender.money += Math.floor(moneyReward)
-    defender.xp += Math.floor(xpReward)
-}
-
-        function givePvPBoxes(player) {
-
-    const rank = player.rank
-
-    if (rank === "برونزي") {
-        player.boxes.basic += 1
-    }
-
-    if (rank === "فضي") {
-        player.boxes.basic += 1
-        player.boxes.rare += 1
-    }
-
-    if (rank === "ذهبي") {
-        player.boxes.rare += 2
-    }
-
-    if (rank === "بلاتيني") {
-        player.boxes.epic += 1
-    }
-
-    if (rank === "ماسي") {
-        player.boxes.epic += 2
-        player.boxes.legendary += 1
-    }
-
-    if (rank === "أسطوري") {
-        player.boxes.legendary += 2
-        player.boxes.sss_chance += 1
-    }
-}
-        
-        // =========================
-// 🏁 عرض النتيجة هنا
-// =========================
-
-log += `\n🏆 الفائز: ${winner.userId.split('@')[0]}\n`
-log += `📊 الرانك الجديد:\n`
-log += `🥇 ${attacker.userId.split('@')[0]}: ${attacker.rank} (${attacker.mmr})\n`
-log += `🥈 ${defender.userId.split('@')[0]}: ${defender.rank} (${defender.mmr})\n`
-        
-attacker.lastPvP = now
-await attacker.save()
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ لاعب غير موجود'
-        })
-    }
-
-    const aStats = attacker
-const dStats = defender
-
-// =========================
-// 🧠 APPLY EQUIPMENT STATS
-// =========================
-
-const eqA = attacker.equipment
-const eqD = defender.equipment
-
-// attacker bonuses
-aStats.attack += (eqA.weapon?.attack || 0)
-aStats.hp += (eqA.armor?.hp || 0)
-aStats.crit += (eqA.accessory?.crit || 0)
-aStats.dodge += (eqA.accessory?.dodge || 0)
-
-// defender bonuses
-dStats.attack += (eqD.weapon?.attack || 0)
-dStats.hp += (eqD.armor?.hp || 0)
-dStats.crit += (eqD.accessory?.crit || 0)
-dStats.dodge += (eqD.accessory?.dodge || 0)
-
-let hp1 = aStats.hp
-let hp2 = dStats.hp
-
-    let log = `⚔️ PvP احترافي بدأ!\n
-@${userId.split('@')[0]} VS @${mentionedJid.split('@')[0]}\n\n`
-
-    let turn = true
-
-    while (hp1 > 0 && hp2 > 0) {
-
-        await new Promise(r => setTimeout(r, 1500))
-
-        if (turn) {
-
-            const moveType = Math.random()
-
-let skillType = "normal"
-
-if (moveType > 0.85) skillType = "ultimate"
-else if (moveType > 0.55) skillType = "skill"
-
-// 🛡️ Dodge check
-const dodgeChance = defender.dodge || 0
-
-if (Math.random() * 100 < dodgeChance) {
-
-    log += `💨 ${defender.userId.split('@')[0]} تفادى الضربة!\n`
-
-} else {
-
-    // 💥 base damage
-    const baseDamage = attacker.attack || 500
-
-    let damage = baseDamage
-
-    if (skillType === "skill") damage *= 1.5
-    if (skillType === "ultimate") damage *= 2.5
-
-    // 🔥 Crit system
-    const critChance = attacker.crit || 5
-
-    if (Math.random() * 100 < critChance) {
-        damage *= 2
-        log += `🔥 ضربة حرجة!\n`
-    }
-
-    defender.hp -= Math.floor(damage)
-
-    log += `⚔️ ${skillType.toUpperCase()} - ${Math.floor(damage)} damage\n`
-}
-
-defender.hp -= Math.floor(damage)
-
-const result = getSkillDamage(skillType, attacker)
-
-// 🛡️ dodge
-const dodgeChance = dStats.dodge || 0
-
-if (Math.random() * 100 < dodgeChance) {
-
-    log += `💨 ${defender.userId.split('@')[0]} تفادى الضربة!\n`
-
-} else {
-
-    if (result.failed) {
-
-        log += `❌ فشل في استخدام Ultimate!\n`
+        attacker.mmr += 25
+        defender.mmr = Math.max(0, defender.mmr - 15)
 
     } else {
+        defender.wins += 1
+        attacker.losses += 1
 
-        // 💥 حساب الضرر النهائي
-        let damage = result.damage + aStats.attack
-
-        // 🛡️ تقليل الدفاع
-        damage -= dStats.defenseBonus * 5
-
-        if (damage < 50) damage = 50
-
-        // ❤️ تطبيق الضرر
-        hp2 -= damage
-
-        log += `⚔️ ${attacker.userId.split('@')[0]} استخدم ${skillType} - ${damage} damage\n`
-    }
-}
-
-                // 🩸 lifesteal
-                const heal = Math.floor(dmg.totalDamage * (attacker.lifestealBonus / 100))
-                hp1 += heal
-
-                log += `⚔️ هجوم: -${dmg.totalDamage} ${dmg.crit ? "(CRIT)" : ""}\n`
-                if (heal > 0) log += `🩸 استرجاع +${heal} HP\n`
-            }
-
-        } else {
-
-            let dmg = calculateDamageAdvanced(defender, attacker)
-
-            if (Math.random() * 100 < attacker.dodge) {
-                log += `💨 ${attacker.userId.split('@')[0]} تفادى الضربة!\n`
-            } else {
-
-                hp1 -= dmg.totalDamage
-
-                const heal = Math.floor(dmg.totalDamage * (defender.lifestealBonus / 100))
-                hp2 += heal
-
-                log += `⚔️ هجوم: -${dmg.totalDamage} ${dmg.crit ? "(CRIT)" : ""}\n`
-                if (heal > 0) log += `🩸 استرجاع +${heal} HP\n`
-            }
-        }
-
-        turn = !turn
+        defender.mmr += 25
+        attacker.mmr = Math.max(0, attacker.mmr - 15)
     }
 
-    const winner = hp1 > 0 ? attacker : defender
-    const loser = hp1 > 0 ? defender : attacker
+    // =========================
+    // 📊 RANK UPDATE
+    // =========================
+    function getRank(mmr) {
+        if (mmr < 1100) return "برونزي"
+        if (mmr < 1300) return "فضي"
+        if (mmr < 1500) return "ذهبي"
+        if (mmr < 1800) return "بلاتيني"
+        if (mmr < 2100) return "ماسي"
+        return "أسطوري"
+    }
 
-    winner.wins += 1
-    loser.losses += 1
+    attacker.rank = getRank(attacker.mmr)
+    defender.rank = getRank(defender.mmr)
 
-    winner.mmr += 30
-    loser.mmr -= 20
+    // =========================
+    // 🎁 Rewards
+    // =========================
+    let moneyReward = 1000 + attacker.mmr / 5
+    let xpReward = 200 + attacker.mmr / 10
 
-    winner.lastPvP = now
-    attacker.lastPvP = now
+    const rewardPlayer = isAttackerWin ? attacker : defender
 
-    await winner.save()
-    await loser.save()
+    rewardPlayer.money += Math.floor(moneyReward)
+    rewardPlayer.xp += Math.floor(xpReward)
 
-    return safeSend(msg.key.remoteJid, {
-        text: `${log}
+    // =========================
+    // 💾 SAVE
+    // =========================
+    await attacker.save()
+    await defender.save()
 
-🏆 الفائز:
-@${winner.userId.split('@')[0]}
+    // =========================
+    // 📢 RESULT
+    // =========================
+    await sock.sendMessage(msg.key.remoteJid, {
+        text:
+`⚔️ PvP انتهى!
 
-📊 +MMR: +30
-📉 -MMR: -20`
+🏆 الفائز: @${winner.userId.split('@')[0]}
+
+📊 الرانك:
+🥇 ${attacker.userId.split('@')[0]}: ${attacker.rank} (${attacker.mmr})
+🥈 ${defender.userId.split('@')[0]}: ${defender.rank} (${defender.mmr})
+
+🎁 الجائزة:
+💰 +${Math.floor(moneyReward)}
+⭐ +${Math.floor(xpReward)} XP`
     })
 }
+        
         
         if (text === '.بروفايل') {
 
