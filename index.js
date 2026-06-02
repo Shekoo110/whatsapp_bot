@@ -3945,7 +3945,13 @@ const finalEnemyAttack = Math.floor(enemyAttack)
 let winner
 let reward
 
+let winnerId;
+
 if (finalMyAttack >= finalEnemyAttack) {
+  winnerId = userId; // أنت الفائز
+} else {
+  winnerId = enemyId; // الخصم فائز
+}
 
     winner = 'أنت'
 
