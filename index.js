@@ -3927,130 +3927,96 @@ const epic = [
         abilityTier = 'ملحمية'
     }
 
-    const ability =
-    selectedPool[
-        Math.floor(Math.random() * selectedPool.length)
-    ]
+    try {
 
-myAbilityName = ability[0]
-myAbilityDescription = ability[1]
-myAbilityTier = abilityTier
+  // 🟢 قدرة اللاعب
+  const myAbility = abilityPool[
+    Math.floor(Math.random() * abilityPool.length)
+  ]
 
-ability[2]()
+  myAbilityName = myAbility[0]
+  myAbilityDescription = myAbility[1]
+  myAbilityTier = abilityTier
 
-const enemyTierChance = Math.random() * 100
+  myAbility[2]()
 
-let enemyPool
+  // 🔵 قدرة العدو
+  const enemyTierChance = Math.random() * 100
 
-if (enemyTierChance <= 50) {
+  let enemyPool
+  let enemyAbilityTier
 
+  if (enemyTierChance <= 50) {
     enemyPool = common
     enemyAbilityTier = 'عادية'
-
-} else if (enemyTierChance <= 80) {
-
+  } else if (enemyTierChance <= 80) {
     enemyPool = rare
     enemyAbilityTier = 'نادرة'
-
-} else if (enemyTierChance <= 95) {
-
+  } else if (enemyTierChance <= 95) {
     enemyPool = legendary
     enemyAbilityTier = 'أسطورية'
-
-} else {
-
+  } else {
     enemyPool = epic
     enemyAbilityTier = 'ملحمية'
-}
+  }
 
-const enemyAbility =
-    enemyPool[
-        Math.floor(Math.random() * enemyPool.length)
-    ]
+  const enemyAbility =
+    enemyPool[Math.floor(Math.random() * enemyPool.length)]
 
-enemyAbilityName = enemyAbility[0]
-enemyAbilityDescription = enemyAbility[1]
+  enemyAbilityName = enemyAbility[0]
+  enemyAbilityDescription = enemyAbility[1]
 
-const oldMyAttack = myAttack
+  // 🔴 تبادل الهجمات
+  const oldMyAttack = myAttack
 
-myAttack = enemyAttack
+  myAttack = enemyAttack
+  enemyAbility[2]()
+  enemyAttack = myAttack
+  myAttack = oldMyAttack
 
-enemyAbility[2]()
+  // 🟣 الحساب النهائي
+  const finalMyAttack = Math.floor(myAttack)
+  const finalEnemyAttack = Math.floor(enemyAttack)
 
-enemyAttack = myAttack
+  let winner;
+  let reward;
+  let winnerId;
 
-myAttack = oldMyAttack
-const finalMyAttack = Math.floor(myAttack)
-const finalEnemyAttack = Math.floor(enemyAttack)
-let winner
-let reward
+  if (finalMyAttack >= finalEnemyAttack) {
+    winnerId = userId;
+    winner = 'أنت';
+    reward = Math.max(500, Math.floor(enemyPower / 10));
+  } else {
+    winnerId = enemyId;
+    winner = 'الخصم';
+    reward = Math.max(500, Math.floor(myPower / 10));
+  }
 
-let winnerId;
+  me.money = (me.money || 0) + reward;
+  me.xp = (me.xp || 0) + 100;
 
-if (finalMyAttack >= finalEnemyAttack) {
-  winnerId = userId; // أنت الفائز
-} else {
-  winnerId = enemyId; // الخصم فائز
-}
+  let levelUpMessage = '';
 
-    winner = 'أنت'
+  while ((me.xp || 0) >= Math.floor(300 + (me.level * 150))) {
 
-    reward =
-        Math.max(
-            500,
-            Math.floor(enemyPower / 10)
-        )
+    me.xp -= Math.floor(300 + (me.level * 150));
+    me.level += 1;
 
-    if (reducedReward) {
+    me.money += 500;
 
-        reward =
-            Math.floor(reward * 0.70)
-
-    }
-
-    me.money =
-        (me.money || 0) + reward
-
-    me.xp =
-        (me.xp || 0) + 100
-
-} else {
-
-    winner = 'الخصم'
-
-    reward =
-        Math.max(
-            500,
-            Math.floor(myPower / 10)
-        )
-
-    enemy.money =
-        (enemy.money || 0) + reward
-
-    await enemy.save()
-}
-    let levelUpMessage = ''
-
-while (
-    (me.xp || 0) >=
-    Math.floor(300 + ((me.level || 1) * 150))
-) {
-
-    me.xp -= Math.floor(
-        300 + ((me.level || 1) * 150)
-    )
-
-    me.level += 1
-
-    me.money = (me.money || 0) + 500
-
-    levelUpMessage +=
-`💰 حصلت على 500 مال\n`
+    levelUpMessage += `💰 حصلت على 500 مال\n`;
 
     if (me.level >= 100) {
-    me.level = 100
-    me.xp = 0
-    break
+      me.level = 100;
+      me.xp = 0;
+      break;
+    }
+  }
+
+  await me.save();
+
+} catch (err) {
+  console.log(err);
 }
 
     
