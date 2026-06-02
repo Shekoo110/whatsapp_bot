@@ -1203,26 +1203,31 @@ ${player.hp || 10000}
 
 ━━━━━━━━━━━━━━
 
-⚔️ هجوم إضافي:
-${player.attackBonus || 0}%
+✨ تأثير القدرات (الإجمالي):
 
-🛡️ دفاع إضافي:
-${player.defenseBonus || 0}%
+⚔️ هجوم:
++${player.attackBonus || 0}%
 
-🎯 كريت إضافي:
-${player.critBonus || 0}%
+🛡️ دفاع:
++${player.defenseBonus || 0}%
 
-💨 مراوغة إضافية:
-${player.dodgeBonus || 0}%
+🎯 كريت:
++${player.critBonus || 0}%
+
+💨 مراوغة:
++${player.dodgeBonus || 0}%
 
 🪞 عكس الضرر:
-${player.reflectBonus || 0}%
++${player.reflectBonus || 0}%
 
 🩸 امتصاص الحياة:
-${player.lifestealBonus || 0}%
++${player.lifestealBonus || 0}%
 
-💖 HP إضافي:
-${player.hpBonus || 0}%
+💖 HP:
++${player.hpBonus || 0}%
+
+👑 ضرر الزعيم:
++${player.bossDamageBonus || 0}%
 
 ━━━━━━━━━━━━━━
 
