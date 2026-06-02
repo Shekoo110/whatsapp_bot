@@ -3857,7 +3857,6 @@ ${me.maxCharacters}
             levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`;
             break;
     }
-} // 🔴 هذا مهم جدًا لازم تنقفل هنا
 
 me.fights -= 1;
 await me.save();
@@ -3934,15 +3933,13 @@ return safeSend(msg.key.remoteJid, {
     mentions: [msg.key.participant]
 });
 
-} // 🔴 إغلاق try
-catch (err) {
-
+} catch (err) {
     console.log(err);
 
     return safeSend(msg.key.remoteJid, {
-        text: '❌ حدث خطأ أثناء القتال'
+      text: '❌ حدث خطأ أثناء القتال'
     });
-}
+  }
 
 }
         
