@@ -28,7 +28,16 @@ const PlayerSchema = new mongoose.Schema({
         default: []
     },
 
+    // =========================
+    // HP SYSTEM (PvP)
+    // =========================
+
     hp: {
+        type: Number,
+        default: 10000
+    },
+
+    maxHp: {
         type: Number,
         default: 10000
     },
@@ -59,7 +68,7 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // PvP System (NEW)
+    // PvP System
     // =========================
 
     mmr: {
@@ -83,7 +92,7 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // نظام القتالات اليومي
+    // Daily fights
     // =========================
 
     fights: {
@@ -97,7 +106,7 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // نظام الزعيم العالمي
+    // Boss system
     // =========================
 
     bossDamage: {
@@ -111,7 +120,7 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // نظام البرج
+    // Tower system
     // =========================
 
     towerFloor: {
@@ -130,7 +139,7 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // بونصات القدرات
+    // Bonuses
     // =========================
 
     attackBonus: { type: Number, default: 0 },
@@ -158,7 +167,7 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // الصناديق
+    // Boxes
     // =========================
 
     boxes: {
