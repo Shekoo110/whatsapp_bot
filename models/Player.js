@@ -23,6 +23,9 @@ const PlayerSchema = new mongoose.Schema({
         default: Date.now
     },
 
+    // =========================
+    // Characters
+    // =========================
     characters: {
         type: Array,
         default: []
@@ -31,7 +34,6 @@ const PlayerSchema = new mongoose.Schema({
     // =========================
     // HP SYSTEM (PvP)
     // =========================
-
     hp: {
         type: Number,
         default: 10000
@@ -68,9 +70,8 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // PvP System
+    // PvP SYSTEM
     // =========================
-
     mmr: {
         type: Number,
         default: 1000
@@ -91,10 +92,14 @@ const PlayerSchema = new mongoose.Schema({
         default: "برونزي"
     },
 
+    lastPvP: {
+        type: Number,
+        default: 0
+    },
+
     // =========================
     // Daily fights
     // =========================
-
     fights: {
         type: Number,
         default: 5
@@ -105,15 +110,9 @@ const PlayerSchema = new mongoose.Schema({
         default: Date.now
     },
 
-    lastPvP: {
-        type: Number,
-        default: 0
-    },
-
     // =========================
     // Boss system
     // =========================
-
     bossDamage: {
         type: Number,
         default: 0
@@ -127,7 +126,6 @@ const PlayerSchema = new mongoose.Schema({
     // =========================
     // Tower system
     // =========================
-
     towerFloor: {
         type: Number,
         default: 1
@@ -144,9 +142,8 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // Bonuses
+    // Bonuses (from skills / passives)
     // =========================
-
     attackBonus: { type: Number, default: 0 },
     defenseBonus: { type: Number, default: 0 },
     hpBonus: { type: Number, default: 0 },
@@ -162,17 +159,45 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // EQUIPMENT SYSTEM (NEW 🔥)
+    // EQUIPMENT SYSTEM 🔥
     // =========================
 
     equipment: {
-        weapon: { type: Object, default: null },
-        armor: { type: Object, default: null },
-        accessory: { type: Object, default: null }
+        weapon: {
+            type: Object,
+            default: null
+        },
+        armor: {
+            type: Object,
+            default: null
+        },
+        accessory: {
+            type: Object,
+            default: null
+        }
     },
 
+    // =========================
+    // INVENTORY SYSTEM
+    // =========================
+
     inventory: {
-        type: Array,
+        type: [
+            {
+                id: String,
+                name: String,
+                type: String, // weapon / armor / accessory
+                rarity: String,
+
+                attack: { type: Number, default: 0 },
+                defense: { type: Number, default: 0 },
+                hp: { type: Number, default: 0 },
+                crit: { type: Number, default: 0 },
+                dodge: { type: Number, default: 0 },
+
+                price: { type: Number, default: 0 }
+            }
+        ],
         default: []
     },
 
@@ -181,6 +206,23 @@ const PlayerSchema = new mongoose.Schema({
         default: 20
     },
 
+    // =========================
+    // SHOP DATA (optional but powerful)
+    // =========================
+    shop: {
+        items: {
+            type: Array,
+            default: []
+        },
+        lastRefresh: {
+            type: Number,
+            default: 0
+        }
+    },
+
+    // =========================
+    // Misc
+    // =========================
     maxCharacters: {
         type: Number,
         default: 30
@@ -194,7 +236,6 @@ const PlayerSchema = new mongoose.Schema({
     // =========================
     // Boxes
     // =========================
-
     boxes: {
         basic: { type: Number, default: 0 },
         rare: { type: Number, default: 0 },
