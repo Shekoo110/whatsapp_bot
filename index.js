@@ -17,6 +17,7 @@ const bosses = require('./bosses')
 const getRank = require('./utils/rank')
 const { getSkillDamage } = require('./utils/skills')
 const Boss = require('./models/Boss')
+const { getTotalStats } = require('./utils/stats')
 const Player = require('./models/Player')
 const abilityIcons = {
     attack: "⚔️",
@@ -1253,8 +1254,11 @@ if (text.startsWith('.قتال pvp')) {
         })
     }
 
-    let hp1 = attacker.hp + (attacker.hpBonus || 0)
-    let hp2 = defender.hp + (defender.hpBonus || 0)
+    const aStats = getTotalStats(attacker)
+const dStats = getTotalStats(defender)
+
+let hp1 = aStats.hp
+let hp2 = dStats.hp
 
     let log = `⚔️ PvP احترافي بدأ!\n
 @${userId.split('@')[0]} VS @${mentionedJid.split('@')[0]}\n\n`
