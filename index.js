@@ -4140,18 +4140,7 @@ case 100:
     levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`
     break
     }
-}
     
-        levelUpMessage +=
-`👑 مكافأة لفل 100
-
-🎁 صندوق SSS عالي
-
-🏆 وصلت لأقصى لفل
-
-`
-        break
-}
         me.maxCharacters =
             (me.maxCharacters || 30) + 5
 
