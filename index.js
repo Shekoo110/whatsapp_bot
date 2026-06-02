@@ -4699,6 +4699,4 @@ ${ranking}
 
 }) // نهاية messages.upsert
 
-} // نهاية startBot
-
 startBot()
