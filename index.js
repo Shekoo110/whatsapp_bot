@@ -2345,6 +2345,13 @@ if (Math.random() <= 0.15) {
 }
 
 currentBoss.hp -= damage
+            const xpGain = Math.max(
+  10,
+  Math.floor(damage / 100)
+)
+
+me.xp = (me.xp || 0) + xpGain
+            
             if ((me.lifestealBonus || 0) > 0) {
 
     const heal = Math.floor(
@@ -2400,6 +2407,9 @@ ${strongest.name}
 
 💥 الضرر:
 ${damage}
+
+⭐ الخبرة المكتسبة:
+${xpGain}
 
 ${abilityText}
 
