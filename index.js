@@ -3525,8 +3525,6 @@ if (!me || !enemy) {
     });
 }
 
-me._levelRewarded = false;
-
     if (me.fights == null) me.fights = 5;
     if (!me.lastFightReset) me.lastFightReset = Date.now();
 
@@ -3865,7 +3863,7 @@ ${me.maxCharacters}
 } // 🔴 هذا مهم جدًا لازم تنقفل هنا
 
 me.fights -= 1;
-await me.save();
+
 
 if (levelUpMessage) {
     await sock.sendMessage(
@@ -3936,7 +3934,7 @@ ${me.fights}/5`;
 
 return safeSend(msg.key.remoteJid, {
     text: battleMessage,
-    mentions: [userId]
+    mentions: [targetId]
 });
 
 } // 🔴 إغلاق try
