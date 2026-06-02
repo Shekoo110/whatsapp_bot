@@ -29,7 +29,7 @@ const abilityIcons = {
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
 // require / imports هنا
-const allCharacters = require('./characters.json')
+const characters = require('./characters.json')
 
 // 👇 هنا مباشرة
 async function generateShop() {
