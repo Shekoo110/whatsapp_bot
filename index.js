@@ -925,30 +925,7 @@ const safeSend = async (jid, data) => {
                 }
             )
         }
-if (text === '.ريست_اللفل') {
 
-  await Player.updateMany(
-    {},
-    {
-      $set: {
-        level: 1,
-        xp: 0,
-        specialAbilities: [],
-        attackBonus: 0,
-        defenseBonus: 0,
-        critBonus: 0,
-        dodgeBonus: 0,
-        reflectBonus: 0,
-        lifestealBonus: 0,
-        bossDamageBonus: 0
-      }
-    }
-  )
-
-  return safeSend(msg.key.remoteJid, {
-    text: '✅ تم إعادة تعيين اللفل والقدرات لجميع اللاعبين'
-  })
-}
         if (text === '.البرج') {
 
     let player =
@@ -4225,14 +4202,17 @@ me.fights -= 1
 
 await me.save()
     if (levelUpMessage) {
+  await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+      text:
+`🎉 مبروك @${msg.key.participant.split('@')[0]}
 
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text: levelUpMessage
-        }
-    )
+${levelUpMessage}`,
+      mentions: [msg.key.participant]
     }
+  )
+}
 
 return safeSend(msg.key.remoteJid, {
         text:
