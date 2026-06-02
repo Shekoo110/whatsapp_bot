@@ -3849,7 +3849,9 @@ me.level += 1;
 // المستوى الجديد
 const currentLevel = me.level;
 
-// 👇 فحص قدرة هذا المستوى
+levelUpMessage += `🎉 وصلت إلى المستوى ${currentLevel}\n`;
+levelUpMessage += `💰 حصلت على 500 مال\n`;
+
 const ability = levelAbilities[currentLevel];
 
 if (ability) {
@@ -3890,33 +3892,11 @@ ${ability.name}
     }
 }
 
-levelUpMessage += `🎉 وصلت إلى المستوى ${currentLevel}\n`;
-levelUpMessage += `💰 حصلت على 500 مال\n`;
-
 me.money += 500;
 
-if (me.level >= 100) {
-    me.level = 100;
-    me.xp = 0;
-    break;
-}
-    
-
-    if (ability) {
-    levelUpMessage += `
-✨ قدرة جديدة
-
-${ability.name}
-
-📜 ${ability.description}
-
-📈 التأثير: +${ability.value}
-`;
-}
 
 // 🟢 صندوق كل 10 مستويات (مرة واحدة فقط)
-if (me.level % 10 === 0 && !me._levelRewarded) {
-    me._levelRewarded = true;
+if (currentLevel % 10 === 0) {
 
     me.maxCharacters = (me.maxCharacters || 30) + 5;
 
@@ -3932,9 +3912,18 @@ ${me.maxCharacters}
 
     me.rewardedLevels = me.rewardedLevels || [];
 
-if (!me.rewardedLevels.includes(me.level)) {
+me.boxes = me.boxes || {
+    basic: 0,
+    rare: 0,
+    epic: 0,
+    legendary: 0,
+    sss_chance: 0,
+    sss_high: 0
+};
+    
+if (!me.rewardedLevels.includes(currentLevel)) {
 
-    switch (me.level) {
+    switch (currentLevel) {
 
         case 10:
             me.boxes.basic += 5;
@@ -3987,7 +3976,13 @@ if (!me.rewardedLevels.includes(me.level)) {
             break;
     }
 
-    me.rewardedLevels.push(me.level);
+    me.rewardedLevels.push(currentLevel);
+}
+    if (me.level >= 100) {
+    me.level = 100;
+    me.xp = 0;
+    break;
+    }
 }
 
 me.fights -= 1;
