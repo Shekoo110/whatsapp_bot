@@ -1281,7 +1281,7 @@ else if (moveType > 0.5) skillType = "skill"
 const result = getSkillDamage(skillType, attacker)
 
 // 🛡️ dodge
-const dodgeChance = defender.dodge || 0
+const dodgeChance = dStats.dodge || 0
 
 if (Math.random() * 100 < dodgeChance) {
 
@@ -1291,13 +1291,22 @@ if (Math.random() * 100 < dodgeChance) {
 
     if (result.failed) {
 
-        log += `❌ ${attacker.userId.split('@')[0]} فشل في Ultimate!\n`
+        log += `❌ فشل في استخدام Ultimate!\n`
 
     } else {
 
-        hp2 -= result.damage
+        // 💥 حساب الضرر النهائي
+        let damage = result.damage + aStats.attack
 
-        log += `⚔️ ${attacker.userId.split('@')[0]} استخدم ${skillType} - ${result.damage} damage\n`
+        // 🛡️ تقليل الدفاع
+        damage -= dStats.defenseBonus * 5
+
+        if (damage < 50) damage = 50
+
+        // ❤️ تطبيق الضرر
+        hp2 -= damage
+
+        log += `⚔️ ${attacker.userId.split('@')[0]} استخدم ${skillType} - ${damage} damage\n`
     }
 }
 
