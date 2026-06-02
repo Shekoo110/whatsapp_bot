@@ -999,7 +999,7 @@ async function startBot() {
                     fs.readFileSync(imagePath)
                 }
             )
-        }})
+        }
 
         if (text === '.البرج') {
 
