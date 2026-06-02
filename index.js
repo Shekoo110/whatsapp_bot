@@ -1313,6 +1313,73 @@ ${player.usedCharacters?.length || 0}/30
     })
 }
 
+        if (text === '.تركيب') {
+
+    const player = await Player.findOne({ userId })
+
+    if (!player || !player.inventory.length) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا يوجد معدات'
+        })
+    }
+
+    let textMsg = `⚔️ اختر رقم لتجهيز المعدة:\n\n`
+
+    player.inventory.forEach((item, i) => {
+
+        textMsg += `#${i + 1}
+🗡️ ${item.name}
+🎚️ ${item.type}
+⭐ ${item.rarity}
+
+━━━━━━━━━━━\n`
+    })
+
+    textMsg += `\n📌 الاستخدام:
+.لبس رقم نوع
+
+مثال:
+.لبس 1 weapon`
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: textMsg
+    })
+}
+
+        if (text.startsWith('.لبس')) {
+
+    const args = text.split(' ')
+    const index = parseInt(args[1]) - 1
+    const type = args[2] // weapon / armor / accessory
+
+    const player = await Player.findOne({ userId })
+
+    if (!player) return
+
+    const item = player.inventory[index]
+
+    if (!item) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ رقم غير صحيح'
+        })
+    }
+
+    if (item.type !== type) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: `❌ هذه ليست ${type}`
+        })
+    }
+
+    // تركيب القطعة
+    player.equipment[type] = item
+
+    await player.save()
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: `✅ تم تجهيز ${item.name} في ${type}`
+    })
+}
+
 if (text.startsWith('.قتال pvp')) {
 
     const now = Date.now()
@@ -1331,17 +1398,42 @@ if (text.startsWith('.قتال pvp')) {
         })
     }
 
-    const attacker = await Player.findOne({ userId })
-    const defender = await Player.findOne({ userId: mentionedJid })
+    const now = Date.now()
 
-    if (!attacker || !defender) {
+if (now - attacker.lastPvP < 30000) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: `⏳ انتظر 30 ثانية قبل الهجوم مرة أخرى`
+    })
+}
+
+attacker.lastPvP = now
+await attacker.save()
         return safeSend(msg.key.remoteJid, {
             text: '❌ لاعب غير موجود'
         })
     }
 
-    const aStats = getTotalStats(attacker)
-const dStats = getTotalStats(defender)
+    const aStats = attacker
+const dStats = defender
+
+// =========================
+// 🧠 APPLY EQUIPMENT STATS
+// =========================
+
+const eqA = attacker.equipment
+const eqD = defender.equipment
+
+// attacker bonuses
+aStats.attack += (eqA.weapon?.attack || 0)
+aStats.hp += (eqA.armor?.hp || 0)
+aStats.crit += (eqA.accessory?.crit || 0)
+aStats.dodge += (eqA.accessory?.dodge || 0)
+
+// defender bonuses
+dStats.attack += (eqD.weapon?.attack || 0)
+dStats.hp += (eqD.armor?.hp || 0)
+dStats.crit += (eqD.accessory?.crit || 0)
+dStats.dodge += (eqD.accessory?.dodge || 0)
 
 let hp1 = aStats.hp
 let hp2 = dStats.hp
@@ -1361,8 +1453,40 @@ let hp2 = dStats.hp
 
 let skillType = "normal"
 
-if (moveType > 0.8) skillType = "ultimate"
-else if (moveType > 0.5) skillType = "skill"
+if (moveType > 0.85) skillType = "ultimate"
+else if (moveType > 0.55) skillType = "skill"
+
+// 🛡️ Dodge check
+const dodgeChance = defender.dodge || 0
+
+if (Math.random() * 100 < dodgeChance) {
+
+    log += `💨 ${defender.userId.split('@')[0]} تفادى الضربة!\n`
+
+} else {
+
+    // 💥 base damage
+    const baseDamage = attacker.attack || 500
+
+    let damage = baseDamage
+
+    if (skillType === "skill") damage *= 1.5
+    if (skillType === "ultimate") damage *= 2.5
+
+    // 🔥 Crit system
+    const critChance = attacker.crit || 5
+
+    if (Math.random() * 100 < critChance) {
+        damage *= 2
+        log += `🔥 ضربة حرجة!\n`
+    }
+
+    defender.hp -= Math.floor(damage)
+
+    log += `⚔️ ${skillType.toUpperCase()} - ${Math.floor(damage)} damage\n`
+}
+
+defender.hp -= Math.floor(damage)
 
 const result = getSkillDamage(skillType, attacker)
 
