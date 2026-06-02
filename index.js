@@ -29,9 +29,9 @@ const abilityIcons = {
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
 // require / imports هنا
-const Shop = require('./models/Shop')
+const allCharacters = require('./characters.json')
 
-// 👇 هنا تضعها
+// 👇 هنا مباشرة
 async function generateShop() {
 
     await Shop.deleteMany()
@@ -62,14 +62,14 @@ async function generateShop() {
 
         const rarity = getRandomRarity()
 
-        const characters = allCharacters.filter(c =>
+        const pool = allCharacters.filter(c =>
             c.rarity === rarity
         )
 
-        if (!characters.length) continue
+        if (!pool.length) continue
 
         const character =
-            characters[Math.floor(Math.random() * characters.length)]
+            pool[Math.floor(Math.random() * pool.length)]
 
         const priceMultiplier = {
             'عادي': 1000,
@@ -91,8 +91,7 @@ async function generateShop() {
     await Shop.insertMany(shopItems)
 }
 let currentBoss = null
-const allCharacters = require('./characters.json')
-const characters = allCharacters
+
 
 const ABILITY_CHANCE = 30
 const levelAbilities = {
@@ -873,26 +872,31 @@ async function startBot() {
         // باقي الإعدادات
     })
 
-    // 👇 هنا بالضبط
-    await generateShop()
+    // 👇 تشغيل المتجر مرة واحدة فقط (حل نهائي للتكرار)
+    if (!global.shopStarted) {
 
-    setInterval(async () => {
+        global.shopStarted = true
+
         await generateShop()
-        console.log("🏪 Shop refreshed automatically")
-    }, 60 * 60 * 1000)
-}
 
-sock.ev.on(
-    'creds.update',
-    saveCreds
-)
-
-const safeSend = async (jid, data) => {
-    try {
-        return await sock.sendMessage(jid, data)
-    } catch (e) {
-        console.log('Send error:', e)
+        setInterval(async () => {
+            await generateShop()
+            console.log("🏪 Shop refreshed automatically")
+        }, 60 * 60 * 1000)
     }
+
+    // 👇 حفظ الجلسة
+    sock.ev.on('creds.update', saveCreds)
+
+    // 👇 safeSend
+    const safeSend = async (jid, data) => {
+        try {
+            return await sock.sendMessage(jid, data)
+        } catch (e) {
+            console.log('Send error:', e)
+        }
+    }
+
 }
 
     // ===== QR =====
