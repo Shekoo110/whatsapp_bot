@@ -3840,25 +3840,24 @@ if (tierChance <= 50) {
     let levelUpMessage = '';
 
 while ((me.xp || 0) >= Math.floor(300 + (me.level * 150))) {
-    me.xp -= Math.floor(300 + (me.level * 150));
-    me.level += 1;
-    me.money += 500;
-    levelUpMessage += `💰 حصلت على 500 مال\n`;
 
-    if (me.level >= 100) {
-        me.level = 100;
-        me.xp = 0;
-        break;
-    }
-} // ← هذا القوس مهم
-    
+    const neededXp = Math.floor(300 + (me.level * 150));
 
-const ability = levelAbilities[me.level];
+    me.xp -= neededXp;
+me.level += 1;
+
+// المستوى الجديد
+const currentLevel = me.level;
+
+// 👇 فحص قدرة هذا المستوى
+const ability = levelAbilities[currentLevel];
 
 if (ability) {
+
     me.specialAbilities = me.specialAbilities || [];
 
     if (!me.specialAbilities.includes(ability.name)) {
+
         me.specialAbilities.push(ability.name);
 
         me.attackBonus = me.attackBonus || 0;
@@ -3878,8 +3877,30 @@ if (ability) {
             case "lifesteal": me.lifestealBonus += ability.value; break;
             case "bossDamage": me.bossDamageBonus += ability.value; break;
         }
+
+        levelUpMessage += `
+✨ قدرة جديدة
+
+${ability.name}
+
+📜 ${ability.description}
+
+📈 التأثير: +${ability.value}%
+`;
     }
 }
+
+levelUpMessage += `🎉 وصلت إلى المستوى ${currentLevel}\n`;
+levelUpMessage += `💰 حصلت على 500 مال\n`;
+
+me.money += 500;
+
+if (me.level >= 100) {
+    me.level = 100;
+    me.xp = 0;
+    break;
+}
+    
 
     if (ability) {
     levelUpMessage += `
@@ -3971,15 +3992,15 @@ if (!me.rewardedLevels.includes(me.level)) {
 
 me.fights -= 1;
 await me.save();
-            
+
 if (levelUpMessage) {
     await sock.sendMessage(
         msg.key.remoteJid,
         {
-            text: `🎉 مبروك @${msg.key.participant.split('@')[0]}
+            text: `🎉 مبروك @${userId.split('@')[0]}
 
 ${levelUpMessage}`,
-            mentions: [msg.key.participant]
+            mentions: [userId]
         }
     );
 }
