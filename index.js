@@ -4303,14 +4303,13 @@ ${enemyCharacter.power}
 
 ━━━━━━━━━━━━━━━━━━
 
-${abilityActivated
-? `✨ تم تفعيل قدرة ${myCharacter.ability} ✨
-
-⚡ حصلت الشخصية على تعزيز قتالي
+${abilityMessage
+    ? `✨ تم تفعيل القدرات ✨
+${abilityMessage}
 
 ━━━━━━━━━━━━━━━━━━
 `
-: ''}
+    : ''}
 
 🏆 𝐖𝐈𝐍𝐍𝐄𝐑
 
