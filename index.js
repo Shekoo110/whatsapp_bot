@@ -4209,14 +4209,13 @@ ${me.maxCharacters}
 }
 
 me.fights -= 1
-
 await me.save()
-    if (levelUpMessage) {
+
+if (levelUpMessage) {
   await sock.sendMessage(
     msg.key.remoteJid,
     {
-      text:
-`🎉 مبروك @${msg.key.participant.split('@')[0]}
+      text: `🎉 مبروك @${msg.key.participant.split('@')[0]}
 
 ${levelUpMessage}`,
       mentions: [msg.key.participant]
@@ -4224,12 +4223,7 @@ ${levelUpMessage}`,
   )
 }
 
-return safeSend(msg.key.remoteJid, {
-  text: battleMessage,
-  mentions: [userId]
-})
-
-`⚔️ ══〔 𝐆𝐑𝐀𝐍𝐃 𝐁𝐀𝐓𝐓𝐋𝐄 〕══ ⚔️
+const battleMessage = `⚔️ ══〔 𝐆𝐑𝐀𝐍𝐃 𝐁𝐀𝐓𝐓𝐋𝐄 〕══ ⚔️
 
 👤 مجموع قوتك:
 ${myPower}
@@ -4283,6 +4277,10 @@ ${me.xp}
 
 ⚔️ القتالات المتبقية:
 ${me.fights}/5`
+
+return safeSend(msg.key.remoteJid, {
+  text: battleMessage,
+  mentions: [userId]
 })
 
 } catch (err) {
