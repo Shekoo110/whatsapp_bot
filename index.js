@@ -3498,537 +3498,247 @@ if (text === '.متجر') {
 // =========================
 // .قتال_مجموع
 // =========================
-        
-        
-if (text.startsWith('.قتال_مجموع')) {
+
+
+        if (text.startsWith('.قتال_مجموع')) {
 
 try {
-
+    
+me._levelRewarded = false;
+    
     const mentioned =
-        msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
+        msg.message?.extendedTextMessage?.contextInfo?.mentionedJid;
 
     if (!mentioned || !mentioned[0]) {
         return safeSend(msg.key.remoteJid, {
             text: '❌ استخدم منشن\n\nمثال:\n.قتال_مجموع @user'
-        })
+        });
     }
 
-    const targetId = mentioned[0]
+    const targetId = mentioned[0];
 
-    const me = await Player.findOne({ userId })
-const enemy = await Player.findOne({ userId: targetId })
+    const me = await Player.findOne({ userId });
+    const enemy = await Player.findOne({ userId: targetId });
 
-if (!me || !enemy) {
-    return safeSend(msg.key.remoteJid, {
-        text: '❌ أحد اللاعبين لا يملك حساباً'
-    })
-}
+    if (!me || !enemy) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ أحد اللاعبين لا يملك حساباً'
+        });
+    }
 
-if (me.fights == null) me.fights = 5
-if (!me.lastFightReset) me.lastFightReset = Date.now()
+    if (me.fights == null) me.fights = 5;
+    if (!me.lastFightReset) me.lastFightReset = Date.now();
 
-await me.save()
+    await me.save();
 
-const now = Date.now()
-const fightCooldown = 30 * 60 * 1000
+    const now = Date.now();
+    const fightCooldown = 30 * 60 * 1000;
 
-if (
-    now - me.lastFightReset >= fightCooldown
-) {
+    if (now - me.lastFightReset >= fightCooldown) {
+        me.fights = 5;
+        me.lastFightReset = now;
+        await me.save();
+    }
 
-    me.fights = 5
-    me.lastFightReset = now
+    if ((me.fights || 0) <= 0) {
 
-    await me.save()
-}
+        const remaining = fightCooldown - (now - me.lastFightReset);
 
-if ((me.fights || 0) <= 0) {
+        const minutes = Math.floor(remaining / (1000 * 60));
 
-    const remaining =
-        fightCooldown -
-        (now - me.lastFightReset)
-
-    const minutes =
-        Math.floor(
-            remaining / (1000 * 60)
-        )
-
-    return safeSend(msg.key.remoteJid, {
-        text:
+        return safeSend(msg.key.remoteJid, {
+            text:
 `❌ انتهت محاولات القتال
 
 ⚔️ المتبقي: 0/5
 
-🕒 الوقت المتبقي:
-${minutes} دقيقة
+🕒 الوقت المتبقي: ${minutes} دقيقة
 
 🔄 تتجدد المحاولات كل 30 دقيقة`
-    })
-}
-    
-    if (!me || !enemy) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ أحد اللاعبين لا يملك حساباً'
-        })
+        });
     }
 
     if (!me.characters?.length) {
         return safeSend(msg.key.remoteJid, {
             text: '❌ لا تملك شخصيات'
-        })
+        });
     }
 
     if (!enemy.characters?.length) {
         return safeSend(msg.key.remoteJid, {
             text: '❌ الخصم لا يملك شخصيات'
-        })
+        });
     }
 
     let myPower =
-        me.characters.reduce(
-            (sum, c) => sum + Number(c.power || 0),
-            0
-        )
+        me.characters.reduce((sum, c) => sum + Number(c.power || 0), 0);
 
     let enemyPower =
-        enemy.characters.reduce(
-            (sum, c) => sum + Number(c.power || 0),
-            0
-        )
+        enemy.characters.reduce((sum, c) => sum + Number(c.power || 0), 0);
 
-    let myAttack = myPower
-    let enemyAttack = enemyPower
+    let myAttack = myPower;
+    let enemyAttack = enemyPower;
 
-    let myAbilityName = 'بدون'
-let myAbilityDescription = 'لا يوجد'
-let myAbilityTier = 'عادية'
+    let myAbilityName = 'بدون';
+    let myAbilityDescription = 'لا يوجد';
+    let myAbilityTier = 'عادية';
 
-let enemyAbilityName = 'بدون'
-let enemyAbilityDescription = 'لا يوجد'
-let enemyAbilityTier = 'عادية'
+    let enemyAbilityName = 'بدون';
+    let enemyAbilityDescription = 'لا يوجد';
+    let enemyAbilityTier = 'عادية';
 
-    // =========================
-// القدرات العادية 50%
-// =========================
-let reducedReward = false
-    
-const common = [
+    let reducedReward = false;
+    let abilityTier = 'عادية';
 
-[
-'🔥 غضب المحارب',
-'يزيد القوة بنسبة 30%',
-() => {
-    myAttack += Math.floor(myAttack * 0.30)
-}
-],
+    const common = [
+        ['🔥 غضب المحارب','يزيد القوة بنسبة 30%',() => { myAttack += Math.floor(myAttack * 0.30) }],
+        ['💥 الضربة الحرجة','يزيد القوة بنسبة 50%',() => { myAttack += Math.floor(myAttack * 0.50) }],
+        ['🛡️ درع الحماية','يقلل ضرر الخصم بنسبة 25%',() => { enemyAttack -= Math.floor(enemyAttack * 0.25) }],
+        ['🔄 الكاونتر','يعكس 20% من قوة الخصم عليه',() => { enemyAttack -= Math.floor(enemyAttack * 0.20) }],
+        ['🃏 نين متطور','يزيد القوة بنسبة 40%',() => { myAttack += Math.floor(myAttack * 0.40) }],
+        ['🌊 تنفس الماء','يزيد القوة بنسبة 45%',() => { myAttack += Math.floor(myAttack * 0.45) }],
+        ['🔵 طور الناسك','يزيد القوة بنسبة 35%',() => { myAttack += Math.floor(myAttack * 0.35) }]
+    ];
 
-[
-'💥 الضربة الحرجة',
-'يزيد القوة بنسبة 50%',
-() => {
-    myAttack += Math.floor(myAttack * 0.50)
-}
-],
+    const rare = [
+        ['🍈 أكل فاكهة شيطان','يزيد القوة بنسبة 50%',() => { myAttack += Math.floor(myAttack * 0.50) }],
+        ['⚔️ بانكاي','يزيد القوة بنسبة 40%',() => { myAttack += Math.floor(myAttack * 0.40) }],
+        ['⚔️ هاكي التصلب المتقدم','يزيد القوة بنسبة 55%',() => { myAttack += Math.floor(myAttack * 0.55) }],
+        ['🟡 سوبر سايان','يزيد القوة بنسبة 60%',() => { myAttack += Math.floor(myAttack * 0.60) }],
+        ['⚡ تنفس البرق','يزيد القوة بنسبة 70%',() => { myAttack += Math.floor(myAttack * 0.70) }],
+        ['👁️ مانغيكيو شارينغان','يزيد القوة بنسبة 45%',() => { myAttack += Math.floor(myAttack * 0.45) }],
+        ['👑 قوة الكوينشي','يزيد القوة بنسبة 50%',() => { myAttack += Math.floor(myAttack * 0.50) }],
+        ['⚡ الغريزة الفائقة','تفادي',() => {
+            if (Math.random() <= 0.30) enemyAttack = 0;
+        }],
+        ['🌪️ الاستبدال','تفادي',() => { enemyAttack = 0 }]
+    ];
 
-[
-'🛡️ درع الحماية',
-'يقلل ضرر الخصم بنسبة 25%',
-() => {
-    enemyAttack -= Math.floor(enemyAttack * 0.25)
-}
-],
+    const legendary = [
+        ['🔴 سوبر سايان غود','يزيد القوة بنسبة 90%',() => { myAttack += Math.floor(myAttack * 0.90) }],
+        ['🔥 تنفس الشمس','يزيد القوة بنسبة 90%',() => { myAttack += Math.floor(myAttack * 0.90) }],
+        ['👑 هاكي الملوك','يضعف الخصم 25%',() => { enemyAttack -= Math.floor(enemyAttack * 0.25) }],
+        ['🖤 أنتي ماجيك','يقلل الخصم 40%',() => { enemyAttack -= Math.floor(enemyAttack * 0.40) }],
+        ['👁️ العين الشاملة','يقلل الخصم 30%',() => { enemyAttack -= Math.floor(enemyAttack * 0.30) }],
+        ['🔥 أماتيراسو','يقلل الخصم 20%',() => { enemyAttack -= Math.floor(enemyAttack * 0.20) }],
+        ['⚔️ سوسانو الكامل','يزيد القوة 90%',() => { myAttack += Math.floor(myAttack * 0.90) }],
+        ['👑 ملك السحر','يزيد القوة 90%',() => { myAttack += Math.floor(myAttack * 0.90) }],
+        ['👑 ملك اللعنات','يزيد القوة 100%',() => { myAttack += Math.floor(myAttack * 1.00) }],
+        ['⚙️ جير 5','يزيد القوة 80%',() => { myAttack += Math.floor(myAttack * 0.80) }],
+        ['♾️ اللانهاية','يقلل الخصم 40%',() => { enemyAttack -= Math.floor(enemyAttack * 0.40) }]
+    ];
 
-[
-'🔄 الكاونتر',
-'يعكس 20% من قوة الخصم عليه',
-() => {
-    enemyAttack -= Math.floor(enemyAttack * 0.20)
-}
-],
+    const epic = [
+        ['🐉 نيكا','يزيد القوة 100%',() => { myAttack += Math.floor(myAttack * 1.00) }],
+        ['🌀 كسر الحدود','يزيد القوة 200%',() => { myAttack += Math.floor(myAttack * 2.00) }],
+        ['🎲 الحظ المطلق','×2',() => { myAttack *= 2 }],
+        ['🌟 قوة البطل المختار','×2',() => { myAttack *= 2 }],
+        ['🌌 الصحوة الكاملة','×2.5',() => { myAttack *= 2.5 }],
+        ['👊 البوابة الثامنة','+70%',() => {
+            myAttack += Math.floor(myAttack * 0.70);
+            reducedReward = true;
+        }]
+    ];
 
-[
-'🃏 نين متطور',
-'يزيد القوة بنسبة 40%',
-() => {
-    myAttack += Math.floor(myAttack * 0.40)
-}
-],
+    const tierChance = Math.random() * 100;
 
-[
-'🌊 تنفس الماء',
-'يزيد القوة بنسبة 45%',
-() => {
-    myAttack += Math.floor(myAttack * 0.45)
-}
-],
-
-[
-'🔵 طور الناسك',
-'يزيد القوة بنسبة 35%',
-() => {
-    myAttack += Math.floor(myAttack * 0.35)
-}
-]
-
-]
-
-// =========================
-// القدرات النادرة 30%
-// =========================
-const rare = [
-[
-'🍈 أكل فاكهة شيطان',
-'يزيد القوة بنسبة 50%',
-() => {
-    myAttack += Math.floor(myAttack * 0.50)
-}
-],
-
-[
-'⚔️ بانكاي',
-'يزيد القوة بنسبة 40%',
-() => {
-    myAttack += Math.floor(myAttack * 0.40)
-}
-],
-
-[
-'⚔️ هاكي التصلب المتقدم',
-'يزيد القوة بنسبة 55%',
-() => {
-    myAttack += Math.floor(myAttack * 0.55)
-}
-],
-
-[
-'🟡 سوبر سايان',
-'يزيد القوة بنسبة 60%',
-() => {
-    myAttack += Math.floor(myAttack * 0.60)
-}
-],
-
-[
-'⚡ تنفس البرق',
-'يزيد القوة بنسبة 70%',
-() => {
-    myAttack += Math.floor(myAttack * 0.70)
-}
-],
-
-[
-'👁️ مانغيكيو شارينغان',
-'يزيد القوة بنسبة 45%',
-() => {
-    myAttack += Math.floor(myAttack * 0.45)
-}
-],
-
-[
-'👑 قوة الكوينشي',
-'يزيد القوة بنسبة 50%',
-() => {
-    myAttack += Math.floor(myAttack * 0.50)
-}
-],
-
-[
-'⚡ الغريزة الفائقة',
-'فرصة 30% لتفادي الهجوم بالكامل',
-() => {
-
-    if (Math.random() <= 0.30) {
-        enemyAttack = 0
-    }
-
-}
-],
-
-[
-'🌪️ الاستبدال (ناروتو)',
-'يتفادى هجوم الخصم بالكامل مرة واحدة',
-() => {
-
-    enemyAttack = 0
-
-}
-]
-
-]
-
-// =========================
-// القدرات الأسطورية 15%
-// =========================
-
-const legendary = [
-
-[
-'🔴 سوبر سايان غود',
-'يزيد القوة بنسبة 90%',
-() => {
-    myAttack += Math.floor(myAttack * 0.90)
-}
-],
-
-[
-'🔥 تنفس الشمس',
-'يزيد القوة بنسبة 90%',
-() => {
-    myAttack += Math.floor(myAttack * 0.90)
-}
-],
-
-[
-'👑 هاكي الملوك',
-'يضعف قوة الخصم بنسبة 25%',
-() => {
-    enemyAttack -= Math.floor(enemyAttack * 0.25)
-}
-],
-
-[
-'🖤 أنتي ماجيك',
-'يقلل قوة الخصم بنسبة 40%',
-() => {
-    enemyAttack -= Math.floor(enemyAttack * 0.40)
-}
-],
-
-[
-'👁️ العين الشاملة',
-'تكشف نقطة ضعف الخصم وتقلل قوته 30%',
-() => {
-    enemyAttack -= Math.floor(enemyAttack * 0.30)
-}
-],
-
-[
-'🔥 أماتيراسو',
-'يحرق الخصم ويقلل قوته 20%',
-() => {
-    enemyAttack -= Math.floor(enemyAttack * 0.20)
-}
-],
-
-[
-'⚔️ سوسانو الكامل',
-'يزيد القوة بنسبة 90%',
-() => {
-    myAttack += Math.floor(myAttack * 0.90)
-}
-],
-
-[
-'👑 ملك السحر',
-'يزيد القوة بنسبة 90%',
-() => {
-    myAttack += Math.floor(myAttack * 0.90)
-}
-],
-
-[
-'👑 ملك اللعنات',
-'يزيد القوة بنسبة 100%',
-() => {
-    myAttack += Math.floor(myAttack * 1.00)
-}
-],
-
-[
-'⚙️ جير 5',
-'يزيد القوة بنسبة 80%',
-() => {
-    myAttack += Math.floor(myAttack * 0.80)
-}
-],
-
-[
-'♾️ اللانهاية',
-'تقلل قوة الخصم بنسبة 40%',
-() => {
-    enemyAttack -= Math.floor(enemyAttack * 0.40)
-}
-]
-
-]
-
-// =========================
-// القدرات الملحمية 5%
-// =========================
-
-const epic = [
-
-[
-'🐉 نيكا',
-'يزيد القوة بنسبة 100%',
-() => {
-    myAttack += Math.floor(myAttack * 1.00)
-}
-],
-
-[
-'🌀 كسر الحدود',
-'يزيد القوة بنسبة 200%',
-() => {
-    myAttack += Math.floor(myAttack * 2.00)
-}
-],
-
-[
-'🎲 الحظ المطلق',
-'يضاعف القوة ×2',
-() => {
-    myAttack *= 2
-}
-],
-
-[
-'🌟 قوة البطل المختار',
-'يضاعف القوة ×2',
-() => {
-    myAttack *= 2
-}
-],
-
-[
-'🌌 الصحوة الكاملة',
-'يضاعف القوة ×2.5',
-() => {
-    myAttack *= 2.5
-}
-],
-
-[
-'👊 البوابة الثامنة',
-'يزيد القوة 70% لكن تقل المكافأة 30%',
-() => {
-    myAttack += Math.floor(myAttack * 0.70)
-    reducedReward = true
-}
-]
-
-]
-
-    const tierChance = Math.random() * 100
-
-    let selectedPool
+    let selectedPool;
 
     if (tierChance <= 50) {
-        selectedPool = common
-        abilityTier = 'عادية'
+        selectedPool = common;
+        abilityTier = 'عادية';
     } else if (tierChance <= 80) {
-        selectedPool = rare
-        abilityTier = 'نادرة'
+        selectedPool = rare;
+        abilityTier = 'نادرة';
     } else if (tierChance <= 95) {
-        selectedPool = legendary
-        abilityTier = 'أسطورية'
+        selectedPool = legendary;
+        abilityTier = 'أسطورية';
     } else {
-        selectedPool = epic
-        abilityTier = 'ملحمية'
+        selectedPool = epic;
+        abilityTier = 'ملحمية';
     }
 
-    try {
+    // قدرة اللاعب
+    const myAbility =
+        selectedPool[Math.floor(Math.random() * selectedPool.length)];
 
-  // 🟢 قدرة اللاعب
-  const myAbility = selectedPool[
-  Math.floor(Math.random() * selectedPool.length)
-];
+    myAbilityName = myAbility[0];
+    myAbilityDescription = myAbility[1];
+    myAbilityTier = abilityTier;
 
-myAbilityName = myAbility[0];
-myAbilityDescription = myAbility[1];
-myAbilityTier = abilityTier;
+    myAbility[2]();
 
-myAbility[2]();
+    // قدرة العدو
+    const enemyTierChance = Math.random() * 100;
 
-  // 🔵 قدرة العدو
-  const enemyTierChance = Math.random() * 100
+    let enemyPool;
 
-  let enemyPool
-  let enemyAbilityTier
+    if (enemyTierChance <= 50) enemyPool = common;
+    else if (enemyTierChance <= 80) enemyPool = rare;
+    else if (enemyTierChance <= 95) enemyPool = legendary;
+    else enemyPool = epic;
 
-  if (enemyTierChance <= 50) {
-    enemyPool = common
-    enemyAbilityTier = 'عادية'
-  } else if (enemyTierChance <= 80) {
-    enemyPool = rare
-    enemyAbilityTier = 'نادرة'
-  } else if (enemyTierChance <= 95) {
-    enemyPool = legendary
-    enemyAbilityTier = 'أسطورية'
-  } else {
-    enemyPool = epic
-    enemyAbilityTier = 'ملحمية'
-  }
+    const enemyAbility =
+        enemyPool[Math.floor(Math.random() * enemyPool.length)];
 
-  const enemyAbility =
-    enemyPool[Math.floor(Math.random() * enemyPool.length)]
+    enemyAbilityName = enemyAbility[0];
+    enemyAbilityDescription = enemyAbility[1];
 
-  enemyAbilityName = enemyAbility[0]
-  enemyAbilityDescription = enemyAbility[1]
+    const oldMyAttack = myAttack;
 
-  // 🔴 تبادل الهجمات
-  const oldMyAttack = myAttack
+    myAttack = enemyAttack;
+    enemyAbility[2]();
+    enemyAttack = myAttack;
+    myAttack = oldMyAttack;
 
-  myAttack = enemyAttack
-  enemyAbility[2]()
-  enemyAttack = myAttack
-  myAttack = oldMyAttack
+    const finalMyAttack = Math.floor(myAttack);
+    const finalEnemyAttack = Math.floor(enemyAttack);
 
-  // 🟣 الحساب النهائي
-  const finalMyAttack = Math.floor(myAttack)
-  const finalEnemyAttack = Math.floor(enemyAttack)
+    let winner;
+    let reward;
+    let winnerId;
 
-  let winner;
-  let reward;
-  let winnerId;
+    if (finalMyAttack >= finalEnemyAttack) {
+        winnerId = userId;
+        winner = 'أنت';
+        reward = Math.max(500, Math.floor(enemyPower / 10));
+    } else {
+        winnerId = targetId;
+        winner = 'الخصم';
+        reward = Math.max(500, Math.floor(myPower / 10));
+    }
 
-  if (finalMyAttack >= finalEnemyAttack) {
-    winnerId = userId;
-    winner = 'أنت';
-    reward = Math.max(500, Math.floor(enemyPower / 10));
-  } else {
-    winnerId = enemyId;
-    winner = 'الخصم';
-    reward = Math.max(500, Math.floor(myPower / 10));
-  }
+    me.money = (me.money || 0) + reward;
+    me.xp = (me.xp || 0) + 100;
 
-  me.money = (me.money || 0) + reward;
-  me.xp = (me.xp || 0) + 100;
+    let levelUpMessage = '';
 
-  let levelUpMessage = '';
+    while ((me.xp || 0) >= Math.floor(300 + (me.level * 150))) {
+        me.xp -= Math.floor(300 + (me.level * 150));
+        me.level += 1;
+        me.money += 500;
+        levelUpMessage += `💰 حصلت على 500 مال\n`;
+        if (me.level >= 100) {
+            me.level = 100;
+            me.xp = 0;
+            break;
+        }
+    }
 
-  while ((me.xp || 0) >= Math.floor(300 + (me.level * 150))) {
-  me.xp -= Math.floor(300 + (me.level * 150));
-  me.level += 1;
-  me.money += 500;
+    me.fights -= 1;
 
-  levelUpMessage += `💰 حصلت على 500 مال\n`;
+    await me.save();
+        
+levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`;
 
-  if (me.level >= 100) {
-    me.level = 100;
-    me.xp = 0;
-    break;
-  }
-}
-
-  await me.save();
-
-} catch (err) {
-  console.log(err);
-}
-
-    
-levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`
-
-
-if (ability) {
+if (myAbilityName) {
 
   if (!me.specialAbilities)
     me.specialAbilities = [];
 
-  if (!me.specialAbilities.includes(ability.name)) {
+  if (!me.specialAbilities.includes(myAbilityName)) {
 
-    me.specialAbilities.push(ability.name);
+    me.specialAbilities.push(myAbilityName);
 
     me.attackBonus = me.attackBonus || 0;
     me.defenseBonus = me.defenseBonus || 0;
@@ -4075,17 +3785,17 @@ if (ability) {
     levelUpMessage += `
 ✨ قدرة جديدة
 
-${ability.name}
+${myAbilityName}
 
-📜 ${ability.description}
+📜 ${myAbilityDescription}
 
-🎯 نسبة التفعيل:
-${ABILITY_CHANCE}% أثناء القتال
+🏷️ التصنيف: ${myAbilityTier}
 `;
   }
 }
 
-    if (me.level % 10 === 0) {
+    if (me.level % 10 === 0 && !me._levelRewarded) {
+    me._levelRewarded = true;
 
     me.maxCharacters = (me.maxCharacters || 30) + 5;
 
