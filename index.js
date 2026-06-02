@@ -3504,7 +3504,6 @@ if (text === '.متجر') {
 
 try {
     
-me._levelRewarded = false;
     
     const mentioned =
         msg.message?.extendedTextMessage?.contextInfo?.mentionedJid;
@@ -3519,7 +3518,9 @@ me._levelRewarded = false;
 
     const me = await Player.findOne({ userId });
     const enemy = await Player.findOne({ userId: targetId });
-
+    
+me._levelRewarded = false;
+    
     if (!me || !enemy) {
         return safeSend(msg.key.remoteJid, {
             text: '❌ أحد اللاعبين لا يملك حساباً'
@@ -3577,18 +3578,17 @@ me._levelRewarded = false;
         enemy.characters.reduce((sum, c) => sum + Number(c.power || 0), 0);
 
     let myAttack = myPower;
-    let enemyAttack = enemyPower;
+let enemyAttack = enemyPower;
 
-    let myAbilityName = 'بدون';
-    let myAbilityDescription = 'لا يوجد';
-    let myAbilityTier = 'عادية';
+let myAbilityName = 'بدون';
+let myAbilityDescription = 'لا يوجد';
+let myAbilityTier = 'عادية';
 
-    let enemyAbilityName = 'بدون';
-    let enemyAbilityDescription = 'لا يوجد';
-    let enemyAbilityTier = 'عادية';
+let enemyAbilityName = 'بدون';
+let enemyAbilityDescription = 'لا يوجد';
+let enemyAbilityTier = 'عادية';
 
-    let reducedReward = false;
-    let abilityTier = 'عادية';
+let reducedReward = false;
 
     const common = [
         ['🔥 غضب المحارب','يزيد القوة بنسبة 30%',() => { myAttack += Math.floor(myAttack * 0.30) }],
@@ -3642,21 +3642,22 @@ me._levelRewarded = false;
 
     const tierChance = Math.random() * 100;
 
-    let selectedPool;
+let selectedPool;
+let myAbilityTier = 'عادية';
 
-    if (tierChance <= 50) {
-        selectedPool = common;
-        abilityTier = 'عادية';
-    } else if (tierChance <= 80) {
-        selectedPool = rare;
-        abilityTier = 'نادرة';
-    } else if (tierChance <= 95) {
-        selectedPool = legendary;
-        abilityTier = 'أسطورية';
-    } else {
-        selectedPool = epic;
-        abilityTier = 'ملحمية';
-    }
+if (tierChance <= 50) {
+    selectedPool = common;
+    myAbilityTier = 'عادية';
+} else if (tierChance <= 80) {
+    selectedPool = rare;
+    myAbilityTier = 'نادرة';
+} else if (tierChance <= 95) {
+    selectedPool = legendary;
+    myAbilityTier = 'أسطورية';
+} else {
+    selectedPool = epic;
+    myAbilityTier = 'ملحمية';
+}
 
     // قدرة اللاعب
     const myAbility =
@@ -3703,7 +3704,7 @@ me._levelRewarded = false;
         winner = 'أنت';
         reward = Math.max(500, Math.floor(enemyPower / 10));
     } else {
-        winnerId = targetId;
+        winnerId = enemy.userId;
         winner = 'الخصم';
         reward = Math.max(500, Math.floor(myPower / 10));
     }
