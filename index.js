@@ -18,6 +18,30 @@ const getRank = require('./utils/rank')
 const { getSkillDamage } = require('./utils/skills')
 const Boss = require('./models/Boss')
 const { getTotalStats } = require('./utils/stats')
+const { generateShop } = require('./systems/shopSystem')
+
+if (!global.shopStarted) {
+
+    global.shopStarted = true
+
+    const Player = require('./models/Player')
+
+    setInterval(async () => {
+
+        const shopItems = generateShop()
+
+        await Player.updateMany({}, {
+            $set: {
+                "shop.items": shopItems,
+                "shop.lastRefresh": Date.now()
+            }
+        })
+
+        console.log("🏪 Shop refreshed")
+
+    }, 24 * 60 * 60 * 1000) // كل 24 ساعة
+}
+
 const Player = require('./models/Player')
 const abilityIcons = {
     attack: "⚔️",
@@ -1226,6 +1250,68 @@ ${player.usedCharacters?.length || 0}/30
                 }
             )
         }
+
+        if (text === '.سوق_المعدات') {
+
+    const player = await Player.findOne({ userId })
+
+    if (!player) return
+
+    if (!player.inventory || player.inventory.length === 0) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '🛒 لا يوجد لديك معدات في المخزون'
+        })
+    }
+
+    let shopText = `🛒 مخزون المعدات الخاص بك:\n\n`
+
+    player.inventory.forEach((item, i) => {
+
+        shopText += `#${i + 1}
+🗡️ الاسم: ${item.name}
+🎚️ النوع: ${item.type}
+⭐ الندرة: ${item.rarity}
+
+⚔️ هجوم: ${item.attack || 0}
+🛡️ دفاع: ${item.defense || 0}
+❤️ HP: ${item.hp || 0}
+🎯 كريت: ${item.crit || 0}
+💨 تفادي: ${item.dodge || 0}
+
+━━━━━━━━━━━━━━━\n`
+    })
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: shopText
+    })
+}
+
+        if (text.startsWith('.شراء_معدات')) {
+
+    const num = parseInt(text.split(' ')[1]) - 1
+
+    const player = await Player.findOne({ userId })
+
+    const item = player.shop.items[num]
+
+    if (!item) return
+
+    if (player.money < item.price) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ ما عندك فلوس كافية'
+        })
+    }
+
+    player.money -= item.price
+
+    player.inventory.push(item)
+
+    await player.save()
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: `✅ تم شراء ${item.name}`
+    })
+}
 
 if (text.startsWith('.قتال pvp')) {
 
