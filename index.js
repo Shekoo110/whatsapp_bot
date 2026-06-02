@@ -925,7 +925,30 @@ const safeSend = async (jid, data) => {
                 }
             )
         }
+if (text === '.ريست_اللفل') {
 
+  await Player.updateMany(
+    {},
+    {
+      $set: {
+        level: 1,
+        xp: 0,
+        specialAbilities: [],
+        attackBonus: 0,
+        defenseBonus: 0,
+        critBonus: 0,
+        dodgeBonus: 0,
+        reflectBonus: 0,
+        lifestealBonus: 0,
+        bossDamageBonus: 0
+      }
+    }
+  )
+
+  return safeSend(msg.key.remoteJid, {
+    text: '✅ تم إعادة تعيين اللفل والقدرات لجميع اللاعبين'
+  })
+}
         if (text === '.البرج') {
 
     let player =
@@ -3930,7 +3953,8 @@ enemyAbility[2]()
 enemyAttack = myAttack
 
 myAttack = oldMyAttack
-
+const finalMyAttack = Math.floor(myAttack)
+const finalEnemyAttack = Math.floor(enemyAttack)
 let winner
 let reward
 
