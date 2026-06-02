@@ -3643,7 +3643,7 @@ let reducedReward = false;
     const tierChance = Math.random() * 100;
 
 let selectedPool;
-let myAbilityTier = 'عادية';
+
 
 if (tierChance <= 50) {
     selectedPool = common;
