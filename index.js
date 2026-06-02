@@ -4685,11 +4685,16 @@ ${ranking}
 🎉 تم توزيع الجوائز بنجاح`,
 
         mentions
-    }
+}
 )
 
-} // نهاية distributeBossRewards
+// نهاية distributeBossRewards
+} 
 
-}) // نهاية messages.upsert
+// نهاية messages.upsert
+}) 
+
+// نهاية startBot
+}
 
 startBot()
