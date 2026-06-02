@@ -3644,7 +3644,6 @@ let reducedReward = false;
 
 let selectedPool;
 
-
 if (tierChance <= 50) {
     selectedPool = common;
     myAbilityTier = 'عادية';
