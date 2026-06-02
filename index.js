@@ -1304,6 +1304,41 @@ ${strongest ? strongest.power : '-'}`
 if (text === '.قدراتي') {
 
     const me = await Player.findOne({ userId })
+    if (!me.specialAbilities) me.specialAbilities = []
+
+for (let i = 5; i <= me.level; i += 5) {
+  const ability = levelAbilities[i]
+
+  if (ability && !me.specialAbilities.includes(ability.name)) {
+    me.specialAbilities.push(ability.name)
+  }
+}
+if (!me.claimedLevelRewards) me.claimedLevelRewards = []
+
+for (let i = 5; i <= me.level; i += 5) {
+  if (me.claimedLevelRewards.includes(i)) continue
+
+  switch (i) {
+    case 10:
+      me.boxes.basic += 5
+      break
+
+    case 20:
+      me.boxes.rare += 3
+      break
+
+    case 30:
+      me.boxes.rare += 5
+      break
+  }
+
+  me.money = (me.money || 0) + 500
+
+  me.claimedLevelRewards.push(i)
+}
+
+await me.save()
+await me.save()
 
     return safeSend(
         msg.key.remoteJid,
