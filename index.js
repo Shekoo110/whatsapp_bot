@@ -14,6 +14,18 @@ const mongoose = require('mongoose')
 const bosses = require('./bosses')
 const Boss = require('./models/Boss')
 const Player = require('./models/Player')
+const abilityIcons = {
+    attack: "⚔️",
+    defense: "🛡️",
+    crit: "🎯",
+    dodge: "💨",
+    reflect: "🪞",
+    lifesteal: "🩸",
+    bossDamage: "👑",
+    freeze: "❄️",
+    stun: "💫",
+    ultimate: "🌟"
+}
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
 // require / imports هنا
@@ -1221,16 +1233,30 @@ try {
 
     let player = await Player.findOne({ userId })
 
-    if (!player) {
+if (!player) {
+    player = await Player.create({
+        userId
+    })
+}
 
-        player = await Player.create({
-            userId
-        })
-    }
+// 👇 هنا تضيفه مباشرة
+const unlockedAbilities = Object.keys(levelAbilities)
+    .filter(lvl => player.level >= Number(lvl))
+    .map(lvl => levelAbilities[lvl])
+const abilitiesText = unlockedAbilities.length > 0
+    ? unlockedAbilities.map(a => {
+        const icon = abilityIcons[a.type] || "✨"
 
-    const characters = Array.isArray(player.characters)
-        ? player.characters
-        : []
+        return `${icon} ${a.name}
+⚡ النوع: ${a.type}
+📊 القوة: ${a.value}%
+📝 ${a.description}`
+    }).join('\n\n')
+    : "لا توجد قدرات بعد"
+// بعدها يكمل الكود الطبيعي
+const characters = Array.isArray(player.characters)
+    ? player.characters
+    : []
 
     let strongest = null
 
@@ -1340,6 +1366,10 @@ ${player.characters.length}/${player.maxCharacters || 30}
 
 👑 ضرر الزعيم:
 ${player.bossDamage || 0}
+
+🎖️ القدرات المكتسبة
+
+${abilitiesText}
 
 ━━━━━━━━━━━━━━
 
