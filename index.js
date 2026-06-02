@@ -871,7 +871,9 @@ async function startBot() {
         auth: state,
     })
 
-    // shop
+    // =========================
+    // Shop (مرة واحدة فقط)
+    // =========================
     if (!global.shopStarted) {
         global.shopStarted = true
 
@@ -883,18 +885,25 @@ async function startBot() {
         }, 60 * 60 * 1000)
     }
 
+    // =========================
     // حفظ الجلسة
+    // =========================
     sock.ev.on('creds.update', saveCreds)
 
+    // =========================
+    // safeSend
+    // =========================
     const safeSend = async (jid, data) => {
         try {
             return await sock.sendMessage(jid, data)
         } catch (e) {
-            console.log(e)
+            console.log('Send error:', e)
         }
     }
 
-    // ===== CONNECTION =====
+    // =========================
+    // CONNECTION
+    // =========================
     sock.ev.on('connection.update', async (update) => {
 
         const { connection, qr } = update
@@ -904,6 +913,7 @@ async function startBot() {
         }
 
         if (connection === 'open') {
+
             console.log('البوت اشتغل')
 
             const GROUP_ID = "120363020823525909@g.us"
@@ -918,6 +928,7 @@ async function startBot() {
         }
 
         if (connection === 'close') {
+
             console.log('انقطع الاتصال')
 
             setTimeout(() => {
@@ -927,14 +938,12 @@ async function startBot() {
     })
 
     // =========================
-    // استقبال الرسائل (داخل startBot)
+    // الرسائل
     // =========================
     sock.ev.on('messages.upsert', async ({ messages }) => {
 
         const msg = messages[0]
         if (!msg?.message) return
-
-        console.log('CHAT ID:', msg.key.remoteJid)
 
         const text =
             msg.message.conversation ||
@@ -946,19 +955,22 @@ async function startBot() {
             msg.key.participant ||
             msg.key.remoteJid
 
-        // 🔥 هنا تبدأ الأوامر
+        // =========================
+        // أوامر
+        // =========================
 
         if (text.startsWith('.بوت')) {
+
             await safeSend(msg.key.remoteJid, {
                 text: '🤖 البوت يعمل بنجاح'
             })
         }
-
     })
-
 }
 
+// =========================
 // تشغيل البوت
+// =========================
 startBot()
 
         // =========================
