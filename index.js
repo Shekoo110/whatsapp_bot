@@ -988,6 +988,41 @@ ${player.usedCharacters?.length || 0}/30
         }
     )
 }
+        if (text === '.resetall') {
+
+  try {
+
+    await Player.updateMany(
+      {},
+      {
+        $set: {
+          level: 1,
+          xp: 0,
+          attackBonus: 0,
+          defenseBonus: 0,
+          critBonus: 0,
+          dodgeBonus: 0,
+          reflectBonus: 0,
+          lifestealBonus: 0,
+          bossDamageBonus: 0,
+          specialAbilities: [],
+          bonusAppliedLevels: []
+        }
+      }
+    )
+
+    return sock.sendMessage(msg.key.remoteJid, {
+      text: '✅ تم تصفير جميع اللاعبين إلى لفل 1'
+    })
+
+  } catch (err) {
+    console.log(err)
+
+    return sock.sendMessage(msg.key.remoteJid, {
+      text: '❌ حدث خطأ أثناء التصفير'
+    })
+  }
+        }
 
         // =========================
         // .صوت
