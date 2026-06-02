@@ -3726,12 +3726,12 @@ if (tierChance <= 50) {
     }
 
     me.fights -= 1;
+await me.save();
 
-    await me.save();
-        
+// 🔥 مستوى + قدرات
 levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`;
 
-if (myAbilityName) {
+if (myAbilityName && myAbilityName !== 'بدون') {
 
   if (!me.specialAbilities)
     me.specialAbilities = [];
@@ -3794,7 +3794,8 @@ ${myAbilityName}
   }
 }
 
-    if (me.level % 10 === 0 && !me._levelRewarded) {
+// 🟢 صندوق كل 10 مستويات (مرة واحدة فقط)
+if (me.level % 10 === 0 && !me._levelRewarded) {
     me._levelRewarded = true;
 
     me.maxCharacters = (me.maxCharacters || 30) + 5;
@@ -3807,6 +3808,7 @@ ${myAbilityName}
 📦 السعة الجديدة:
 ${me.maxCharacters}
 `;
+}
 
     switch (me.level) {
 
