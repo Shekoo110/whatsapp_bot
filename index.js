@@ -4532,7 +4532,7 @@ for (let ab of me.allAbilities) {
 
         let winner
         let reward = 0
-
+let xpGain = 0
         
 
         if (finalMyAttack >= finalEnemyAttack) {
@@ -4544,7 +4544,7 @@ for (let ab of me.allAbilities) {
 
     me.money = (me.money || 0) + reward
 
-    me.xp = (me.xp || 0) + 50
+    me.xp = (me.xp || 0) + 200
 
 } else {
 
@@ -4691,10 +4691,13 @@ ${abilityActivated
 🏆 𝐖𝐈𝐍𝐍𝐄𝐑
 
 👑 الفائز:
-${winner}
+@${userId.split('@')[0]}
 
 💰 المكافأة:
 ${reward}
+
+⭐ الخبرة المكتسبة:
++200
 
 🎟️ القتالات المتبقية:
 ${updatedMe.fights}/5
@@ -4723,9 +4726,13 @@ if (
     )
 }
 
-return safeSend(msg.key.remoteJid, {
-    text: battleMessage
-    })
+return safeSend(
+  msg.key.remoteJid,
+  {
+    text: battleMessage,
+    mentions: [userId]
+  }
+)
 
 
     } catch (err) {
