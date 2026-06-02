@@ -869,82 +869,63 @@ async function startBot() {
 
     const sock = makeWASocket({
         auth: state,
-        // باقي الإعدادات
     })
 
-    // 👇 تشغيل المتجر مرة واحدة فقط (حل نهائي للتكرار)
+    // shop
     if (!global.shopStarted) {
-
         global.shopStarted = true
 
         await generateShop()
 
         setInterval(async () => {
             await generateShop()
-            console.log("🏪 Shop refreshed automatically")
+            console.log("🏪 Shop refreshed")
         }, 60 * 60 * 1000)
     }
 
-    // 👇 حفظ الجلسة
     sock.ev.on('creds.update', saveCreds)
 
-    // 👇 safeSend
     const safeSend = async (jid, data) => {
         try {
             return await sock.sendMessage(jid, data)
         } catch (e) {
-            console.log('Send error:', e)
+            console.log(e)
         }
     }
 
-}
-
-    // ===== QR =====
-
+    // ===== CONNECTION =====
     sock.ev.on('connection.update', async (update) => {
 
         const { connection, qr } = update
 
         if (qr) {
-
-            qrCodeData =
-            await QRCode.toDataURL(qr)
-
-            console.log("QR READY")
+            qrCodeData = await QRCode.toDataURL(qr)
         }
 
         if (connection === 'open') {
+            console.log('البوت اشتغل')
 
-    console.log('البوت اشتغل')
-
-    qrCodeData = ""
-
-    const GROUP_ID = "120363020823525909@g.us"
-
-    await spawnBoss(sock, GROUP_ID)
-
-    setInterval(async () => {
-
-        if (!currentBoss) {
+            const GROUP_ID = "120363020823525909@g.us"
 
             await spawnBoss(sock, GROUP_ID)
 
+            setInterval(async () => {
+                if (!currentBoss) {
+                    await spawnBoss(sock, GROUP_ID)
+                }
+            }, 60 * 60 * 1000)
         }
-
-    }, 60 * 60 * 1000) // ساعة
-
-}
 
         if (connection === 'close') {
-
-            console.log('انقطع الاتصال... إعادة تشغيل')
-
+            console.log('انقطع الاتصال')
             startBot()
         }
-
     })
 
     sock.ev.on('creds.update', saveCreds)
+}
+
+startBot()
 
     // =========================
     // استقبال الرسائل
