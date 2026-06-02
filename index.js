@@ -942,36 +942,28 @@ async function startBot() {
     // =========================
     sock.ev.on('messages.upsert', async ({ messages }) => {
 
-        const msg = messages[0]
-        if (!msg?.message) return
+    const msg = messages[0]
+    if (!msg?.message) return
 
-        const text =
-            msg.message.conversation ||
-            msg.message.extendedTextMessage?.text
+    const text =
+        msg.message.conversation ||
+        msg.message.extendedTextMessage?.text
 
-        if (!text) return
+    if (!text) return
 
-        const userId =
-            msg.key.participant ||
-            msg.key.remoteJid
+    const userId =
+        msg.key.participant ||
+        msg.key.remoteJid
 
-        // =========================
-        // أوامر
-        // =========================
+    // =========================
+    // الأوامر هنا فقط
+    // =========================
 
-        if (text.startsWith('.بوت')) {
-
-            await safeSend(msg.key.remoteJid, {
-                text: '🤖 البوت يعمل بنجاح'
-            })
-        }
-    })
-}
-
-// =========================
-// تشغيل البوت
-// =========================
-
+    if (text.startsWith('.بوت')) {
+        await safeSend(msg.key.remoteJid, {
+            text: '🤖 البوت يعمل بنجاح'
+        })
+    }
 
         // =========================
         // .صوره
@@ -1007,7 +999,7 @@ async function startBot() {
                     fs.readFileSync(imagePath)
                 }
             )
-        }
+        }})
 
         if (text === '.البرج') {
 
