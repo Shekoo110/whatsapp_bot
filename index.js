@@ -1381,182 +1381,284 @@ ${player.usedCharacters?.length || 0}/30
 }
 
 
-    if (text.startsWith('.قتال pvp')) {
+if (text.startsWith('.قتال pvp')) {
 
     const attacker = await Player.findOne({ userId })
+    const defenderJid = msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
 
     if (!attacker) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ لا تملك حساب'
-        })
+        return safeSend(msg.key.remoteJid, { text: '❌ لا تملك حساب' })
     }
 
-    const mentionedJid =
-        msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
-
-    if (!mentionedJid) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ مثال: .قتال pvp @user'
-        })
+    if (!defenderJid) {
+        return safeSend(msg.key.remoteJid, { text: '❌ مثال: .قتال pvp @user' })
     }
 
-    const defender = await Player.findOne({ userId: mentionedJid })
+    const defender = await Player.findOne({ userId: defenderJid })
 
     if (!defender) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ اللاعب غير موجود'
-        })
+        return safeSend(msg.key.remoteJid, { text: '❌ اللاعب غير موجود' })
     }
 
-    // =========================
-    // 🛡️ حماية
-    // =========================
     if (attacker.userId === defender.userId) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ لا يمكنك قتال نفسك'
-        })
+        return safeSend(msg.key.remoteJid, { text: '❌ لا يمكنك قتال نفسك' })
     }
 
+    // =========================
+    // ⏳ COOLDOWN
+    // =========================
     const now = Date.now()
 
     if (attacker.lastPvP && now - attacker.lastPvP < 30000) {
-        return safeSend(msg.key.remoteJid, {
-            text: '⏳ لازم تنتظر 30 ثانية'
-        })
+        return safeSend(msg.key.remoteJid, { text: '⏳ انتظر 30 ثانية' })
     }
 
     attacker.lastPvP = now
 
     // =========================
-    // تجهيز القتال
+    // 🧠 STATS + EQUIPMENT
     // =========================
-    let attackerTurn = attacker
-    let defenderTurn = defender
+    const aEq = attacker.equipment || {}
+    const dEq = defender.equipment || {}
+
+    const aStats = {
+        hp: attacker.hp,
+        attack: (attacker.attack || 500) + (aEq.weapon?.attack || 0),
+        crit: (attacker.crit || 5) + (aEq.accessory?.crit || 0),
+        dodge: (attacker.dodge || 3) + (aEq.accessory?.dodge || 0),
+        burn: 0,
+        bleed: 0,
+        stun: 0
+    }
+
+    const dStats = {
+        hp: defender.hp,
+        attack: (defender.attack || 500) + (dEq.weapon?.attack || 0),
+        crit: (defender.crit || 5) + (dEq.accessory?.crit || 0),
+        dodge: (defender.dodge || 3) + (dEq.accessory?.dodge || 0),
+        burn: 0,
+        bleed: 0,
+        stun: 0
+    }
+
+    let aHP = aStats.hp
+    let dHP = dStats.hp
+
+    let log = `⚔️ PvP بدأ!\n@${attacker.userId.split('@')[0]} VS @${defender.userId.split('@')[0]}\n`
 
     let turn = 1
-    let log = `⚔️ PvP بدأ!\n\n@${attacker.userId.split('@')[0]} VS @${defender.userId.split('@')[0]}\n`
+    let turnAttacker = true
 
     // =========================
-    // 🔥 TURN LOOP
+    // 🔥 SKILLS SYSTEM
     // =========================
-    while (attackerTurn.hp > 0 && defenderTurn.hp > 0) {
+    function getSkill() {
+        const r = Math.random()
+        if (r > 0.85) return "ultimate"
+        if (r > 0.55) return "skill"
+        return "normal"
+    }
+
+    function applyStatus(target, skill) {
+
+        if (skill === "skill") {
+            if (Math.random() < 0.3) target.burn = 2
+        }
+
+        if (skill === "ultimate") {
+            if (Math.random() < 0.3) target.stun = 1
+            if (Math.random() < 0.2) target.bleed = 3
+        }
+    }
+
+    // =========================
+    // ⚔️ FIGHT LOOP
+    // =========================
+    while (aHP > 0 && dHP > 0) {
 
         log += `\n🔁 الدور ${turn}\n`
 
-        const moveType = Math.random()
+        let atk = turnAttacker ? aStats : dStats
+        let def = turnAttacker ? dStats : aStats
 
-        let skillType = "normal"
-        if (moveType > 0.85) skillType = "ultimate"
-        else if (moveType > 0.55) skillType = "skill"
+        let defHP = turnAttacker ? dHP : aHP
 
-        const dodgeChance = defenderTurn.dodge || 0
-
-        if (Math.random() * 100 < dodgeChance) {
-
-            log += `💨 ${defenderTurn.userId.split('@')[0]} تفادى الضربة!\n`
-
-        } else {
-
-            let damage = attackerTurn.attack || 500
-
-            if (skillType === "skill") damage *= 1.5
-            if (skillType === "ultimate") damage *= 2.5
-
-            const critChance = attackerTurn.crit || 5
-
-            if (Math.random() * 100 < critChance) {
-                damage *= 2
-                log += `🔥 ضربة حرجة!\n`
-            }
-
-            defenderTurn.hp -= Math.floor(damage)
-
-            log += `⚔️ ${attackerTurn.userId.split('@')[0]} استخدم ${skillType} وضرب ${Math.floor(damage)}\n`
+        // 🔥 status damage
+        if (atk.burn > 0) {
+            defHP -= 80
+            atk.burn--
+            log += `🔥 Burn damage!\n`
         }
 
-        // 🔄 تبديل الأدوار
-        const temp = attackerTurn
-        attackerTurn = defenderTurn
-        defenderTurn = temp
+        if (atk.bleed > 0) {
+            defHP -= 120
+            atk.bleed--
+            log += `🩸 Bleed damage!\n`
+        }
 
+        if (atk.stun > 0) {
+            atk.stun--
+            log += `💫 Stunned - skip turn\n`
+            turnAttacker = !turnAttacker
+            turn++
+            continue
+        }
+
+        // 🛡️ dodge
+        if (Math.random() * 100 < def.dodge) {
+            log += `💨 تفادى الضربة!\n`
+        } else {
+
+            let skill = getSkill()
+
+            let damage = atk.attack
+
+            if (skill === "skill") damage *= 1.5
+            if (skill === "ultimate") damage *= 2.5
+
+            // crit
+            if (Math.random() * 100 < atk.crit) {
+                damage *= 2
+                log += `🔥 CRIT!\n`
+            }
+
+            defHP -= Math.floor(damage)
+
+            applyStatus(def, skill)
+
+            log += `⚔️ ${skill.toUpperCase()} - ${Math.floor(damage)} dmg\n`
+        }
+
+        if (turnAttacker) dHP = defHP
+        else aHP = defHP
+
+        turnAttacker = !turnAttacker
         turn++
     }
 
     // =========================
-    // 🏁 النتيجة
+    // 🏆 RESULT
     // =========================
-    const winner =
-        attackerTurn.hp > 0 ? attackerTurn : defenderTurn
+    const winner = aHP > 0 ? attacker : defender
+    const loser = aHP > 0 ? defender : attacker
 
-    const isAttackerWin = winner.userId === attacker.userId
+    winner.wins = (winner.wins || 0) + 1
+    loser.losses = (loser.losses || 0) + 1
 
-    // =========================
-    // 🏆 MMR SYSTEM
-    // =========================
-    if (isAttackerWin) {
-        attacker.wins += 1
-        defender.losses += 1
-
-        attacker.mmr += 25
-        defender.mmr = Math.max(0, defender.mmr - 15)
-
-    } else {
-        defender.wins += 1
-        attacker.losses += 1
-
-        defender.mmr += 25
-        attacker.mmr = Math.max(0, attacker.mmr - 15)
-    }
-
-    // =========================
-    // 📊 RANK UPDATE
-    // =========================
-    function getRank(mmr) {
-        if (mmr < 1100) return "برونزي"
-        if (mmr < 1300) return "فضي"
-        if (mmr < 1500) return "ذهبي"
-        if (mmr < 1800) return "بلاتيني"
-        if (mmr < 2100) return "ماسي"
-        return "أسطوري"
-    }
+    winner.mmr += 25
+    loser.mmr = Math.max(0, loser.mmr - 15)
 
     attacker.rank = getRank(attacker.mmr)
     defender.rank = getRank(defender.mmr)
 
-    // =========================
-    // 🎁 Rewards
-    // =========================
-    let moneyReward = 1000 + attacker.mmr / 5
-    let xpReward = 200 + attacker.mmr / 10
-
-    const rewardPlayer = isAttackerWin ? attacker : defender
-
-    rewardPlayer.money += Math.floor(moneyReward)
-    rewardPlayer.xp += Math.floor(xpReward)
-
-    // =========================
-    // 💾 SAVE
-    // =========================
     await attacker.save()
     await defender.save()
 
-    // =========================
-    // 📢 RESULT
-    // =========================
-    await sock.sendMessage(msg.key.remoteJid, {
+    return safeSend(msg.key.remoteJid, {
         text:
-`⚔️ PvP انتهى!
+`⚔️ انتهى القتال!
 
 🏆 الفائز: @${winner.userId.split('@')[0]}
 
-📊 الرانك:
+📊 النتائج:
 🥇 ${attacker.userId.split('@')[0]}: ${attacker.rank} (${attacker.mmr})
 🥈 ${defender.userId.split('@')[0]}: ${defender.rank} (${defender.mmr})
 
-🎁 الجائزة:
-💰 +${Math.floor(moneyReward)}
-⭐ +${Math.floor(xpReward)} XP`
+🔥 PvP مطور بنظام مهارات + حالات`
     })
+}
+
+        if (text.startsWith('.اشرح pvp')) {
+
+    const explanation =
+`⚔️ شرح نظام PvP (المطور)
+
+━━━━━━━━━━━━━━━
+🧠 1) نظام القتال
+━━━━━━━━━━━━━━━
+• القتال يعتمد على نظام أدوار (Turn-Based)
+• كل لاعب يهاجم بالتناوب
+• القتال يستمر حتى ينتهي HP أحد اللاعبين
+
+━━━━━━━━━━━━━━━
+🔥 2) المهارات (Skills)
+━━━━━━━━━━━━━━━
+يوجد 3 أنواع:
+
+• NORMAL → ضربة عادية
+• SKILL → ضرر أقوى + احتمال تأثير
+• ULTIMATE → ضرر عالي + تأثيرات قوية
+
+━━━━━━━━━━━━━━━
+💥 3) الضرر (Damage System)
+━━━━━━━━━━━━━━━
+• يعتمد على Attack الأساسي
+• يتم ضربه في:
+  - Skill multiplier
+  - Critical Hit (ضربة حرجة)
+  - معدات اللاعب
+
+━━━━━━━━━━━━━━━
+🔥 4) الضربة الحرجة (Critical)
+━━━━━━━━━━━━━━━
+• احتمال بنسبة crit%
+• تضاعف الضرر ×2
+
+━━━━━━━━━━━━━━━
+💨 5) التفادي (Dodge)
+━━━━━━━━━━━━━━━
+• احتمال dodge%
+• إذا نجح:
+  ❌ لا يتم استقبال أي ضرر
+
+━━━━━━━━━━━━━━━
+🩸 6) حالات القتال (Status Effects)
+━━━━━━━━━━━━━━━
+• BURN → ضرر كل دور
+• BLEED → نزيف لعدة أدوار
+• STUN → فقدان دور كامل
+
+━━━━━━━━━━━━━━━
+🛡️ 7) المعدات (Equipment System)
+━━━━━━━━━━━━━━━
+• Weapon → يزيد Attack
+• Armor → يزيد HP / تقليل ضرر
+• Accessory → يزيد Crit / Dodge
+
+━━━━━━━━━━━━━━━
+📊 8) نظام الرانك (Rank System)
+━━━━━━━━━━━━━━━
+يعتمد على MMR:
+
+• برونزي
+• فضي
+• ذهبي
+• بلاتيني
+• ماستر
+• أسطوري
+
+كل قتال:
+✔ يزيد أو ينقص MMR
+
+━━━━━━━━━━━━━━━
+🏆 9) المكافآت
+━━━━━━━━━━━━━━━
+الفائز يحصل على:
+• 💰 فلوس
+• ⭐ XP
+• 📦 صناديق حسب الرانك
+
+━━━━━━━━━━━━━━━
+⚔️ الخلاصة
+━━━━━━━━━━━━━━━
+PvP الآن = نظام RPG كامل داخل البوت
+(مهارات + معدات + حالات + رانك + مكافآت)
+
+🔥 مستعد للتطوير القادم`;
+
+    return safeSend(msg.key.remoteJid, {
+        text: explanation
+    });
 }
         
         
