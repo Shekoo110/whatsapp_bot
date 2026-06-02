@@ -3517,15 +3517,15 @@ try {
     const targetId = mentioned[0];
 
     const me = await Player.findOne({ userId });
-    const enemy = await Player.findOne({ userId: targetId });
-    
+const enemy = await Player.findOne({ userId: targetId });
+
+if (!me || !enemy) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ أحد اللاعبين لا يملك حساباً'
+    });
+}
+
 me._levelRewarded = false;
-    
-    if (!me || !enemy) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ أحد اللاعبين لا يملك حساباً'
-        });
-    }
 
     if (me.fights == null) me.fights = 5;
     if (!me.lastFightReset) me.lastFightReset = Date.now();
@@ -3703,7 +3703,7 @@ if (tierChance <= 50) {
         winner = 'أنت';
         reward = Math.max(500, Math.floor(enemyPower / 10));
     } else {
-        winnerId = enemy.userId;
+        winnerId = targetId;
         winner = 'الخصم';
         reward = Math.max(500, Math.floor(myPower / 10));
     }
