@@ -15,7 +15,7 @@ console.log('Bot starting...')
 const mongoose = require('mongoose')
 const bosses = require('./bosses')
 const getRank = require('./utils/rank')
-
+const { getSkillDamage } = require('./utils/skills')
 const Boss = require('./models/Boss')
 const Player = require('./models/Player')
 const abilityIcons = {
@@ -1267,14 +1267,35 @@ if (text.startsWith('.قتال pvp')) {
 
         if (turn) {
 
-            let dmg = calculateDamageAdvanced(attacker, defender)
+            const moveType = Math.random()
 
-            // 🛡️ dodge
-            if (Math.random() * 100 < defender.dodge) {
-                log += `💨 ${defender.userId.split('@')[0]} تفادى الضربة!\n`
-            } else {
+let skillType = "normal"
 
-                hp2 -= dmg.totalDamage
+if (moveType > 0.8) skillType = "ultimate"
+else if (moveType > 0.5) skillType = "skill"
+
+const result = getSkillDamage(skillType, attacker)
+
+// 🛡️ dodge
+const dodgeChance = defender.dodge || 0
+
+if (Math.random() * 100 < dodgeChance) {
+
+    log += `💨 ${defender.userId.split('@')[0]} تفادى الضربة!\n`
+
+} else {
+
+    if (result.failed) {
+
+        log += `❌ ${attacker.userId.split('@')[0]} فشل في Ultimate!\n`
+
+    } else {
+
+        hp2 -= result.damage
+
+        log += `⚔️ ${attacker.userId.split('@')[0]} استخدم ${skillType} - ${result.damage} damage\n`
+    }
+}
 
                 // 🩸 lifesteal
                 const heal = Math.floor(dmg.totalDamage * (attacker.lifestealBonus / 100))
