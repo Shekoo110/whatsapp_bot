@@ -4733,8 +4733,8 @@ return safeSend(
   {
     text: battleMessage,
     mentions: [userId]
-  }
-)
+  })
+
 
 
     } catch (err) {
