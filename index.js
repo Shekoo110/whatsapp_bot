@@ -3723,70 +3723,44 @@ if (tierChance <= 50) {
     me.fights -= 1;
 await me.save();
 
-// 🔥 مستوى + قدرات
-levelUpMessage += `\n🎉 مبروك! وصلت إلى لفل ${me.level}\n`;
+const ability = levelAbilities[me.level];
 
-if (myAbilityName && myAbilityName !== 'بدون') {
+if (ability) {
+    me.specialAbilities = me.specialAbilities || [];
 
-  if (!me.specialAbilities)
-    me.specialAbilities = [];
+    if (!me.specialAbilities.includes(ability.name)) {
+        me.specialAbilities.push(ability.name);
 
-  if (!me.specialAbilities.includes(myAbilityName)) {
+        me.attackBonus = me.attackBonus || 0;
+        me.defenseBonus = me.defenseBonus || 0;
+        me.critBonus = me.critBonus || 0;
+        me.dodgeBonus = me.dodgeBonus || 0;
+        me.reflectBonus = me.reflectBonus || 0;
+        me.lifestealBonus = me.lifestealBonus || 0;
+        me.bossDamageBonus = me.bossDamageBonus || 0;
 
-    me.specialAbilities.push(myAbilityName);
-
-    me.attackBonus = me.attackBonus || 0;
-    me.defenseBonus = me.defenseBonus || 0;
-    me.critBonus = me.critBonus || 0;
-    me.dodgeBonus = me.dodgeBonus || 0;
-    me.reflectBonus = me.reflectBonus || 0;
-    me.lifestealBonus = me.lifestealBonus || 0;
-    me.bossDamageBonus = me.bossDamageBonus || 0;
-
-    me.bonusAppliedLevels = me.bonusAppliedLevels || [];
-
-    if (!me.bonusAppliedLevels.includes(me.level)) {
-
-      switch (me.level) {
-        case 5:  me.critBonus += 2; break;
-        case 10: me.attackBonus += 2; break;
-        case 15: me.defenseBonus += 2; break;
-        case 20: me.bossDamageBonus += 5; break;
-        case 25: me.dodgeBonus += 2; break;
-        case 30: me.attackBonus += 4; break;
-        case 35: me.critBonus += 3; break;
-        case 40: me.defenseBonus += 4; break;
-        case 45: me.reflectBonus += 3; break;
-        case 50: me.lifestealBonus += 5; break;
-        case 55: me.attackBonus += 5; break;
-        case 60: me.bossDamageBonus += 10; break;
-        case 65: me.dodgeBonus += 4; break;
-        case 70: me.critBonus += 5; break;
-        case 75: me.defenseBonus += 5; break;
-        case 80: me.attackBonus += 6; break;
-        case 85: me.reflectBonus += 5; break;
-        case 90: me.lifestealBonus += 8; break;
-        case 95: me.bossDamageBonus += 15; break;
-        case 100:
-          me.attackBonus += 10;
-          me.critBonus += 10;
-          me.defenseBonus += 10;
-          break;
-      }
-
-      me.bonusAppliedLevels.push(me.level);
+        switch (ability.type) {
+            case "attack": me.attackBonus += ability.value; break;
+            case "defense": me.defenseBonus += ability.value; break;
+            case "crit": me.critBonus += ability.value; break;
+            case "dodge": me.dodgeBonus += ability.value; break;
+            case "reflect": me.reflectBonus += ability.value; break;
+            case "lifesteal": me.lifestealBonus += ability.value; break;
+            case "bossDamage": me.bossDamageBonus += ability.value; break;
+        }
     }
+}
 
+    if (ability) {
     levelUpMessage += `
 ✨ قدرة جديدة
 
-${myAbilityName}
+${ability.name}
 
-📜 ${myAbilityDescription}
+📜 ${ability.description}
 
-🏷️ التصنيف: ${myAbilityTier}
+🏷️ التصنيف: ${ability.type}
 `;
-  }
 }
 
 // 🟢 صندوق كل 10 مستويات (مرة واحدة فقط)
@@ -3804,6 +3778,8 @@ if (me.level % 10 === 0 && !me._levelRewarded) {
 ${me.maxCharacters}
 `;
 }
+
+    if (!me.rewardedLevels.includes(me.level)) {
 
     switch (me.level) {
 
@@ -3857,6 +3833,9 @@ ${me.maxCharacters}
             levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`;
             break;
     }
+
+    me.rewardedLevels.push(me.level);
+}
 
 me.fights -= 1;
 await me.save();
@@ -3930,7 +3909,7 @@ ${me.fights}/5`;
 
 return safeSend(msg.key.remoteJid, {
     text: battleMessage,
-    mentions: [msg.key.participant]
+    mentions: [winnerId || msg.key.participant || targetId]
 });
 
 } catch (err) {
