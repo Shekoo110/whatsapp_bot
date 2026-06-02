@@ -4155,20 +4155,21 @@ ${me.maxCharacters}
             levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`;
             break;
     }
+} // 🔴 هذا مهم جدًا لازم تنقفل هنا
 
-me.fights -= 1
-await me.save()
+me.fights -= 1;
+await me.save();
 
 if (levelUpMessage) {
-  await sock.sendMessage(
-    msg.key.remoteJid,
-    {
-      text: `🎉 مبروك @${msg.key.participant.split('@')[0]}
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `🎉 مبروك @${msg.key.participant.split('@')[0]}
 
 ${levelUpMessage}`,
-      mentions: [msg.key.participant]
-    }
-  )
+            mentions: [msg.key.participant]
+        }
+    );
 }
 
 const battleMessage = `⚔️ ══〔 𝐆𝐑𝐀𝐍𝐃 𝐁𝐀𝐓𝐓𝐋𝐄 〕══ ⚔️
@@ -4224,20 +4225,21 @@ ${me.level}
 ${me.xp}
 
 ⚔️ القتالات المتبقية:
-${me.fights}/5`
+${me.fights}/5`;
 
 return safeSend(msg.key.remoteJid, {
-  text: battleMessage,
-  mentions: [userId]
-})
+    text: battleMessage,
+    mentions: [userId]
+});
 
-} catch (err) {
+} // 🔴 إغلاق try
+catch (err) {
 
-    console.log(err)
+    console.log(err);
 
     return safeSend(msg.key.remoteJid, {
         text: '❌ حدث خطأ أثناء القتال'
-    })
+    });
 }
 
 }
