@@ -2849,11 +2849,9 @@ if (text.startsWith('.عرض')) {
 try {
 
     const args = text.split(' ')
-
     const number = Number(args[1]) - 1
 
     if (isNaN(number)) {
-
         return safeSend(msg.key.remoteJid, {
             text: '❌ استخدم: .عرض رقم_الشخصية'
         })
@@ -2862,7 +2860,6 @@ try {
     let player = await Player.findOne({ userId })
 
     if (!player || !player.characters?.length) {
-
         return safeSend(msg.key.remoteJid, {
             text: '❌ لا تملك شخصيات'
         })
@@ -2871,33 +2868,38 @@ try {
     const character = player.characters[number]
 
     if (!character) {
-
         return safeSend(msg.key.remoteJid, {
             text: '❌ رقم الشخصية غير موجود'
         })
     }
 
-    const imagePath =
-        path.join(__dirname, character.image)
+    const captionSSS = `╔═══════════════════════╗
+║ 👑 𝗦𝗦𝗦 • 𝗠𝗬𝗧𝗛𝗜𝗖 👑
+╚═══════════════════════╝
 
-    if (!fs.existsSync(imagePath)) {
+⚜️ الاسم
+➤ ${character.name}
 
-        return safeSend(msg.key.remoteJid, {
-            text:
+🔥 الهيئة
+➤ ${character.form || 'غير معروفة'}
 
-`❌ صورة الشخصية غير موجودة
+💠 الندرة
+➤ ${character.rarity}
 
-الاسم: ${character.name}
-المسار: ${character.image}`
-})
-}
+⚔️ القوة
+➤ ${character.power}
 
-    return sock.sendMessage(msg.key.remoteJid, {
-        image: fs.readFileSync(imagePath),
+🌌 الأنمي
+➤ ${character.anime}
 
-        caption:
+✨ القدرة
+➤ ${character.ability || 'لا توجد'}
 
-`╔════════════════════╗
+━━━━━━━━━━━━━━━
+🏆 شخصية أسطورية نادرة
+━━━━━━━━━━━━━━━`
+
+    const captionNormal = `╔════════════════════╗
 🖼️ 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑
 ╚════════════════════╝
 
@@ -2915,7 +2917,35 @@ ${character.anime}
 
 ✨ القدرة:
 ${character.ability || 'لا توجد'}`
-})
+
+    // شخصيات SSS من رابط خارجي
+    if (character.rarity === 'SSS') {
+
+        return sock.sendMessage(msg.key.remoteJid, {
+            image: {
+                url: character.image
+            },
+            caption: captionSSS
+        })
+
+    }
+
+    // الشخصيات العادية من ملفات البوت
+    const imagePath = path.join(__dirname, character.image)
+
+    if (!fs.existsSync(imagePath)) {
+        return safeSend(msg.key.remoteJid, {
+            text: `❌ صورة الشخصية غير موجودة
+
+الاسم: ${character.name}
+المسار: ${character.image}`
+        })
+    }
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        image: fs.readFileSync(imagePath),
+        caption: captionNormal
+    })
 
 } catch (err) {
 
