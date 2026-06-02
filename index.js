@@ -1509,11 +1509,77 @@ if (isAttackerWin) {
 attacker.rank = getRank(attacker.mmr)
 defender.rank = getRank(defender.mmr)
 
+// 🎁 الصناديق
+givePvPBoxes(attacker)
+givePvPBoxes(defender)
+
 // =========================
 // SAVE
 // =========================
 await attacker.save()
 await defender.save()
+        
+let moneyReward = 0
+let xpReward = 0
+
+// =========================
+// 💰 + ⭐ حسب الفوز
+// =========================
+if (isAttackerWin) {
+
+    attacker.wins += 1
+    defender.losses += 1
+
+    moneyReward = 1000 + attacker.mmr / 5
+    xpReward = 200 + attacker.mmr / 10
+
+    attacker.money += Math.floor(moneyReward)
+    attacker.xp += Math.floor(xpReward)
+
+} else {
+
+    defender.wins += 1
+    attacker.losses += 1
+
+    moneyReward = 1000 + defender.mmr / 5
+    xpReward = 200 + defender.mmr / 10
+
+    defender.money += Math.floor(moneyReward)
+    defender.xp += Math.floor(xpReward)
+}
+
+        function givePvPBoxes(player) {
+
+    const rank = player.rank
+
+    if (rank === "برونزي") {
+        player.boxes.basic += 1
+    }
+
+    if (rank === "فضي") {
+        player.boxes.basic += 1
+        player.boxes.rare += 1
+    }
+
+    if (rank === "ذهبي") {
+        player.boxes.rare += 2
+    }
+
+    if (rank === "بلاتيني") {
+        player.boxes.epic += 1
+    }
+
+    if (rank === "ماسي") {
+        player.boxes.epic += 2
+        player.boxes.legendary += 1
+    }
+
+    if (rank === "أسطوري") {
+        player.boxes.legendary += 2
+        player.boxes.sss_chance += 1
+    }
+}
+        
         // =========================
 // 🏁 عرض النتيجة هنا
 // =========================
