@@ -3974,7 +3974,13 @@ if (ability) {
     if (!me.specialAbilities.includes(ability.name)) {
 
         me.specialAbilities.push(ability.name)
-
+me.attackBonus = me.attackBonus || 0
+me.defenseBonus = me.defenseBonus || 0
+me.critBonus = me.critBonus || 0
+me.dodgeBonus = me.dodgeBonus || 0
+me.reflectBonus = me.reflectBonus || 0
+me.lifestealBonus = me.lifestealBonus || 0
+me.bossDamageBonus = me.bossDamageBonus || 0
         switch (me.level) {
 
     case 5:
