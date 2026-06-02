@@ -918,13 +918,14 @@ async function startBot() {
 
         if (connection === 'close') {
             console.log('انقطع الاتصال')
-            startBot()
+
+            // 🔥 مهم: تأخير قبل إعادة التشغيل
+            setTimeout(() => {
+                startBot()
+            }, 5000)
         }
     })
-
-    sock.ev.on('creds.update', saveCreds)
 }
-
 startBot()
 
     // =========================
