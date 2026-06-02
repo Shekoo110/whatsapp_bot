@@ -4894,5 +4894,2208 @@
     "rarity": "اسطوري",
     "ability": "قاتل التنانين",
     "image": "./characters/acnologia_2999.jpg"
-  }
+  },
+
+
+  {
+  "name": "Acnologia",
+  "form": "تنين نهاية العالم",
+  "anime": "Fairy Tail",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "إبادة التنانين المطلقة",
+  "image": "https://i.postimg.cc/NFpjNPws/133b8d19420649252741ef78fdb84ba2.jpg"
+},
+
+{
+  "name": "Natsu",
+  "form": "ملك لهب التنين",
+  "anime": "Fairy Tail",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "نار التنين الأعظم",
+  "image": "https://files.catbox.moe/44kwsa.jpg"
+},
+
+{
+  "name": "Gray",
+  "form": "إمبراطور الجليد الشيطاني",
+  "anime": "Fairy Tail",
+  "power": 5600,
+  "rarity": "SSS",
+  "ability": "تجميد الفناء",
+  "image": "https://files.catbox.moe/51u2co.jpg"
+},
+
+{
+  "name": "Lucy",
+  "form": "ملكة الأرواح السماوية",
+  "anime": "Fairy Tail",
+  "power": 5200,
+  "rarity": "SSS",
+  "ability": "استدعاء الملوك السماويين",
+  "image": "https://files.catbox.moe/o2w35q.jpg"
+},
+
+{
+  "name": "Erza",
+  "form": "فارسة الدروع الأسطورية",
+  "anime": "Fairy Tail",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "تبديل الدروع المطلق",
+  "image": "https://files.catbox.moe/wwmfpc.jpg"
+},
+
+{
+  "name": "Mirajane",
+  "form": "شيطانة الشيطان الروحي",
+  "anime": "Fairy Tail",
+  "power": 5800,
+  "rarity": "SSS",
+  "ability": "التحول الشيطاني الكامل",
+  "image": "https://files.catbox.moe/nny5e2.jpg"
+},
+
+{
+  "name": "Makarov",
+  "form": "سيد الجنيات الأعظم",
+  "anime": "Fairy Tail",
+  "power": 5400,
+  "rarity": "SSS",
+  "ability": "قانون الجنيات",
+  "image": "https://files.catbox.moe/k59q00.jpg"
+},
+
+{
+  "name": "Gildarts",
+  "form": "مدمر الوجود",
+  "anime": "Fairy Tail",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "السحق المطلق",
+  "image": "https://files.catbox.moe/u6bhej.jpg"
+},
+
+{
+  "name": "Laxus",
+  "form": "إمبراطور برق التنين",
+  "anime": "Fairy Tail",
+  "power": 6000,
+  "rarity": "SSS",
+  "ability": "برق الإبادة",
+  "image": "https://files.catbox.moe/8ouymp.jpg"
+},
+
+{
+  "name": "Midoriya",
+  "form": "الوريث الكامل",
+  "anime": "My Hero Academia",
+  "power": 5900,
+  "rarity": "SSS",
+  "ability": "ون فور أول 100%",
+  "image": "https://files.catbox.moe/ntqpub.jpg"
+},
+
+{
+  "name": "Bakugo",
+  "form": "سيد الانفجارات",
+  "anime": "My Hero Academia",
+  "power": 5700,
+  "rarity": "SSS",
+  "ability": "الانفجار النووي",
+  "image": "https://files.catbox.moe/px7teo.jpg"
+},
+
+{
+  "name": "Shoto",
+  "form": "سيد الجليد والنار",
+  "anime": "My Hero Academia",
+  "power": 5500,
+  "rarity": "SSS",
+  "ability": "نصف حريق نصف جليد",
+  "image": "https://files.catbox.moe/ymvnpq.jpg"
+},
+
+{
+  "name": "Endeavor",
+  "form": "إمبراطور اللهب",
+  "anime": "My Hero Academia",
+  "power": 5600,
+  "rarity": "SSS",
+  "ability": "الجحيم المتصاعد",
+  "image": "https://files.catbox.moe/1rvqdi.jpg"
+},
+
+{
+  "name": "All Might",
+  "form": "رمز السلام الأعظم",
+  "anime": "My Hero Academia",
+  "power": 6300,
+  "rarity": "SSS",
+  "ability": "ضربة الولايات المتحدة",
+  "image": "https://files.catbox.moe/2d412u.jpg"
+},
+
+{
+  "name": "Aizawa",
+  "form": "مبطل القدرات",
+  "anime": "My Hero Academia",
+  "power": 4800,
+  "rarity": "SSS",
+  "ability": "محو القوى",
+  "image": "https://files.catbox.moe/1pys14.jpg"
+},
+
+{
+  "name": "Shigaraki",
+  "form": "ملك الدمار",
+  "anime": "My Hero Academia",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "التحلل المطلق",
+  "image": "https://files.catbox.moe/bozr2s.jpg"
+},
+
+{
+  "name": "Dabi",
+  "form": "لهب الموت الأزرق",
+  "anime": "My Hero Academia",
+  "power": 5600,
+  "rarity": "SSS",
+  "ability": "الاحتراق الجهنمي",
+  "image": "https://files.catbox.moe/9y5l2e.jpg"
+},
+
+{
+  "name": "Toga",
+  "form": "ملكة التقليد الدموي",
+  "anime": "My Hero Academia",
+  "power": 4700,
+  "rarity": "SSS",
+  "ability": "نسخ القدرات",
+  "image": "https://files.catbox.moe/odi6nq.jpg"
+},
+
+{
+  "name": "Stain",
+  "form": "صياد الأبطال",
+  "anime": "My Hero Academia",
+  "power": 5000,
+  "rarity": "SSS",
+  "ability": "شلل الدم",
+  "image": "https://files.catbox.moe/lwut8o.jpg"
+},
+
+{
+  "name": "Eren",
+  "form": "مؤسس العمالقة",
+  "anime": "Attack on Titan",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "زلزال الأرض",
+  "image": "https://files.catbox.moe/3nqhc0.jpg"
+},
+
+{
+  "name": "Levi",
+  "form": "أقوى جنود البشرية",
+  "anime": "Attack on Titan",
+  "power": 5700,
+  "rarity": "SSS",
+  "ability": "الذبح الخاطف",
+  "image": "https://files.catbox.moe/qm4inq.jpg"
+},
+
+{
+  "name": "Mikasa",
+  "form": "سيف الأكيرمان",
+  "anime": "Attack on Titan",
+  "power": 5400,
+  "rarity": "SSS",
+  "ability": "الغريزة القتالية المطلقة",
+  "image": "https://files.catbox.moe/jzvtcd.jpg"
+},
+
+{
+  "name": "Dazai",
+  "form": "سيد العدم",
+  "anime": "Bungou Stray Dogs",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "لم تعد بشرياً",
+  "image": "https://files.catbox.moe/fkfosx.jpg"
+},
+
+{
+  "name": "Fyodor",
+  "form": "شيطان العقاب",
+  "anime": "Bungou Stray Dogs",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "الجريمة والعقاب",
+  "image": "https://files.catbox.moe/oym14h.jpg"
+},
+
+{
+  "name": "Fukuzawa",
+  "form": "زعيم الوكالة الأعظم",
+  "anime": "Bungou Stray Dogs",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "قيادة القدرات",
+  "image": "https://files.catbox.moe/w9ef34.jpg"
+},
+
+{
+  "name": "Mori",
+  "form": "إمبراطور المافيا",
+  "anime": "Bungou Stray Dogs",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "إليز القاتلة",
+  "image": "https://files.catbox.moe/q5204e.jpg"
+},
+
+{
+  "name": "Chuuya",
+  "form": "ملك الجاذبية",
+  "anime": "Bungou Stray Dogs",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "فساد الجاذبية",
+  "image": "https://files.catbox.moe/4gt4gq.jpg"
+},
+
+{
+  "name": "Yosano",
+  "form": "ملاك الشفاء المرعب",
+  "anime": "Bungou Stray Dogs",
+  "power": 5000,
+  "rarity": "SSS",
+  "ability": "لن تموت",
+  "image": "https://files.catbox.moe/7yhrnj.jpg"
+},
+
+{
+  "name": "Fukuchi",
+  "form": "القائد الأسطوري",
+  "anime": "Bungou Stray Dogs",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "مرآة الزمن",
+  "image": "https://files.catbox.moe/vk0iuf.jpg"
+},
+
+{
+  "name": "Saigiku",
+  "form": "سيف الضباب القاتل",
+  "anime": "Bungou Stray Dogs",
+  "power": 5600,
+  "rarity": "SSS",
+  "ability": "الضباب المفترس",
+  "image": "https://files.catbox.moe/rgf6dg.jpg"
+},
+
+{
+  "name": "Tetcho",
+  "form": "سيف العدالة الحديدي",
+  "anime": "Bungou Stray Dogs",
+  "power": 5500,
+  "rarity": "SSS",
+  "ability": "القطع المستقيم",
+  "image": "https://files.catbox.moe/94pdii.jpg"
+},
+
+{
+  "name": "Tatsuya",
+  "form": "الساحر غير المنتظم",
+  "anime": "The Irregular at Magic High School",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "التحلل وإعادة البناء",
+  "image": "https://files.catbox.moe/uzorzy.jpg"
+},
+
+{
+  "name": "Yhwach",
+  "form": "القوة المطلقة",
+  "anime": "Bleach",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "امتصاص المستقبل",
+  "image": "https://files.catbox.moe/t17rth.jpg"
+},
+
+{
+  "name": "Ichibei",
+  "form": "راهب الأسماء",
+  "anime": "Bleach",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "محو الأسماء",
+  "image": "https://files.catbox.moe/imobvh.jpg"
+},
+
+{
+  "name": "Aizen",
+  "form": "الهوجيوكو الكامل",
+  "anime": "Bleach",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "التنويم الكامل",
+  "image": "https://files.catbox.moe/gpt672.jpg"
+},
+
+{
+  "name": "Ichigo",
+  "form": "موغيتسو",
+  "anime": "Bleach",
+  "power": 6850,
+  "rarity": "SSS",
+  "ability": "الضربة النهائية",
+  "image": "https://files.catbox.moe/udstd8.jpg"
+},
+
+{
+  "name": "Yamamoto",
+  "form": "بانكاي زانكا",
+  "anime": "Bleach",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "لهيب الشمس",
+  "image": "https://files.catbox.moe/5djfre.jpg"
+},
+
+{
+  "name": "Oetsu Nimaiya",
+  "form": "صانع الزانباكتو",
+  "anime": "Bleach",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "السيف المطلق",
+  "image": "https://files.catbox.moe/aanvaq.jpg"
+},
+
+{
+  "name": "Azashiro",
+  "form": "الاندماج الكامل",
+  "anime": "Bleach",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "الاندماج بالمكان",
+  "image": "https://files.catbox.moe/rh3vi9.jpg"
+},
+
+{
+  "name": "Tokinada",
+  "form": "نسخة العشائر",
+  "anime": "Bleach",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "تقليد الزانباكتو",
+  "image": "https://files.catbox.moe/jxmeis.jpg"
+},
+
+{
+  "name": "Kuruyashiki",
+  "form": "كينباتشي",
+  "anime": "Bleach",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "الوحش المفترس",
+  "image": "https://files.catbox.moe/6uby2i.jpg"
+},
+
+{
+  "name": "Jugram",
+  "form": "التوازن المطلق",
+  "anime": "Bleach",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "قلب الحظ",
+  "image": "https://files.catbox.moe/o7jxlu.jpg"
+},
+
+{
+  "name": "Uryu",
+  "form": "أنتيثيسيس",
+  "anime": "Bleach",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "عكس المصير",
+  "image": "https://files.catbox.moe/vvs0zr.jpg"
+},
+
+{
+  "name": "Lille Barro",
+  "form": "هيئة الملاك",
+  "anime": "Bleach",
+  "power": 6300,
+  "rarity": "SSS",
+  "ability": "الاختراق المطلق",
+  "image": "https://files.catbox.moe/yrvnt1.jpg"
+},
+
+{
+  "name": "Gerard",
+  "form": "معجزة العمالقة",
+  "anime": "Bleach",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "المعجزة",
+  "image": "https://files.catbox.moe/sebdw7.jpg"
+},
+
+{
+  "name": "Pernida",
+  "form": "تطور الأعصاب",
+  "anime": "Bleach",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "السيطرة العصبية",
+  "image": "https://files.catbox.moe/0pqpf5.jpg"
+},
+
+{
+  "name": "Askin",
+  "form": "جرعة الموت",
+  "anime": "Bleach",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "السم المطلق",
+  "image": "https://files.catbox.moe/rl6lmj.jpg"
+},
+
+{
+  "name": "Joy Boy Luffy",
+  "form": "نيكا الكاملة",
+  "anime": "One Piece",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "حرية الواقع",
+  "image": "https://files.catbox.moe/dg7m07.jpg"
+},
+
+{
+  "name": "Imu",
+  "form": "الحاكم الخفي",
+  "anime": "One Piece",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "السيطرة المطلقة",
+  "image": "https://files.catbox.moe/p3hqce.jpg"
+},
+
+{
+  "name": "Shanks",
+  "form": "هاكي الملوك المطلق",
+  "anime": "One Piece",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "الهيمنة",
+  "image": "https://files.catbox.moe/i8ov0y.jpg"
+},
+
+{
+  "name": "Dragon",
+  "form": "قائد الثورة",
+  "anime": "One Piece",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "عاصفة العالم",
+  "image": "https://files.catbox.moe/qnwdrc.jpg"
+},
+
+{
+  "name": "Roger",
+  "form": "ملك القراصنة",
+  "anime": "One Piece",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "الهاكي الأسطوري",
+"image": "https://files.catbox.moe/djkqcx.jpg"
+},
+
+
+{
+  "name": "Garp",
+  "form": "القمة البحرية",
+  "anime": "One Piece",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "قبضة المجرة",
+  "image": "https://files.catbox.moe/jti4nw.jpg"
+},
+
+
+{
+  "name": "Kaido",
+  "form": "التنين الكامل",
+  "anime": "One Piece",
+  "power": 6450,
+  "rarity": "SSS",
+  "ability": "التنين الأزرق",
+  "image": "https://files.catbox.moe/2bb9e1.jpg"
+},
+
+{
+  "name": "Big Mom",
+  "form": "الإمبراطورة",
+  "anime": "One Piece",
+  "power": 6300,
+  "rarity": "SSS",
+  "ability": "أرواح الرعب",
+  "image": "https://files.catbox.moe/o2l26k.jpg"
+},
+
+{
+  "name": "Blackbeard",
+  "form": "القوة المزدوجة",
+  "anime": "One Piece",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "الظلام والزلازل",
+  "image": "https://files.catbox.moe/38xlga.jpg"
+},
+
+{
+  "name": "Mihawk",
+  "form": "أقوى سياف",
+  "anime": "One Piece",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "السيف الأسود",
+  "image": "https://files.catbox.moe/1l2jn3.jpg"
+},
+
+{
+  "name": "Akainu",
+  "form": "العدالة المطلقة",
+  "anime": "One Piece",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "الماغما",
+  "image": "https://files.catbox.moe/b3omt5.jpg"
+},
+
+{
+  "name": "Loki",
+  "form": "أمير العمالقة",
+  "anime": "One Piece",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "قوة إلباف",
+  "image": "https://files.catbox.moe/44qqh4.jpg"
+},
+
+{
+  "name": "Madara",
+  "form": "الريكودو",
+  "anime": "Naruto",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "الشجرة الإلهية",
+  "image": "https://files.catbox.moe/scml8g.jpg"
+},
+
+{
+  "name": "Kaguya",
+  "form": "الأم الأولى",
+  "anime": "Naruto",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "تبديل الأبعاد",
+  "image": "https://files.catbox.moe/18qc42.jpg"
+},
+
+{
+  "name": "Hagoromo",
+  "form": "حكيم المسارات",
+  "anime": "Naruto",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "التشاكرا الأصلية",
+  "image": "https://files.catbox.moe/iuz57u.png"
+},
+
+{
+  "name": "Naruto",
+  "form": "باريون مود",
+  "anime": "Naruto",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "احتراق الحياة",
+  "image": "https://files.catbox.moe/qweb7t.jpg"
+},
+
+{
+  "name": "Sasuke",
+  "form": "رينيغان كامل",
+  "anime": "Naruto",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "تبديل المواقع",
+  "image": "https://files.catbox.moe/0ky9p9.jpg"
+},
+
+{
+  "name": "Hashirama",
+  "form": "القمة",
+  "anime": "Naruto",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "بوذا الخشب",
+  "image": "https://files.catbox.moe/4vyrt1.jpg"
+},
+
+{
+  "name": "Obito",
+  "form": "الجينشوريكي",
+  "anime": "Naruto",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "الكرات السوداء",
+  "image": "https://files.catbox.moe/2w4cbh.jpg"
+},
+
+{
+  "name": "Might Guy",
+  "form": "البوابة الثامنة",
+  "anime": "Naruto",
+  "power": 6300,
+  "rarity": "SSS",
+  "ability": "الفيل الليلي",
+  "image": "https://files.catbox.moe/xgbbol.jpg"
+},
+
+{
+  "name": "Zeref",
+  "form": "فيري هارت",
+  "anime": "Fairy Tail",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "الخلود",
+  "image": "https://files.catbox.moe/52mkt3.jpg"
+},
+
+{
+  "name": "Lucius",
+  "form": "ملك الشياطين",
+  "anime": "Black Clover",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سحر الزمن",
+  "image": "https://files.catbox.moe/klju8r.jpg"
+},
+
+{
+  "name": "Asta",
+  "form": "اتحاد الشيطان",
+  "anime": "Black Clover",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "أنتي ماجيك",
+  "image": "https://files.catbox.moe/eog6nq.jpg"
+},
+
+{
+  "name": "Yuno",
+  "form": "نجمة الرياح",
+  "anime": "Black Clover",
+  "power": 6350,
+  "rarity": "SSS",
+  "ability": "سحر النجوم",
+  "image": "https://files.catbox.moe/xtrf3u.jpg"
+},
+
+{
+  "name": "Julius",
+  "form": "ملك السحر",
+  "anime": "Black Clover",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "إيقاف الزمن",
+  "image": "https://files.catbox.moe/gxv2pw.jpg"
+},
+
+{
+  "name": "Meruem",
+  "form": "الهيئة النهائية",
+  "anime": "Hunter x Hunter",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "هالة الملك",
+  "image": "https://files.catbox.moe/9z963f.jpg"
+},
+
+{
+  "name": "Gon",
+  "form": "النسخة البالغة",
+  "anime": "Hunter x Hunter",
+  "power": 5800,
+  "rarity": "SSS",
+  "ability": "التضحية المطلقة",
+  "image": "https://files.catbox.moe/n4h685.jpg"
+},
+
+{
+  "name": "Netero",
+  "form": "المئة يد",
+  "anime": "Hunter x Hunter",
+  "power": 5600,
+  "rarity": "SSS",
+  "ability": "بوديساتفا",
+  "image": "https://files.catbox.moe/tks882.jpg"
+},
+
+{
+  "name": "Archer",
+  "form": "نسخة النخبة",
+  "anime": "Fate",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "الأعمال غير المحدودة",
+  "image": "https://files.catbox.moe/j6dkal.jpg"
+},
+
+{
+  "name": "Shadow",
+  "form": "الحاكم الخفي",
+  "anime": "The Eminence in Shadow",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "أنا الذرة",
+  "image": "https://files.catbox.moe/ne5vie.jpg"
+},
+
+{
+  "name": "Zhao Fan",
+  "form": "إمبراطور الشياطين",
+  "anime": "Magic Emperor",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "عين الإمبراطور",
+  "image": "https://files.catbox.moe/hqpccb.jpg"
+},
+
+{
+  "name": "Sukuna",
+  "form": "ملك اللعنات الكامل",
+  "anime": "Jujutsu Kaisen",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "المذبح",
+  "image": "https://files.catbox.moe/qdjrbs.jpg"
+},
+
+{
+  "name": "Gojo",
+  "form": "اللانهاية المطلقة",
+  "anime": "Jujutsu Kaisen",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "الفراغ اللامحدود",
+  "image": "https://files.catbox.moe/cv8xhl.jpg"
+},
+
+{
+  "name": "Yuta",
+  "form": "النسخة الكاملة",
+  "anime": "Jujutsu Kaisen",
+  "power": 6300,
+  "rarity": "SSS",
+  "ability": "ريكا",
+  "image": "https://files.catbox.moe/e374pe.jpg"
+},
+
+{
+  "name": "Kenjaku",
+  "form": "السيطرة المطلقة",
+  "anime": "Jujutsu Kaisen",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "نقل العقول",
+  "image": "https://files.catbox.moe/zp12ix.jpg"
+},
+
+{
+  "name": "Toji",
+  "form": "قاتل السحرة",
+  "anime": "Jujutsu Kaisen",
+  "power": 5900,
+  "rarity": "SSS",
+  "ability": "الجسد السماوي",
+  "image": "https://files.catbox.moe/oalg0m.jpg"
+},
+
+{
+  "name": "Mahoraga",
+  "form": "التكيف المطلق",
+  "anime": "Jujutsu Kaisen",
+  "power": 4500,
+  "rarity": "SSS",
+  "ability": "التكيف",
+  "image": "https://files.catbox.moe/8kjnwl.jpg"
+},
+
+{
+  "name": "Sung Jin-Woo",
+  "form": "ملك الظلال",
+  "anime": "Solo Leveling",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "جيش الظلال",
+  "image": "https://files.catbox.moe/f8cu0q.jpg"
+},
+
+{
+  "name": "Ashborn",
+  "form": "ملك الظلال الأصلي",
+  "anime": "Solo Leveling",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "الظلام الأبدي",
+  "image": "https://files.catbox.moe/aar44s.jpg"
+},
+
+{
+  "name": "Antares",
+  "form": "ملك الدمار",
+  "anime": "Solo Leveling",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "تنين الدمار",
+  "image": "https://files.catbox.moe/e6m9kd.jpg"
+},
+
+{
+  "name": "Bellion",
+  "form": "القائد الأعظم",
+  "anime": "Solo Leveling",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "سيف الظلال",
+  "image": "https://files.catbox.moe/lv5jhs.jpg"
+},
+
+{
+  "name": "Beru",
+  "form": "النسخة الملكية",
+  "anime": "Solo Leveling",
+  "power": 6000,
+  "rarity": "SSS",
+  "ability": "افتراس الملوك",
+  "image": "https://files.catbox.moe/tlbu88.jpg"
+},
+
+{
+  "name": "Goku",
+  "form": "ألترا إنستنكت الكامل",
+  "anime": "Dragon Ball",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "الغريزة الفائقة",
+  "image": "https://files.catbox.moe/nbghuj.jpg"
+},
+
+{
+  "name": "Vegeta",
+  "form": "ألترا إيغو",
+  "anime": "Dragon Ball",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "غرور الدمار",
+  "image": "https://files.catbox.moe/ybg7sa.jpg"
+},
+
+{
+  "name": "Beerus",
+  "form": " الدمار",
+  "anime": "Dragon Ball",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "هاكاي",
+  "image": "https://files.catbox.moe/l4ix1h.jpg"
+},
+
+{
+  "name": "Whis",
+  "form": "الملاك الأعظم",
+  "anime": "Dragon Ball",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "إعادة الزمن",
+  "image": "https://files.catbox.moe/jiqglm.jpg"
+},
+
+{
+  "name": "Jiren",
+  "form": "القوة المطلقة",
+  "anime": "Dragon Ball",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "الضغط اللامتناهي",
+  "image": "https://files.catbox.moe/mstqrl.jpg"
+},
+
+{
+  "name": "Broly",
+  "form": "الغضب الأسطوري",
+  "anime": "Dragon Ball",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "القوة المتصاعدة",
+  "image": "https://files.catbox.moe/xtenva.jpg"
+},
+
+{
+  "name": "Black",
+  "form": "منجل الورد",
+  "anime": "Dragon Ball",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "المنجل الوردي",
+  "image": "https://files.catbox.moe/kkiq73.jpg"
+},
+
+{
+  "name": "Zeno",
+  "form": "ملك الأكوان",
+  "anime": "Dragon Ball",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "المحو الكوني",
+  "image": "https://files.catbox.moe/7uqhu8.jpg"
+},
+
+{
+  "name": "Lucifero",
+  "form": "الحاكم الأعظم",
+  "anime": "Black Clover",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "الجاذبية المطلقة",
+  "image": "https://files.catbox.moe/me113b.jpg"
+},
+
+{
+  "name": "Dante",
+  "form": "القوة الكاملة",
+  "anime": "Black Clover",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "الجاذبية",
+  "image": "https://files.catbox.moe/314exb.jpg"
+},
+
+{
+  "name": "Zenon",
+  "form": "قلب الشيطان",
+  "anime": "Black Clover",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "العظام الشيطانية",
+  "image": "https://files.catbox.moe/gkdfoe.jpg"
+},
+
+{
+  "name": "Vanica",
+  "form": "القوة القصوى",
+  "anime": "Black Clover",
+  "power": 5400,
+  "rarity": "SSS",
+  "ability": "سحر الدم",
+  "image": "https://files.catbox.moe/vp6zdj.jpg"
+},
+
+{
+  "name": "Licht",
+  "form": "الزعيم الأسطوري",
+  "anime": "Black Clover",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "سيوف الضوء",
+  "image": "https://files.catbox.moe/kkd2pl.jpg"
+},
+
+{
+  "name": "Patry",
+  "form": "الانتقام المقدس",
+  "anime": "Black Clover",
+  "power": 5900,
+  "rarity": "SSS",
+  "ability": "سحر الضوء",
+  "image": "https://files.catbox.moe/rzfffm.jpg"
+},
+
+{
+  "name": "Kenpachi",
+  "form": "البانكاي الكامل",
+  "anime": "Bleach",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "وحش القتال",
+  "image": "https://files.catbox.moe/sri7gj.jpg"
+},
+
+{
+  "name": "Unohana",
+  "form": "الكينباتشي الأولى",
+  "anime": "Bleach",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "فنون القتل",
+  "image": "https://files.catbox.moe/3wpb08.jpg"
+},
+
+{
+  "name": "Urahara",
+  "form": "العبقري المطلق",
+  "anime": "Bleach",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "إعادة الهيكلة",
+  "image": "https://files.catbox.moe/8iibux.jpg"
+},
+
+{
+  "name": "Shunsui",
+  "form": "البانكاي المحرم",
+  "anime": "Bleach",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "مسرح الموت",
+  "image": "https://files.catbox.moe/jb7q1a.jpg"
+},
+
+{
+  "name": "Byakuya",
+  "form": "الألف زهرة",
+  "anime": "Bleach",
+  "power": 6000,
+  "rarity": "SSS",
+  "ability": "سينبونزاكورا",
+  "image": "https://files.catbox.moe/sctkl6.jpeg"
+},
+
+{
+  "name": "Rukia",
+  "form": "الصفر المطلق",
+  "anime": "Bleach",
+  "power": 5800,
+  "rarity": "SSS",
+  "ability": "التجمد الأبدي",
+  "image": "https://files.catbox.moe/9kj62p.jpg"
+},
+
+{
+  "name": "Hitsugaya",
+  "form": "الهيئة الناضجة",
+  "anime": "Bleach",
+  "power": 6000,
+  "rarity": "SSS",
+  "ability": "تنين الجليد",
+  "image": "https://files.catbox.moe/8idkv4.jpg"
+},
+
+{
+  "name": "Ulquiorra",
+  "form": "التحول الثاني",
+  "anime": "Bleach",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "الرمح الأخضر",
+  "image": "https://files.catbox.moe/s0v00i.jpg"
+},
+
+{
+  "name": "Barragan",
+  "form": "ملك الهيوكو موندو",
+  "anime": "Bleach",
+  "power": 6000,
+  "rarity": "SSS",
+  "ability": "الشيخوخة المطلقة",
+  "image": "https://files.catbox.moe/el5inw.jpg"
+},
+
+{
+  "name": "Whitebeard",
+  "form": "القمة",
+  "anime": "One Piece",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "الزلازل",
+  "image": "https://files.catbox.moe/r8y97q.jpg"
+},
+
+{
+  "name": "Rocks D. Xebec",
+  "form": "الأسطورة",
+  "anime": "One Piece",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "إرادة الفوضى",
+  "image": "https://files.catbox.moe/3g7mei.jpg"
+},
+
+{
+  "name": "Rayleigh",
+  "form": "العصر الذهبي",
+  "anime": "One Piece",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "هاكي الظلام",
+  "image": "https://files.catbox.moe/ety8si.jpg"
+},
+
+{
+  "name": "Oden",
+  "form": "الساموراي الأعظم",
+  "anime": "One Piece",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "السيفان الأسطوريان",
+  "image": "https://files.catbox.moe/uh6pie.jpg"
+},
+
+{
+  "name": "Kuzan",
+  "form": "الأدميرال السابق",
+  "anime": "One Piece",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "العصر الجليدي",
+  "image": "https://files.catbox.moe/mrq4ny.jpg"
+},
+
+{
+  "name": "Kizaru",
+  "form": "سرعة الضوء",
+  "anime": "One Piece",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "الضوء المطلق",
+  "image": "https://files.catbox.moe/givu9t.jpg"
+},
+
+{
+  "name": "Ryuma",
+  "form": " السيف",
+  "anime": "One Piece",
+  "power": 6400,
+  "rarity": "SSS",
+  "ability": "قتل التنين",
+  "image": "https://files.catbox.moe/dglygt.jpg"
+},
+
+{
+  "name": "Figarland Garling",
+  "form": "القائد الأعلى",
+  "anime": "One Piece",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "عدالة التنين",
+  "image": "https://files.catbox.moe/b7emom.jpg"
+},
+
+{
+  "name": "Saturn",
+  "form": "الحاكم السماوي",
+  "anime": "One Piece",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "التحول الشيطاني",
+  "image": "https://files.catbox.moe/mryk80.jpg"
+},
+
+{
+  "name": "Indra",
+  "form": "وريث الحكيم",
+  "anime": "Naruto",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "سوسانو الأصلي",
+  "image": "https://files.catbox.moe/nxlq55.jpg"
+},
+
+{
+  "name": "Ashura",
+  "form": "الوريث المقدس",
+  "anime": "Naruto",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "تشاكرا الحكيم",
+  "image": "https://files.catbox.moe/lf8rc9.jpg"
+},
+
+{
+  "name": "Toneri",
+  "form": "تنسيغان",
+  "anime": "Naruto",
+  "power": 6300,
+  "rarity": "SSS",
+  "ability": "انفجار القمر",
+  "image": "https://files.catbox.moe/9r1t5k.jpg"
+},
+
+{
+  "name": "Kawaki",
+  "form": "كارما كاملة",
+  "anime": "Boruto",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "الدوائر السوداء",
+  "image": "https://files.catbox.moe/nsfz6g.jpg"
+},
+
+{
+  "name": "Boruto",
+  "form": "بوروشيكي",
+  "anime": "Boruto",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "كارما الأوتسوتسوكي",
+  "image": "https://files.catbox.moe/9lo6a3.jpg"
+},
+
+{
+  "name": "Neferpitou",
+  "form": "الحرس الملكي",
+  "anime": "Hunter x Hunter",
+  "power": 5900,
+  "rarity": "SSS",
+  "ability": "الطبيب الأسود",
+  "image": "https://files.catbox.moe/kcedf6.jpg"
+},
+
+{
+  "name": "Youpi",
+  "form": "الهيئة الكاملة",
+  "anime": "Hunter x Hunter",
+  "power": 6000,
+  "rarity": "SSS",
+  "ability": "التحول الوحشي",
+  "image": "https://files.catbox.moe/ksxw56.jpg"
+},
+
+{
+  "name": "Pouf",
+  "form": "الفراشة الملكية",
+  "anime": "Hunter x Hunter",
+  "power": 5800,
+  "rarity": "SSS",
+  "ability": "الانقسام",
+  "image": "https://files.catbox.moe/n7tmgh.jpg"
+},
+
+{
+  "name": "Chrollo",
+  "form": "الكتاب المسروق",
+  "anime": "Hunter x Hunter",
+  "power": 6400,
+  "rarity": "SSS",
+  "ability": "سرقة القدرات",
+  "image": "https://files.catbox.moe/576b75.jpg"
+},
+
+{
+  "name": "Hisoka",
+  "form": "بعد الإحياء",
+  "anime": "Hunter x Hunter",
+  "power": 5600,
+  "rarity": "SSS",
+  "ability": "العلكة السحرية",
+  "image": "https://files.catbox.moe/zkm3rv.jpg"
+},
+
+{
+  "name": "Don Freecss",
+  "form": "الأسطورة المفقودة",
+  "anime": "Hunter x Hunter",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "أسرار القارة المظلمة",
+  "image": "https://files.catbox.moe/imnuut.jpg"
+},
+
+{
+  "name": "Yami",
+  "form": "البعد الأسود",
+  "anime": "Black Clover",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "شق الأبعاد",
+  "image": "https://files.catbox.moe/9uh5wy.jpg"
+},
+
+{
+  "name": "Noelle",
+  "form": "فالكيري التنين",
+  "anime": "Black Clover",
+  "power": 5900,
+  "rarity": "SSS",
+  "ability": "تنين البحر",
+  "image": "https://files.catbox.moe/nzph0s.jpg"
+},
+
+{
+  "name": "Beelzebub",
+  "form": "ملك الفضاء",
+  "anime": "Black Clover",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "التشويه المكاني",
+  "image": "https://files.catbox.moe/5exq84.jpg"
+},
+
+{
+  "name": "Megicula",
+  "form": "لعنة العالم",
+  "anime": "Black Clover",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "اللعنة المطلقة",
+  "image": "https://files.catbox.moe/ygz0yn.jpg"
+},
+
+{
+  "name": "Rimuru Tempest",
+  "form": " الفوضى",
+  "anime": "Tensura",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "أزاثوث",
+  "image": "https://files.catbox.moe/e3qi61.jpg"
+},
+
+{
+  "name": "Anos Voldigoad",
+  "form": "ملك الشياطين",
+  "anime": "Misfit of Demon King Academy",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "تدمير المنطق",
+  "image": "https://files.catbox.moe/ykyhg1.jpg"
+},
+
+{
+  "name": "Featherine",
+  "form": "الكاتبة المطلقة",
+  "anime": "Umineko",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "إعادة كتابة الواقع",
+  "image": "https://files.catbox.moe/4ctse4.jpg"
+},
+
+{
+  "name": "Hajun",
+  "form": " الدمار",
+  "anime": "Dies Irae",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "الهيمنة المطلقة",
+  "image": "https://files.catbox.moe/2wmovr.jpg"
+},
+
+{
+  "name": "Sinbad",
+  "form": "ملك الملوك",
+  "anime": "Magi",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "السيطرة على القدر",
+  "image": "https://files.catbox.moe/z588zy.jpg"
+},
+
+{
+  "name": "Aladdin",
+  "form": "الحكيم الأعظم",
+  "anime": "Magi",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "الحكمة المقدسة",
+  "image": "https://files.catbox.moe/o3r5zn.jpg"
+},
+
+{
+  "name": "Alibaba",
+  "form": "أمون الكامل",
+  "anime": "Magi",
+  "power": 6000,
+  "rarity": "SSS",
+  "ability": "لهب أمون",
+  "image": "https://files.catbox.moe/1902d9.jpg"
+},
+
+{
+  "name": "Alucard",
+  "form": "الهيئة المطلقة",
+  "anime": "Hellsing",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "الخلود الأبدي",
+  "image": "https://files.catbox.moe/d58sq4.jpg"
+},
+
+{
+  "name": "Father",
+  "form": "الكائن الكامل",
+  "anime": "Fullmetal Alchemist",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "حجر الفلاسفة",
+  "image": "https://files.catbox.moe/tagxis.jpg"
+},
+
+{
+  "name": "Escanor",
+  "form": "الواحد",
+  "anime": "Seven Deadly Sins",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "الشمس المطلقة",
+  "image": "https://files.catbox.moe/bi5ja7.jpg"
+},
+
+{
+  "name": "Meliodas",
+  "form": "ملك الشياطين",
+  "anime": "Seven Deadly Sins",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "الانعكاس الكامل",
+  "image": "https://files.catbox.moe/v5x0c4.jpg"
+},
+
+{
+  "name": "Arthur Pendragon",
+  "form": "ملك الفوضى",
+  "anime": "Seven Deadly Sins",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "الفوضى",
+  "image": "https://files.catbox.moe/aco0v4.jpg"
+},
+
+{
+  "name": "Saitama",
+  "form": "اللكمة الجادة",
+  "anime": "One Punch Man",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "القوة اللامحدودة",
+  "image": "https://files.catbox.moe/gn6vnu.jpg"
+},
+
+{
+  "name": "Cosmic Garou",
+  "form": "القوة الكونية",
+  "anime": "One Punch Man",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "نسخ القوى",
+  "image": "https://files.catbox.moe/yr05qa.png"
+},
+
+{
+  "name": "Blast",
+  "form": "البطل الأول",
+  "anime": "One Punch Man",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "بوابات الأبعاد",
+  "image": "https://files.catbox.moe/lffum7.jpg"
+},
+
+{
+  "name": "Mori Jin",
+  "form": " الأعلى",
+  "anime": "God of High School",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "عصا يويوي",
+  "image": "https://files.catbox.moe/tpsmdk.jpg"
+},
+
+{
+  "name": "Mubong Park",
+  "form": " المطلق",
+  "anime": "God of High School",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "السلطة",
+  "image": "https://files.catbox.moe/m6srkr.jpg"
+},
+
+{
+  "name": "Saber",
+  "form": "ملك الفرسان الكامل",
+  "anime": "Fate",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "إكسكاليبور المقدس",
+  "image": "https://files.catbox.moe/o05frj.jpg"
+},
+
+{
+  "name": "Jeanne d'Arc",
+  "form": "قديسة الخلاص",
+  "anime": "Fate",
+  "power": 6100,
+  "rarity": "SSS",
+  "ability": "راية الحماية الإلهية",
+  "image": "https://files.catbox.moe/qkwn9z.jpg"
+},
+
+{
+  "name": "Gilgamesh",
+  "form": "ملك الأبطال المطلق",
+  "anime": "Fate",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "بوابة بابل",
+  "image": "https://files.catbox.moe/ouu5k1.jpg"
+},
+
+{
+  "name": "Lancer Cu Chulainn",
+  "form": "رمح الموت المحتوم",
+  "anime": "Fate",
+  "power": 5800,
+  "rarity": "SSS",
+  "ability": "غاي بولغ",
+  "image": "https://files.catbox.moe/8okdqa.jpg"
+},
+
+{
+  "name": "Rider Medusa",
+  "form": "ملكة العيون الساحرة",
+  "anime": "Fate",
+  "power": 5400,
+  "rarity": "SSS",
+  "ability": "بيليروفون",
+  "image": "https://files.catbox.moe/lqv7lr.jpg"
+},
+
+{
+  "name": "Caster Medea",
+  "form": "ساحرة العصر الإلهي",
+  "anime": "Fate",
+  "power": 5200,
+  "rarity": "SSS",
+  "ability": "كسر القوانين",
+  "image": "https://files.catbox.moe/bitdb3.jpg"
+},
+
+{
+  "name": "Assassin Sasaki Kojiro",
+  "form": "السيف المستحيل",
+  "anime": "Fate",
+  "power": 5000,
+  "rarity": "SSS",
+  "ability": "السنونو العائد",
+  "image": "https://files.catbox.moe/7abm1f.jpg"
+},
+
+{
+  "name": "Berserker Heracles",
+  "form": "نصف الإله الخالد",
+  "anime": "Fate",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "الأعمال الاثنا عشر",
+  "image": "https://files.catbox.moe/u1wm1w.jpg"
+},
+
+{
+  "name": "Karna",
+  "form": "بطل الشمس السماوي",
+  "anime": "Fate",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "فاسافي شاكتي",
+  "image": "https://files.catbox.moe/3550bb.jpg"
+},
+
+{
+  "name": "Iskandar",
+  "form": "ملك الفاتحين الأعظم",
+  "anime": "Fate",
+  "power": 6500,
+  "rarity": "SSS",
+  "ability": "جيش الملوك",
+  "image": "https://files.catbox.moe/j9coyu.jpg"
+},
+
+{
+  "name": "Scathach",
+  "form": "سيدة أرض الظلال",
+  "anime": "Fate",
+  "power": 6400,
+  "rarity": "SSS",
+  "ability": "بوابة الموت",
+  "image": "https://files.catbox.moe/y7lqrf.jpg"
+},
+
+{
+  "name": "Okita Souji",
+  "form": "سيف الشينسينغومي الخارق",
+  "anime": "Fate",
+  "power": 5500,
+  "rarity": "SSS",
+  "ability": "الراية التي لا تخطئ",
+  "image": "https://files.catbox.moe/5yz2so.jpg"
+},
+
+{
+  "name": "Mordred",
+  "form": "الفارس المتمرد الملكي",
+  "anime": "Fate",
+  "power": 6300,
+  "rarity": "SSS",
+  "ability": "كلارينت الدموي",
+  "image": "https://files.catbox.moe/913gl7.jpeg"
+},
+
+{
+  "name": "Jeanne d'Arc Alter",
+  "form": "التنين الأسود المنتقم",
+  "anime": "Fate",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "لهب الانتقام الأبدي",
+  "image": "https://files.catbox.moe/2ehz39.jpg"
+},
+
+{
+  "name": "Marco",
+  "form": "العنقاء الأزرق",
+  "anime": "One Piece",
+  "power": 4800,
+  "rarity": "SSS",
+  "ability": "لهب التجدد",
+  "image": "https://files.catbox.moe/t24vlr.jpg"
+},
+
+{
+  "name": "King",
+  "form": "الجناح الأيمن لكايدو",
+  "anime": "One Piece",
+  "power": 4900,
+  "rarity": "SSS",
+  "ability": "نار اللونياريان",
+  "image": "https://files.catbox.moe/k7sb0z.jpg"
+},
+
+{
+  "name": "Katakuri",
+  "form": "سيد الموشي",
+  "anime": "One Piece",
+  "power": 4950,
+  "rarity": "SSS",
+  "ability": "التنبؤ بالمستقبل",
+  "image": "https://files.catbox.moe/0jkyii.jpg"
+},
+
+{
+  "name": "Queen",
+  "form": "العالم المجنون",
+  "anime": "One Piece",
+  "power": 4500,
+  "rarity": "SSS",
+  "ability": "الأسلحة السيبرانية",
+  "image": "https://files.catbox.moe/q6to22.jpg"
+},
+
+{
+  "name": "Jack",
+  "form": "الكارثة",
+  "anime": "One Piece",
+  "power": 4300,
+  "rarity": "SSS",
+  "ability": "قوة الماموث",
+  "image": "https://files.catbox.moe/bjxik4.jpg"
+},
+
+{
+  "name": "Yamato",
+  "form": "ابنة كايدو",
+  "anime": "One Piece",
+  "power": 5000,
+  "rarity": "SSS",
+  "ability": "الذئب",
+  "image": "https://files.catbox.moe/xmum6t.jpg"
+},
+
+{
+  "name": "Jozu",
+  "form": "الماسي البشري",
+  "anime": "One Piece",
+  "power": 4200,
+  "rarity": "SSS",
+  "ability": "جسد الألماس",
+  "image": "https://files.catbox.moe/ocz1eb.jpg"
+},
+
+{
+  "name": "Vista",
+  "form": "سيف اللحية البيضاء",
+  "anime": "One Piece",
+  "power": 4100,
+  "rarity": "SSS",
+  "ability": "المبارزة الأسطورية",
+  "image": "https://files.catbox.moe/uew5pz.jpg"
+},
+
+{
+  "name": "Magellan",
+  "form": "حارس الإمبل داون",
+  "anime": "One Piece",
+  "power": 4700,
+  "rarity": "SSS",
+  "ability": "سم الهلاك",
+  "image": "https://files.catbox.moe/xf16px.jpg"
+},
+
+{
+  "name": "Enel",
+  "form": "إله الرعد",
+  "anime": "One Piece",
+  "power": 4400,
+  "rarity": "SSS",
+  "ability": "البرق",
+  "image": "https://files.catbox.moe/2kfhgr.jpg"
+},
+
+{
+  "name": "Mayuri",
+  "form": "العالم المجنون",
+  "anime": "Bleach",
+  "power": 4300,
+  "rarity": "SSS",
+  "ability": "السموم والتجارب",
+  "image": "https://files.catbox.moe/viiqg8.jpg"
+},
+
+{
+  "name": "Shinji",
+  "form": "قائد الفايزارد",
+  "anime": "Bleach",
+  "power": 4200,
+  "rarity": "SSS",
+  "ability": "قلب الإدراك",
+  "image": "https://files.catbox.moe/1ljt44.jpg"
+},
+
+{
+  "name": "Kensei",
+  "form": "قبضة الفايزارد",
+  "anime": "Bleach",
+  "power": 4000,
+  "rarity": "SSS",
+  "ability": "الانفجارات",
+  "image": "https://files.catbox.moe/j1mbav.jpg"
+},
+
+{
+  "name": "Rose",
+  "form": "سيد الألحان",
+  "anime": "Bleach",
+  "power": 3900,
+  "rarity": "SSS",
+  "ability": "الموسيقى القاتلة",
+  "image": "https://files.catbox.moe/2erv1q.jpg"
+},
+
+{
+  "name": "Love",
+  "form": "محارب النار",
+  "anime": "Bleach",
+  "power": 3850,
+  "rarity": "SSS",
+  "ability": "اللهب المتوحش",
+  "image": "https://files.catbox.moe/09jlkw.jpg"
+},
+
+{
+  "name": "Starrk",
+  "form": "الإسبادا الأولى",
+  "anime": "Bleach",
+  "power": 4950,
+  "rarity": "SSS",
+  "ability": "ذئاب الروح",
+  "image": "https://files.catbox.moe/d397ey.jpg"
+},
+
+{
+  "name": "Harribel",
+  "form": "ملكة المحيط",
+  "anime": "Bleach",
+  "power": 4500,
+  "rarity": "SSS",
+  "ability": "الماء الساحق",
+  "image": "https://files.catbox.moe/uh5abz.jpg"
+},
+
+{
+  "name": "Killer Bee",
+  "form": "جينشوريكي الثمانية",
+  "anime": "Naruto",
+  "power": 4800,
+  "rarity": "SSS",
+  "ability": "الثور الثماني",
+  "image": "https://files.catbox.moe/vfybe1.jpg"
+},
+
+{
+  "name": "Gaara",
+  "form": "الكازيكاغي الأعظم",
+  "anime": "Naruto",
+  "power": 4700,
+  "rarity": "SSS",
+  "ability": "الرمال المطلقة",
+  "image": "https://files.catbox.moe/qe4iva.jpg"
+},
+
+{
+  "name": "Tsunade",
+  "form": "الأميرة الطبية",
+  "anime": "Naruto",
+  "power": 4600,
+  "rarity": "SSS",
+  "ability": "التجدد الكامل",
+  "image": "https://files.catbox.moe/bdtrio.jpg"
+},
+
+{
+  "name": "Jiraiya",
+  "form": "الناسك العظيم",
+  "anime": "Naruto",
+  "power": 4900,
+  "rarity": "SSS",
+  "ability": "نمط الناسك",
+  "image": "https://files.catbox.moe/hapjq7.jpg"
+},
+
+{
+  "name": "Orochimaru",
+  "form": "الباحث المحرم",
+  "anime": "Naruto",
+  "power": 4700,
+  "rarity": "SSS",
+  "ability": "الخلود",
+  "image": "https://files.catbox.moe/4gzjt1.jpg"
+},
+
+{
+  "name": "Deidara",
+  "form": "فنان الانفجارات",
+  "anime": "Naruto",
+  "power": 4200,
+  "rarity": "SSS",
+  "ability": "طين التفجير",
+  "image": "https://files.catbox.moe/lakjtc.jpg"
+},
+
+{
+  "name": "Sasori",
+  "form": "سيد الدمى",
+  "anime": "Naruto",
+  "power": 4100,
+  "rarity": "SSS",
+  "ability": "جيش الدمى",
+  "image": "https://files.catbox.moe/mi6ked.jpg"
+},
+
+{
+  "name": "Kisame",
+  "form": "وحش الضباب",
+  "anime": "Naruto",
+  "power": 4500,
+  "rarity": "SSS",
+  "ability": "سيف ساميهدا",
+  "image": "https://files.catbox.moe/nl50zz.jpg"
+},
+
+{
+  "name": "Konan",
+  "form": "ملاك الورق",
+  "anime": "Naruto",
+  "power": 3900,
+  "rarity": "SSS",
+  "ability": "بحر الأوراق",
+  "image": "https://files.catbox.moe/9uhg19.png"
+},
+
+{
+  "name": "Darui",
+  "form": "رايكاغي البرق الأسود",
+  "anime": "Naruto",
+  "power": 4000,
+  "rarity": "SSS",
+  "ability": "برق العاصفة",
+  "image": "https://files.catbox.moe/6myzcj.jpg"
+},
+
+{
+  "name": "Rengoku",
+  "form": "لهيب العدالة",
+  "anime": "Demon Slayer",
+  "power": 4300,
+  "rarity": "SSS",
+  "ability": "تنفس الهب",
+  "image": "https://files.catbox.moe/4vvwsv.jpg"
+},
+
+{
+  "name": "Tengen",
+  "form": "سيد الصوت",
+  "anime": "Demon Slayer",
+  "power": 4200,
+  "rarity": "SSS",
+  "ability": "تنفس الصوت",
+  "image": "https://files.catbox.moe/4guwpo.jpg"
+},
+
+{
+  "name": "Sanemi",
+  "form": "رياح الإعصار",
+  "anime": "Demon Slayer",
+  "power": 4500,
+  "rarity": "SSS",
+  "ability": "تنفس الرياح",
+  "image": "https://files.catbox.moe/pr4ts3.jpg"
+},
+
+{
+  "name": "Obanai",
+  "form": "ثعبان السيف",
+  "anime": "Demon Slayer",
+  "power": 4400,
+  "rarity": "SSS",
+  "ability": "تنفس الأفعى",
+  "image": "https://files.catbox.moe/yrlmt1.jpg"
+},
+
+{
+  "name": "Gyomei",
+  "form": "أقوى هاشيرا",
+  "anime": "Demon Slayer",
+  "power": 5000,
+  "rarity": "SSS",
+  "ability": "تنفس الحجر",
+  "image": "https://files.catbox.moe/z3mayw.jpg"
+},
+
+{
+  "name": "Akaza",
+  "form": "القمر العلوي الثالث",
+  "anime": "Demon Slayer",
+  "power": 4900,
+  "rarity": "SSS",
+  "ability": "تدمير الفوضى",
+  "image": "https://files.catbox.moe/zsydy0.jpg"
+},
+
+{
+  "name": "Doma",
+  "form": "القمر العلوي الثاني",
+  "anime": "Demon Slayer",
+  "power": 5000,
+  "rarity": "SSS",
+  "ability": "جليد الجحيم",
+  "image": "https://files.catbox.moe/30qgfj.jpg"
+},
+
+{
+  "name": "Gyutaro",
+  "form": "شيطان المنجل",
+  "anime": "Demon Slayer",
+  "power": 4100,
+  "rarity": "SSS",
+  "ability": "الدم السام",
+  "image": "https://files.catbox.moe/77mac6.jpg"
+},
+
+{
+  "name": "Hantengu",
+  "form": "شيطان المشاعر",
+  "anime": "Demon Slayer",
+  "power": 4700,
+  "rarity": "SSS",
+  "ability": "استنساخ العواطف",
+  "image": "https://files.catbox.moe/043j28.jpg"
+},
+
+{
+  "name": "Erwin",
+  "form": "القائد الأسطوري",
+  "anime": "Attack on Titan",
+  "power": 4900 ,
+  "rarity": "SSS",
+  "ability": "القيادة المطلقة",
+  "image": "https://files.catbox.moe/fnkjlc.jpg"
+},
+
+{
+  "name": "Zeke",
+  "form": "الوحش الملكي",
+  "anime": "Attack on Titan",
+  "power": 4800,
+  "rarity": "SSS",
+  "ability": "صرخة العمالقة",
+  "image": "https://files.catbox.moe/3gepxb.jpg"
+},
+
+{
+  "name": "Reiner",
+  "form": "المدرع الحديدي",
+  "anime": "Attack on Titan",
+  "power": 4300,
+  "rarity": "SSS",
+  "ability": "درع العمالقة",
+  "image": "https://files.catbox.moe/1goh0s.jpg"
+},
+
+{
+  "name": "Choso",
+  "form": "أخ الدم",
+  "anime": "Jujutsu Kaisen",
+  "power": 4200,
+  "rarity": "SSS",
+  "ability": "التحكم بالدم",
+  "image": "https://files.catbox.moe/75qvqu.jpg"
+},
+
+{
+  "name": "Hakari",
+  "form": "الحظ اللامحدود",
+  "anime": "Jujutsu Kaisen",
+  "power": 4900,
+  "rarity": "SSS",
+  "ability": "الجاكبوت",
+  "image": "https://files.catbox.moe/mhij3t.jpg"
+},
+
+{
+  "name": "Todo",
+  "form": "الضربة السوداء",
+  "anime": "Jujutsu Kaisen",
+  "power": 4300,
+  "rarity": "SSS",
+  "ability": "تبديل المواقع",
+  "image": "https://files.catbox.moe/afy0bp.jpg"
+},
+
+{
+  "name": "Nanami",
+  "form": "سيد النسبة",
+  "anime": "Jujutsu Kaisen",
+  "power": 4100,
+  "rarity": "SSS",
+  "ability": "نقطة الضعف",
+  "image": "https://files.catbox.moe/4penq6.jpg"
+},
+
+{
+  "name": "Mahito",
+  "form": "تشويه الأرواح",
+  "anime": "Jujutsu Kaisen",
+  "power": 4800,
+  "rarity": "SSS",
+  "ability": "التحول الروحي",
+  "image": "https://files.catbox.moe/d3czq1.jpg"
+},
+
+{
+  "name": "Nozel",
+  "form": "ملك الزئبق",
+  "anime": "Black Clover",
+  "power": 4500,
+  "rarity": "SSS",
+  "ability": "درع الزئبق",
+  "image": "https://files.catbox.moe/9ivr9e.jpg"
+},
+
+{
+  "name": "Fuegoleon",
+  "form": "إمبراطور النار",
+  "anime": "Black Clover",
+  "power": 4700,
+  "rarity": "SSS",
+  "ability": "روح النار",
+  "image": "https://files.catbox.moe/pt9k37.jpg"
+},
+
+{
+  "name": "Luck",
+  "form": "برق المعركة",
+  "anime": "Black Clover",
+  "power": 3900,
+  "rarity": "SSS",
+  "ability": "السرعة الخاطفة",
+  "image": "https://files.catbox.moe/3le029.jpg"
+},
+
+{
+  "name": "Benimaru",
+  "form": "القائد الشيطاني",
+  "anime": "Tensura",
+  "power": 4900,
+  "rarity": "SSS",
+  "ability": "لهب الجحيم",
+  "image": "https://files.catbox.moe/8gghrz.jpg"
+},
+
+{
+  "name": "Shion",
+  "form": "الساموراي الشيطانية",
+  "anime": "Tensura",
+  "power": 4500,
+  "rarity": "SSS",
+  "ability": "السيف المدمر",
+  "image": "https://files.catbox.moe/u6s943.jpg"
+},
+
+{
+  "name": "Diablo",
+  "form": "الشيطان الأسود",
+  "anime": "Tensura",
+  "power": 5000,
+  "rarity": "SSS",
+  "ability": "السحر الشيطاني",
+  "image": "https://files.catbox.moe/p5e4bg.jpg"
+},
+
+{
+  "name": "Zegion",
+  "form": "حارس المتاهة",
+  "anime": "Tensura",
+  "power": 4900,
+  "rarity": "SSS",
+  "ability": "درع الحشرة المقدسة",
+  "image": "https://files.catbox.moe/p1zp7f.jpg"
+},
+
+{
+  "name": "Testarossa",
+  "form": "ملكة الجحيم الأبيض",
+  "anime": "Tensura",
+  "power": 4800,
+  "rarity": "SSS",
+  "ability": "السحر القرمزي",
+  "image": "https://files.catbox.moe/z63u4s.jpg"
+},
+
+{
+  "name": "Killua",
+  "form": "وريث الزولديك الأعظم",
+  "anime": "Hunter x Hunter",
+  "power": 6200,
+  "rarity": "SSS",
+  "ability": "هيمنة البرق الخاطف",
+  "image": "https://files.catbox.moe/3mzoab.jpg"
+}
 ]
