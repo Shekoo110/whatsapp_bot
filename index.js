@@ -3664,7 +3664,7 @@ if (tierChance <= 50) {
 
     myAbilityName = myAbility[0];
     myAbilityDescription = myAbility[1];
-    myAbilityTier = abilityTier;
+    
 
     myAbility[2]();
 
