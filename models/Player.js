@@ -13,7 +13,6 @@ const PlayerSchema = new mongoose.Schema({
         default: 5
     },
 
-    // تذاكر متجر البرج
     towerTickets: {
         type: Number,
         default: 0
@@ -57,6 +56,30 @@ const PlayerSchema = new mongoose.Schema({
     money: {
         type: Number,
         default: 0
+    },
+
+    // =========================
+    // PvP System (NEW)
+    // =========================
+
+    mmr: {
+        type: Number,
+        default: 1000
+    },
+
+    wins: {
+        type: Number,
+        default: 0
+    },
+
+    losses: {
+        type: Number,
+        default: 0
+    },
+
+    rank: {
+        type: String,
+        default: "برونزي"
     },
 
     // =========================
@@ -110,45 +133,14 @@ const PlayerSchema = new mongoose.Schema({
     // بونصات القدرات
     // =========================
 
-    attackBonus: {
-        type: Number,
-        default: 0
-    },
-
-    defenseBonus: {
-        type: Number,
-        default: 0
-    },
-
-    hpBonus: {
-        type: Number,
-        default: 0
-    },
-
-    critBonus: {
-        type: Number,
-        default: 0
-    },
-
-    dodgeBonus: {
-        type: Number,
-        default: 0
-    },
-
-    reflectBonus: {
-        type: Number,
-        default: 0
-    },
-
-    lifestealBonus: {
-        type: Number,
-        default: 0
-    },
-
-    bossDamageBonus: {
-        type: Number,
-        default: 0
-    },
+    attackBonus: { type: Number, default: 0 },
+    defenseBonus: { type: Number, default: 0 },
+    hpBonus: { type: Number, default: 0 },
+    critBonus: { type: Number, default: 0 },
+    dodgeBonus: { type: Number, default: 0 },
+    reflectBonus: { type: Number, default: 0 },
+    lifestealBonus: { type: Number, default: 0 },
+    bossDamageBonus: { type: Number, default: 0 },
 
     specialAbilities: {
         type: [String],
@@ -170,36 +162,12 @@ const PlayerSchema = new mongoose.Schema({
     // =========================
 
     boxes: {
-
-        basic: {
-            type: Number,
-            default: 0
-        },
-
-        rare: {
-            type: Number,
-            default: 0
-        },
-
-        epic: {
-            type: Number,
-            default: 0
-        },
-
-        legendary: {
-            type: Number,
-            default: 0
-        },
-
-        sss_chance: {
-            type: Number,
-            default: 0
-        },
-
-        sss_high: {
-            type: Number,
-            default: 0
-        }
+        basic: { type: Number, default: 0 },
+        rare: { type: Number, default: 0 },
+        epic: { type: Number, default: 0 },
+        legendary: { type: Number, default: 0 },
+        sss_chance: { type: Number, default: 0 },
+        sss_high: { type: Number, default: 0 }
     }
 
 })
