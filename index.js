@@ -4092,86 +4092,69 @@ ${ABILITY_CHANCE}% أثناء القتال
 
     if (me.level % 10 === 0) {
 
-    me.maxCharacters =
-        (me.maxCharacters || 30) + 5
+    me.maxCharacters = (me.maxCharacters || 30) + 5;
 
-    levelUpMessage +=
-`📦 زيادة المخزون
+    levelUpMessage += `
+📦 زيادة المخزون
 
 ➕ +5 شخصيات
 
 📦 السعة الجديدة:
 ${me.maxCharacters}
-
-`
+`;
 
     switch (me.level) {
 
         case 10:
-    me.boxes.basic += 5
-    levelUpMessage += `🎁 حصلت على 5 صناديق عادية\n`
-    break
+            me.boxes.basic += 5;
+            levelUpMessage += `🎁 حصلت على 5 صناديق عادية\n`;
+            break;
 
-case 20:
-    me.boxes.rare += 3
-    levelUpMessage += `🎁 حصلت على 3 صناديق نادرة\n`
-    break
+        case 20:
+            me.boxes.rare += 3;
+            levelUpMessage += `🎁 حصلت على 3 صناديق نادرة\n`;
+            break;
 
-case 30:
-    me.boxes.rare += 5
-    levelUpMessage += `🎁 حصلت على 5 صناديق نادرة\n`
-    break
+        case 30:
+            me.boxes.rare += 5;
+            levelUpMessage += `🎁 حصلت على 5 صناديق نادرة\n`;
+            break;
 
-case 40:
-    me.boxes.epic += 2
-    levelUpMessage += `🎁 حصلت على 2 صندوق ملحمي\n`
-    break
+        case 40:
+            me.boxes.epic += 2;
+            levelUpMessage += `🎁 حصلت على 2 صندوق ملحمي\n`;
+            break;
 
-case 50:
-    me.boxes.epic += 4
-    levelUpMessage += `🎁 حصلت على 4 صناديق ملحمية\n`
-    break
+        case 50:
+            me.boxes.epic += 4;
+            levelUpMessage += `🎁 حصلت على 4 صناديق ملحمية\n`;
+            break;
 
-case 60:
-    me.boxes.legendary += 1
-    levelUpMessage += `🎁 حصلت على صندوق أسطوري\n`
-    break
+        case 60:
+            me.boxes.legendary += 1;
+            levelUpMessage += `🎁 حصلت على صندوق أسطوري\n`;
+            break;
 
-case 70:
-    me.boxes.legendary += 2
-    levelUpMessage += `🎁 حصلت على 2 صندوق أسطوري\n`
-    break
+        case 70:
+            me.boxes.legendary += 2;
+            levelUpMessage += `🎁 حصلت على 2 صندوق أسطوري\n`;
+            break;
 
-case 80:
-    me.boxes.legendary += 3
-    levelUpMessage += `🎁 حصلت على 3 صناديق أسطورية\n`
-    break
+        case 80:
+            me.boxes.legendary += 3;
+            levelUpMessage += `🎁 حصلت على 3 صناديق أسطورية\n`;
+            break;
 
-case 90:
-    me.boxes.sss_chance += 1
-    levelUpMessage += `🎁 حصلت على صندوق فرصة SSS\n`
-    break
+        case 90:
+            me.boxes.sss_chance += 1;
+            levelUpMessage += `🎁 حصلت على صندوق فرصة SSS\n`;
+            break;
 
-case 100:
-    me.boxes.sss_high += 1
-    levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`
-    break
+        case 100:
+            me.boxes.sss_high += 1;
+            levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`;
+            break;
     }
-    
-        me.maxCharacters =
-            (me.maxCharacters || 30) + 5
-
-        levelUpMessage +=
-`📦 زيادة المخزون
-
-➕ +5 شخصيات
-
-📦 السعة الجديدة:
-${me.maxCharacters}
-
-`
-   }
-}
 
 me.fights -= 1
 await me.save()
