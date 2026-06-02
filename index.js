@@ -3930,15 +3930,15 @@ const epic = [
     try {
 
   // 🟢 قدرة اللاعب
-  const myAbility = abilityPool[
-    Math.floor(Math.random() * abilityPool.length)
-  ]
+  const myAbility = selectedPool[
+  Math.floor(Math.random() * selectedPool.length)
+];
 
-  myAbilityName = myAbility[0]
-  myAbilityDescription = myAbility[1]
-  myAbilityTier = abilityTier
+myAbilityName = myAbility[0];
+myAbilityDescription = myAbility[1];
+myAbilityTier = abilityTier;
 
-  myAbility[2]()
+myAbility[2]();
 
   // 🔵 قدرة العدو
   const enemyTierChance = Math.random() * 100
