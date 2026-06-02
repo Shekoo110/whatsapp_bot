@@ -1382,6 +1382,31 @@ ${player.usedCharacters?.length || 0}/30
 
 if (text.startsWith('.قتال pvp')) {
 
+    const attacker = await Player.findOne({ userId })
+
+    if (!attacker) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا تملك حساب'
+        })
+    }
+
+    const mentionedJid =
+        msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+
+    if (!mentionedJid) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ مثال: .قتال pvp @user'
+        })
+    }
+
+    const defender = await Player.findOne({ userId: mentionedJid })
+
+    if (!defender) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ اللاعب غير موجود'
+        })
+    }
+
     const now = Date.now()
 
     if (attacker.lastPvP && now - attacker.lastPvP < 30000) {
@@ -1390,22 +1415,76 @@ if (text.startsWith('.قتال pvp')) {
         })
     }
 
-    const mentionedJid = msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+    attacker.lastPvP = now
+    await attacker.save()
 
-    if (!mentionedJid) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ مثال: .قتال pvp @user'
-        })
+    let attackerTurn = attacker
+    let defenderTurn = defender
+
+    let turn = 1
+    let log = ""
+
+    // =========================
+    // 🔥 TURN LOOP
+    // =========================
+    while (attackerTurn.hp > 0 && defenderTurn.hp > 0) {
+
+        log += `\n🔁 الدور ${turn}\n`
+
+        const moveType = Math.random()
+
+        let skillType = "normal"
+
+        if (moveType > 0.85) skillType = "ultimate"
+        else if (moveType > 0.55) skillType = "skill"
+
+        const dodgeChance = defenderTurn.dodge || 0
+
+        if (Math.random() * 100 < dodgeChance) {
+
+            log += `💨 ${defenderTurn.userId.split('@')[0]} تفادى الضربة!\n`
+
+        } else {
+
+            const baseDamage = attackerTurn.attack || 500
+
+            let damage = baseDamage
+
+            if (skillType === "skill") damage *= 1.5
+            if (skillType === "ultimate") damage *= 2.5
+
+            const critChance = attackerTurn.crit || 5
+
+            if (Math.random() * 100 < critChance) {
+                damage *= 2
+                log += `🔥 ضربة حرجة!\n`
+            }
+
+            defenderTurn.hp -= Math.floor(damage)
+
+            log += `⚔️ ${attackerTurn.userId.split('@')[0]} استخدم ${skillType} وضرب ${Math.floor(damage)}\n`
+        }
+
+        const temp = attackerTurn
+        attackerTurn = defenderTurn
+        defenderTurn = temp
+
+        turn++
     }
 
-    const now = Date.now()
+    // =========================
+    // 🏁 نهاية القتال
+    // =========================
 
-if (now - attacker.lastPvP < 30000) {
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: `⏳ انتظر 30 ثانية قبل الهجوم مرة أخرى`
+    const winner =
+        attackerTurn.hp > 0 ? attackerTurn : defenderTurn
+
+    log += `\n🏆 الفائز: ${winner.userId.split('@')[0]}`
+
+    await sock.sendMessage(msg.key.remoteJid, {
+        text: log
     })
 }
-
 attacker.lastPvP = now
 await attacker.save()
         return safeSend(msg.key.remoteJid, {
