@@ -3759,7 +3759,7 @@ ${ability.name}
 
 📜 ${ability.description}
 
-🏷️ التصنيف: ${ability.type}
+📈 التأثير: +${ability.value}
 `;
 }
 
