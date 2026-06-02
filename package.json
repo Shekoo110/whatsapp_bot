@@ -6,6 +6,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "@google/genai": "^1.10.0",
     "@whiskeysockets/baileys": "^7.0.0-rc13",
     "express": "^5.2.1",
     "mongoose": "^8.15.1",
