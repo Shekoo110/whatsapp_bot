@@ -1480,7 +1480,15 @@ if (text.startsWith('.قتال pvp')) {
     let aHP = aStats.hp
     let dHP = dStats.hp
 
-    let log = `⚔️ PvP بدأ!\n@${attacker.userId.split('@')[0]} VS @${defender.userId.split('@')[0]}\n`
+    let log =
+`⚔️ PvP بدأ!
+
+🥊 @${attacker.userId.split('@')[0]}
+VS
+🥊 @${defender.userId.split('@')[0]}
+
+━━━━━━━━━━━━━━
+`
 
     let turn = 1
     let turnAttacker = true
@@ -1574,6 +1582,10 @@ if (atk.stun > 0) {
 
         if (turnAttacker) dHP = defHP
         else aHP = defHP
+        log += `
+❤️ ${attacker.userId.split('@')[0]}: ${Math.max(0, aHP)} HP
+💙 ${defender.userId.split('@')[0]}: ${Math.max(0, dHP)} HP
+`
 
         turnAttacker = !turnAttacker
         turn++
