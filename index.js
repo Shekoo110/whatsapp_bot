@@ -5043,8 +5043,7 @@ if (second) {
     second.money += 5000
     second.xp += 500
 
-    const roll =
-        Math.random() * 100
+    const roll = Math.random() * 100
 
     if (roll <= 30) {
 
@@ -5064,9 +5063,7 @@ if (second) {
                 ]
 
             second.characters.push(
-                JSON.parse(
-                    JSON.stringify(reward)
-                )
+                JSON.parse(JSON.stringify(reward))
             )
         }
 
@@ -5088,9 +5085,7 @@ if (second) {
                 ]
 
             second.characters.push(
-                JSON.parse(
-                    JSON.stringify(reward)
-                )
+                JSON.parse(JSON.stringify(reward))
             )
         }
     }
