@@ -1511,6 +1511,25 @@ VS
     let turn = 1
 let turnAttacker = true
 
+function getSkill() {
+    const r = Math.random()
+    if (r > 0.85) return "ultimate"
+    if (r > 0.55) return "skill"
+    return "normal"
+}
+
+function applyStatus(target, skill) {
+
+    if (skill === "skill") {
+        if (Math.random() < 0.3) target.burn = 2
+    }
+
+    if (skill === "ultimate") {
+        if (Math.random() < 0.3) target.stun = 1
+        if (Math.random() < 0.2) target.bleed = 3
+    }
+}
+
 const MAX_TURNS = 50
 
 while (
@@ -1519,32 +1538,14 @@ while (
     turn <= MAX_TURNS
 ) {
 
-    // =========================
-    // 🔥 SKILLS SYSTEM
-    // =========================
-    function getSkill() {
-        const r = Math.random()
-        if (r > 0.85) return "ultimate"
-        if (r > 0.55) return "skill"
-        return "normal"
-    }
+    log += `\n🔁 الدور ${turn}\n`
 
-    function applyStatus(target, skill) {
 
-        if (skill === "skill") {
-            if (Math.random() < 0.3) target.burn = 2
-        }
-
-        if (skill === "ultimate") {
-            if (Math.random() < 0.3) target.stun = 1
-            if (Math.random() < 0.2) target.bleed = 3
-        }
-    }
 
     // =========================
     // ⚔️ FIGHT LOOP
     // =========================
-    while (aHP > 0 && dHP > 0) {
+    
 
         log += `\n🔁 الدور ${turn}\n`
 
@@ -1656,6 +1657,7 @@ ${defender.rank} (${defender.mmr})`,
         defender.userId
     ]
 })
+}
 
         if (text.startsWith('.اشرح pvp')) {
 
