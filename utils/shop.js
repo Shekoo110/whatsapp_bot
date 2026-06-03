@@ -237,7 +237,12 @@ function generateEquipmentShop() {
         }
     ]
 
-    return items
+    // خلط العناصر عشوائياً
+const shuffledItems =
+    items.sort(() => Math.random() - 0.5)
+
+// إظهار 5 عناصر فقط في المتجر
+return shuffledItems.slice(0, 5)
 }
 
 module.exports = { generateEquipmentShop }
