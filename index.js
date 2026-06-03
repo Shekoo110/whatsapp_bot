@@ -4556,16 +4556,16 @@ return safeSend(msg.key.remoteJid, {
     mentions: [winnerId || userId || targetId]
 });
 
-} catch (err) {
+ } catch (err) {
 
-    console.log(err);
+        console.log(err);
 
-    return safeSend(msg.key.remoteJid, {
-        text: '❌ حدث خطأ أثناء القتال'
-    });
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء القتال'
+        });
+    }
 
-}
-} // نهاية .قتال_مجموع
+} // ← إغلاق if
         
         // =========================
         // .قتال
@@ -4602,7 +4602,10 @@ if (text.startsWith('.قتال')) {
             return safeSend(msg.key.remoteJid, { text: '❌ الخصم لا يملك حساباً' })
         }
 
-        // 🛡️ حماية القدرات
+        // =====================
+        // تجهيز البيانات
+        // =====================
+
         me.abilities = me.abilities || []
         enemy.abilities = enemy.abilities || []
 
@@ -4610,13 +4613,11 @@ if (text.startsWith('.قتال')) {
 
         function getLevelAbilities(level) {
             const result = []
-
             for (let lvl in safeLevelAbilities) {
                 if (level >= Number(lvl)) {
                     result.push(safeLevelAbilities[lvl])
                 }
             }
-
             return result
         }
 
@@ -4626,7 +4627,10 @@ if (text.startsWith('.قتال')) {
         me.allAbilities = [...me.abilities, ...me.levelAbilities]
         enemy.allAbilities = [...enemy.abilities, ...enemy.levelAbilities]
 
-        // 🔄 إعادة القتالات
+        // =====================
+        // نظام القتالات (Cooldown)
+        // =====================
+
         const now = Date.now()
         const cooldown = 30 * 60 * 1000
 
@@ -4664,8 +4668,11 @@ if (text.startsWith('.قتال')) {
             })
         }
 
-        const sortedChars = [...enemy.characters].sort((a, b) => b.power - a.power)
+        // =====================
+        // اختيار شخصية الخصم
+        // =====================
 
+        const sortedChars = [...enemy.characters].sort((a, b) => b.power - a.power)
         const chance = Math.random() * 100
 
         let enemyCharacter
@@ -4678,12 +4685,15 @@ if (text.startsWith('.قتال')) {
             enemyCharacter = sortedChars[Math.floor(Math.random() * sortedChars.length)]
         }
 
-        // 🛡️ حماية الخصم
         if (!enemyCharacter) {
             return safeSend(msg.key.remoteJid, {
                 text: '❌ لا يمكن اختيار شخصية للخصم'
             })
         }
+
+        // =====================
+        // حساب القوة
+        // =====================
 
         let myAttack =
             myCharacter.power +
@@ -4700,59 +4710,51 @@ if (text.startsWith('.قتال')) {
 
         let abilityMessage = ''
 
-        // 🧠 القدرات
-for (let ab of me.allAbilities || []) {
+        // =====================
+        // القدرات
+        // =====================
 
-    if (!ab) continue
+        for (let ab of me.allAbilities || []) {
 
-    if (ab.type === "attack") {
-        finalMyAttack += finalMyAttack * (ab.value || 0) / 100
-    }
+            if (!ab) continue
 
-    if (ab.type === "defense") {
-        finalEnemyAttack -= finalEnemyAttack * (ab.value || 0) / 100
-    }
+            if (ab.type === "attack") {
+                finalMyAttack += finalMyAttack * (ab.value || 0) / 100
+            }
 
-    if (ab.type === "crit") {
-        if (Math.random() * 100 < (ab.value || 0)) {
-            finalMyAttack *= 2
-            abilityMessage += `\n⚡ كريتيكال من ${ab.name || 'قدرة'}`
+            if (ab.type === "defense") {
+                finalEnemyAttack -= finalEnemyAttack * (ab.value || 0) / 100
+            }
+
+            if (ab.type === "crit") {
+                if (Math.random() * 100 < (ab.value || 0)) {
+                    finalMyAttack *= 2
+                    abilityMessage += `\n⚡ كريتيكال من ${ab.name || 'قدرة'}`
+                }
+            }
+
+            if (ab.type === "dodge") {
+                if (Math.random() * 100 < (ab.value || 0)) {
+                    finalEnemyAttack = 0
+                    abilityMessage += `\n💨 مراوغة من ${ab.name || 'قدرة'}`
+                }
+            }
+
+            if (ab.type === "reflect") {
+                const reflected = Math.floor(finalEnemyAttack * (ab.value || 0) / 100)
+                finalMyAttack += reflected
+                abilityMessage += `\n🔄 عكس ضرر من ${ab.name || 'قدرة'}`
+            }
+
+            if (ab.type === "lifesteal") {
+                const heal = finalMyAttack * (ab.value || 0) / 100
+                me.hp = (me.hp || 100) + heal
+            }
         }
-    }
 
-    if (ab.type === "dodge") {
-        if (Math.random() * 100 < (ab.value || 0)) {
-            finalEnemyAttack = 0
-            abilityMessage += `\n💨 مراوغة من ${ab.name || 'قدرة'}`
-        }
-    }
-
-    if (ab.type === "reflect") {
-        const reflected = Math.floor((finalEnemyAttack || 0) * (ab.value || 0) / 100)
-        finalMyAttack += reflected
-        abilityMessage += `\n🔄 عكس ضرر من ${ab.name || 'قدرة'}`
-    }
-
-    if (ab.type === "lifesteal") {
-        const heal = (finalMyAttack || 0) * (ab.value || 0) / 100
-        me.hp = (me.hp || 100) + heal
-    }
-}
-        let winnerUser = finalMyAttack >= finalEnemyAttack ? me.userId : enemy.userId
-
-let reward = 0
-
-if (finalMyAttack >= finalEnemyAttack) {
-
-    reward = rewards[enemyCharacter.rarity] || 100
-    me.money = (me.money || 0) + reward
-    me.xp = (me.xp || 0) + 200
-
-} else {
-
-    reward = rewards[myCharacter.rarity] || 100
-    enemy.money = (enemy.money || 0) + reward
-}
+        // =====================
+        // تحديد الفائز
+        // =====================
 
         const rewards = {
             'عادي': 100,
@@ -4782,7 +4784,10 @@ if (finalMyAttack >= finalEnemyAttack) {
             enemy.money = (enemy.money || 0) + reward
         }
 
-        // 📈 لفل أب آمن
+        // =====================
+        // لفل أب
+        // =====================
+
         while ((me.xp || 0) >= Math.floor(300 + ((me.level || 1) * 150))) {
 
             me.xp -= Math.floor(300 + ((me.level || 1) * 150))
@@ -4799,10 +4804,17 @@ if (finalMyAttack >= finalEnemyAttack) {
 
         me.fights = Math.max(0, (me.fights || 0) - 1)
 
+        // =====================
+        // حفظ البيانات
+        // =====================
+
         await me.save()
         await enemy.save()
 
-        // 🏆 رسالة القتال
+        // =====================
+        // الرسالة النهائية
+        // =====================
+
         const battleMessage = `
 ╔══════════════════════╗
         ⚔️ 𝐄𝐏𝐈𝐂 𝐁𝐀𝐓𝐓𝐋𝐄 ⚔️
@@ -4831,7 +4843,7 @@ ${enemyCharacter.power}
 ${abilityMessage ? `✨ القدرات:\n${abilityMessage}\n━━━━━━━━━━━━━━━━━━` : ''}
 
 🏆 الفائز:
-@${(me.userId || userId).split('@')[0]}
+@${(winner || userId).split('@')[0]}
 
 💰 المكافأة:
 ${reward}
@@ -4847,9 +4859,9 @@ ${me.fights}/5
 `
 
         return safeSend(msg.key.remoteJid, {
-    text: battleMessage,
-    mentions: [me.userId, enemy.userId].filter(Boolean)
-})
+            text: battleMessage,
+            mentions: [me.userId, enemy.userId].filter(Boolean)
+        })
 
     } catch (err) {
         console.log(err)
@@ -4858,6 +4870,8 @@ ${me.fights}/5
         })
     }
 }
+        
+
 async function distributeBossRewards(sock, groupId) {
 
     const players = await Player.find({
