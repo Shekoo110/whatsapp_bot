@@ -4571,18 +4571,17 @@ return safeSend(msg.key.remoteJid, {
         // .قتال
         // =========================
 
-        if (text.startsWith('.قتال')) {
+    
+if (text.startsWith('.قتال')) {
 
     try {
 
         const args = text.trim().split(' ')
 
-const charPower = Number(args[args.length - 2])
+        const charPower = Number(args[args.length - 2])
+        const charName = args.slice(1, -2).join(' ')
 
-const charName =
-    args.slice(1, -2).join(' ')
-        const mentioned =
-            msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
+        const mentioned = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
 
         if (!mentioned || !mentioned[0]) {
             return safeSend(msg.key.remoteJid, {
@@ -4593,70 +4592,63 @@ const charName =
         const target = mentioned[0]
 
         const me = await Player.findOne({ userId })
-const enemy = await Player.findOne({ userId: target })
+        const enemy = await Player.findOne({ userId: target })
 
-// ❌ التحقق أولاً
-if (!me) {
-    return safeSend(msg.key.remoteJid, {
-        text: '❌ لا تملك حساباً'
-    })
-}
-
-if (!enemy) {
-    return safeSend(msg.key.remoteJid, {
-        text: '❌ الخصم لا يملك حساباً'
-    })
-}
-
-// ✅ بعد التحقق فقط
-me.abilities = me.abilities || []
-enemy.abilities = enemy.abilities || []
-function getLevelAbilities(level) {
-    const result = []
-
-    for (let lvl in levelAbilities) {
-        if (level >= lvl) {
-            result.push(levelAbilities[lvl])
+        if (!me) {
+            return safeSend(msg.key.remoteJid, { text: '❌ لا تملك حساباً' })
         }
-    }
 
-    return result
-}
+        if (!enemy) {
+            return safeSend(msg.key.remoteJid, { text: '❌ الخصم لا يملك حساباً' })
+        }
 
-// تجهيز قدرات اللفل
-me.levelAbilities = getLevelAbilities(me.level || 1)
-enemy.levelAbilities = getLevelAbilities(enemy.level || 1)
+        // 🛡️ حماية القدرات
+        me.abilities = me.abilities || []
+        enemy.abilities = enemy.abilities || []
 
-// 🔥 هنا تضيف الدمج
-me.allAbilities = [...me.abilities, ...me.levelAbilities]
-enemy.allAbilities = [...enemy.abilities, ...enemy.levelAbilities]
-        
-        // إعادة تعيين القتالات كل 3 ساعات
+        const safeLevelAbilities = levelAbilities || {}
+
+        function getLevelAbilities(level) {
+            const result = []
+
+            for (let lvl in safeLevelAbilities) {
+                if (level >= Number(lvl)) {
+                    result.push(safeLevelAbilities[lvl])
+                }
+            }
+
+            return result
+        }
+
+        me.levelAbilities = getLevelAbilities(me.level || 1)
+        enemy.levelAbilities = getLevelAbilities(enemy.level || 1)
+
+        me.allAbilities = [...me.abilities, ...me.levelAbilities]
+        enemy.allAbilities = [...enemy.abilities, ...enemy.levelAbilities]
+
+        // 🔄 إعادة القتالات
         const now = Date.now()
-const cooldown = 30 * 60 * 1000
+        const cooldown = 30 * 60 * 1000
 
-if (me.fights == null) me.fights = 5
+        if (me.fights == null) me.fights = 5
+        if (!me.lastFightReset) me.lastFightReset = now
 
-if (!me.lastFightReset) {
-    me.lastFightReset = now
-}
+        if (now - me.lastFightReset >= cooldown) {
+            me.fights = 5
+            me.lastFightReset = now
+        }
 
-if (now - me.lastFightReset >= cooldown) {
-    me.fights = 5
-    me.lastFightReset = now
-    await me.save()
-}
-
-        if (me.fights <= 0)
+        if (me.fights <= 0) {
             return safeSend(msg.key.remoteJid, {
                 text: '⏳ انتهت القتالات اليومية (5/5)'
             })
-        
+        }
+
         me.characters = me.characters || []
         enemy.characters = enemy.characters || []
 
         const myCharacter = me.characters.find(c =>
-            c.name.toLowerCase() === charName.toLowerCase() &&
+            c.name?.toLowerCase() === charName.toLowerCase() &&
             Number(c.power) === charPower
         )
 
@@ -4666,110 +4658,83 @@ if (now - me.lastFightReset >= cooldown) {
             })
         }
 
-        if (enemy.characters.length === 0) {
+        if (!enemy.characters.length) {
             return safeSend(msg.key.remoteJid, {
                 text: '❌ الخصم لا يملك شخصيات'
             })
         }
 
-        // اختيار شخصية الخصم
-        const sortedChars =
-            [...enemy.characters].sort((a, b) => b.power - a.power)
+        const sortedChars = [...enemy.characters].sort((a, b) => b.power - a.power)
 
         const chance = Math.random() * 100
 
         let enemyCharacter
 
         if (chance <= 30) {
-
-            // 30% أقوى شخصية
             enemyCharacter = sortedChars[0]
-
         } else if (chance <= 70) {
-
-            // 40% أضعف شخصية
             enemyCharacter = sortedChars[sortedChars.length - 1]
-
         } else {
+            enemyCharacter = sortedChars[Math.floor(Math.random() * sortedChars.length)]
+        }
 
-            // 30% عشوائي
-            enemyCharacter =
-                sortedChars[
-                    Math.floor(Math.random() * sortedChars.length)
-                ]
+        // 🛡️ حماية الخصم
+        if (!enemyCharacter) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا يمكن اختيار شخصية للخصم'
+            })
         }
 
         let myAttack =
-    myCharacter.power +
-    (me.level * 5) +
-    Math.floor(Math.random() * 300)
+            myCharacter.power +
+            (me.level || 1) * 5 +
+            Math.floor(Math.random() * 300)
 
+        let enemyAttack =
+            enemyCharacter.power +
+            (enemy.level || 1) * 5 +
+            Math.floor(Math.random() * 300)
 
-let enemyAttack =
-    enemyCharacter.power +
-    (enemy.level * 5) +
-    Math.floor(Math.random() * 300)
-
-        
         let finalMyAttack = myAttack
-let finalEnemyAttack = enemyAttack
+        let finalEnemyAttack = enemyAttack
 
-let abilityActivated = false
-let abilityMessage = ''
-    
+        let abilityMessage = ''
 
-for (let ab of me.allAbilities) {
+        for (let ab of me.allAbilities) {
 
-    // ⚔️ attack boost
-    if (ab.type === "attack") {
-        finalMyAttack += finalMyAttack * ab.value / 100
-    }
+            if (ab.type === "attack") {
+                finalMyAttack += finalMyAttack * ab.value / 100
+            }
 
-    // 🛡️ defense (يقلل ضرر الخصم)
-    if (ab.type === "defense") {
-        finalEnemyAttack -= finalEnemyAttack * ab.value / 100
-    }
+            if (ab.type === "defense") {
+                finalEnemyAttack -= finalEnemyAttack * ab.value / 100
+            }
 
-    // ⚡ crit
-    if (ab.type === "crit") {
-        if (Math.random() * 100 < ab.value) {
-            finalMyAttack *= 2
-            abilityActivated = true
-            abilityMessage += `\n⚡ كريتيكال من ${ab.name}`
+            if (ab.type === "crit") {
+                if (Math.random() * 100 < ab.value) {
+                    finalMyAttack *= 2
+                    abilityMessage += `\n⚡ كريتيكال من ${ab.name}`
+                }
+            }
+
+            if (ab.type === "dodge") {
+                if (Math.random() * 100 < ab.value) {
+                    finalEnemyAttack = 0
+                    abilityMessage += `\n💨 مراوغة من ${ab.name}`
+                }
+            }
+
+            if (ab.type === "reflect") {
+                const reflected = Math.floor(finalEnemyAttack * ab.value / 100)
+                finalMyAttack += reflected
+                abilityMessage += `\n🔄 عكس ضرر من ${ab.name}`
+            }
+
+            if (ab.type === "lifesteal") {
+                const heal = finalMyAttack * ab.value / 100
+                me.hp = (me.hp || 100) + heal
+            }
         }
-    }
-// 💨 dodge
-if (ab.type === "dodge") {
-    if (Math.random() * 100 < ab.value) {
-        finalEnemyAttack = 0
-
-        abilityActivated = true
-
-        abilityMessage +=
-            `\n💨 مراوغة من ${ab.name}`
-    }
-}
-
-// 🔄 reflect
-if (ab.type === "reflect") {
-
-    const reflectedDamage = Math.floor(
-        finalEnemyAttack * ab.value / 100
-    )
-
-    finalMyAttack += reflectedDamage
-
-    abilityActivated = true
-
-    abilityMessage +=
-        `\n🔄 عكس ضرر من ${ab.name}`
-}
-    // 💀 lifesteal (اختياري لاحقًا)
-    if (ab.type === "lifesteal") {
-        let heal = finalMyAttack * ab.value / 100
-        me.hp = (me.hp || 100) + heal
-    }
-}
 
         const rewards = {
             'عادي': 100,
@@ -4780,123 +4745,55 @@ if (ab.type === "reflect") {
 
         let winner
         let reward = 0
-let xpGain = 0
-        
 
         if (finalMyAttack >= finalEnemyAttack) {
 
-    winner = myCharacter.name
+            winner = me.userId || userId
 
-    reward =
-        rewards[enemyCharacter.rarity] || 100
+            reward = rewards[enemyCharacter.rarity] || 100
 
-    me.money = (me.money || 0) + reward
+            me.money = (me.money || 0) + reward
+            me.xp = (me.xp || 0) + 200
 
-    me.xp = (me.xp || 0) + 200
+        } else {
 
-} else {
+            winner = enemy.userId
 
-    winner = enemyCharacter.name
+            reward = rewards[myCharacter.rarity] || 100
 
-    reward =
-        rewards[myCharacter.rarity] || 100
-
-    enemy.money = (enemy.money || 0) + reward
-}
-
-while (
-    (me.xp || 0) >=
-    Math.floor(300 + ((me.level || 1) * 150))
-) {
-
-    me.xp -= Math.floor(
-        300 + ((me.level || 1) * 150)
-    )
-
-    me.level += 1
-
-    if (me.level >= 100) {
-        me.level = 100
-        me.xp = 0
-        break
-    }
-
-    // 500 مال لكل لفل
-    me.money = (me.money || 0) + 500
-
-    // زيادة المخزون كل 10 لفلات
-    if (me.level % 10 === 0) {
-
-        me.maxCharacters =
-            (me.maxCharacters || 30) + 5
-
-        // جوائز الصناديق
-        switch (me.level) {
-
-            case 10:
-                me.boxes.basic += 5
-                break
-
-            case 20:
-                me.boxes.rare += 3
-                break
-
-            case 30:
-                me.boxes.rare += 5
-                break
-
-            case 40:
-                me.boxes.epic += 2
-                break
-
-            case 50:
-                me.boxes.epic += 4
-                break
-
-            case 60:
-                me.boxes.legendary += 1
-                break
-
-            case 70:
-                me.boxes.legendary += 2
-                break
-
-            case 80:
-                me.boxes.legendary += 3
-                break
-
-            case 90:
-                me.boxes.sss_chance += 1
-                break
-
-            case 100:
-                me.boxes.sss_high += 1
-                break
+            enemy.money = (enemy.money || 0) + reward
         }
-    }
-}
 
-me.fights = Math.max(0, (me.fights || 0) - 1)
-        
+        // 📈 لفل أب آمن
+        while ((me.xp || 0) >= Math.floor(300 + ((me.level || 1) * 150))) {
 
-await me.save()
+            me.xp -= Math.floor(300 + ((me.level || 1) * 150))
+            me.level = (me.level || 1) + 1
 
-const updatedMe = await Player.findOne({ userId })
+            if (me.level >= 100) {
+                me.level = 100
+                me.xp = 0
+                break
+            }
 
-await enemy.save()
-        const winnerCharacter =
-    winner === myCharacter.name
-        ? myCharacter
-        : enemyCharacter
+            me.money = (me.money || 0) + 500
+        }
 
-`╔══════════════════════╗
+        me.fights = Math.max(0, (me.fights || 0) - 1)
+
+        await me.save()
+        await enemy.save()
+
+        // 🏆 رسالة القتال
+        const battleMessage = `
+╔══════════════════════╗
         ⚔️ 𝐄𝐏𝐈𝐂 𝐁𝐀𝐓𝐓𝐋𝐄 ⚔️
 ╚══════════════════════╝
 
 🛡️ 𝐘𝐎𝐔𝐑 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑
 
 🧿 الاسم:
-${myCharacter.name}
+${myCharacter.name || 'غير معروف'}
 
 ⚡ القوة:
 ${myCharacter.power}
@@ -4906,76 +4803,43 @@ ${myCharacter.power}
 🎯 𝐄𝐍𝐄𝐌𝐘 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑
 
 🧿 الاسم:
-${enemyCharacter.name}
+${enemyCharacter.name || 'غير معروف'}
 
 ⚡ القوة:
 ${enemyCharacter.power}
 
 ━━━━━━━━━━━━━━━━━━
 
-${abilityMessage
-    ? `✨ تم تفعيل القدرات ✨
-${abilityMessage}
+${abilityMessage ? `✨ القدرات:\n${abilityMessage}\n━━━━━━━━━━━━━━━━━━` : ''}
 
-━━━━━━━━━━━━━━━━━━
-`
-    : ''}
-
-🏆 𝐖𝐈𝐍𝐍𝐄𝐑
-
-👑 الفائز:
-@${userId.split('@')[0]}
+🏆 الفائز:
+@${(me.userId || userId).split('@')[0]}
 
 💰 المكافأة:
 ${reward}
 
-⭐ الخبرة المكتسبة:
+⭐ الخبرة:
 +200
 
 🎟️ القتالات المتبقية:
-${updatedMe.fights}/5
+${me.fights}/5
 
 ━━━━━━━━━━━━━━━━━━
+🔥 نهاية القتال
+`
 
-🛡️ جميع الشخصيات بقيت لدى أصحابها
-❗ لا توجد خسارة شخصيات في هذا القتال
+        return safeSend(msg.key.remoteJid, {
+            text: battleMessage,
+            mentions: [me.userId || target]
+        })
 
-╔══════════════════════╗
-        🔥 𝐁𝐀𝐓𝐓𝐋𝐄 𝐄𝐍𝐃 🔥
-╚══════════════════════╝`
-
-if (
-    winnerCharacter.image &&
-    fs.existsSync(winnerCharacter.image)
-) {
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            image: fs.readFileSync(
-                winnerCharacter.image
-            ),
-            caption: battleMessage
-        }
-    )
-}
-
-return safeSend(
-  msg.key.remoteJid,
-  {
-    text: battleMessage,
-    mentions: [userId]
-  })
-
-
-
- } catch (err) {
-        console.log(err);
+    } catch (err) {
+        console.log(err)
         return safeSend(msg.key.remoteJid, {
             text: '❌ حدث خطأ أثناء القتال'
-        });
+        })
     }
-} // ← هذا مهم جداً إغلاق if
-
+}
 async function distributeBossRewards(sock, groupId) {
 
     const players = await Player.find({
