@@ -111,7 +111,7 @@ specialAbilities: {
     type: [String],
     default: []
 },
-    },
+
 
     // =========================
     // EQUIPMENT SYSTEM 🔥
