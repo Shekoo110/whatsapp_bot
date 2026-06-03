@@ -1325,21 +1325,23 @@ attacker =
 const playerData =
 await Player.findOne({ userId })
 
-const attackerStats =
-getTotalStats(playerData)
-
-const opponentData =
-await Player.findOne({
-userId:
-const now = Date.now()
-
-const now = Date.now()
+    const now = Date.now()
 
 if (playerData.skillCooldown > now) {
     return safeSend(msg.key.remoteJid, {
         text: `⏳ المهارة في كولداون\nانتظر ${Math.ceil((playerData.skillCooldown - now) / 1000)} ثانية`
     })
 }
+
+const attackerStats =
+getTotalStats(playerData)
+
+const opponentData =
+await Player.findOne({
+userId:
+
+
+
     
 fight.player1 === userId
 ? fight.player2
