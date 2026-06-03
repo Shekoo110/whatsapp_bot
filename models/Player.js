@@ -21,18 +21,26 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // HP SYSTEM (PvP CORE)
-    // =========================
-    hp: { type: Number, default: 10000 },
-    maxHp: { type: Number, default: 10000 },
+// HP SYSTEM (PvP CORE)
+// =========================
+hp: { type: Number, default: 10000 },
+maxHp: { type: Number, default: 10000 },
 
-    crit: { type: Number, default: 5 },
-    dodge: { type: Number, default: 3 },
+critRate: { type: Number, default: 5 },
+critDamage: { type: Number, default: 50 },
 
-    xp: { type: Number, default: 0 },
-    level: { type: Number, default: 1 },
+dodge: { type: Number, default: 3 },
 
-    money: { type: Number, default: 0 },
+defense: { type: Number, default: 0 },
+accuracy: { type: Number, default: 100 },
+
+shield: { type: Number, default: 0 },
+lifesteal: { type: Number, default: 0 },
+
+xp: { type: Number, default: 0 },
+level: { type: Number, default: 1 },
+
+money: { type: Number, default: 0 },
 
     // =========================
     // PvP SYSTEM
@@ -78,24 +86,31 @@ const PlayerSchema = new mongoose.Schema({
         default: false
     },
 
-    // =========================
-    // BONUSES (PvP Boosts)
-    // =========================
-    attackBonus: { type: Number, default: 0 },
-    defenseBonus: { type: Number, default: 0 },
-    hpBonus: { type: Number, default: 0 },
+// =========================
+// BONUSES (PvP Boosts)
+// =========================
+attackBonus: { type: Number, default: 0 },
+defenseBonus: { type: Number, default: 0 },
+hpBonus: { type: Number, default: 0 },
 
-    critBonus: { type: Number, default: 0 },
-    dodgeBonus: { type: Number, default: 0 },
+critRateBonus: { type: Number, default: 0 },
+critDamageBonus: { type: Number, default: 0 },
 
-    reflectBonus: { type: Number, default: 0 },
-    lifestealBonus: { type: Number, default: 0 },
+dodgeBonus: { type: Number, default: 0 },
 
-    bossDamageBonus: { type: Number, default: 0 },
+accuracyBonus: { type: Number, default: 0 },
+shieldBonus: { type: Number, default: 0 },
 
-    specialAbilities: {
-        type: [String],
-        default: []
+lifestealBonus: { type: Number, default: 0 },
+
+reflectBonus: { type: Number, default: 0 },
+
+bossDamageBonus: { type: Number, default: 0 },
+
+specialAbilities: {
+    type: [String],
+    default: []
+},
     },
 
     // =========================
@@ -116,12 +131,20 @@ const PlayerSchema = new mongoose.Schema({
                 rarity: String,
 
                 attack: { type: Number, default: 0 },
-                defense: { type: Number, default: 0 },
-                hp: { type: Number, default: 0 },
-                crit: { type: Number, default: 0 },
-                dodge: { type: Number, default: 0 },
+defense: { type: Number, default: 0 },
+hp: { type: Number, default: 0 },
 
-                price: { type: Number, default: 0 }
+critRate: { type: Number, default: 0 },
+critDamage: { type: Number, default: 0 },
+
+dodge: { type: Number, default: 0 },
+
+accuracy: { type: Number, default: 0 },
+
+shield: { type: Number, default: 0 },
+lifesteal: { type: Number, default: 0 },
+
+price: { type: Number, default: 0 }
             }
         ],
         default: []
