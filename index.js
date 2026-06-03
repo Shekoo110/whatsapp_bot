@@ -5183,5 +5183,5 @@ ${ranking}
         mentions
     }
 )
-
+} // إغلاق distributeBossRewards
 startBot()
