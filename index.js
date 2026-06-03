@@ -9,6 +9,7 @@ const path = require('path')
 const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
 const QRCode = require("qrcode")
+const cooldowns = new Map()
 
 console.log('Bot starting...')
 
@@ -1019,6 +1020,20 @@ async function startBot() {
 
     if (!text) return
 
+    const key = userId + '_global'
+    const now = Date.now()
+
+    if (
+        cooldowns.has(key) &&
+        now - cooldowns.get(key) < 2000
+    ) {
+        return
+    }
+
+    cooldowns.set(key, now)
+
+    if (!text) return
+
     const userId =
         msg.key.participant ||
         msg.key.remoteJid
@@ -1445,11 +1460,14 @@ if (text.startsWith('.قتال pvp')) {
     // =========================
     const now = Date.now()
 
-    if (attacker.lastPvP && now - attacker.lastPvP < 30000) {
-        return safeSend(msg.key.remoteJid, { text: '⏳ انتظر 30 ثانية' })
-    }
+if (attacker.lastPvP && now - attacker.lastPvP < 30000) {
+    return safeSend(msg.key.remoteJid, {
+        text: '⏳ انتظر 30 ثانية'
+    })
+}
 
-    attacker.lastPvP = now
+attacker.lastPvP = now
+await attacker.save()
 
     // =========================
     // 🧠 STATS + EQUIPMENT
@@ -1491,7 +1509,15 @@ VS
 `
 
     let turn = 1
-    let turnAttacker = true
+let turnAttacker = true
+
+const MAX_TURNS = 50
+
+while (
+    aHP > 0 &&
+    dHP > 0 &&
+    turn <= MAX_TURNS
+) {
 
     // =========================
     // 🔥 SKILLS SYSTEM
