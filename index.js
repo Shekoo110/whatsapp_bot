@@ -2156,13 +2156,7 @@ if (isCrit) {
         })
     }
 
-    let damage =
-        attacker.power +
-        attackerStats.attack
-
-    damage -= opponentStats.defense
-
-    damage = Math.max(50, damage)
+    
 
     let critical = false
 
