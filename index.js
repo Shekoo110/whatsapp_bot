@@ -1121,12 +1121,26 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
         })
     }
 
-    await PvP.create({
-        player1: userId,
-        player2: target,
-        turn: target,
-        active: false
+    const player1Data = await Player.findOne({ userId })
+const player2Data = await Player.findOne({ userId: target })
+
+if (!player1Data || !player2Data) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ خطأ في بيانات اللاعبين'
     })
+}
+
+const hp1 = getTotalStats(player1Data).hp
+const hp2 = getTotalStats(player2Data).hp
+
+await PvP.create({
+    player1: userId,
+    player2: target,
+    turn: target,
+    active: false,
+    hp1,
+    hp2
+})
 
     return safeSend(msg.key.remoteJid, {
         text:
@@ -1196,7 +1210,7 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
         ]
     })
     }
-    if (text === '.هجوم الخصم')
+    if (text === '.هجوم الخصم') {
 
     const fight = await PvP.findOne({
         active: true,
