@@ -4991,7 +4991,7 @@ async function distributeBossRewards(sock, groupId) {
     })
 
     await sock.sendMessage(groupId, {
-        text: `🏆 تم هزيمة الزعيم العالمي!
+    text: `🏆 تم هزيمة الزعيم العالمي!
 
 🥇 المركز الأول
 @${players[0]?.userId.split('@')[0] || 'لا يوجد'}
@@ -5003,8 +5003,10 @@ async function distributeBossRewards(sock, groupId) {
 ${ranking}
 
 🎉 تم توزيع الجوائز بنجاح`,
-        mentions
-    })
+    mentions
+})
+} catch (err) {
+    console.log(err)
 }
-    }
+}
 startBot()
