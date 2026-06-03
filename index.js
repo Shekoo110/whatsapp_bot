@@ -3840,12 +3840,14 @@ ${price}
 
 } catch (err) {
 
-    console.log('Auction error:', err)
+        console.log('Auction error:', err)
 
-    return safeSend(msg.key.remoteJid, {
-        text: '❌ حدث خطأ أثناء إنشاء المزاد'
-    })
-}
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء إنشاء المزاد'
+        })
+    }
+
+} // <-- إغلاق if (text.startsWith('.مزاد'))
 
         // =========================
         // .السوق
