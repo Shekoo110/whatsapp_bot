@@ -3809,8 +3809,6 @@ const charName = args.slice(1).join(' ')
 
         await player.save()
 
-try {
-
     return safeSend(msg.key.remoteJid, {
         text: `╔════════════════════╗
 🏪 𝐀𝐔𝐂𝐓𝐈𝐎𝐍
