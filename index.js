@@ -89,6 +89,18 @@ async function generateCharacterShop() {
 
     const allCharacters = characters
 
+const oldShop = await Shop.findOne()
+
+if (oldShop) {
+
+    const age =
+        Date.now() - oldShop.createdAt
+
+    if (age < 60 * 60 * 1000) {
+        return await Shop.find()
+    }
+}
+
     let shopItems = []
 
     for (let i = 0; i < 5; i++) {
