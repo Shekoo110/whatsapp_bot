@@ -4700,41 +4700,59 @@ if (text.startsWith('.قتال')) {
 
         let abilityMessage = ''
 
-        for (let ab of me.allAbilities) {
+        // 🧠 القدرات
+for (let ab of me.allAbilities || []) {
 
-            if (ab.type === "attack") {
-                finalMyAttack += finalMyAttack * ab.value / 100
-            }
+    if (!ab) continue
 
-            if (ab.type === "defense") {
-                finalEnemyAttack -= finalEnemyAttack * ab.value / 100
-            }
+    if (ab.type === "attack") {
+        finalMyAttack += finalMyAttack * (ab.value || 0) / 100
+    }
 
-            if (ab.type === "crit") {
-                if (Math.random() * 100 < ab.value) {
-                    finalMyAttack *= 2
-                    abilityMessage += `\n⚡ كريتيكال من ${ab.name}`
-                }
-            }
+    if (ab.type === "defense") {
+        finalEnemyAttack -= finalEnemyAttack * (ab.value || 0) / 100
+    }
 
-            if (ab.type === "dodge") {
-                if (Math.random() * 100 < ab.value) {
-                    finalEnemyAttack = 0
-                    abilityMessage += `\n💨 مراوغة من ${ab.name}`
-                }
-            }
-
-            if (ab.type === "reflect") {
-                const reflected = Math.floor(finalEnemyAttack * ab.value / 100)
-                finalMyAttack += reflected
-                abilityMessage += `\n🔄 عكس ضرر من ${ab.name}`
-            }
-
-            if (ab.type === "lifesteal") {
-                const heal = finalMyAttack * ab.value / 100
-                me.hp = (me.hp || 100) + heal
-            }
+    if (ab.type === "crit") {
+        if (Math.random() * 100 < (ab.value || 0)) {
+            finalMyAttack *= 2
+            abilityMessage += `\n⚡ كريتيكال من ${ab.name || 'قدرة'}`
         }
+    }
+
+    if (ab.type === "dodge") {
+        if (Math.random() * 100 < (ab.value || 0)) {
+            finalEnemyAttack = 0
+            abilityMessage += `\n💨 مراوغة من ${ab.name || 'قدرة'}`
+        }
+    }
+
+    if (ab.type === "reflect") {
+        const reflected = Math.floor((finalEnemyAttack || 0) * (ab.value || 0) / 100)
+        finalMyAttack += reflected
+        abilityMessage += `\n🔄 عكس ضرر من ${ab.name || 'قدرة'}`
+    }
+
+    if (ab.type === "lifesteal") {
+        const heal = (finalMyAttack || 0) * (ab.value || 0) / 100
+        me.hp = (me.hp || 100) + heal
+    }
+}
+        let winnerUser = finalMyAttack >= finalEnemyAttack ? me.userId : enemy.userId
+
+let reward = 0
+
+if (finalMyAttack >= finalEnemyAttack) {
+
+    reward = rewards[enemyCharacter.rarity] || 100
+    me.money = (me.money || 0) + reward
+    me.xp = (me.xp || 0) + 200
+
+} else {
+
+    reward = rewards[myCharacter.rarity] || 100
+    enemy.money = (enemy.money || 0) + reward
+}
 
         const rewards = {
             'عادي': 100,
@@ -4829,9 +4847,9 @@ ${me.fights}/5
 `
 
         return safeSend(msg.key.remoteJid, {
-            text: battleMessage,
-            mentions: [me.userId || target]
-        })
+    text: battleMessage,
+    mentions: [me.userId, enemy.userId].filter(Boolean)
+})
 
     } catch (err) {
         console.log(err)
