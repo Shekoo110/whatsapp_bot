@@ -4462,6 +4462,7 @@ if (currentBoss.hp <= 0) {
         })
 
     } catch (e) {
+
         console.log("Boss reward error:", e)
 
         currentBoss = null
@@ -4471,6 +4472,10 @@ if (currentBoss.hp <= 0) {
         })
     }
 }
+
+return safeSend(
+    msg.key.remoteJid,
+    {
         text: `⚔️ هجوم على الزعيم
 
 🧿 الشخصية:
