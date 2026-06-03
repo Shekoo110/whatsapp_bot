@@ -5181,7 +5181,9 @@ ${ranking}
 
 🎉 تم توزيع الجوائز بنجاح`,
         mentions
-    }
-)
+    })
+} // إغلاق أي بلوك داخل الدالة (if/for/try)
+
 } // إغلاق distributeBossRewards
+
 startBot()
