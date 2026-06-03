@@ -4491,14 +4491,13 @@ if (levelUpMessage) {
         {
             text: `🎉 مبروك @${userId.split('@')[0]}
 
-${levelUpMessage}
+${levelUpMessage}`,
             mentions: [userId]
         }
     );
 }
 
-const battleMessage = `⚔️ ══〔 𝐆𝐑𝐀𝐍𝐃 𝐁𝐀𝐓𝐓𝐋𝐄 〕══ ⚔️
-
+const battleMessage = `⚔️ ══〔 GRAND BATTLE〕══ ⚔️
 👤 مجموع قوتك:
 ${myPower}
 
