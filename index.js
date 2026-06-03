@@ -1267,7 +1267,7 @@ ${team2Names}
         firstTurn
     ]
 })
-
+    }
 
 if (text === '.مهارة') {
 
