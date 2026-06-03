@@ -5198,14 +5198,5 @@ ${ranking}
         mentions
 }
 )
-
-// نهاية distributeBossRewards
-} 
-
-// نهاية messages.upsert
-}) 
-
-// نهاية startBot
-}
-
+})
 startBot()
