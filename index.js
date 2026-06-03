@@ -1614,6 +1614,8 @@ mentions: [fight.turn]
 })
 }
 
+
+
 if (text === '.ألتميت') {
 const fight = await PvP.findOne({  
     active: true,  
@@ -1634,6 +1636,26 @@ return safeSend(msg.key.remoteJid, {
     text: '❌ ليس دورك'  
 })
 
+}
+    let dotDamage = 0
+    if (fight.burn.player1 > 0 && userId === fight.player1) {
+    dotDamage += 150
+    fight.burn.player1--
+}
+
+if (fight.burn.player2 > 0 && userId === fight.player2) {
+    dotDamage += 150
+    fight.burn.player2--
+}
+
+if (fight.poison.player1 > 0 && userId === fight.player1) {
+    dotDamage += 100
+    fight.poison.player1--
+}
+
+if (fight.poison.player2 > 0 && userId === fight.player2) {
+    dotDamage += 100
+    fight.poison.player2--
 }
 
 let attacker
@@ -1692,6 +1714,7 @@ opponentStats
 )
 
 let damage = result.damage
+    damage += dotDamage
 
 damage = Math.floor(
     damage * 2.5
@@ -1930,7 +1953,9 @@ text:
 @${fight.turn.split('@')[0]}`
 })
 }
-    
+
+
+
 if (text === '.هجوم الخصم') {
 
     const fight = await PvP.findOne({
@@ -1969,6 +1994,27 @@ if (text === '.هجوم الخصم') {
             text: '❌ ليس دورك'
         })
     }
+    
+    let dotDamage = 0
+    if (fight.burn.player1 > 0 && userId === fight.player1) {
+    dotDamage += 150
+    fight.burn.player1--
+}
+
+if (fight.burn.player2 > 0 && userId === fight.player2) {
+    dotDamage += 150
+    fight.burn.player2--
+}
+
+if (fight.poison.player1 > 0 && userId === fight.player1) {
+    dotDamage += 100
+    fight.poison.player1--
+}
+
+if (fight.poison.player2 > 0 && userId === fight.player2) {
+    dotDamage += 100
+    fight.poison.player2--
+}
 
     let attacker
 
@@ -2026,6 +2072,7 @@ const result =
     )
 
 let damage = result.damage
+    damage += dotDamage
 
 const isCrit = result.crit
 
