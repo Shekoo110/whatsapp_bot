@@ -1,70 +1,48 @@
-function calculateDamageAdvanced(attacker, defender) {
+const mongoose = require('mongoose')
+
+const PvPSchema = new mongoose.Schema({
+
+    player1: { type: String, required: true },
+    player2: { type: String, required: true },
+
+    hp1: { type: Number, default: 10000 },
+    hp2: { type: Number, default: 10000 },
+
+    shield1: { type: Number, default: 0 },
+    shield2: { type: Number, default: 0 },
+
+    turn: { type: String, required: true },
+
+    active: { type: Boolean, default: false },
+
+    lastMove: { type: Date, default: Date.now },
 
     // =========================
-    // 🎯 Accuracy vs Dodge
+    // 🔥 STATUS EFFECTS SYSTEM
     // =========================
-    const hitChance =
-        (attacker.accuracy || 100) -
-        (defender.dodge || 0)
 
-    if (
-        Math.random() * 100 >
-        Math.max(5, hitChance)
-    ) {
-        return {
-            damage: 0,
-            crit: false,
-            dodge: true
-        }
-    }
+    burn: {
+        player1: { type: Number, default: 0 },
+        player2: { type: Number, default: 0 }
+    },
 
-    // =========================
-    // 💥 Base Damage
-    // =========================
-    let damage =
-        Math.floor(
-            Math.random() * 600
-        ) + 300
+    poison: {
+        player1: { type: Number, default: 0 },
+        player2: { type: Number, default: 0 }
+    },
 
-    damage +=
-        (attacker.level || 1) * 8
+    stun: {
+        player1: { type: Number, default: 0 },
+        player2: { type: Number, default: 0 }
+    },
 
-    // =========================
-    // 🛡️ Defense Reduction
-    // =========================
-    damage -= (defender.defense || 0)
+    freeze: {
+        player1: { type: Number, default: 0 },
+        player2: { type: Number, default: 0 }
+    },
 
-    if (damage < 50) damage = 50
+    createdAt: { type: Date, default: Date.now }
 
-    // =========================
-    // 💢 Critical Hit
-    // =========================
-    const critChance =
-        attacker.critRate || 0
+})
 
-    const isCrit =
-        Math.random() * 100 <
-        critChance
-
-    if (isCrit) {
-
-        damage =
-            Math.floor(
-                damage *
-                (
-                    1 +
-                    (attacker.critDamage || 50) / 100
-                )
-            )
-    }
-
-    return {
-        damage,
-        crit: isCrit,
-        dodge: false
-    }
-}
-
-module.exports = {
-    calculateDamageAdvanced
-}
+module.exports = mongoose.model('PvP', PvPSchema)
