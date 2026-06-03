@@ -4494,7 +4494,7 @@ if (levelUpMessage) {
         {
             text: `🎉 مبروك @${userId.split('@')[0]}
 
-${levelUpMessage}`,
+${levelUpMessage}
             mentions: [userId]
         }
     );
