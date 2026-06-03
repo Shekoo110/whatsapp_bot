@@ -5198,5 +5198,5 @@ ${ranking}
         mentions
 }
 )
-})
+
 startBot()
