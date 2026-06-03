@@ -232,7 +232,87 @@ function generateEquipmentShop() {
             hp: 0,
             crit: 12,
             dodge: 5
-        }
+        },
+        {
+    id: "sss_sword_1",
+    name: "سيف الإمبراطور",
+    type: "weapon",
+    rarity: "SSS",
+    price: 5000,
+
+    attack: 300,
+    hp: 0,
+
+    crit: 15,
+    dodge: 5,
+
+    defense: 50,
+    accuracy: 10,
+    critRate: 10,
+    critDamage: 50,
+    shield: 0,
+    lifesteal: 5
+},
+{
+    id: "sss_armor_1",
+    name: "درع التنين",
+    type: "armor",
+    rarity: "SSS",
+    price: 5500,
+
+    attack: 0,
+    hp: 1500,
+
+    crit: 0,
+    dodge: 3,
+
+    defense: 120,
+    accuracy: 0,
+    critRate: 0,
+    critDamage: 0,
+    shield: 500,
+    lifesteal: 0
+},
+{
+    id: "sss_ring_1",
+    name: "خاتم مصاص الأرواح",
+    type: "accessory",
+    rarity: "SSS",
+    price: 4500,
+
+    attack: 80,
+    hp: 300,
+
+    crit: 5,
+    dodge: 5,
+
+    defense: 20,
+    accuracy: 5,
+    critRate: 15,
+    critDamage: 75,
+    shield: 200,
+    lifesteal: 10
+},
+{
+    id: "sss_ring_2",
+    name: "خاتم القناص",
+    type: "accessory",
+    rarity: "SSS",
+    price: 4800,
+
+    attack: 100,
+    hp: 0,
+
+    crit: 8,
+    dodge: 2,
+
+    defense: 0,
+    accuracy: 20,
+    critRate: 20,
+    critDamage: 100,
+    shield: 0,
+    lifesteal: 0
+}
     ];
 
     // خلط المصفوفة بشكل سليم برمجياً واختيار 5 عناصر عشوائية
