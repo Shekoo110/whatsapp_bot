@@ -1256,39 +1256,63 @@ ${player.usedCharacters?.length || 0}/30
             )
         }
 
-        if (text === '.سوق_المعدات') {
+        if (text.startsWith('.سوق المعدات')) {
 
-    const player = await Player.findOne({ userId })
+const player = await Player.findOne({ userId })
 
-    if (!player) return
+if (!player) return
 
-    if (!player.inventory || player.inventory.length === 0) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: '🛒 لا يوجد لديك معدات في المخزون'
-        })
-    }
+const DAY = 24 * 60 * 60 * 1000
 
-    let shopText = `🛒 مخزون المعدات الخاص بك:\n\n`
+// يتجدد فقط إذا مر 24 ساعة
+if (
+    !player.shop.lastRefresh ||
+    Date.now() - player.shop.lastRefresh >= DAY ||
+    !player.shop.items.length
+) {
 
-    player.inventory.forEach((item, i) => {
+    const { generateShop } = require('./systems/shopSystem')
 
-        shopText += `#${i + 1}
-🗡️ الاسم: ${item.name}
-🎚️ النوع: ${item.type}
-⭐ الندرة: ${item.rarity}
+    const shopItems = generateShop()
 
-⚔️ هجوم: ${item.attack || 0}
-🛡️ دفاع: ${item.defense || 0}
+    player.shop.items = shopItems
+    player.shop.lastRefresh = Date.now()
+
+    await player.save()
+}
+
+let shopText = `🏪 سوق المعدات\n\n`
+
+player.shop.items.forEach((item, i) => {
+
+    shopText += `#${i + 1}
+
+🛡️ ${item.name}
+🏷️ ${item.rarity || 'B'}
+💰 السعر: ${item.price}
+
+⚔️ ATK: ${item.attack || 0}
 ❤️ HP: ${item.hp || 0}
-🎯 كريت: ${item.crit || 0}
-💨 تفادي: ${item.dodge || 0}
+🎯 CRIT: ${item.crit || 0}
+💨 DODGE: ${item.dodge || 0}
 
 ━━━━━━━━━━━━━━━\n`
-    })
+})
 
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: shopText
-    })
+const nextRefresh =
+    Math.max(
+        0,
+        DAY - (Date.now() - player.shop.lastRefresh)
+    )
+
+const hours = Math.floor(nextRefresh / 3600000)
+
+shopText += `\n🕒 التجديد بعد: ${hours} ساعة`
+
+return sock.sendMessage(msg.key.remoteJid, {
+    text: shopText
+})
+
 }
 
         if (text.startsWith('.شراء_معدات')) {
