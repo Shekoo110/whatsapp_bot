@@ -1267,14 +1267,7 @@ ${team2Names}
         firstTurn
     ]
 })
-    
-        mentions: [
-            fight.player1,
-            fight.player2,
-            firstTurn
-        ]
-    })
-    }
+
 
 if (text === '.مهارة') {
 
