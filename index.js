@@ -4061,13 +4061,9 @@ if (text === '.متجر') {
         const shop = await Shop.find()
 
         if (!shop.length) {
-
-            return safeSend(
-                msg.key.remoteJid,
-                {
-                    text: '❌ لا توجد شخصيات في المتجر حالياً'
-                }
-            )
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا توجد شخصيات في المتجر حالياً'
+            })
         }
 
         let txt =
@@ -4106,21 +4102,15 @@ if (text === '.متجر') {
 مثال:
 .شراءمتجر 1`
 
-        return safeSend(
-            msg.key.remoteJid,
-            { text: txt }
-        )
+        return safeSend(msg.key.remoteJid, { text: txt })
 
     } catch (err) {
 
         console.log('Shop error:', err)
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text: '❌ حدث خطأ أثناء فتح المتجر'
-            }
-        )
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء فتح المتجر'
+        })
     }
 }
         
