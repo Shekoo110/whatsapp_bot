@@ -5,6 +5,7 @@ const {
 
 const fs = require('fs')
 const path = require('path')
+const ABILITY_CHANCE = 25
 
 const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
