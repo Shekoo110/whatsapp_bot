@@ -58,12 +58,12 @@ const abilityIcons = {
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
 // require / imports هنا
-const characters = require('./characters.json')
+const characters = require('./characters.json') // أو المسار الصحيح فقط مرة واحدة
 
 // 👇 هنا مباشرة
-async function generateShop() {
 
-    await Shop.deleteMany()
+
+function generateShop() {
 
     const rarities = [
         { name: 'عادي', chance: 50 },
@@ -72,6 +72,11 @@ async function generateShop() {
         { name: 'SSS', chance: 5 }
     ]
 
+    function getRandomRarity() {
+        const roll = Math.random() * 100
+        let sum = 0
+
+        for (const r of rarities) {
     const getRandomRarity = () => {
 
         let rand = Math.random() * 100
