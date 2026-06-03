@@ -1350,6 +1350,16 @@ getTotalStats(playerData)
 const opponentData =
 await Player.findOne({
 userId:
+const now = Date.now()
+
+const now = Date.now()
+
+if (playerData.skillCooldown > now) {
+    return safeSend(msg.key.remoteJid, {
+        text: `⏳ المهارة في كولداون\nانتظر ${Math.ceil((playerData.skillCooldown - now) / 1000)} ثانية`
+    })
+}
+    
 fight.player1 === userId
 ? fight.player2
 : fight.player1
@@ -1583,21 +1593,23 @@ mentions: [winner]
 
 await fight.save()
 
+playerData.skillCooldown = Date.now() + 10000
+await playerData.save()
+
 let shieldMessage = ''
 
 if (absorbed > 0) {
-shieldMessage =
-\n🛡️ امتص الدرع: ${absorbed}
+    shieldMessage = `\n🛡️ امتص الدرع: ${absorbed}`
 }
+
 let healMessage = ''
 
 if (heal > 0) {
-healMessage =
-\n❤️‍🩹 استعاد: ${heal}
+    healMessage = `\n❤️‍🩹 استعاد: ${heal}`
 }
 
 return safeSend(msg.key.remoteJid, {
-text:
+    text:
 `✨ ${attacker.name} استخدم مهارة!
 
 💥 الضرر: ${damage}${critMessage}${shieldMessage}${healMessage}
@@ -1610,7 +1622,7 @@ text:
 
 🎯 الدور الآن:
 @${fight.turn.split('@')[0]}`,
-mentions: [fight.turn]
+    mentions: [fight.turn]
 })
 }
 
@@ -1683,6 +1695,13 @@ attacker =
 }
 const playerData =
 await Player.findOne({ userId })
+    const now = Date.now()
+
+if (playerData.skillCooldown > now) {
+    return safeSend(msg.key.remoteJid, {
+        text: `⏳ المهارة في كولداون\nانتظر ${Math.ceil((playerData.skillCooldown - now) / 1000)} ثانية`
+    })
+}
 
 const attackerStats =
 getTotalStats(playerData)
@@ -1924,21 +1943,23 @@ mentions: [winner]
 
 await fight.save()
 
+playerData.ultimateCooldown = Date.now() + 30000
+await playerData.save()
+
 let shieldMessage = ''
 
 if (absorbed > 0) {
-shieldMessage =
-\n🛡️ امتص الدرع: ${absorbed}
+    shieldMessage = `\n🛡️ امتص الدرع: ${absorbed}`
 }
+
 let healMessage = ''
 
 if (heal > 0) {
-healMessage =
-\n❤️‍🩹 استعاد: ${heal}
+    healMessage = `\n❤️‍🩹 استعاد: ${heal}`
 }
 
 return safeSend(msg.key.remoteJid, {
-text:
+    text:
 `🌌 ${attacker.name} أطلق الألتميت!
 
 💥 الضرر: ${damage}${critMessage}${shieldMessage}${healMessage}
@@ -1950,7 +1971,8 @@ text:
 🛡️ ${fight.shield2 || 0}
 
 🎯 الدور الآن:
-@${fight.turn.split('@')[0]}`
+@${fight.turn.split('@')[0]}`,
+    mentions: [fight.turn]
 })
 }
 
