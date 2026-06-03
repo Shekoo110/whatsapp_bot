@@ -4053,6 +4053,8 @@ if (text === '.متجر') {
 🧿 الاسم : ${item.character.name}
 🌟 الندرة : ${item.character.rarity}
 ⚔️ القوة : ${item.character.power}
+🎭 الشكل : ${item.character.form || 'عادي'}
+✨ القدرة : ${item.character.ability || 'لا يوجد'}
 💰 السعر : ${item.price}
 ╰────────────────╯
 
