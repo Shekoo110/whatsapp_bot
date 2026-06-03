@@ -1294,6 +1294,325 @@ ${team2Names}
         ]
     })
     }
+
+if (text === '.مهارة') {
+
+const fight = await PvP.findOne({  
+    active: true,  
+    $or: [  
+        { player1: userId },  
+        { player2: userId }  
+    ]  
+})  
+
+if (!fight) {  
+    return safeSend(msg.key.remoteJid, {  
+        text: '❌ أنت لست داخل قتال'  
+    })  
+}  
+
+if (fight.turn !== userId) {  
+return safeSend(msg.key.remoteJid, {  
+    text: '❌ ليس دورك'  
+})
+
+}
+
+let attacker
+
+if (userId === fight.player1) {
+
+attacker =  
+    fight.team1[  
+        Math.floor(  
+            Math.random() *  
+            fight.team1.length  
+        )  
+    ]
+
+} else {
+
+attacker =  
+    fight.team2[  
+        Math.floor(  
+            Math.random() *  
+            fight.team2.length  
+        )  
+    ]
+
+}
+const playerData =
+await Player.findOne({ userId })
+
+const attackerStats =
+getTotalStats(playerData)
+
+const opponentData =
+await Player.findOne({
+userId:
+fight.player1 === userId
+? fight.player2
+: fight.player1
+})
+
+const opponentStats =
+getTotalStats(opponentData)
+
+attackerStats.power =
+attacker.power
+
+attackerStats.level =
+playerData.level
+
+opponentStats.level =
+opponentData.level
+
+const result =
+calculateDamageAdvanced(
+attackerStats,
+opponentStats
+)
+
+let damage = result.damage
+
+damage = Math.floor(
+damage * 1.5
+)
+
+const isCrit = result.crit
+
+const dodged = result.dodge
+
+let critMessage = ''
+
+if (isCrit) {
+critMessage =
+'\n💢 ضربة كريتيكال!'
+}
+if (dodged) {
+
+fight.turn =  
+    userId === fight.player1  
+        ? fight.player2  
+        : fight.player1  
+
+fight.lastMove = new Date()  
+
+await fight.save()  
+
+return safeSend(msg.key.remoteJid, {  
+    text:
+
+`💨 تم تفادي المهارة!
+
+🎯 الدور الآن:
+@${fight.turn.split('@')[0]}`,
+mentions: [fight.turn]
+})
+}
+let absorbed = 0
+if (userId === fight.player1) {
+
+if (fight.shield2 > 0) {  
+
+    absorbed = Math.min(  
+        damage,  
+        fight.shield2  
+    )  
+
+    fight.shield2 -= absorbed  
+    damage -= absorbed  
+}
+
+} else {
+
+if (fight.shield1 > 0) {  
+
+    absorbed = Math.min(  
+        damage,  
+        fight.shield1  
+    )  
+
+    fight.shield1 -= absorbed  
+    damage -= absorbed  
+}
+
+}
+
+if (userId === fight.player1) {
+
+fight.hp2 -= damage
+
+} else {
+
+fight.hp1 -= damage
+
+}
+
+let heal = 0
+
+if (
+attackerStats.lifesteal > 0 &&
+damage > 0
+) {
+
+heal = Math.floor(  
+    damage *  
+    attackerStats.lifesteal /  
+    100  
+)
+
+if (userId === fight.player1) {
+
+fight.hp1 += heal  
+
+} else {  
+
+    fight.hp2 += heal  
+}
+
+}
+
+fight.turn =  
+userId === fight.player1  
+    ? fight.player2  
+    : fight.player1
+
+fight.lastMove = new Date()
+
+if (fight.hp1 <= 0 || fight.hp2 <= 0) {  
+
+const winner =  
+    fight.hp1 > 0  
+        ? fight.player1  
+        : fight.player2  
+
+const loser =  
+    winner === fight.player1  
+        ? fight.player2  
+        : fight.player1  
+
+const winnerData =  
+    await Player.findOne({  
+        userId: winner  
+    })  
+
+const loserData =  
+    await Player.findOne({  
+        userId: loser  
+    })  
+
+const moneyReward =  
+    Math.floor(  
+        500 + Math.random() * 500  
+    )  
+
+const xpReward =  
+    Math.floor(  
+        200 + Math.random() * 300  
+    )  
+
+winnerData.money += moneyReward  
+winnerData.xp += xpReward  
+
+let boxReward = ''  
+
+const randomBox = Math.random()  
+
+if (randomBox < 0.60) {  
+
+    winnerData.boxes.basic += 1  
+    boxReward = '📦 صندوق عادي'
+
+} else if (randomBox < 0.90) {
+
+winnerData.boxes.rare += 1  
+    boxReward = '🎁 صندوق نادر'  
+
+} else {  
+
+    winnerData.boxes.epic += 1  
+    boxReward = '✨ صندوق ملحمي'  
+}  
+
+winnerData.wins += 1  
+winnerData.mmr += 20  
+
+loserData.losses += 1  
+
+loserData.mmr =  
+    Math.max(  
+        0,  
+        loserData.mmr - 10  
+    )  
+
+winnerData.rank =  
+    getRank(winnerData.mmr)  
+
+loserData.rank =  
+    getRank(loserData.mmr)  
+
+await winnerData.save()  
+await loserData.save()  
+
+await PvP.deleteOne({  
+    _id: fight._id  
+})  
+
+return safeSend(msg.key.remoteJid, {  
+    text:
+
+`🏆 انتهى القتال
+
+👑 الفائز:
+@${winner.split('@')[0]}
+
+💰 الفلوس:
++${moneyReward}
+
+⭐ الخبرة:
++${xpReward}
+
+🏅 MMR:
++20
+
+${boxReward}`,
+mentions: [winner]
+})
+}
+
+await fight.save()
+
+let shieldMessage = ''
+
+if (absorbed > 0) {
+shieldMessage =
+\n🛡️ امتص الدرع: ${absorbed}
+}
+let healMessage = ''
+
+if (heal > 0) {
+healMessage =
+\n❤️‍🩹 استعاد: ${heal}
+}
+
+return safeSend(msg.key.remoteJid, {
+text:
+`✨ ${attacker.name} استخدم مهارة!
+
+💥 الضرر: ${damage}${critMessage}${shieldMessage}${healMessage}
+
+❤️ ${fight.hp1}
+💙 ${fight.hp2}
+
+🛡️ ${fight.shield1 || 0}
+🛡️ ${fight.shield2 || 0}
+
+🎯 الدور الآن:
+@${fight.turn.split('@')[0]}`,
+mentions: [fight.turn]
+})
+}
     
 if (text === '.هجوم الخصم') {
 
