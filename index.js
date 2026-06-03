@@ -3839,8 +3839,8 @@ const charName = args.slice(1).join(' ')
         return safeSend(msg.key.remoteJid, {
             text:
 
-`╔════════════════════╗
-        🏪 𝐀𝐔𝐂𝐓𝐈𝐎𝐍
+text: `╔════════════════════╗
+🏪 𝐀𝐔𝐂𝐓𝐈𝐎𝐍
 ╚════════════════════╝
 
 ✅ تم عرض الشخصية في السوق
