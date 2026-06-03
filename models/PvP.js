@@ -32,6 +32,11 @@ const pvpSchema = new mongoose.Schema({
         default: true
     },
 
+    lastMove: {
+        type: Date,
+        default: Date.now
+    },
+
     createdAt: {
         type: Date,
         default: Date.now
