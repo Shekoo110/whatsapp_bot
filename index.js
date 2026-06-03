@@ -18,8 +18,7 @@ const getRank = require('./utils/rank')
 const { getSkillDamage } = require('./utils/skills')
 const Boss = require('./models/Boss')
 const { getTotalStats } = require('./utils/stats')
-const { generateShop } = require('./systems/shopSystem')
-
+const { generateEquipmentShop } = require('./systems/shopSystem')
 if (!global.shopStarted) {
 
     global.shopStarted = true
@@ -63,7 +62,7 @@ const characters = require('./characters.json') // أو المسار الصحي�
 // 👇 هنا مباشرة
 
 
-function generateShop() {
+function generateCharacterShop() {
 
     const rarities = [
         { name: 'عادي', chance: 50 },
