@@ -812,7 +812,7 @@ function createPlayer() {
 // متجر الشخصيات
 // =========================
 
-async function generateShop() {
+async function generateCharacterShop() {
 
     const shopItems = await Shop.find()
 
