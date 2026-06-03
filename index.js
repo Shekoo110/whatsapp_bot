@@ -1358,12 +1358,69 @@ if (text === '.هجوم الخصم') {
     }
 
     const playerData =
-        await Player.findOne({
-            userId
-        })
+    await Player.findOne({ userId })
 
-    const attackerStats =
-        getTotalStats(playerData)
+const attackerStats =
+    getTotalStats(playerData)
+
+const opponentData =
+    await Player.findOne({
+        userId:
+            fight.player1 === userId
+                ? fight.player2
+                : fight.player1
+    })
+
+const opponentStats =
+    getTotalStats(opponentData)
+
+attackerStats.power =
+    attacker.power
+
+attackerStats.level =
+    playerData.level
+
+opponentStats.level =
+    opponentData.level
+
+const result =
+    calculateDamageAdvanced(
+        attackerStats,
+        opponentStats
+    )
+
+let damage = result.damage
+
+const isCrit = result.crit
+
+const dodged = result.dodge
+let critMessage = ''
+
+if (isCrit) {
+    critMessage =
+        '\n💢 ضربة كريتيكال!'
+}
+    
+    if (dodged) {
+
+    fight.turn =
+        userId === fight.player1
+            ? fight.player2
+            : fight.player1
+
+    fight.lastMove = new Date()
+
+    await fight.save()
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`💨 تم تفادي الهجوم!
+
+🎯 الدور الآن:
+@${fight.turn.split('@')[0]}`,
+        mentions: [fight.turn]
+    })
+    }
 
     const opponentData =
         await Player.findOne({
@@ -1634,7 +1691,7 @@ ${boxReward}`,
 ${critical ? '💥 ضربة حرجة!' : ''}
 
 💥 الضرر: ${damage}
-
+${critMessage}
 ${absorbed > 0 ? `🛡️ امتص الدرع: ${absorbed}\n` : ''}${heal > 0 ? `❤️‍🩹 امتصاص حياة: +${heal}\n` : ''}
 
 ❤️ ${fight.hp1}
