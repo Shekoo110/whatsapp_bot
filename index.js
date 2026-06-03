@@ -1079,6 +1079,271 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
             )
         }
 
+    if (text.startsWith('.تحدي')) {
+
+    const target =
+        msg.message.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+
+    if (!target) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ مثال: .تحدي @user'
+        })
+    }
+
+    if (target === userId) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا يمكنك تحدي نفسك'
+        })
+    }
+
+    const targetPlayer =
+        await Player.findOne({ userId: target })
+
+    if (!targetPlayer) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ اللاعب لا يملك حساباً'
+        })
+    }
+
+    const oldFight = await PvP.findOne({
+        active: true,
+        $or: [
+            { player1: userId },
+            { player2: userId },
+            { player1: target },
+            { player2: target }
+        ]
+    })
+
+    if (oldFight) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ أحد اللاعبين داخل قتال بالفعل'
+        })
+    }
+
+    await PvP.create({
+        player1: userId,
+        player2: target,
+        turn: target,
+        active: false
+    })
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`⚔️ تحدي جديد
+
+@${target.split('@')[0]}
+
+تمت دعوتك للقتال
+
+اكتب:
+
+.قبول
+
+أو
+
+.رفض`,
+        mentions: [target]
+    })
+    }
+
+    if (text === '.قبول') {
+
+    const fight = await PvP.findOne({
+        player2: userId,
+        active: false
+    })
+
+    if (!fight) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا يوجد تحدي بانتظار قبولك'
+        })
+    }
+
+    fight.active = true
+
+    const firstTurn =
+        Math.random() < 0.5
+            ? fight.player1
+            : fight.player2
+
+    fight.turn = firstTurn
+
+    await fight.save()
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`⚔️ بدأ القتال!
+
+❤️ اللاعب الأول: ${fight.hp1}
+❤️ اللاعب الثاني: ${fight.hp2}
+
+🎯 الدور الآن:
+
+@${firstTurn.split('@')[0]}
+
+الأوامر المتاحة:
+
+.هجوم
+.مهارة
+.ألتميت`,
+        mentions: [
+            fight.player1,
+            fight.player2,
+            firstTurn
+        ]
+    })
+    }
+    if (text === '.هجوم') {
+
+    const fight = await PvP.findOne({
+        active: true,
+        $or: [
+            { player1: userId },
+            { player2: userId }
+        ]
+    })
+
+    if (!fight) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ أنت لست داخل قتال'
+        })
+    }
+
+    if (fight.turn !== userId) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ ليس دورك'
+        })
+    }
+
+    const damage = 500
+
+    if (userId === fight.player1) {
+
+        fight.hp2 -= damage
+        fight.turn = fight.player2
+
+    } else {
+
+        fight.hp1 -= damage
+        fight.turn = fight.player1
+    }
+
+    if (fight.hp1 <= 0 || fight.hp2 <= 0) {
+
+        const winner =
+            fight.hp1 > 0
+                ? fight.player1
+                : fight.player2
+
+        await PvP.deleteOne({
+            _id: fight._id
+        })
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`🏆 انتهى القتال
+
+الفائز:
+@${winner.split('@')[0]}`,
+            mentions: [winner]
+        })
+    }
+
+    await fight.save()
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`⚔️ هجوم ناجح
+
+💥 الضرر:
+${damage}
+
+❤️ ${fight.hp1}
+💙 ${fight.hp2}
+
+🎯 الدور الآن:
+
+@${fight.turn.split('@')[0]}`,
+        mentions: [fight.turn]
+    })
+    }
+
+    if (text === '.مهارة') {
+
+    const fight = await PvP.findOne({
+        active: true,
+        $or: [
+            { player1: userId },
+            { player2: userId }
+        ]
+    })
+
+    if (!fight) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ أنت لست داخل قتال'
+        })
+    }
+
+    if (fight.turn !== userId) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ ليس دورك'
+        })
+    }
+
+    const damage = 750
+
+    if (userId === fight.player1) {
+
+        fight.hp2 -= damage
+        fight.turn = fight.player2
+
+    } else {
+
+        fight.hp1 -= damage
+        fight.turn = fight.player1
+    }
+
+    if (fight.hp1 <= 0 || fight.hp2 <= 0) {
+
+        const winner =
+            fight.hp1 > 0
+                ? fight.player1
+                : fight.player2
+
+        await PvP.deleteOne({
+            _id: fight._id
+        })
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`🏆 انتهى القتال
+
+الفائز:
+@${winner.split('@')[0]}`,
+            mentions: [winner]
+        })
+    }
+
+    await fight.save()
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`🔥 مهارة خاصة
+
+💥 الضرر:
+${damage}
+
+❤️ ${fight.hp1}
+💙 ${fight.hp2}
+
+🎯 الدور الآن:
+
+@${fight.turn.split('@')[0]}`,
+        mentions: [fight.turn]
+    })
+    }
+
         if (text === '.البرج') {
 
     let player =
