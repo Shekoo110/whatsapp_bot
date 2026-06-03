@@ -1327,10 +1327,6 @@ ${player.usedCharacters?.length || 0}/30
             return sock.sendMessage(msg.key.remoteJid, { text: shopText })
         }
 
-    }) // إغلاق الأحداث (messages.upsert)
-} // إغلاق دالة التشغيل الرئيسية (startBot)
-
-
         if (text.startsWith('.شراء_معدات')) {
 
     const num = parseInt(text.split(' ')[1]) - 1
