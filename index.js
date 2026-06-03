@@ -819,10 +819,17 @@ async function generateCharacterShop() {
     // ⏳ إذا المتجر موجود ومضى أقل من ساعة، لا تعيد التوليد
     if (shopItems.length > 0) {
 
-        const age = Date.now() - shopItems[0].createdAt
+    const firstItem = shopItems[0]
+
+    if (firstItem?.createdAt) {
+
+        const age =
+            Date.now() -
+            new Date(firstItem.createdAt).getTime()
 
         if (age < 60 * 60 * 1000) return
     }
+}
 
     await Shop.deleteMany({})
 
