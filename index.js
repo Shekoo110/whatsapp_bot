@@ -501,7 +501,7 @@ function getRandomCharacterByBox(boxType) {
                 c =>
                     c.rarity === 'عادي' ||
                     c.rarity === 'ممتاز' ||
-                    c.rarity === 'أسطوري'
+                    c.rarity === 'اسطوري'
             )
             break
 
@@ -509,13 +509,13 @@ function getRandomCharacterByBox(boxType) {
             pool = characters.filter(
                 c =>
                     c.rarity === 'ممتاز' ||
-                    c.rarity === 'أسطوري'
+                    c.rarity === 'اسطوري'
             )
             break
 
         case 'legendary':
             pool = characters.filter(
-                c => c.rarity === 'أسطوري'
+                c => c.rarity === 'اسطوري'
             )
             break
 
@@ -527,7 +527,7 @@ function getRandomCharacterByBox(boxType) {
                 )
             } else {
                 pool = characters.filter(
-                    c => c.rarity === 'أسطوري'
+                    c => c.rarity === 'اسطوري'
                 )
             }
 
@@ -541,7 +541,7 @@ function getRandomCharacterByBox(boxType) {
                 )
             } else {
                 pool = characters.filter(
-                    c => c.rarity === 'أسطوري'
+                    c => c.rarity === 'اسطوري'
                 )
             }
 
