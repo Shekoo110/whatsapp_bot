@@ -4152,6 +4152,12 @@ if (!currentBoss) {
     })
 }
 
+if (currentBoss.hp <= 0) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ تم هزيمة الزعيم بالفعل'
+    })
+}
+
 const me = await Player.findOne({ userId })
 
 if (!me || !me.characters.length) {
@@ -4199,66 +4205,58 @@ damage = Math.floor(
     damage * (1 + (me.bossDamageBonus || 0) / 100)
 )
 
-let abilityText = ""
-
 const critChance = 15 + (me.critBonus || 0)
 
 const roll = Math.random() * 100
+
+let abilityText = ""
 
 if (roll <= critChance) {
 
     damage *= 2
 
-    abilityText =
-
-`🔥 قدرة مفعلة
+    abilityText = `
+🔥 قدرة مفعلة
 
 ⚡ ضربة حرجة
 
 📖 ضاعف الضرر ×2`
-}
 
-else if (roll <= 25) {
+} else if (roll <= 25) {
 
-    damage = Math.floor(
-        damage * 1.5
-    )
+    damage = Math.floor(damage * 1.5)
 
-    abilityText =
-
-`👑 قدرة مفعلة
+    abilityText = `
+👑 قدرة مفعلة
 
 ⚡ هاكي الملك
 
 📖 زاد الضرر 50%`
-}
 
-else if (roll <= 33) {
+} else if (roll <= 33) {
 
     damage += 1000
 
-    abilityText =
-
-`✨ قدرة مفعلة
+    abilityText = `
+✨ قدرة مفعلة
 
 ⚡ استيقاظ
 
 📖 زاد الضرر 1000`
-}
 
-else if (roll <= 45) {
+} else if (roll <= 45) {
 
     damage *= 2
 
-    abilityText =
-
-`⚡ قدرة مفعلة
+    abilityText = `
+⚡ قدرة مفعلة
 
 ⚡ سرعة خارقة
 
 📖 حصلت على هجمة إضافية`
 }
-            const abilityRoll = Math.random() * 100
+
+const abilityRoll = Math.random() * 100
 
 // شارينغان
 if (
@@ -4439,6 +4437,7 @@ if (!damage || isNaN(damage)) {
 }
 
 currentBoss.hp = Math.max(0, (currentBoss.hp || 0) - damage)
+            if (currentBoss.hp <= 0) {
             const xpGain = Math.max(
   10,
   Math.floor(damage / 100)
@@ -4468,7 +4467,9 @@ if (currentBoss.hp < 0) {
 await Boss.updateOne(
     {},
     {
-        hp: currentBoss.hp
+        $set: {
+            hp: currentBoss.hp
+        }
     }
 )
 
@@ -4479,18 +4480,24 @@ await me.save()
 
 if (currentBoss.hp <= 0) {
 
+    try {
+
     await distributeBossRewards(
-    sock,
-    msg.key.remoteJid
-)
+        sock,
+        msg.key.remoteJid
+    )
+
+} catch (e) {
+    console.log("Boss reward error:", e)
+}
 
     await Boss.deleteMany({})
 
-    currentBoss = null
+currentBoss = null
 
-    return
-}
-
+return safeSend(msg.key.remoteJid, {
+    text: `👑 تم هزيمة الزعيم!`
+})
 return safeSend(
     msg.key.remoteJid,
     {
