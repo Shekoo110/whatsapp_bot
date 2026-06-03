@@ -3920,126 +3920,71 @@ ${price}
         // .شراء
         // =========================
 
-        if (text.startsWith('.شراء')) {
+    if (text.startsWith('.شراء') && !text.startsWith('.شراءمتجر') && !text.startsWith('.شراءصندوق')) {
+    try {
+        const args = text.split(' ')
+        const itemNumber = Number(args[1]) - 1
 
-try {
+        const market = await Market.find()
+        const item = market[itemNumber]
 
-    const args = text.split(' ')
-    const itemNumber = Number(args[1]) - 1
-
-    const market = await Market.find()
-
-    const item = market[itemNumber]
-
-    if (!item || !item.character) {
-
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ العرض غير موجود'
-        })
-    }
-
-    let player = await Player.findOne({ userId })
-
-    if (!player) {
-
-        player = new Player({
-            userId,
-            characters: [],
-            money: 0
-        })
-    }
-
-    player.characters = player.characters || []
-    player.money = player.money || 0
-
-    if (player.money < item.price) {
-
-        return safeSend(msg.key.remoteJid, {
-            text:
-
-`❌ لا تملك مالاً كافياً
-
-💰 المطلوب: ${item.price}
-💳 رصيدك: ${player.money}`
-})
-}
-
-    if (
-    player.characters.length >=
-    (player.maxCharacters || 30)
-) {
-    return safeSend(
-        msg.key.remoteJid,
-        {
-            text:
-`❌ المخزون ممتلئ
-
-📦 السعة الحالية:
-${player.maxCharacters || 30}`
+        if (!item || !item.character) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ العرض غير موجود'
+            })
         }
-    )
-}
 
-    player.money -= item.price
+        let player = await Player.findOne({ userId })
+        if (!player) {
+            player = new Player({
+                userId,
+                characters: [],
+                money: 0
+            })
+        }
 
-    player.characters.push(item.character)
+        player.characters = player.characters || []
+        player.money = player.money || 0
 
-    // تحويل المال للبائع
-    const seller = await Player.findOne({
-        userId: item.seller
-    })
+        if (player.money < item.price) {
+            return safeSend(msg.key.remoteJid, {
+                text: `❌ لا تملك مالاً كافياً\n\n💰 المطلوب: ${item.price}\n💳 رصيدك: ${player.money}`
+            })
+        }
 
-    if (seller) {
+        if (player.characters.length >= (player.maxCharacters || 30)) {
+            return safeSend(msg.key.remoteJid, {
+                text: `❌ المخزون ممتلئ\n\n📦 السعة الحالية:\n${player.maxCharacters || 30}`
+            })
+        }
 
-        seller.money =
-            (seller.money || 0) + item.price
+        player.money -= item.price
+        player.characters.push(item.character)
 
-        await seller.save()
+        // تحويل المال للبائع
+        const seller = await Player.findOne({ userId: item.seller })
+        if (seller) {
+            seller.money = (seller.money || 0) + item.price
+            await seller.save()
+        }
+
+        await player.save()
+        await Market.findByIdAndDelete(item._id)
+
+        return safeSend(msg.key.remoteJid, {
+            text: `╔════════════════════╗\n🛒 𝐏𝐔𝐑𝐂𝐇𝐀𝐒𝐄\n╚════════════════════╝\n\n✅ تم شراء الشخصية بنجاح\n\n🧿 الاسم :\n${item.character.name}\n\n🌟 الندرة :\n${item.character.rarity}\n\n⚔️ القوة :\n${item.character.power}\n\n💰 السعر :\n${item.price}\n\n💳 رصيدك الحالي :\n${player.money}\n\n━━━━━━━━━━━━━━━\n\n🎉 تمت إضافة الشخصية إلى مجموعتك`
+        })
+
+    } catch (err) {
+        console.log('Buy error:', err)
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء عملية الشراء'
+        })
     }
-
-    await player.save()
-
-    await Market.findByIdAndDelete(item._id)
-
-    return safeSend(msg.key.remoteJid, {
-        text:
-
-`╔════════════════════╗
-🛒 𝐏𝐔𝐑𝐂𝐇𝐀𝐒𝐄
-╚════════════════════╝
-
-✅ تم شراء الشخصية بنجاح
-
-🧿 الاسم :
-${item.character.name}
-
-🌟 الندرة :
-${item.character.rarity}
-
-⚔️ القوة :
-${item.character.power}
-
-💰 السعر :
-${item.price}
-
-💳 رصيدك الحالي :
-${player.money}
-
-━━━━━━━━━━━━━━━
-
-🎉 تمت إضافة الشخصية إلى مجموعتك`
-})
-
-} catch (err) {
-
-    console.log('Buy error:', err)
-
-    return safeSend(msg.key.remoteJid, {
-        text: '❌ حدث خطأ أثناء عملية الشراء'
-    })
 }
 
-}
+
+
 // =========================
 // .شراء
 // =========================
