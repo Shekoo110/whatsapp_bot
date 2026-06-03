@@ -5011,4 +5011,5 @@ ${ranking}
 } catch (err) {
     console.log(err)
 }
+}
 startBot()
