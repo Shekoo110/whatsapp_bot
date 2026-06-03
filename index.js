@@ -27,7 +27,7 @@ if (!global.shopStarted) {
 
     setInterval(async () => {
 
-        const shopItems = generateShop()
+        const shopItems = generateEquipmentShop()
 
         await Player.updateMany({}, {
             $set: {
