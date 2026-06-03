@@ -1160,6 +1160,27 @@ await PvP.create({
         mentions: [target]
     })
     }
+    if (text === '.رفض') {
+
+    const fight = await PvP.findOne({
+        player2: userId,
+        active: false
+    })
+
+    if (!fight) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا يوجد تحدي بانتظار رفضه'
+        })
+    }
+
+    await PvP.deleteOne({
+        _id: fight._id
+    })
+
+    return safeSend(msg.key.remoteJid, {
+        text: 'تم رفض التحدي'
+    })
+    }
 
     if (text === '.قبول') {
 
@@ -1174,6 +1195,23 @@ await PvP.create({
         })
     }
 
+    const player1Data =
+        await Player.findOne({ userId: fight.player1 })
+
+    const player2Data =
+        await Player.findOne({ userId: fight.player2 })
+
+    const team1 = [...player1Data.characters]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+
+    const team2 = [...player2Data.characters]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3)
+
+    fight.team1 = team1
+    fight.team2 = team2
+
     fight.active = true
 
     const firstTurn =
@@ -1184,10 +1222,24 @@ await PvP.create({
     fight.turn = firstTurn
 
     await fight.save()
+        
+const team1Names = team1
+    .map(c => `• ${c.name}`)
+    .join('\n')
 
-    return safeSend(msg.key.remoteJid, {
-        text:
+const team2Names = team2
+    .map(c => `• ${c.name}`)
+    .join('\n')
+    
+        return safeSend(msg.key.remoteJid, {
+    text:
 `⚔️ بدأ القتال!
+
+👤 فريق اللاعب الأول:
+${team1Names}
+
+👤 فريق اللاعب الثاني:
+${team2Names}
 
 ❤️ اللاعب الأول: ${fight.hp1}
 ❤️ اللاعب الثاني: ${fight.hp2}
@@ -1198,11 +1250,16 @@ await PvP.create({
 
 الأوامر المتاحة:
 
-🎯 دورك!
-اكتب:
 .هجوم الخصم
 .مهارة
 .ألتميت`,
+    mentions: [
+        fight.player1,
+        fight.player2,
+        firstTurn
+    ]
+})
+    
         mentions: [
             fight.player1,
             fight.player2,
@@ -1225,6 +1282,19 @@ await PvP.create({
             text: '❌ أنت لست داخل قتال'
         })
     }
+        const now = Date.now()
+
+if (
+    fight.lastMove &&
+    now - new Date(fight.lastMove).getTime() >
+    10 * 60 * 1000
+) {
+    await PvP.deleteOne({ _id: fight._id })
+
+    return safeSend(msg.key.remoteJid, {
+        text: '⌛ انتهت المعركة بسبب الخمول'
+    })
+}
 
     if (fight.turn !== userId) {
         return safeSend(msg.key.remoteJid, {
@@ -1232,11 +1302,22 @@ await PvP.create({
         })
     }
 
-    const playerData =
-    await Player.findOne({ userId })
+    let attacker
 
-const stats =
-    getTotalStats(playerData)
+if (userId === fight.player1) {
+
+    attacker =
+        fight.team1[
+            Math.floor(Math.random() * fight.team1.length)
+        ]
+
+} else {
+
+    attacker =
+        fight.team2[
+            Math.floor(Math.random() * fight.team2.length)
+        ]
+}
 
 const opponentData =
     await Player.findOne({ userId: fight.player1 === userId ? fight.player2 : fight.player1 })
@@ -1246,9 +1327,8 @@ const opponentStats =
 
 const damage = Math.max(
     50,
-    stats.attack - opponentStats.defense
+    attacker.power - opponentStats.defense
 )
-
     if (userId === fight.player1) {
 
         fight.hp2 -= damage
@@ -1259,6 +1339,7 @@ const damage = Math.max(
         fight.hp1 -= damage
         fight.turn = fight.player1
     }
+   fight.lastMove = new Date()     
 await fight.save()
     if (fight.hp1 <= 0 || fight.hp2 <= 0) {
 
@@ -1287,8 +1368,9 @@ await fight.save()
         text:
 `⚔️ هجوم ناجح
 
-💥 الضرر:
-${damage}
+`⚔️ ${attacker.name} هاجم
+
+💥 الضرر: ${damage}`
 
 ❤️ ${fight.hp1}
 💙 ${fight.hp2}
