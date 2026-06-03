@@ -2996,7 +2996,7 @@ me.xp = (me.xp || 0) + xpGain
         damage * (me.lifestealBonus || 0) / 100
     )
 
-    me.hp = (me.hp || 10000) + heal
+    me.hp = Math.min(me.maxHp || 10000, me.hp + heal)
 
     abilityText += `
 
