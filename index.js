@@ -4396,16 +4396,19 @@ if (!damage || isNaN(damage)) {
     damage = 0
 }
 
-currentBoss.hp = Math.max(0, (currentBoss.hp || 0) - damage)
-            if (currentBoss.hp <= 0) {
-            const xpGain = Math.max(
-  10,
-  Math.floor(damage / 100)
+const xpGain = Math.max(
+    10,
+    Math.floor(damage / 100)
 )
 
 me.xp = (me.xp || 0) + xpGain
-            
-            if ((me.lifestealBonus || 0) > 0) {
+
+currentBoss.hp = Math.max(
+    0,
+    (currentBoss.hp || 0) - damage
+)
+
+if ((me.lifestealBonus || 0) > 0) {
 
     const heal = Math.floor(
         damage * (me.lifestealBonus || 0) / 100
@@ -4418,7 +4421,7 @@ me.xp = (me.xp || 0) + xpGain
 🩸 امتصاص الحياة
 
 ❤️ استعدت ${heal} HP`
-            }
+}
 
 if (currentBoss.hp < 0) {
     currentBoss.hp = 0
