@@ -555,7 +555,14 @@ function getRandomCharacterByBox(boxType) {
 }
 
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('✅ MongoDB Connected'))
+.then(async () => {
+
+    console.log('✅ MongoDB Connected')
+
+    await PvP.deleteMany({})
+    console.log('PvP cleared')
+
+})
 .catch(err => console.log('MongoDB Error:', err))
 const safeLoadPlayers = () => {
     try {
