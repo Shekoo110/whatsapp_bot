@@ -1200,7 +1200,14 @@ await PvP.create({
 
     const player2Data =
         await Player.findOne({ userId: fight.player2 })
+const stats1 =
+    getTotalStats(player1Data)
 
+const stats2 =
+    getTotalStats(player2Data)
+
+fight.shield1 = stats1.shield
+fight.shield2 = stats2.shield
     const team1 = [...player1Data.characters]
         .sort(() => Math.random() - 0.5)
         .slice(0, 3)
@@ -1267,7 +1274,8 @@ ${team2Names}
         ]
     })
     }
-    if (text === '.هجوم الخصم') {
+    
+if (text === '.هجوم الخصم') {
 
     const fight = await PvP.findOne({
         active: true,
@@ -1282,19 +1290,23 @@ ${team2Names}
             text: '❌ أنت لست داخل قتال'
         })
     }
-        const now = Date.now()
 
-if (
-    fight.lastMove &&
-    now - new Date(fight.lastMove).getTime() >
-    10 * 60 * 1000
-) {
-    await PvP.deleteOne({ _id: fight._id })
+    const now = Date.now()
 
-    return safeSend(msg.key.remoteJid, {
-        text: '⌛ انتهت المعركة بسبب الخمول'
-    })
-}
+    if (
+        fight.lastMove &&
+        now - new Date(fight.lastMove).getTime() >
+        10 * 60 * 1000
+    ) {
+
+        await PvP.deleteOne({
+            _id: fight._id
+        })
+
+        return safeSend(msg.key.remoteJid, {
+            text: '⌛ انتهت المعركة بسبب الخمول'
+        })
+    }
 
     if (fight.turn !== userId) {
         return safeSend(msg.key.remoteJid, {
@@ -1304,43 +1316,196 @@ if (
 
     let attacker
 
+    if (userId === fight.player1) {
+
+        attacker =
+            fight.team1[
+                Math.floor(
+                    Math.random() *
+                    fight.team1.length
+                )
+            ]
+
+    } else {
+
+        attacker =
+            fight.team2[
+                Math.floor(
+                    Math.random() *
+                    fight.team2.length
+                )
+            ]
+    }
+
+    const playerData =
+        await Player.findOne({
+            userId
+        })
+
+    const attackerStats =
+        getTotalStats(playerData)
+
+    const opponentData =
+        await Player.findOne({
+            userId:
+                fight.player1 === userId
+                    ? fight.player2
+                    : fight.player1
+        })
+
+    const opponentStats =
+        getTotalStats(opponentData)
+
+    // Accuracy
+    if (
+        attackerStats.accuracy > 0 &&
+        Math.random() * 100 >
+        attackerStats.accuracy
+    ) {
+
+        fight.turn =
+            userId === fight.player1
+                ? fight.player2
+                : fight.player1
+
+        fight.lastMove = new Date()
+
+        await fight.save()
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`🎯 أخطأت الضربة
+
+🎯 الدور الآن:
+@${fight.turn.split('@')[0]}`,
+            mentions: [fight.turn]
+        })
+    }
+
+    // Dodge
+    if (
+        opponentStats.dodge > 0 &&
+        Math.random() * 100 <
+        opponentStats.dodge
+    ) {
+
+        fight.turn =
+            userId === fight.player1
+                ? fight.player2
+                : fight.player1
+
+        fight.lastMove = new Date()
+
+        await fight.save()
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`🏃 تم تفادي الهجوم
+
+🎯 الدور الآن:
+@${fight.turn.split('@')[0]}`,
+            mentions: [fight.turn]
+        })
+    }
+
+    let damage =
+        attacker.power +
+        attackerStats.attack
+
+    damage -= opponentStats.defense
+
+    damage = Math.max(50, damage)
+
+    let critical = false
+
+    if (
+        attackerStats.critRate > 0 &&
+        Math.random() * 100 <
+        attackerStats.critRate
+    ) {
+
+        critical = true
+
+        damage = Math.floor(
+            damage *
+            (
+                1 +
+                attackerStats.critDamage / 100
+            )
+        )
+    }
+
+    // Shield
+    let absorbed = 0
+
 if (userId === fight.player1) {
 
-    attacker =
-        fight.team1[
-            Math.floor(Math.random() * fight.team1.length)
-        ]
+    if (fight.shield2 > 0) {
+
+        absorbed = Math.min(
+            damage,
+            fight.shield2
+        )
+
+        fight.shield2 -= absorbed
+        damage -= absorbed
+    }
 
 } else {
 
-    attacker =
-        fight.team2[
-            Math.floor(Math.random() * fight.team2.length)
-        ]
+    if (fight.shield1 > 0) {
+
+        absorbed = Math.min(
+            damage,
+            fight.shield1
+        )
+
+        fight.shield1 -= absorbed
+        damage -= absorbed
+    }
 }
-
-const opponentData =
-    await Player.findOne({ userId: fight.player1 === userId ? fight.player2 : fight.player1 })
-
-const opponentStats =
-    getTotalStats(opponentData)
-
-const damage = Math.max(
-    50,
-    attacker.power - opponentStats.defense
-)
     if (userId === fight.player1) {
 
         fight.hp2 -= damage
-        fight.turn = fight.player2
 
     } else {
 
         fight.hp1 -= damage
-        fight.turn = fight.player1
     }
-   fight.lastMove = new Date()     
-await fight.save()
+    fight.hp1 = Math.max(0, fight.hp1)
+fight.hp2 = Math.max(0, fight.hp2)
+
+    // Lifesteal
+    let heal = 0
+
+    if (
+        attackerStats.lifesteal > 0 &&
+        damage > 0
+    ) {
+
+        heal = Math.floor(
+            damage *
+            attackerStats.lifesteal /
+            100
+        )
+
+        if (userId === fight.player1) {
+
+            fight.hp1 += heal
+
+        } else {
+
+            fight.hp2 += heal
+        }
+    }
+
+    fight.turn =
+        userId === fight.player1
+            ? fight.player2
+            : fight.player1
+
+    fight.lastMove = new Date()
+
     if (fight.hp1 <= 0 || fight.hp2 <= 0) {
 
         const winner =
@@ -1366,21 +1531,26 @@ await fight.save()
 
     return safeSend(msg.key.remoteJid, {
         text:
-`⚔️ هجوم ناجح
-
 `⚔️ ${attacker.name} هاجم
 
-💥 الضرر: ${damage}`
+${critical ? '💥 ضربة حرجة!' : ''}
+
+💥 الضرر: ${damage}
+
+${absorbed > 0 ? `🛡️ امتص الدرع: ${absorbed}\n` : ''}${heal > 0 ? `❤️‍🩹 امتصاص حياة: +${heal}\n` : ''}
 
 ❤️ ${fight.hp1}
 💙 ${fight.hp2}
 
-🎯 الدور الآن:
+🛡️ ${fight.shield1}
+🛡️ ${fight.shield2}
 
+🎯 الدور الآن:
 @${fight.turn.split('@')[0]}`,
         mentions: [fight.turn]
     })
-    }
+}
+
 
     if (text === '.مهارة') {
 
