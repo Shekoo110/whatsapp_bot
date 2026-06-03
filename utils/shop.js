@@ -1,11 +1,11 @@
-// utils/shop.js
+// systems/shopSystem.js
 
-function generateShop() {
+function generateEquipmentShop() {
 
     const items = [
 
         // =========================
-        // 🅱️ B RANK (10 items)
+        // 🅱️ B RANK
         // =========================
         {
             id: "b_sword_1",
@@ -64,7 +64,7 @@ function generateShop() {
         },
 
         // =========================
-        // 🅰️ A RANK (12 items)
+        // 🅰️ A RANK
         // =========================
         {
             id: "a_sword_1",
@@ -139,12 +139,13 @@ function generateShop() {
             rarity: "A",
             price: 550,
             attack: 65,
+            hp: 0,
             crit: 3,
             dodge: 1
         },
 
         // =========================
-        // 💠 SS RANK (8 items)
+        // 💠 SS RANK
         // =========================
         {
             id: "ss_sword_1",
@@ -153,6 +154,7 @@ function generateShop() {
             rarity: "SS",
             price: 2000,
             attack: 150,
+            hp: 0,
             crit: 10,
             dodge: 5
         },
@@ -163,6 +165,7 @@ function generateShop() {
             rarity: "SS",
             price: 2500,
             attack: 180,
+            hp: 0,
             crit: 12,
             dodge: 3
         },
@@ -172,7 +175,9 @@ function generateShop() {
             type: "armor",
             rarity: "SS",
             price: 2600,
+            attack: 0,
             hp: 1200,
+            crit: 0,
             dodge: 5
         },
         {
@@ -181,6 +186,7 @@ function generateShop() {
             type: "armor",
             rarity: "SS",
             price: 2400,
+            attack: 0,
             hp: 1000,
             crit: 5,
             dodge: 8
@@ -191,6 +197,8 @@ function generateShop() {
             type: "accessory",
             rarity: "SS",
             price: 2200,
+            attack: 0,
+            hp: 0,
             crit: 10,
             dodge: 10
         },
@@ -201,6 +209,7 @@ function generateShop() {
             rarity: "SS",
             price: 2100,
             attack: 20,
+            hp: 0,
             crit: 8,
             dodge: 6
         },
@@ -211,7 +220,9 @@ function generateShop() {
             rarity: "SS",
             price: 3000,
             attack: 200,
-            crit: 15
+            hp: 0,
+            crit: 15,
+            dodge: 0
         },
         {
             id: "ss_staff_1",
@@ -220,12 +231,13 @@ function generateShop() {
             rarity: "SS",
             price: 2800,
             attack: 170,
+            hp: 0,
             crit: 12,
             dodge: 5
         }
     ]
 
-    return { items }
+    return items
 }
 
-module.exports = { generateShop }
+module.exports = { generateEquipmentShop }
