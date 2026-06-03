@@ -1239,7 +1239,7 @@ const stats =
     getTotalStats(playerData)
 
 const damage =
-    Math.max(100, stats.attack)
+    Math.floor(stats.attack * (0.8 + Math.random() * 0.4))
 
     if (userId === fight.player1) {
 
@@ -1251,7 +1251,7 @@ const damage =
         fight.hp1 -= damage
         fight.turn = fight.player1
     }
-
+await fight.save()
     if (fight.hp1 <= 0 || fight.hp2 <= 0) {
 
         const winner =
@@ -1321,21 +1321,20 @@ const stats =
     getTotalStats(playerData)
 
 const damage =
-    Math.floor(
-        Math.max(100, stats.attack) * 1.5
-    )
+    Math.floor(stats.attack * 1.5 * (0.8 + Math.random() * 0.4))
 
     if (userId === fight.player1) {
 
         fight.hp2 -= damage
         fight.turn = fight.player2
+        
 
     } else {
 
         fight.hp1 -= damage
         fight.turn = fight.player1
     }
-
+await fight.save()
     if (fight.hp1 <= 0 || fight.hp2 <= 0) {
 
         const winner =
