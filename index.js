@@ -1289,64 +1289,47 @@ ${player.usedCharacters?.length || 0}/30
             )
         }
 
-        if (text.startsWith('.سوق المعدات')) {
+                if (text.startsWith('.سوق المعدات')) {
+            const player = await Player.findOne({ userId })
+            if (!player) return
 
-    const player = await Player.findOne({ userId })
+            const DAY = 24 * 60 * 60 * 1000
 
-    if (!player) return
+            // يتجدد المتجر فقط إذا مر 24 ساعة أو كان فارغاً
+            const needRefresh =
+                !player.shop.lastRefresh ||
+                Date.now() - player.shop.lastRefresh >= DAY ||
+                !player.shop.items.length
 
-    const DAY = 24 * 60 * 60 * 1000
+            if (needRefresh) {
+                const { generateEquipmentShop } = require('./systems/shopSystem')
+                const shopItems = generateEquipmentShop()
 
-    // يتجدد فقط إذا مر 24 ساعة
-    const needRefresh =
-        !player.shop.lastRefresh ||
-        Date.now() - player.shop.lastRefresh >= DAY ||
-        !player.shop.items.length
+                player.shop.items = shopItems
+                player.shop.lastRefresh = Date.now()
 
-    if (needRefresh) {
+                await player.save()
+            }
 
-        const { generateEquipmentShop } = require('./systems/shopSystem')
+            let shopText = `🏪 *سوق المعدات للمقاتلين* 🏪\n\n`
 
-        const shopItems = generateEquipmentShop()
+            // عرض المنتجات الموجودة في المتجر
+            player.shop.items.forEach((item, i) => {
+                shopText += `*#${i + 1}* 🗡️ *الاسم:* ${item.name}\n⭐ *الندرة:* ${item.rarity}\n💰 *السعر:* ${item.price} عملة\n━━━━━━━━━━━━━━━\n`
+            })
 
-        player.shop.items = shopItems
-        player.shop.lastRefresh = Date.now()
+            // حساب الوقت المتبقي للتجديد القادم (الجزء الخاص بك)
+            const nextRefresh = Math.max(0, DAY - (Date.now() - player.shop.lastRefresh))
+            const hours = Math.floor(nextRefresh / 3600000)
 
-        await player.save()
-    }
+            shopText += `\n🕒 *التجديد بعد:* ${hours} ساعة`
 
-    let shopText = `🏪 سوق المعدات\n\n`
+            return sock.sendMessage(msg.key.remoteJid, { text: shopText })
+        }
 
-    player.shop.items.forEach((item, i) => {
+    }) // إغلاق الأحداث (messages.upsert)
+} // إغلاق دالة التشغيل الرئيسية (startBot)
 
-        shopText += `#${i + 1}
-
-🛡️ ${item.name}
-🏷️ ${item.rarity || 'B'}
-💰 السعر: ${item.price}
-
-⚔️ ATK: ${item.attack || 0}
-❤️ HP: ${item.hp || 0}
-🎯 CRIT: ${item.crit || 0}
-💨 DODGE: ${item.dodge || 0}
-
-━━━━━━━━━━━━━━━\n`
-    })
-
-    const nextRefresh =
-        Math.max(
-            0,
-            DAY - (Date.now() - player.shop.lastRefresh)
-        )
-
-    const hours = Math.floor(nextRefresh / 3600000)
-
-    shopText += `\n🕒 التجديد بعد: ${hours} ساعة`
-
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: shopText
-    })
-}
 
         if (text.startsWith('.شراء_معدات')) {
 
@@ -5005,12 +4988,9 @@ ${ranking}
 
 🎉 تم توزيع الجوائز بنجاح`,
         mentions
-    })    }
-)
+        })
+}) // <-- هذا الإغلاق الصحيح والوحيد لـ messages.upsert (بعد نهاية كل الأوامر)
+} // <-- هذا الإغلاق الصحيح لدالة startBot بالكامل
 
-} // نهاية distributeBossRewards
-
-}) // نهاية messages.upsert
-
-} // نهاية startBot
-startBot()
+// 3. السطر الأخير والوحيد في نهاية الملف لتشغيل البوت
+startBot().catch(console.error);
