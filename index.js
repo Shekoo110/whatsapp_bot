@@ -4478,29 +4478,39 @@ me.bossDamage =
 
 await me.save()
 
+// =========================
+// 🧨 نهاية الزعيم
+// =========================
 if (currentBoss.hp <= 0) {
+
+    if (currentBoss.finished) return
+    currentBoss.finished = true
 
     try {
 
-    await distributeBossRewards(
-        sock,
-        msg.key.remoteJid
-    )
+        await distributeBossRewards(
+            sock,
+            msg.key.remoteJid
+        )
 
-} catch (e) {
-    console.log("Boss reward error:", e)
+        await Boss.deleteMany({})
+
+        currentBoss = null
+
+        return safeSend(msg.key.remoteJid, {
+            text: `👑 تم هزيمة الزعيم!`
+        })
+
+    } catch (e) {
+        console.log("Boss reward error:", e)
+
+        currentBoss = null
+
+        return safeSend(msg.key.remoteJid, {
+            text: "❌ حدث خطأ أثناء توزيع الجوائز"
+        })
+    }
 }
-
-    await Boss.deleteMany({})
-
-currentBoss = null
-
-return safeSend(msg.key.remoteJid, {
-    text: `👑 تم هزيمة الزعيم!`
-})
-return safeSend(
-    msg.key.remoteJid,
-    {
         text: `⚔️ هجوم على الزعيم
 
 🧿 الشخصية:
