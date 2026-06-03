@@ -2,6 +2,7 @@
 
 function generateEquipmentShop() {
     const items = [
+
         // =========================
         // 🅱️ B RANK
         // =========================
@@ -11,10 +12,16 @@ function generateEquipmentShop() {
             type: "weapon",
             rarity: "B",
             price: 200,
+
             attack: 20,
             hp: 0,
-            crit: 0,
-            dodge: 0
+            defense: 0,
+            accuracy: 0,
+            critRate: 0,
+            critDamage: 0,
+            dodge: 0,
+            shield: 0,
+            lifesteal: 0
         },
         {
             id: "b_sword_2",
@@ -22,10 +29,16 @@ function generateEquipmentShop() {
             type: "weapon",
             rarity: "B",
             price: 250,
+
             attack: 25,
             hp: 0,
-            crit: 1,
-            dodge: 0
+            defense: 0,
+            accuracy: 2,
+            critRate: 1,
+            critDamage: 0,
+            dodge: 0,
+            shield: 0,
+            lifesteal: 0
         },
         {
             id: "b_armor_1",
@@ -33,10 +46,16 @@ function generateEquipmentShop() {
             type: "armor",
             rarity: "B",
             price: 300,
+
             attack: 0,
             hp: 150,
-            crit: 0,
-            dodge: 0
+            defense: 10,
+            accuracy: 0,
+            critRate: 0,
+            critDamage: 0,
+            dodge: 0,
+            shield: 0,
+            lifesteal: 0
         },
         {
             id: "b_ring_1",
@@ -44,21 +63,16 @@ function generateEquipmentShop() {
             type: "accessory",
             rarity: "B",
             price: 220,
+
             attack: 0,
             hp: 0,
-            crit: 1,
-            dodge: 1
-        },
-        {
-            id: "b_axe_1",
-            name: "فأس صدئ",
-            type: "weapon",
-            rarity: "B",
-            price: 260,
-            attack: 30,
-            hp: 0,
-            crit: 0,
-            dodge: 0
+            defense: 0,
+            accuracy: 0,
+            critRate: 2,
+            critDamage: 5,
+            dodge: 1,
+            shield: 0,
+            lifesteal: 0
         },
 
         // =========================
@@ -70,21 +84,16 @@ function generateEquipmentShop() {
             type: "weapon",
             rarity: "A",
             price: 500,
+
             attack: 60,
             hp: 0,
-            crit: 2,
-            dodge: 0
-        },
-        {
-            id: "a_sword_2",
-            name: "سيف المحارب",
-            type: "weapon",
-            rarity: "A",
-            price: 650,
-            attack: 75,
-            hp: 0,
-            crit: 3,
-            dodge: 0
+            defense: 0,
+            accuracy: 5,
+            critRate: 3,
+            critDamage: 10,
+            dodge: 0,
+            shield: 0,
+            lifesteal: 0
         },
         {
             id: "a_armor_1",
@@ -92,21 +101,16 @@ function generateEquipmentShop() {
             type: "armor",
             rarity: "A",
             price: 700,
+
             attack: 0,
             hp: 400,
-            crit: 0,
-            dodge: 0
-        },
-        {
-            id: "a_armor_2",
-            name: "درع فارس",
-            type: "armor",
-            rarity: "A",
-            price: 800,
-            attack: 0,
-            hp: 500,
-            crit: 0,
-            dodge: 1
+            defense: 35,
+            accuracy: 0,
+            critRate: 0,
+            critDamage: 0,
+            dodge: 0,
+            shield: 50,
+            lifesteal: 0
         },
         {
             id: "a_ring_1",
@@ -114,32 +118,16 @@ function generateEquipmentShop() {
             type: "accessory",
             rarity: "A",
             price: 600,
-            attack: 0,
+
+            attack: 10,
             hp: 0,
-            crit: 5,
-            dodge: 2
-        },
-        {
-            id: "a_ring_2",
-            name: "خاتم السرعة",
-            type: "accessory",
-            rarity: "A",
-            price: 650,
-            attack: 0,
-            hp: 0,
-            crit: 2,
-            dodge: 5
-        },
-        {
-            id: "a_dagger_1",
-            name: "خنجر سريع",
-            type: "weapon",
-            rarity: "A",
-            price: 550,
-            attack: 65,
-            hp: 0,
-            crit: 3,
-            dodge: 1
+            defense: 5,
+            accuracy: 5,
+            critRate: 5,
+            critDamage: 10,
+            dodge: 3,
+            shield: 0,
+            lifesteal: 0
         },
 
         // =========================
@@ -151,21 +139,16 @@ function generateEquipmentShop() {
             type: "weapon",
             rarity: "SS",
             price: 2000,
+
             attack: 150,
             hp: 0,
-            crit: 10,
-            dodge: 5
-        },
-        {
-            id: "ss_sword_2",
-            name: "سيف التنين",
-            type: "weapon",
-            rarity: "SS",
-            price: 2500,
-            attack: 180,
-            hp: 0,
-            crit: 12,
-            dodge: 3
+            defense: 20,
+            accuracy: 10,
+            critRate: 10,
+            critDamage: 30,
+            dodge: 5,
+            shield: 0,
+            lifesteal: 5
         },
         {
             id: "ss_armor_1",
@@ -173,152 +156,60 @@ function generateEquipmentShop() {
             type: "armor",
             rarity: "SS",
             price: 2600,
+
             attack: 0,
             hp: 1200,
-            crit: 0,
-            dodge: 5
+            defense: 80,
+            accuracy: 0,
+            critRate: 0,
+            critDamage: 0,
+            dodge: 5,
+            shield: 200,
+            lifesteal: 0
+        },
+
+        // =========================
+        // 💎 SSS RANK
+        // =========================
+        {
+            id: "sss_sword_1",
+            name: "سيف الإمبراطور",
+            type: "weapon",
+            rarity: "SSS",
+            price: 5000,
+
+            attack: 300,
+            hp: 0,
+            defense: 50,
+            accuracy: 10,
+            critRate: 10,
+            critDamage: 50,
+            dodge: 5,
+            shield: 0,
+            lifesteal: 5
         },
         {
-            id: "ss_armor_2",
-            name: "درع الظل",
+            id: "sss_armor_1",
+            name: "درع التنين الملكي",
             type: "armor",
-            rarity: "SS",
-            price: 2400,
+            rarity: "SSS",
+            price: 5500,
+
             attack: 0,
-            hp: 1000,
-            crit: 5,
-            dodge: 8
-        },
-        {
-            id: "ss_ring_1",
-            name: "خاتم الأسطورة",
-            type: "accessory",
-            rarity: "SS",
-            price: 2200,
-            attack: 0,
-            hp: 0,
-            crit: 10,
-            dodge: 10
-        },
-        {
-            id: "ss_ring_2",
-            name: "خاتم القوة",
-            type: "accessory",
-            rarity: "SS",
-            price: 2100,
-            attack: 20,
-            hp: 0,
-            crit: 8,
-            dodge: 6
-        },
-        {
-            id: "ss_blade_1",
-            name: "نصل الفوضى",
-            type: "weapon",
-            rarity: "SS",
-            price: 3000,
-            attack: 200,
-            hp: 0,
-            crit: 15,
-            dodge: 0
-        },
-        {
-            id: "ss_staff_1",
-            name: "عصا الطاقة",
-            type: "weapon",
-            rarity: "SS",
-            price: 2800,
-            attack: 170,
-            hp: 0,
-            crit: 12,
-            dodge: 5
-        },
-        {
-    id: "sss_sword_1",
-    name: "سيف الإمبراطور",
-    type: "weapon",
-    rarity: "SSS",
-    price: 5000,
-
-    attack: 300,
-    hp: 0,
-
-    crit: 15,
-    dodge: 5,
-
-    defense: 50,
-    accuracy: 10,
-    critRate: 10,
-    critDamage: 50,
-    shield: 0,
-    lifesteal: 5
-},
-{
-    id: "sss_armor_1",
-    name: "درع التنين",
-    type: "armor",
-    rarity: "SSS",
-    price: 5500,
-
-    attack: 0,
-    hp: 1500,
-
-    crit: 0,
-    dodge: 3,
-
-    defense: 120,
-    accuracy: 0,
-    critRate: 0,
-    critDamage: 0,
-    shield: 500,
-    lifesteal: 0
-},
-{
-    id: "sss_ring_1",
-    name: "خاتم مصاص الأرواح",
-    type: "accessory",
-    rarity: "SSS",
-    price: 4500,
-
-    attack: 80,
-    hp: 300,
-
-    crit: 5,
-    dodge: 5,
-
-    defense: 20,
-    accuracy: 5,
-    critRate: 15,
-    critDamage: 75,
-    shield: 200,
-    lifesteal: 10
-},
-{
-    id: "sss_ring_2",
-    name: "خاتم القناص",
-    type: "accessory",
-    rarity: "SSS",
-    price: 4800,
-
-    attack: 100,
-    hp: 0,
-
-    crit: 8,
-    dodge: 2,
-
-    defense: 0,
-    accuracy: 20,
-    critRate: 20,
-    critDamage: 100,
-    shield: 0,
-    lifesteal: 0
-}
+            hp: 1500,
+            defense: 120,
+            accuracy: 0,
+            critRate: 0,
+            critDamage: 0,
+            dodge: 3,
+            shield: 500,
+            lifesteal: 0
+        }
     ];
 
-    // خلط المصفوفة بشكل سليم برمجياً واختيار 5 عناصر عشوائية
+    // خلط واختيار 5 عناصر
     const shuffledItems = [...items].sort(() => Math.random() - 0.5);
     return shuffledItems.slice(0, 5);
 }
 
-// تصدير الدالة لتستطيع قراءتها من ملف index.js
 module.exports = { generateEquipmentShop };
