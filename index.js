@@ -555,7 +555,14 @@ function getRandomCharacterByBox(boxType) {
 }
 
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('✅ MongoDB Connected'))
+.then(async () => {
+
+    console.log('✅ MongoDB Connected')
+
+    await PvP.deleteMany({})
+    console.log('PvP cleared')
+
+})
 .catch(err => console.log('MongoDB Error:', err))
 
 const safeLoadPlayers = () => {
@@ -1219,18 +1226,24 @@ fight.shield2 = stats2.shield
         .slice(0, 3)
 
     fight.team1 = team1
-    fight.team2 = team2
+fight.team2 = team2
 
-    fight.active = true
+fight.active = true
 
-    const firstTurn =
-        Math.random() < 0.5
-            ? fight.player1
-            : fight.player2
+const firstTurn =
+    Math.random() < 0.5
+        ? fight.player1
+        : fight.player2
 
-    fight.turn = firstTurn
+fight.turn = firstTurn
 
-    await fight.save()
+await fight.save()
+
+const checkFight = await PvP.findById(fight._id)
+
+console.log("fight =", JSON.stringify(checkFight))
+        console.log(fight.team1)
+console.log(fight.team2)
         
 const team1Names = team1
     .map(c => `• ${c.name}`)
