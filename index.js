@@ -15,6 +15,26 @@ console.log('Bot starting...')
 
 const mongoose = require('mongoose')
 const PvP = require('./models/PvP')
+
+function getRank(mmr) {
+
+    if (mmr >= 3000)
+        return '👑 أسطوري'
+
+    if (mmr >= 2500)
+        return '💠 ماستر'
+
+    if (mmr >= 2000)
+        return '💎 ألماسي'
+
+    if (mmr >= 1500)
+        return '🥇 بلاتيني'
+
+    if (mmr >= 1200)
+        return '🥈 ذهبي'
+
+    return '🥉 برونزي'
+}
 const bosses = require('./bosses')
 const characters = require('./characters.json')
 const getRank = require('./utils/rank')
@@ -1543,6 +1563,25 @@ winnerData.xp += xpReward
 
 winnerData.wins += 1
 winnerData.mmr += 20
+        let boxReward = ''
+
+const randomBox = Math.random()
+
+if (randomBox < 0.60) {
+
+    winnerData.boxes.basic += 1
+    boxReward = '📦 صندوق عادي'
+
+} else if (randomBox < 0.90) {
+
+    winnerData.boxes.rare += 1
+    boxReward = '🎁 صندوق نادر'
+
+} else {
+
+    winnerData.boxes.epic += 1
+    boxReward = '✨ صندوق ملحمي'
+}
 
 loserData.losses += 1
 
@@ -1551,6 +1590,12 @@ loserData.mmr =
         0,
         loserData.mmr - 10
     )
+
+winnerData.rank =
+    getRank(winnerData.mmr)
+
+loserData.rank =
+    getRank(loserData.mmr)
 
 await winnerData.save()
 await loserData.save()
@@ -1573,7 +1618,9 @@ return safeSend(msg.key.remoteJid, {
 +${xpReward}
 
 🏅 MMR:
-+20`,
++20
+
+${boxReward}`,
     mentions: [winner]
 })
     }
