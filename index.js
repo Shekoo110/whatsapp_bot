@@ -57,7 +57,7 @@ const abilityIcons = {
 const Market = require('./models/Market')
 const Shop = require('./models/Shop')
 // require / imports هنا
-const characters = require('./characters.json') // أو المسار الصحيح فقط مرة واحدة
+
 
 // 👇 هنا مباشرة
 
