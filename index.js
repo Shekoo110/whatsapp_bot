@@ -5158,6 +5158,14 @@ rankingData.forEach((p, i) => {
 await sock.sendMessage(
     groupId,
     {
+        text: ranking,
+        const mentions = players.map(p =>
+    p.userId.includes("@")
+        ? p.userId
+        : p.userId + "@s.whatsapp.net"
+)
+    }
+)
         text: `🏆 تم هزيمة الزعيم العالمي!
 
 🥇 المركز الأول
