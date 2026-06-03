@@ -4893,7 +4893,6 @@ await enemy.save()
         ? myCharacter
         : enemyCharacter
 
-const battleMessage =
 `╔══════════════════════╗
         ⚔️ 𝐄𝐏𝐈𝐂 𝐁𝐀𝐓𝐓𝐋𝐄 ⚔️
 ╚══════════════════════╝
