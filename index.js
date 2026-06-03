@@ -1973,7 +1973,6 @@ for (let i = 5; i <= me.level; i += 5) {
 }
 
 await me.save()
-await me.save()
 
     return safeSend(
         msg.key.remoteJid,
