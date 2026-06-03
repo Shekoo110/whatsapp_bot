@@ -14,6 +14,7 @@ const cooldowns = new Map()
 console.log('Bot starting...')
 
 const mongoose = require('mongoose')
+const PvP = require('./models/PvP')
 const bosses = require('./bosses')
 const characters = require('./characters.json')
 const getRank = require('./utils/rank')
