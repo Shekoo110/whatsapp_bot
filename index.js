@@ -3839,7 +3839,8 @@ const charName = args.slice(1).join(' ')
         return safeSend(msg.key.remoteJid, {
             text:
 
-text: `╔════════════════════╗
+return safeSend(msg.key.remoteJid, {
+    text: `╔════════════════════╗
 🏪 𝐀𝐔𝐂𝐓𝐈𝐎𝐍
 ╚════════════════════╝
 
@@ -3863,7 +3864,7 @@ ${price}
 
 💡 للعرض:
 .السوق`
-        })
+})
 
     } catch (err) {
 
