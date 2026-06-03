@@ -1304,14 +1304,21 @@ if (
     !player.shop.items.length
 ) {
 
-    const { generateShop } = require('./systems/shopSystem')
+    if (
+    !player.shop.lastRefresh ||
+    Date.now() - player.shop.lastRefresh >= DAY ||
+    !player.shop.items.length
+) {
 
-    const shopItems = generateShop()
+    const { generateEquipmentShop } = require('./systems/shopSystem')
+
+    const shopItems = generateEquipmentShop()
 
     player.shop.items = shopItems
     player.shop.lastRefresh = Date.now()
 
     await player.save()
+
 }
 
 let shopText = `🏪 سوق المعدات\n\n`
