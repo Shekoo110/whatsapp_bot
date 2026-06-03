@@ -1242,9 +1242,9 @@ await fight.save()
 const checkFight = await PvP.findById(fight._id)
 
 console.log("fight =", JSON.stringify(checkFight))
-        console.log(fight.team1)
-console.log(fight.team2)
-        
+console.log("TEAM1 DB =", checkFight.team1)
+console.log("TEAM2 DB =", checkFight.team2)
+
 const team1Names = team1
     .map(c => `• ${c.name}`)
     .join('\n')
