@@ -1238,8 +1238,16 @@ await PvP.create({
 const stats =
     getTotalStats(playerData)
 
-const damage =
-    Math.floor(stats.attack * (0.8 + Math.random() * 0.4))
+const opponentData =
+    await Player.findOne({ userId: fight.player1 === userId ? fight.player2 : fight.player1 })
+
+const opponentStats =
+    getTotalStats(opponentData)
+
+const damage = Math.max(
+    50,
+    stats.attack - opponentStats.defense
+)
 
     if (userId === fight.player1) {
 
