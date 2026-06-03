@@ -2983,7 +2983,17 @@ if (Math.random() <= 0.15) {
     }
 }
 
-currentBoss.hp -= damage
+if (!currentBoss || typeof currentBoss.hp !== 'number') {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ خطأ في بيانات الزعيم'
+    })
+}
+
+if (!damage || isNaN(damage)) {
+    damage = 0
+}
+
+currentBoss.hp = Math.max(0, (currentBoss.hp || 0) - damage)
             const xpGain = Math.max(
   10,
   Math.floor(damage / 100)
