@@ -1520,25 +1520,32 @@ if (text.startsWith('.قتال pvp')) {
         let defHP = turnAttacker ? dHP : aHP
 
         // 🔥 status damage
-        if (atk.burn > 0) {
-            defHP -= 80
-            atk.burn--
-            log += `🔥 Burn damage!\n`
-        }
 
-        if (atk.bleed > 0) {
-            defHP -= 120
-            atk.bleed--
-            log += `🩸 Bleed damage!\n`
-        }
+if (atk.burn > 0) {
+    defHP -= 80
+    atk.burn--
+    log += `🔥 حرق -80 HP\n`
+}
 
-        if (atk.stun > 0) {
-            atk.stun--
-            log += `💫 Stunned - skip turn\n`
-            turnAttacker = !turnAttacker
-            turn++
-            continue
-        }
+if (atk.bleed > 0) {
+    defHP -= 120
+    atk.bleed--
+    log += `🩸 نزيف -120 HP\n`
+}
+
+if (defHP <= 0) {
+    if (turnAttacker) dHP = 0
+    else aHP = 0
+    break
+}
+
+if (atk.stun > 0) {
+    atk.stun--
+    log += `💫 مذهول - خسر دوره\n`
+    turnAttacker = !turnAttacker
+    turn++
+    continue
+}
 
         // 🛡️ dodge
         if (Math.random() * 100 < def.dodge) {
@@ -1591,18 +1598,26 @@ if (text.startsWith('.قتال pvp')) {
     await defender.save()
 
     return safeSend(msg.key.remoteJid, {
-        text:
-`⚔️ انتهى القتال!
+    text: `${log}
 
-🏆 الفائز: @${winner.userId.split('@')[0]}
+━━━━━━━━━━━━━━━━━━
+
+🏆 الفائز:
+@${winner.userId.split('@')[0]}
 
 📊 النتائج:
-🥇 ${attacker.userId.split('@')[0]}: ${attacker.rank} (${attacker.mmr})
-🥈 ${defender.userId.split('@')[0]}: ${defender.rank} (${defender.mmr})
 
-🔥 PvP مطور بنظام مهارات + حالات`
-    })
-}
+🥇 @${attacker.userId.split('@')[0]}
+${attacker.rank} (${attacker.mmr})
+
+🥈 @${defender.userId.split('@')[0]}
+${defender.rank} (${defender.mmr})`,
+
+    mentions: [
+        attacker.userId,
+        defender.userId
+    ]
+})
 
         if (text.startsWith('.اشرح pvp')) {
 
