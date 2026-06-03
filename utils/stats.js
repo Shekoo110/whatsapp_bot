@@ -42,6 +42,7 @@ function getTotalStats(player) {
     return {
         attack: atk,
         hp,
+        crit,
         dodge,
         defense,
         accuracy,
@@ -50,4 +51,8 @@ function getTotalStats(player) {
         shield,
         lifesteal
     }
+}
+
+module.exports = {
+    getTotalStats
 }
