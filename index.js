@@ -4978,216 +4978,139 @@ return safeSend(
     }
 }
 
+async function distributeBossRewards(sock, groupId) {
 
-async function distributeBossRewards(
-    sock,
-    groupId
-) {
+    const players = await Player.find({
+        bossDamage: { $gt: 0 }
+    })
 
-const players = await Player.find({
-    bossDamage: { $gt: 0 }
-})
+    if (!players.length) return
 
-if (!players.length) return
+    players.sort((a, b) =>
+        (b.bossDamage || 0) - (a.bossDamage || 0)
+    )
 
-players.sort(
-    (a, b) =>
-    (b.bossDamage || 0) -
-    (a.bossDamage || 0)
-)
+    const first = players[0]
+    const second = players[1]
 
-const first = players[0]
-const second = players[1]
+    if (first) {
+        first.money = (first.money || 0) + 10000
+        first.xp = (first.xp || 0) + 1000
 
-if (first) {
-
-    first.money += 10000
-    first.xp += 1000
-
-    const legendaryChars =
-        allCharacters.filter(
+        const legendaryChars = allCharacters.filter(
             c => c.rarity === "اسطوري"
         )
 
-    if (legendaryChars.length) {
+        if (legendaryChars.length) {
+            const reward =
+                legendaryChars[Math.floor(Math.random() * legendaryChars.length)]
 
-        const reward =
-            legendaryChars[
-                Math.floor(
-                    Math.random() *
-                    legendaryChars.length
-                )
-            ]
+            first.characters = first.characters || []
+            first.characters.push(JSON.parse(JSON.stringify(reward)))
+        }
 
-        first.characters.push(
-            JSON.parse(
-                JSON.stringify(reward)
-            )
-        )
+        await first.save()
     }
 
-    await first.save()
-}
+    if (second) {
+        second.money = (second.money || 0) + 5000
+        second.xp = (second.xp || 0) + 500
 
+        const roll = Math.random() * 100
 
-if (second) {
+        let reward = null
 
-    second.money += 5000
-    second.xp += 500
-
-    const roll = Math.random() * 100
-
-    if (roll <= 30) {
-
-        const legendaryChars =
-            allCharacters.filter(
+        if (roll <= 30) {
+            const legendaryChars = allCharacters.filter(
                 c => c.rarity === "اسطوري"
             )
 
-        if (legendaryChars.length) {
+            if (legendaryChars.length) {
+                reward =
+                    legendaryChars[Math.floor(Math.random() * legendaryChars.length)]
+            }
 
-            const reward =
-                legendaryChars[
-                    Math.floor(
-                        Math.random() *
-                        legendaryChars.length
-                    )
-                ]
-
-            second.characters.push(
-                JSON.parse(JSON.stringify(reward))
-            )
-        }
-
-    } else if (roll <= 80) {
-
-        const epicChars =
-            allCharacters.filter(
+        } else if (roll <= 80) {
+            const epicChars = allCharacters.filter(
                 c => c.rarity === "ممتاز"
             )
 
-        if (epicChars.length) {
-
-            const reward =
-                epicChars[
-                    Math.floor(
-                        Math.random() *
-                        epicChars.length
-                    )
-                ]
-
-            second.characters.push(
-                JSON.parse(JSON.stringify(reward))
-            )
+            if (epicChars.length) {
+                reward =
+                    epicChars[Math.floor(Math.random() * epicChars.length)]
+            }
         }
+
+        if (reward) {
+            second.characters = second.characters || []
+            second.characters.push(JSON.parse(JSON.stringify(reward)))
+        }
+
+        await second.save()
     }
 
-    await second.save()
-}
+    for (let i = 2; i < players.length; i++) {
 
-for (let i = 2; i < players.length; i++) {
+        const player = players[i]
 
-    const player = players[i]
+        player.money = (player.money || 0) + 2500
+        player.xp = (player.xp || 0) + 500
 
-    player.money += 2500
-    player.xp += 500
-
-    const epicChars =
-        allCharacters.filter(
+        const epicChars = allCharacters.filter(
             c => c.rarity === "ممتاز"
         )
 
-    if (epicChars.length) {
+        if (epicChars.length) {
+            const reward =
+                epicChars[Math.floor(Math.random() * epicChars.length)]
 
-        const reward =
-            epicChars[
-                Math.floor(
-                    Math.random() *
-                    epicChars.length
-                )
-            ]
+            player.characters = player.characters || []
+            player.characters.push(JSON.parse(JSON.stringify(reward)))
+        }
 
-        player.characters.push(
-            JSON.parse(
-                JSON.stringify(reward)
-            )
-        )
+        await player.save()
     }
 
-    await player.save()
-}
+    const rankingData = players.map(p => ({
+        userId: p.userId,
+        damage: p.bossDamage || 0
+    }))
 
-const rankingData = players.map(p => ({
-    userId: p.userId,
-    damage: p.bossDamage || 0
-}))
+    for (const player of players) {
+        player.bossDamage = 0
+        await player.save()
+    }
 
-for (const player of players) {
+    const mentions = players.map(p =>
+        p.userId.includes("@")
+            ? p.userId
+            : p.userId + "@s.whatsapp.net"
+    )
 
-    player.bossDamage = 0
+    let ranking = ''
 
-    await player.save()
-}
-
-const mentions = players.map(p =>
-    p.userId.includes("@")
-        ? p.userId
-        : p.userId + "@s.whatsapp.net"
-)
-
-let ranking = ''
-
-rankingData.forEach((p, i) => {
-
-    ranking +=
-`${i + 1}- @${p.userId.split('@')[0]}
+    rankingData.forEach((p, i) => {
+        ranking += `${i + 1}- @${p.userId.split('@')[0]}
 💥 الضرر: ${p.damage}
 
 `
-})
+    })
 
-await sock.sendMessage(
-    groupId,
-    {
+    await sock.sendMessage(groupId, {
         text: `🏆 تم هزيمة الزعيم العالمي!
 
 🥇 المركز الأول
 @${players[0]?.userId.split('@')[0] || 'لا يوجد'}
 
-🎁 الجوائز:
-💰 10000 مال
-⭐ 1000 XP
-👑 شخصية أسطورية
-
-━━━━━━━━━━━━━━━━━━
-
 🥈 المركز الثاني
 @${players[1]?.userId.split('@')[0] || 'لا يوجد'}
 
-🎁 الجوائز:
-💰 5000 مال
-⭐ 500 XP
-
-━━━━━━━━━━━━━━━━━━
-
-🥉 المركز الثالث وما بعده
-
-🎁 الجوائز:
-💰 2500 مال
-⭐ 500 XP
-✨ شخصية ممتازة
-
-━━━━━━━━━━━━━━━━━━
-
-📊 ترتيب جميع المشاركين
-
+📊 الترتيب:
 ${ranking}
 
 🎉 تم توزيع الجوائز بنجاح`,
         mentions
+    })
+}
     }
-)
-
-} // إغلاق distributeBossRewards
-
 startBot()
