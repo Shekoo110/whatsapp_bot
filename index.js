@@ -1291,41 +1291,35 @@ ${player.usedCharacters?.length || 0}/30
 
         if (text.startsWith('.سوق المعدات')) {
 
-const player = await Player.findOne({ userId })
+    const player = await Player.findOne({ userId })
 
-if (!player) return
+    if (!player) return
 
-const DAY = 24 * 60 * 60 * 1000
+    const DAY = 24 * 60 * 60 * 1000
 
-// يتجدد فقط إذا مر 24 ساعة
-if (
-    !player.shop.lastRefresh ||
-    Date.now() - player.shop.lastRefresh >= DAY ||
-    !player.shop.items.length
-) {
+    // يتجدد فقط إذا مر 24 ساعة
+    const needRefresh =
+        !player.shop.lastRefresh ||
+        Date.now() - player.shop.lastRefresh >= DAY ||
+        !player.shop.items.length
 
-    if (
-    !player.shop.lastRefresh ||
-    Date.now() - player.shop.lastRefresh >= DAY ||
-    !player.shop.items.length
-) {
+    if (needRefresh) {
 
-    const { generateEquipmentShop } = require('./systems/shopSystem')
+        const { generateEquipmentShop } = require('./systems/shopSystem')
 
-    const shopItems = generateEquipmentShop()
+        const shopItems = generateEquipmentShop()
 
-    player.shop.items = shopItems
-    player.shop.lastRefresh = Date.now()
+        player.shop.items = shopItems
+        player.shop.lastRefresh = Date.now()
 
-    await player.save()
+        await player.save()
+    }
 
-}
+    let shopText = `🏪 سوق المعدات\n\n`
 
-let shopText = `🏪 سوق المعدات\n\n`
+    player.shop.items.forEach((item, i) => {
 
-player.shop.items.forEach((item, i) => {
-
-    shopText += `#${i + 1}
+        shopText += `#${i + 1}
 
 🛡️ ${item.name}
 🏷️ ${item.rarity || 'B'}
@@ -1337,22 +1331,21 @@ player.shop.items.forEach((item, i) => {
 💨 DODGE: ${item.dodge || 0}
 
 ━━━━━━━━━━━━━━━\n`
-})
+    })
 
-const nextRefresh =
-    Math.max(
-        0,
-        DAY - (Date.now() - player.shop.lastRefresh)
-    )
+    const nextRefresh =
+        Math.max(
+            0,
+            DAY - (Date.now() - player.shop.lastRefresh)
+        )
 
-const hours = Math.floor(nextRefresh / 3600000)
+    const hours = Math.floor(nextRefresh / 3600000)
 
-shopText += `\n🕒 التجديد بعد: ${hours} ساعة`
+    shopText += `\n🕒 التجديد بعد: ${hours} ساعة`
 
-return sock.sendMessage(msg.key.remoteJid, {
-    text: shopText
-})
-
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: shopText
+    })
 }
 
         if (text.startsWith('.شراء_معدات')) {
