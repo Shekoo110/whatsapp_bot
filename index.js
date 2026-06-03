@@ -14,6 +14,7 @@ console.log('Bot starting...')
 
 const mongoose = require('mongoose')
 const bosses = require('./bosses')
+const characters = require('./characters.json')
 const getRank = require('./utils/rank')
 const { getSkillDamage } = require('./utils/skills')
 const Boss = require('./models/Boss')
