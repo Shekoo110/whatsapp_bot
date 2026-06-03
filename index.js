@@ -3836,11 +3836,10 @@ const charName = args.slice(1).join(' ')
 
         await player.save()
 
-        return safeSend(msg.key.remoteJid, {
-            text:
+try {
 
-return safeSend(msg.key.remoteJid, {
-    text: `╔════════════════════╗
+    return safeSend(msg.key.remoteJid, {
+        text: `╔════════════════════╗
 🏪 𝐀𝐔𝐂𝐓𝐈𝐎𝐍
 ╚════════════════════╝
 
@@ -3864,16 +3863,15 @@ ${price}
 
 💡 للعرض:
 .السوق`
-})
+    })
 
-    } catch (err) {
+} catch (err) {
 
-        console.log('Auction error:', err)
+    console.log('Auction error:', err)
 
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ حدث خطأ أثناء إنشاء المزاد'
-        })
-    }
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ حدث خطأ أثناء إنشاء المزاد'
+    })
 }
 
         // =========================
@@ -3899,10 +3897,8 @@ ${price}
 
         let txt =
 `╔══════════════╗
-      🏪 السوق العالمي
-╚══════════════╝
-
-`
+🏪 السوق العالمي
+╚══════════════╝`
 
         market.forEach((item, i) => {
 
