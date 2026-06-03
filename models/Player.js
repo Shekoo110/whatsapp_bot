@@ -59,6 +59,9 @@ money: { type: Number, default: 0 },
         default: 0
     },
 
+    skillCooldown: { type: Number, default: 0 },
+ultimateCooldown: { type: Number, default: 0 },
+
     // =========================
     // DAILY SYSTEM
     // =========================
