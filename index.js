@@ -4968,15 +4968,13 @@ return safeSend(
 
 
 
-    } catch (err) {
-
-        console.log('Fight error:', err)
-
+ } catch (err) {
+        console.log(err);
         return safeSend(msg.key.remoteJid, {
             text: '❌ حدث خطأ أثناء القتال'
-        })
+        });
     }
-}
+} // ← هذا مهم جداً إغلاق if
 
 async function distributeBossRewards(sock, groupId) {
 
