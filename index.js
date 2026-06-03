@@ -2013,7 +2013,16 @@ if (fight.poison.player2 > 0 && userId === fight.player2) {
     dotDamage += 100
     fight.poison.player2--
 }
-
+if (
+    !fight.team1 ||
+    !fight.team2 ||
+    !fight.team1.length ||
+    !fight.team2.length
+) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ بيانات القتال تالفة، أعد إنشاء التحدي'
+    })
+}
     let attacker
 
     if (userId === fight.player1) {
