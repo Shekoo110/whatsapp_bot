@@ -2529,6 +2529,12 @@ if (!player.towerTickets) {
 const args = text.split(' ')
 const item = args[1]?.toLowerCase()
 
+if (!item) {
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: '❌ اكتب اسم الصندوق'
+    })
+}
+
 const prices = {
     basic: 5,
     rare: 10,
@@ -2550,7 +2556,6 @@ const names = {
 if (!prices[item]) {
     return sock.sendMessage(msg.key.remoteJid, {
         text:
-
 `❌ الصندوق غير موجود
 
 📦 basic
