@@ -5157,7 +5157,6 @@ rankingData.forEach((p, i) => {
 await sock.sendMessage(
     groupId,
     {
-
         text: `🏆 تم هزيمة الزعيم العالمي!
 
 🥇 المركز الأول
@@ -5194,9 +5193,8 @@ await sock.sendMessage(
 ${ranking}
 
 🎉 تم توزيع الجوائز بنجاح`,
-
         mentions
-}
+    }
 )
 
 startBot()
