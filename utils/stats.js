@@ -42,7 +42,6 @@ function getTotalStats(player) {
     return {
         attack: atk,
         hp,
-        crit,
         dodge,
         defense,
         accuracy,
