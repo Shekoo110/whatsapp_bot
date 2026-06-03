@@ -2103,16 +2103,6 @@ if (isCrit) {
     })
     }
 
-    const opponentData =
-        await Player.findOne({
-            userId:
-                fight.player1 === userId
-                    ? fight.player2
-                    : fight.player1
-        })
-
-    const opponentStats =
-        getTotalStats(opponentData)
 
     // Accuracy
     if (
