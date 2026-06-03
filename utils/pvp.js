@@ -1,22 +1,61 @@
 function calculateDamageAdvanced(attacker, defender) {
 
-    let baseDamage = Math.floor(Math.random() * 600) + 300
+    // Accuracy
+    const hitChance =
+        (attacker.accuracy || 100) -
+        (defender.dodge || 0)
 
-    baseDamage += (attacker.level || 1) * 8
+    if (
+        Math.random() * 100 >
+        Math.max(5, hitChance)
+    ) {
+        return {
+            damage: 0,
+            crit: false,
+            dodge: true
+        }
+    }
 
-    const critChance = (attacker.crit || 5) + (attacker.critBonus || 0)
-    const isCrit = Math.random() * 100 < critChance
+    let damage =
+        Math.floor(
+            Math.random() * 600
+        ) + 300
 
-    if (isCrit) baseDamage *= 2
+    damage +=
+        (attacker.level || 1) * 8
 
-    const defense = (defender.defenseBonus || 0) + (defender.level || 1) * 3
-    baseDamage -= defense * 6
+    // Defense
+    damage -=
+        (defender.defense || 0)
 
-    if (baseDamage < 50) baseDamage = 50
+    if (damage < 50)
+        damage = 50
+
+    // Critical
+    const critChance =
+        attacker.critRate || 0
+
+    const isCrit =
+        Math.random() * 100 <
+        critChance
+
+    if (isCrit) {
+
+        damage =
+            Math.floor(
+                damage *
+                (
+                    1 +
+                    (attacker.critDamage || 50)
+                    / 100
+                )
+            )
+    }
 
     return {
-        damage: Math.floor(baseDamage),
-        crit: isCrit
+        damage,
+        crit: isCrit,
+        dodge: false
     }
 }
 
