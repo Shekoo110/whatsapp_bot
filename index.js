@@ -138,6 +138,18 @@ if (oldShop) {
 
     return shopItems
 }
+
+generateCharacterShop().catch(console.error)
+
+setInterval(async () => {
+    try {
+        await generateCharacterShop()
+        console.log('✅ Shop refreshed')
+    } catch (err) {
+        console.log('❌ Shop refresh error:', err)
+    }
+}, 60 * 60 * 1000)
+
 let currentBoss = null
 
 
