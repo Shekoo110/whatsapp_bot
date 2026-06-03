@@ -44,4 +44,6 @@ const pvpSchema = new mongoose.Schema({
 
 })
 
-module.exports = mongoose.model('PvP', pvpSchema)
+module.exports =
+    mongoose.models.PvP ||
+    mongoose.model('PvP', pvpSchema)
