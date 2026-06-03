@@ -1184,7 +1184,9 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
 
 الأوامر المتاحة:
 
-.هجوم
+🎯 دورك!
+اكتب:
+.هجوم الخصم
 .مهارة
 .ألتميت`,
         mentions: [
@@ -1194,7 +1196,7 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
         ]
     })
     }
-    if (text === '.هجوم') {
+    if (text === '.هجوم الخصم')
 
     const fight = await PvP.findOne({
         active: true,
@@ -1216,7 +1218,14 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
         })
     }
 
-    const damage = 500
+    const playerData =
+    await Player.findOne({ userId })
+
+const stats =
+    getTotalStats(playerData)
+
+const damage =
+    Math.max(100, stats.attack)
 
     if (userId === fight.player1) {
 
@@ -1291,7 +1300,16 @@ ${damage}
         })
     }
 
-    const damage = 750
+    const playerData =
+    await Player.findOne({ userId })
+
+const stats =
+    getTotalStats(playerData)
+
+const damage =
+    Math.floor(
+        Math.max(100, stats.attack) * 1.5
+    )
 
     if (userId === fight.player1) {
 
