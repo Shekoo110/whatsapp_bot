@@ -1,6 +1,8 @@
 function calculateDamageAdvanced(attacker, defender) {
 
-    // Accuracy
+    // =========================
+    // 🎯 Accuracy vs Dodge
+    // =========================
     const hitChance =
         (attacker.accuracy || 100) -
         (defender.dodge || 0)
@@ -16,6 +18,9 @@ function calculateDamageAdvanced(attacker, defender) {
         }
     }
 
+    // =========================
+    // 💥 Base Damage
+    // =========================
     let damage =
         Math.floor(
             Math.random() * 600
@@ -24,14 +29,16 @@ function calculateDamageAdvanced(attacker, defender) {
     damage +=
         (attacker.level || 1) * 8
 
-    // Defense
-    damage -=
-        (defender.defense || 0)
+    // =========================
+    // 🛡️ Defense Reduction
+    // =========================
+    damage -= (defender.defense || 0)
 
-    if (damage < 50)
-        damage = 50
+    if (damage < 50) damage = 50
 
-    // Critical
+    // =========================
+    // 💢 Critical Hit
+    // =========================
     const critChance =
         attacker.critRate || 0
 
@@ -46,8 +53,7 @@ function calculateDamageAdvanced(attacker, defender) {
                 damage *
                 (
                     1 +
-                    (attacker.critDamage || 50)
-                    / 100
+                    (attacker.critDamage || 50) / 100
                 )
             )
     }
