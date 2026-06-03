@@ -1007,9 +1007,9 @@ async function startBot() {
     })
 
     // =========================
-    // الرسائل
-    // =========================
-    sock.ev.on('messages.upsert', async ({ messages }) => {
+// الرسائل
+// =========================
+sock.ev.on('messages.upsert', async ({ messages }) => {
 
     const msg = messages[0]
     if (!msg?.message) return
@@ -1019,6 +1019,10 @@ async function startBot() {
         msg.message.extendedTextMessage?.text
 
     if (!text) return
+
+    const userId =
+        msg.key.participant ||
+        msg.key.remoteJid
 
     const key = userId + '_global'
     const now = Date.now()
@@ -1032,11 +1036,7 @@ async function startBot() {
 
     cooldowns.set(key, now)
 
-    if (!text) return
-
-    const userId =
-        msg.key.participant ||
-        msg.key.remoteJid
+    // جميع الأوامر تبدأ من هنا
 
     // =========================
     // الأوامر هنا فقط
