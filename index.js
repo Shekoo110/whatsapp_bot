@@ -1508,23 +1508,74 @@ fight.hp2 = Math.max(0, fight.hp2)
 
     if (fight.hp1 <= 0 || fight.hp2 <= 0) {
 
-        const winner =
-            fight.hp1 > 0
-                ? fight.player1
-                : fight.player2
+const winner =
+    fight.hp1 > 0
+        ? fight.player1
+        : fight.player2
 
-        await PvP.deleteOne({
-            _id: fight._id
-        })
+const loser =
+    winner === fight.player1
+        ? fight.player2
+        : fight.player1
 
-        return safeSend(msg.key.remoteJid, {
-            text:
+const winnerData =
+    await Player.findOne({
+        userId: winner
+    })
+
+const loserData =
+    await Player.findOne({
+        userId: loser
+    })
+
+const moneyReward =
+    Math.floor(
+        500 + Math.random() * 500
+    )
+
+const xpReward =
+    Math.floor(
+        200 + Math.random() * 300
+    )
+
+winnerData.money += moneyReward
+winnerData.xp += xpReward
+
+winnerData.wins += 1
+winnerData.mmr += 20
+
+loserData.losses += 1
+
+loserData.mmr =
+    Math.max(
+        0,
+        loserData.mmr - 10
+    )
+
+await winnerData.save()
+await loserData.save()
+
+await PvP.deleteOne({
+    _id: fight._id
+})
+
+return safeSend(msg.key.remoteJid, {
+    text:
 `🏆 انتهى القتال
 
-الفائز:
-@${winner.split('@')[0]}`,
-            mentions: [winner]
-        })
+👑 الفائز:
+@${winner.split('@')[0]}
+
+💰 الفلوس:
++${moneyReward}
+
+⭐ الخبرة:
++${xpReward}
+
+🏅 MMR:
++20`,
+    mentions: [winner]
+})
     }
 
     await fight.save()
