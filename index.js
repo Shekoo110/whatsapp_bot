@@ -4981,8 +4981,7 @@ async function distributeBossRewards(sock, groupId) {
             : p.userId + "@s.whatsapp.net"
     )
 
-    try {
-
+    
     let ranking = ''
 
     rankingData.forEach((p, i) => {
@@ -5006,10 +5005,12 @@ ${ranking}
 
 🎉 تم توزيع الجوائز بنجاح`,
         mentions
-    })
+    })    }
+)
 
-} catch (err) {
-    console.log(err)
-}
-}
+} // نهاية distributeBossRewards
+
+}) // نهاية messages.upsert
+
+} // نهاية startBot
 startBot()
