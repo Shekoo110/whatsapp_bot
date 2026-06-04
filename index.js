@@ -4853,6 +4853,189 @@ if (ability.effect === "reflect") {
         }
     )
 }
+
+if (ability.effect === "burn") {
+
+    const burnDamage = 2000
+
+    me.bossHp = Math.max(
+        0,
+        (me.bossHp || me.bossMaxHp) -
+        burnDamage
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `🔥 لهيب الجحيم
+
+👑 ${currentBoss.name}
+
+❤️ -${burnDamage} HP`
+        }
+    )
+}
+
+if (ability.effect === "lightning") {
+
+    const lightningDamage = 4000
+
+    me.bossHp = Math.max(
+        0,
+        (me.bossHp || me.bossMaxHp) -
+        lightningDamage
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `⚡ صاعقة الدمار
+
+👑 ${currentBoss.name}
+
+💥 أصابتك صاعقة مدمرة
+
+❤️ -${lightningDamage} HP`
+        }
+    )
+}
+
+if (ability.effect === "freeze") {
+
+    damage =
+        Math.floor(damage * 0.75)
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `❄️ تجميد الزمن
+
+👑 ${currentBoss.name}
+
+📉 تم تخفيض ضررك 25%`
+        }
+    )
+}
+
+if (ability.effect === "rage") {
+
+    currentBoss.attack =
+        Math.floor(
+            (currentBoss.attack || 3000) * 1.25
+        )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `😡 غضب الإمبراطور
+
+👑 ${currentBoss.name}
+
+⚔️ زادت قوة هجومه 25%`
+        }
+    )
+}
+
+if (ability.effect === "doubleAttack") {
+
+    damage =
+        Math.floor(damage * 0.5)
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `👁️ عين الخراب
+
+👑 ${currentBoss.name}
+
+🛡️ خفضت ضررك 50%`
+        }
+    )
+}
+
+if (ability.effect === "worldEclipse") {
+
+    damage =
+        Math.floor(damage * 0.6)
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `🌑 كسوف العالم
+
+👑 ${currentBoss.name}
+
+📉 انخفض الضرر 40%`
+        }
+    )
+}
+
+if (ability.effect === "demonPower") {
+
+    currentBoss.attack =
+        Math.floor(
+            (currentBoss.attack || 3000) * 1.5
+        )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `👹 قوة الشياطين
+
+👑 ${currentBoss.name}
+
+🔥 زادت قوة هجومه 50%`
+        }
+    )
+}
+
+if (ability.effect === "volcano") {
+
+    const volcanoDamage = 6000
+
+    me.bossHp = Math.max(
+        0,
+        (me.bossHp || me.bossMaxHp) -
+        volcanoDamage
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `🌋 ثوران الجحيم
+
+👑 ${currentBoss.name}
+
+💥 انفجار مدمر
+
+❤️ -${volcanoDamage} HP`
+        }
+    )
+}
+
+if (ability.effect === "dimensionCollapse") {
+
+    const collapseDamage = 10000
+
+    me.bossHp = Math.max(
+        0,
+        (me.bossHp || me.bossMaxHp) -
+        collapseDamage
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `🌌 انهيار الأبعاد
+
+👑 ${currentBoss.name}
+
+☠️ قدرة أسطورية أصابتك
+
+❤️ -${collapseDamage} HP`
+        }
+    )
+}
     
 }
 
