@@ -1119,6 +1119,89 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
                 }
             )
         }
+    if (text === '.الترتيب') {
+
+const metadata =
+    await sock.groupMetadata(
+        msg.key.remoteJid
+    )
+
+const participants =
+    metadata.participants.map(
+        p => p.id
+    )
+
+const players =
+    await Player.find({
+        userId: {
+            $in: participants
+        }
+    })
+
+const ranking = players.map(player => {
+
+    const totalPower =
+        (player.characters || [])
+            .reduce(
+                (sum, c) =>
+                    sum + (c.power || 0),
+                0
+            )
+
+    return {
+        userId: player.userId,
+        power: totalPower
+    }
+})
+
+ranking.sort(
+    (a, b) =>
+        b.power - a.power
+)
+
+const top15 =
+    ranking.slice(0, 15)
+
+let textRank =
+
+`🏆 ═════〔 ترتيب القوة 〕═════ 🏆
+
+`
+
+top15.forEach((p, i) => {
+
+    const rank =
+        i === 0 ? '🥇' :
+        i === 1 ? '🥈' :
+        i === 2 ? '🥉' :
+        `${i + 1}️⃣`
+
+    textRank +=
+
+`${rank} @${p.userId.split('@')[0]}
+⚡ ${p.power.toLocaleString()}
+
+`
+})
+
+textRank +=
+
+`━━━━━━━━━━━━━━
+
+👑 يعتمد الترتيب على
+مجموع قوة جميع الشخصيات`
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text: textRank,
+        mentions: top15.map(
+            p => p.userId
+        )
+    }
+)
+
+}
 
     if (text.startsWith('.تحدي')) {
 
