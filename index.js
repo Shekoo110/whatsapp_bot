@@ -911,14 +911,24 @@ async function generateCharacterShop() {
 
 async function spawnBoss(sock, groupId) {
 
-    currentBoss = {
-    ...bosses[Math.floor(Math.random() * bosses.length)],
+    const randomAbility =
+        bossAbilities[
+            Math.floor(
+                Math.random() *
+                bossAbilities.length
+            )
+        ]
 
-    enraged: false,
-    turnCounter: 0,
-    activeFollowers: [],
-    groupAttackCount: 0
-}
+    currentBoss = {
+        ...bosses[Math.floor(Math.random() * bosses.length)],
+
+        ability: randomAbility,
+
+        enraged: false,
+        turnCounter: 0,
+        activeFollowers: [],
+        groupAttackCount: 0
+    }
 
     await Boss.deleteMany({})
     await Boss.create(currentBoss)
@@ -951,17 +961,47 @@ await player.save()
 
 
     await sock.sendMessage(groupId, {
-        text: `🔥 ظهر زعيم عالمي جديد!
+    text: `╔═════ ✦ 👑 ✦ ═════╗
 
-👑 ${currentBoss.name}
+🌍 ⚠️  ظهر زعيم عالمي جديد  ⚠️ 🌍
 
-❤️ ${currentBoss.hp}/${currentBoss.maxHp}
+╚═════ ✦ 👑 ✦ ═════╝
 
-⚔️ استخدم .زعيم للمعلومات
-🗡️ استخدم .هجوم للمشاركة`
-    })
+👹 الزعيم:
+『 ${currentBoss.name} 』
+
+❤️ الصحة:
+${currentBoss.hp}/${currentBoss.maxHp}
+
+✨ القدرات:
+
+${currentBoss.abilities.map(a => `• ${a.name}`).join('\n')}
+
+
+━━━━━━━━━━━━━━━
+
+⚔️ استعدوا للمعركة!
+🔥 اجمعوا أقوى شخصياتكم
+🏆 الجوائز بانتظار الأبطال
+
+━━━━━━━━━━━━━━━
+
+📜 الأوامر:
+
+👑 .زعيم
+↳ عرض معلومات الزعيم
+
+🗡️ .هجوم
+↳ مهاجمة الزعيم
+
+━━━━━━━━━━━━━━━
+
+💀 من سيوجه الضربة القاضية؟
+🌟 ومن سيتصدر قائمة الضرر؟
+
+🚨 المعركة بدأت الآن!`
+})
 }
-
 // =========================
 // تشغيل البوت
 // =========================
