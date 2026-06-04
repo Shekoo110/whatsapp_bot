@@ -911,10 +911,26 @@ async function generateCharacterShop() {
 
 async function spawnBoss(sock, groupId) {
 
-    const randomAbilities =
-        [...bossAbilities]
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 3)
+    const randomAbilities = []
+
+    while (randomAbilities.length < 3) {
+
+        const ability =
+            bossAbilities[
+                Math.floor(
+                    Math.random() *
+                    bossAbilities.length
+                )
+            ]
+
+        if (
+            !randomAbilities.find(
+                a => a.name === ability.name
+            )
+        ) {
+            randomAbilities.push(ability)
+        }
+    }
 
     currentBoss = {
         ...bosses[Math.floor(Math.random() * bosses.length)],
@@ -970,9 +986,21 @@ await player.save()
 ❤️ الصحة:
 ${currentBoss.hp}/${currentBoss.maxHp}
 
+⚔️ قوة الهجوم:
+${currentBoss.attack || 0}
+
+👥 عدد الأتباع:
+${currentBoss.followers?.length || 0}
+
 ✨ القدرات:
 
-${currentBoss.abilities.map(a => `• ${a.name}`).join('\n')}
+${
+    currentBoss.abilities?.length
+        ? currentBoss.abilities
+            .map(a => `• ${a.name}`)
+            .join('\n')
+        : '• لا توجد قدرات'
+}
 
 
 ━━━━━━━━━━━━━━━
