@@ -4553,7 +4553,107 @@ if (
 
     const follower =
         currentBoss.activeFollowers[0]
+    
+if (
+    follower.ability === "dodge" &&
+    Math.random() <= 0.20
+) {
 
+    damage = 0
+
+    abilityText += `
+
+🌀 ${follower.name}
+
+💨 تفادى الهجمة بالكامل`
+}
+    if (
+    follower.ability === "healBoss" &&
+    Math.random() <= 0.20
+) {
+
+    currentBoss.hp =
+        Math.min(
+            currentBoss.maxHp,
+            currentBoss.hp + 3000
+        )
+
+    abilityText += `
+
+❤️ ${follower.name}
+
+✨ عالج الزعيم
+
++3000 HP`
+}
+if (
+    follower.ability === "reflect" &&
+    Math.random() <= 0.20
+) {
+
+    const reflectDamage =
+        Math.floor(damage * 0.30)
+
+    me.bossHp =
+        Math.max(
+            0,
+            (me.bossHp || me.bossMaxHp) -
+            reflectDamage
+        )
+
+    abilityText += `
+
+⚫ ${follower.name}
+
+💥 عكس الضرر
+
+❤️ -${reflectDamage} HP`
+}
+    if (
+    follower.ability === "bonusDamage" &&
+    Math.random() <= 0.20
+) {
+
+    const bonusDamage = 1500
+
+    me.bossHp =
+        Math.max(
+            0,
+            (me.bossHp || me.bossMaxHp) -
+            bonusDamage
+        )
+
+    abilityText += `
+
+⚔️ ${follower.name}
+
+💥 هجوم إضافي
+
+❤️ -${bonusDamage} HP`
+}
+    
+    if (
+    follower.ability === "critical" &&
+    Math.random() <= 0.20
+) {
+
+    const criticalDamage = 3000
+
+    me.bossHp =
+        Math.max(
+            0,
+            (me.bossHp || me.bossMaxHp) -
+            criticalDamage
+        )
+
+    abilityText += `
+
+🎯 ${follower.name}
+
+💥 ضربة حرجة
+
+❤️ -${criticalDamage} HP`
+}
     follower.hp -= damage
 
     if (follower.hp <= 0) {
@@ -4571,7 +4671,39 @@ if (
 🎉 أصبح الطريق إلى الزعيم أقرب!`
             }
         )
+const dropRoll =
+    Math.random() * 100
 
+if (dropRoll <= 20) {
+
+    me.money =
+        (me.money || 0) + 1000
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `💰 ${follower.name}
+
+🎁 أسقط 1000 مال`
+        }
+    )
+}
+
+else if (dropRoll <= 35) {
+
+    me.xp =
+        (me.xp || 0) + 500
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `⭐ ${follower.name}
+
+🎁 أسقط 500 XP`
+        }
+    )
+}
+        await me.save()
         currentBoss.activeFollowers.shift()
 
         if (
