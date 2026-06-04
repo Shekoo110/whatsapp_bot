@@ -11,13 +11,13 @@ followers: [
     name: "Gin",
     hp: 15000,
     ability: "poison"
-    image: "ضع رابط صورة جين"
+    image: "https://files.catbox.moe/g9e6ey.jpg"
 },
 {
     name: "Tosen",
     hp: 15000,
         ability: "blind"
-    image: "ضع رابط صورة توسن"
+    image: "https://files.catbox.moe/6e9lvz.jpg"
 }
 ],
 
@@ -41,13 +41,13 @@ followers: [
     name: "Jugram",
     hp: 18000,
     ability: "reflect"
-    image: "ضع رابط صورة جوجرام"
+    image: "https://files.catbox.moe/1vuy9d.jpg"
 },
 {
     name: "Uryu",
     hp: 18000,
         ability: "dodge"
-    image: "ضع رابط صورة أوريو"
+    image: "https://files.catbox.moe/q77oxp.jpg"
 }
 ],
 
@@ -71,13 +71,13 @@ followers: [
     name: "Hikone",
     hp: 16000,
     ability: "bonusDamage"
-    image: "ضع رابط صورة هيكوني"
+    image: "https://files.catbox.moe/i1l10b.jpg"
 },
 {
     name: "Aura",
     hp: 16000,
         ability: "healBoss"
-    image: "ضع رابط صورة أورا"
+    image: "https://files.catbox.moe/sve9lh.jpg"
 }
 ],
 
@@ -100,13 +100,13 @@ followers: [
     name: "Saturn",
     hp: 20000,
     ability: "healBoss"
-    image: "ضع رابط صورة ساتورن"
+    image: "https://files.catbox.moe/iispeh.jpg"
 },
 {
     name: "Garling",
     hp: 20000,
         ability: "bonusDamage"
-    image: "ضع رابط صورة جارلينغ"
+    image: "https://files.catbox.moe/42bjc5.jpg"
 }
 ],
 
@@ -130,13 +130,13 @@ followers: [
     name: "Zoro",
     hp: 25000,
     ability: "bonusDamage"
-    image: "ضع رابط صورة زورو"
+    image: "https://files.catbox.moe/wvaecf.jpg"
 },
 {
     name: "Sanji",
     hp: 25000,
     ability: "healBoss"
-    image: "ضع رابط صورة سانجي"
+    image: "https://files.catbox.moe/8hufgb.jpg"
 }
 ],
 
@@ -160,14 +160,14 @@ followers: [
     name: "Obito",
     hp: 20000,
     ability: "dodge"
-    image: "ضع رابط صورة أوبيتو"
+    image: "https://files.catbox.moe/p7lq99.jpg"
 },
 {
     name: "Pain",
     hp: 20000,
     ability: "reflect"
 
-    image: "ضع رابط صورة باين"
+    image: "https://files.catbox.moe/p3o4ww.jpg"
 }
 ],
 
@@ -191,13 +191,13 @@ followers: [
     name: "King",
     hp: 20000,
     ability: "reduceDamage"
-    image: "ضع رابط صورة كينغ"
+    image: "https://files.catbox.moe/9c6tda.jpg"
 },
 {
     name: "Queen",
     hp: 20000,
         ability: "poison"
-    image: "ضع رابط صورة كوين"
+    image: "https://files.catbox.moe/zat21v.jpg"
 }
 ],
   
@@ -220,13 +220,13 @@ followers: [
     name: "Rayleigh",
     hp: 18000,
     ability: "bonusDamage"
-    image: "ضع رابط صورة رايلي"
+    image: "https://files.catbox.moe/0qz0nl.jpg"
 },
 {
     name: "Gaban",
     hp: 18000,
     ability: "reflect"
-    image: "ضع رابط صورة غابان"
+    image: "https://files.catbox.moe/pqq9da.jpg"
 }
 ],
 
@@ -250,13 +250,13 @@ followers: [
     name: "Youpi",
     hp: 22000,
     ability: "bonusDamage"
-    image: "ضع رابط صورة يوبي"
+    image: "https://files.catbox.moe/rht29c.jpg"
 },
 {
     name: "Pouf",
     hp: 22000,
         ability: "healBoss"
-    image: "ضع رابط صورة بوف"
+    image: "https://files.catbox.moe/sxvyby.jpg"
 }
 ],
   
@@ -279,13 +279,13 @@ followers: [
     name: "Shiryu",
     hp: 20000,
     ability: "dodge"
-    image: "ضع رابط صورة شيريو"
+    image: "https://files.catbox.moe/uhxd0l.jpg"
 },
 {
     name: "Burgess",
     hp: 20000,
     ability: "critical"
-    image: "ضع رابط صورة بورغيس"
+    image: "https://files.catbox.moe/ejt1ox.jpg"
 }
 ],
   
