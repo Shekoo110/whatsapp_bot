@@ -2,20 +2,24 @@ const mongoose = require('mongoose')
 
 const PvPSchema = new mongoose.Schema({
 
-    player1: { type: String, required: true },
-    player2: { type: String, required: true },
-
-    hp1: { type: Number, default: 10000 },
-    hp2: { type: Number, default: 10000 },
-
     shield1: { type: Number, default: 0 },
-    shield2: { type: Number, default: 0 },
+shield2: { type: Number, default: 0 },
 
-    turn: { type: String, required: true },
+team1: {
+    type: Array,
+    default: []
+},
 
-    active: { type: Boolean, default: false },
+team2: {
+    type: Array,
+    default: []
+},
 
-    lastMove: { type: Date, default: Date.now },
+turn: { type: String, required: true },
+
+active: { type: Boolean, default: false },
+
+lastMove: { type: Date, default: Date.now },
 
     // =========================
     // 🔥 STATUS EFFECTS SYSTEM
