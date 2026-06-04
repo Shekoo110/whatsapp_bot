@@ -912,11 +912,42 @@ async function generateCharacterShop() {
 async function spawnBoss(sock, groupId) {
 
     currentBoss = {
-        ...bosses[Math.floor(Math.random() * bosses.length)]
+        ...bosses[Math.floor(Math.random() * bosses.length)],
+
+        enraged: false,
+        turnCounter: 0,
+        activeFollowers: []
     }
 
     await Boss.deleteMany({})
     await Boss.create(currentBoss)
+
+    const players = await Player.find({})
+
+for (const player of players) {
+
+const totalPower =  
+    (player.characters || []).reduce(  
+        (sum, c) => sum + (c.power || 0),  
+        0  
+    )  
+
+let hp =  
+    30000 + Math.floor(totalPower / 3)  
+
+if (hp > 100000)  
+    hp = 100000  
+
+player.bossMaxHp = hp  
+player.bossHp = hp  
+
+player.bossDead = false  
+player.bossRespawn = null  
+
+await player.save()
+
+}
+
 
     await sock.sendMessage(groupId, {
         text: `🔥 ظهر زعيم عالمي جديد!
