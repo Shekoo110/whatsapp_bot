@@ -5607,6 +5607,7 @@ return sock.sendMessage(
         caption: attackCaption
     }
 )
+        }
         
         if (text === '.زعيم') {
 
