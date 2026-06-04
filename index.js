@@ -23,8 +23,7 @@ const getRank = require('./utils/rank')
 const { getSkillDamage } = require('./utils/skills')
 const Boss = require('./models/Boss')
 const { getTotalStats } = require('./utils/stats')
-const { generateEquipmentShop } =
-require('./utils/shopSystem')
+const { generateEquipmentShop } = require('./utils/shop')
 if (!global.shopStarted) {
 
     global.shopStarted = true
