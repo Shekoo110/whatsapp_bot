@@ -5062,6 +5062,9 @@ ${me.bossHp}/${me.bossMaxHp}`
 )
 
 await me.save()
+        } // نهاية else
+
+} // نهاية if (Math.random() <= 0.35)
 
 // =========================
 // 🧨 نهاية الزعيم
