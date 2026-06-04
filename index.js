@@ -911,18 +911,15 @@ async function generateCharacterShop() {
 
 async function spawnBoss(sock, groupId) {
 
-    const randomAbility =
-        bossAbilities[
-            Math.floor(
-                Math.random() *
-                bossAbilities.length
-            )
-        ]
+    const randomAbilities =
+        [...bossAbilities]
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3)
 
     currentBoss = {
         ...bosses[Math.floor(Math.random() * bosses.length)],
 
-        ability: randomAbility,
+        abilities: randomAbilities,
 
         enraged: false,
         turnCounter: 0,
@@ -4630,10 +4627,19 @@ if (
 ⚡ +50% ضرر`
 }
 
+            currentBoss.turnCounter =
+    (currentBoss.turnCounter || 0) + 1
+
 if (
     currentBoss.turnCounter % 4 === 0 &&
     Math.random() <= 0.60
 ) {
+    if (
+    !currentBoss.abilities ||
+    !currentBoss.abilities.length
+) {
+    return
+    }
 
     const ability =
         currentBoss.abilities[
@@ -4685,6 +4691,140 @@ if (
         damage =
             Math.floor(damage * 0.7)
     }
+if (ability.effect === "megaAttack") {
+
+    const extraDamage = 5000
+
+    me.bossHp = Math.max(
+        0,
+        (me.bossHp || me.bossMaxHp) -
+        extraDamage
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `💀 ضربة الإبادة
+
+👑 ${currentBoss.name}
+
+💥 ألحق بك ${extraDamage} ضرر إضافي!`
+        }
+    )
+}
+
+if (ability.effect === "lifesteal") {
+
+    const healAmount = 8000
+
+    currentBoss.hp = Math.min(
+        currentBoss.maxHp,
+        currentBoss.hp + healAmount
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `🩸 امتصاص الحياة
+
+👑 ${currentBoss.name}
+
+❤️ استعاد ${healAmount} HP`
+        }
+    )
+}
+
+if (ability.effect === "summon") {
+
+    if (
+        !currentBoss.activeFollowers ||
+        currentBoss.activeFollowers.length === 0
+    ) {
+
+        currentBoss.activeFollowers =
+            JSON.parse(
+                JSON.stringify(
+                    currentBoss.followers || []
+                )
+            )
+
+        await sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: `👥 استدعاء الأتباع
+
+👑 ${currentBoss.name}
+
+⚔️ استدعى جميع أتباعه إلى المعركة!`
+            }
+        )
+    }
+
+
+if (ability.effect === "storm") {
+
+    const stormDamage = 3000
+
+    me.bossHp = Math.max(
+        0,
+        (me.bossHp || me.bossMaxHp) -
+        stormDamage
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `🌪️ عاصفة الدمار
+
+👑 ${currentBoss.name}
+
+💥 أصابتك العاصفة
+
+❤️ -${stormDamage} HP`
+        }
+    )
+}
+
+if (ability.effect === "curse") {
+
+    damage =
+        Math.floor(damage * 0.5)
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `☠️ اللعنة المظلمة
+
+👑 ${currentBoss.name}
+
+📉 تم تخفيض ضررك 50%`
+        }
+    )
+}
+
+if (ability.effect === "reflect") {
+
+    const reflected =
+        Math.floor(damage * 0.30)
+
+    me.bossHp = Math.max(
+        0,
+        (me.bossHp || me.bossMaxHp) -
+        reflected
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `🪞 انعكاس الضرر
+
+👑 ${currentBoss.name}
+
+💥 ارتد إليك ${reflected} ضرر`
+        }
+    )
+}
+    
 }
 
 if (!currentBoss || typeof currentBoss.hp !== 'number') {
