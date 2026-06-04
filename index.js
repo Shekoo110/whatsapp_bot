@@ -6400,6 +6400,10 @@ console.log("groupId =", groupId)
 console.log("mentions =", mentions)
 
 await sock.sendMessage(groupId, {
+    text: `🏆 اختبار رسالة الزعيم`
+})
+
+await sock.sendMessage(groupId, {
     text: `🏆 تم هزيمة الزعيم العالمي!
 
 🥇 المركز الأول
@@ -6414,6 +6418,8 @@ ${ranking}
 🎉 تم توزيع الجوائز بنجاح`,
     mentions
 })
+
+console.log("AFTER SEND MESSAGE")
 
 } // إغلاق distributeBossRewards
 }) // <-- هذا الإغلاق الصحيح والوحيد لـ messages.upsert (بعد نهاية كل الأوامر)
