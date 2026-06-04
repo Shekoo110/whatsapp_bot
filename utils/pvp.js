@@ -2,28 +2,60 @@ const mongoose = require('mongoose')
 
 const PvPSchema = new mongoose.Schema({
 
-    shield1: { type: Number, default: 0 },
-shield2: { type: Number, default: 0 },
+    player1: {
+        type: String,
+        required: true
+    },
 
-team1: {
-    type: Array,
-    default: []
-},
+    player2: {
+        type: String,
+        required: true
+    },
 
-team2: {
-    type: Array,
-    default: []
-},
+    hp1: {
+        type: Number,
+        default: 10000
+    },
 
-turn: { type: String, required: true },
+    hp2: {
+        type: Number,
+        default: 10000
+    },
 
-active: { type: Boolean, default: false },
+    shield1: {
+        type: Number,
+        default: 0
+    },
 
-lastMove: { type: Date, default: Date.now },
+    shield2: {
+        type: Number,
+        default: 0
+    },
 
-    // =========================
-    // 🔥 STATUS EFFECTS SYSTEM
-    // =========================
+    team1: {
+        type: Array,
+        default: []
+    },
+
+    team2: {
+        type: Array,
+        default: []
+    },
+
+    turn: {
+        type: String,
+        required: true
+    },
+
+    active: {
+        type: Boolean,
+        default: false
+    },
+
+    lastMove: {
+        type: Date,
+        default: Date.now
+    },
 
     burn: {
         player1: { type: Number, default: 0 },
@@ -45,8 +77,13 @@ lastMove: { type: Date, default: Date.now },
         player2: { type: Number, default: 0 }
     },
 
-    createdAt: { type: Date, default: Date.now }
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 
 })
 
-module.exports = mongoose.model('PvP', PvPSchema)
+module.exports =
+    mongoose.models.PvP ||
+    mongoose.model('PvP', PvPSchema)
