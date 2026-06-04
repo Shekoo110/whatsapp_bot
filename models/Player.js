@@ -75,6 +75,10 @@ ultimateCooldown: { type: Number, default: 0 },
 // BOSS SYSTEM
 // =========================
 bossDamage: { type: Number, default: 0 },
+    bossHits: {
+    type: Number,
+    default: 0
+},
 lastBossAttack: { type: Number, default: 0 },
 
 bossHp: {
