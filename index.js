@@ -3804,8 +3804,6 @@ ${floor.power}`
     player.towerTickets =
         (player.towerTickets || 0) +
         reward.draws
-    if (reward.draws)
-        player.pulls += reward.draws
 
     if (reward.box) {
 
