@@ -6066,9 +6066,9 @@ if (text.startsWith('.قتال')) {
         enemy.characters = enemy.characters || []
 
         const myCharacter = me.characters.find(c =>
-            c.name?.toLowerCase() === charName.toLowerCase() &&
-            Number(c.power) === charPower
-        )
+    c.name?.toLowerCase().trim() === charName.toLowerCase().trim() &&
+    Number(c.power) == Number(charPower)
+)
 
         if (!myCharacter) {
             return safeSend(msg.key.remoteJid, {
