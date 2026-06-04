@@ -4630,7 +4630,18 @@ if (
 ⚡ +50% ضرر`
 }
 
-if (Math.random() <= 0.15) {
+if (
+    currentBoss.turnCounter % 4 === 0 &&
+    Math.random() <= 0.60
+) {
+
+    const ability =
+        currentBoss.abilities[
+            Math.floor(
+                Math.random() *
+                currentBoss.abilities.length
+            )
+        ]
 
     await safeSend(
         msg.key.remoteJid,
@@ -4639,21 +4650,17 @@ if (Math.random() <= 0.15) {
 
 ✨ فعل القدرة الخاصة
 
-⚡ ${currentBoss.ability.name}
+⚡ ${ability.name}
 
-📖 ${currentBoss.ability.description}`
+📖 ${ability.description}`
         }
     )
 
-    if (
-        currentBoss.ability.effect === "heal"
-    ) {
+    if (ability.effect === "heal") {
         currentBoss.hp += 5000
     }
 
-    if (
-        currentBoss.ability.effect === "bigHeal"
-    ) {
+    if (ability.effect === "bigHeal") {
         currentBoss.hp += 10000
     }
 
@@ -4662,27 +4669,21 @@ if (Math.random() <= 0.15) {
         currentBoss.maxHp
     ) {
         currentBoss.hp =
-        currentBoss.maxHp
+            currentBoss.maxHp
     }
 
-    if (
-        currentBoss.ability.effect === "halfDamage"
-    ) {
+    if (ability.effect === "halfDamage") {
         damage =
-        Math.floor(damage / 2)
+            Math.floor(damage / 2)
     }
 
-    if (
-        currentBoss.ability.effect === "dodge"
-    ) {
+    if (ability.effect === "dodge") {
         damage = 0
     }
 
-    if (
-        currentBoss.ability.effect === "reduceDamage"
-    ) {
+    if (ability.effect === "reduceDamage") {
         damage =
-        Math.floor(damage * 0.7)
+            Math.floor(damage * 0.7)
     }
 }
 
