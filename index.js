@@ -4423,7 +4423,7 @@ if (me.bossDead) {
     }
 }
 
-const now = Date.now()
+let now = Date.now()
 
 if (
     me.lastBossAttack &&
