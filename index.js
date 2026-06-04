@@ -5001,40 +5001,65 @@ ${raidDamage}`
 
     if (me.bossHp <= 0) {
 
-        me.bossHp = 0
-        me.bossDead = true
+    me.bossHp = 0
+    me.bossDead = true
 
-        me.bossRespawn =
-            new Date(
-                Date.now() + 10 * 60 * 1000
-            )
+    me.bossRespawn =
+        new Date(
+            Date.now() + 10 * 60 * 1000
+        )
 
-        await sock.sendMessage(
-    msg.key.remoteJid,
-    {
-        image: {
-            url: currentBoss.image
-        },
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: currentBoss.image
+            },
 
-        caption: `💀 ${currentBoss.name} قضى عليك
+            caption: `💀 ${currentBoss.name} قضى عليك
 
 ⏳ ستعود بعد 10 دقائق
 
 ❤️ ستعود بنصف HP`
-    }
-)
-        await me.save()
-    } else {
+        }
+    )
 
-        abilityText += `
+} else {
 
-👑 هجوم مضاد من الزعيم
+    const attacks = [
+        "🔥 انفجار الجحيم",
+        "⚡ صاعقة الدمار",
+        "💀 قبضة الموت",
+        "🌪️ الإعصار الأسود"
+    ]
 
-💥 الضرر: ${bossDamage}
+    const attackName =
+        attacks[Math.floor(Math.random() * attacks.length)]
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: currentBoss.image
+            },
+
+            caption: `👑 ${currentBoss.name}
+
+${attackName}
+
+🎯 استهدف:
+@${userId.split('@')[0]}
+
+💥 الضرر:
+${bossDamage}
 
 ❤️ HP:
 ${me.bossHp}/${me.bossMaxHp}`
-    }
+        },
+        {
+            mentions: [userId]
+        }
+    )
 }
 
 await me.save()
