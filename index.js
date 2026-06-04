@@ -4409,16 +4409,15 @@ if (me.bossDead) {
     }
 }
 
-const now = Date.now()
+const bossNow = Date.now()
 
 if (
     me.lastBossAttack &&
-    now - me.lastBossAttack < 30000
+    bossNow - me.lastBossAttack < 30000
 ) {
 
     const left = Math.ceil(
-        (30000 -
-        (now - me.lastBossAttack))
+        (30000 - (bossNow - me.lastBossAttack))
         / 1000
     )
 
@@ -4430,7 +4429,7 @@ if (
     )
 }
 
-me.lastBossAttack = now
+me.lastBossAttack = bossNow
 
 const strongest = me.characters.sort(
     (a, b) => b.power - a.power
