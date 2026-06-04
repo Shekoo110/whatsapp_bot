@@ -1,89 +1,72 @@
-const mongoose = require('mongoose')
+function calculateDamageAdvanced(attacker, defender) {
 
-const PvPSchema = new mongoose.Schema({
+    // التفادي
+    const dodgeChance =
+        Math.max(
+            0,
+            (defender.dodge || 0) - ((attacker.accuracy || 0) / 2)
+        )
 
-    player1: {
-        type: String,
-        required: true
-    },
+    const dodge =
+        Math.random() * 100 < dodgeChance
 
-    player2: {
-        type: String,
-        required: true
-    },
-
-    hp1: {
-        type: Number,
-        default: 10000
-    },
-
-    hp2: {
-        type: Number,
-        default: 10000
-    },
-
-    shield1: {
-        type: Number,
-        default: 0
-    },
-
-    shield2: {
-        type: Number,
-        default: 0
-    },
-
-    team1: {
-        type: Array,
-        default: []
-    },
-
-    team2: {
-        type: Array,
-        default: []
-    },
-
-    turn: {
-        type: String,
-        required: true
-    },
-
-    active: {
-        type: Boolean,
-        default: false
-    },
-
-    lastMove: {
-        type: Date,
-        default: Date.now
-    },
-
-    burn: {
-        player1: { type: Number, default: 0 },
-        player2: { type: Number, default: 0 }
-    },
-
-    poison: {
-        player1: { type: Number, default: 0 },
-        player2: { type: Number, default: 0 }
-    },
-
-    stun: {
-        player1: { type: Number, default: 0 },
-        player2: { type: Number, default: 0 }
-    },
-
-    freeze: {
-        player1: { type: Number, default: 0 },
-        player2: { type: Number, default: 0 }
-    },
-
-    createdAt: {
-        type: Date,
-        default: Date.now
+    if (dodge) {
+        return {
+            damage: 0,
+            crit: false,
+            dodge: true
+        }
     }
 
-})
+    // الهجوم الأساسي
+    let damage =
+        (attacker.power || 0) +
+        (attacker.attack || 0)
 
-module.exports =
-    mongoose.models.PvP ||
-    mongoose.model('PvP', PvPSchema)
+    // الدفاع
+    damage -=
+        (defender.defense || 0)
+
+    if (damage < 1) {
+        damage = 1
+    }
+
+    // الدرع
+    if ((defender.shield || 0) > 0) {
+
+        damage -= defender.shield
+
+        if (damage < 1) {
+            damage = 1
+        }
+    }
+
+    // كريتيكال
+    let crit = false
+
+    const critChance =
+        (attacker.critRate || 0) +
+        (attacker.crit || 0)
+
+    if (Math.random() * 100 < critChance) {
+
+        crit = true
+
+        const critBonus =
+            attacker.critDamage || 50
+
+        damage = Math.floor(
+            damage * (1 + critBonus / 100)
+        )
+    }
+
+    return {
+        damage: Math.floor(damage),
+        crit,
+        dodge: false
+    }
+}
+
+module.exports = {
+    calculateDamageAdvanced
+}
