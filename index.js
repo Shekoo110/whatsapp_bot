@@ -1218,19 +1218,21 @@ const stats2 =
 fight.shield1 = stats1.shield
 fight.shield2 = stats2.shield
     const team1 = [...player1Data.characters]
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
 
-    const team2 = [...player2Data.characters]
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3)
-console.log("player1 chars =", player1Data.characters?.length)
-console.log("player2 chars =", player2Data.characters?.length)
+const team2 = [...player2Data.characters]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
 
-console.log("selected team1 =", team1)
-console.log("selected team2 =", team2)
-    fight.team1 = team1
+console.log("team1 before save =", team1)
+console.log("team2 before save =", team2)
+
+fight.team1 = team1
 fight.team2 = team2
+
+console.log("fight.team1 before save =", fight.team1)
+console.log("fight.team2 before save =", fight.team2)
 
 fight.active = true
 
@@ -1243,10 +1245,17 @@ fight.turn = firstTurn
 
 await fight.save()
 
-console.log("fight =", JSON.stringify(fight))
-console.log("TEAM1 DB =", fight.team1)
-console.log("TEAM2 DB =", fight.team2)
+console.log("saved")
 
+const testFight = await PvP.findById(fight._id)
+
+console.log("DB team1 =", testFight.team1)
+console.log("DB team2 =", testFight.team2)
+
+const checkFight = await PvP.findById(fight._id)
+
+console.log("fight =", JSON.stringify(checkFight))
+        
 const team1Names = team1
     .map(c => `• ${c.name}`)
     .join('\n')
@@ -6355,7 +6364,7 @@ async function distributeBossRewards(sock, groupId) {
         player.money = (player.money || 0) + 2500
         player.xp = (player.xp || 0) + 500
 
-        const epicChars = allCharacters.filter(
+        const epicChars = characters.filter(
     c => c.rarity === "ممتاز"
 )
 
