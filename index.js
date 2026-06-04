@@ -2029,6 +2029,9 @@ if (fight.poison.player2 > 0 && userId === fight.player2) {
     dotDamage += 100
     fight.poison.player2--
 }
+    console.log("fight.team1 =", fight.team1)
+console.log("fight.team2 =", fight.team2)
+console.log("fight =", JSON.stringify(fight))
 if (
     !fight.team1 ||
     !fight.team2 ||
@@ -6293,9 +6296,9 @@ async function distributeBossRewards(sock, groupId) {
         first.money = (first.money || 0) + 10000
         first.xp = (first.xp || 0) + 1000
 
-        const legendaryChars = allCharacters.filter(
-            c => c.rarity === "اسطوري"
-        )
+        const legendaryChars = characters.filter(
+    c => c.rarity === "اسطوري"
+)
 
         if (legendaryChars.length) {
             const reward =
@@ -6317,9 +6320,9 @@ async function distributeBossRewards(sock, groupId) {
         let reward = null
 
         if (roll <= 30) {
-            const legendaryChars = allCharacters.filter(
-                c => c.rarity === "اسطوري"
-            )
+            const legendaryChars = characters.filter(
+    c => c.rarity === "اسطوري"
+)
 
             if (legendaryChars.length) {
                 reward =
@@ -6327,9 +6330,9 @@ async function distributeBossRewards(sock, groupId) {
             }
 
         } else if (roll <= 80) {
-            const epicChars = allCharacters.filter(
-                c => c.rarity === "ممتاز"
-            )
+            const epicChars = characters.filter(
+    c => c.rarity === "ممتاز"
+)
 
             if (epicChars.length) {
                 reward =
@@ -6353,8 +6356,8 @@ async function distributeBossRewards(sock, groupId) {
         player.xp = (player.xp || 0) + 500
 
         const epicChars = allCharacters.filter(
-            c => c.rarity === "ممتاز"
-        )
+    c => c.rarity === "ممتاز"
+)
 
         if (epicChars.length) {
             const reward =
