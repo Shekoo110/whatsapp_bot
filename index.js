@@ -6953,9 +6953,6 @@ async function distributeBossRewards(sock, groupId) {
     const second = players[1]
     const third = players[2]
 
-    const first = players[0]
-const second = players[1]
-const third = players[2]
 
 if (first) {
 
