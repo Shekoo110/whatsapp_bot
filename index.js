@@ -1224,7 +1224,11 @@ fight.shield2 = stats2.shield
     const team2 = [...player2Data.characters]
         .sort(() => Math.random() - 0.5)
         .slice(0, 3)
+console.log("player1 chars =", player1Data.characters?.length)
+console.log("player2 chars =", player2Data.characters?.length)
 
+console.log("selected team1 =", team1)
+console.log("selected team2 =", team2)
     fight.team1 = team1
 fight.team2 = team2
 
@@ -1239,11 +1243,9 @@ fight.turn = firstTurn
 
 await fight.save()
 
-const checkFight = await PvP.findById(fight._id)
-
-console.log("fight =", JSON.stringify(checkFight))
-console.log("TEAM1 DB =", checkFight.team1)
-console.log("TEAM2 DB =", checkFight.team2)
+console.log("fight =", JSON.stringify(fight))
+console.log("TEAM1 DB =", fight.team1)
+console.log("TEAM2 DB =", fight.team2)
 
 const team1Names = team1
     .map(c => `• ${c.name}`)
@@ -4472,6 +4474,9 @@ if (currentBoss.hp <= 0) {
     if (currentBoss.finished) return
     currentBoss.finished = true
 
+    console.log("BOSS DEAD")
+    console.log("Starting reward distribution")
+
     try {
 
         await distributeBossRewards(
@@ -6390,7 +6395,11 @@ async function distributeBossRewards(sock, groupId) {
 `
     })
 
-    await sock.sendMessage(groupId, {
+    console.log("BEFORE SEND MESSAGE")
+console.log("groupId =", groupId)
+console.log("mentions =", mentions)
+
+await sock.sendMessage(groupId, {
     text: `🏆 تم هزيمة الزعيم العالمي!
 
 🥇 المركز الأول
