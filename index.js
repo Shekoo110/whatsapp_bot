@@ -4817,6 +4817,10 @@ await Boss.updateOne(
 
 me.bossDamage =
     (me.bossDamage || 0) + damage
+
+me.bossHits =
+    (me.bossHits || 0) + 1
+            
             currentBoss.groupAttackCount =
     (currentBoss.groupAttackCount || 0) + 1
             if (currentBoss.groupAttackCount >= 15) {
