@@ -4947,27 +4947,27 @@ me.bossHits =
 
     for (const p of players) {
 
-        p.bossHp =
-            Math.max(
-                0,
-                (p.bossHp || p.bossMaxHp) -
-                raidDamage
-            )
+        const newHp =
+    Math.max(
+        0,
+        (p.bossHp || p.bossMaxHp) - raidDamage
+    )
 
-        if (p.bossHp <= 0) {
-
-            p.bossHp = 0
-            p.bossDead = true
-
-            p.bossRespawn =
-                new Date(
-                    Date.now() +
-                    10 * 60 * 1000
-                )
+await Player.updateOne(
+    { _id: p._id },
+    {
+        $set: {
+            bossHp: newHp,
+            bossDead: newHp <= 0,
+            bossRespawn:
+                newHp <= 0
+                ? new Date(Date.now() + 10 * 60 * 1000)
+                : p.bossRespawn
         }
-
-        await p.save()
     }
+)
+
+        
 
     await sock.sendMessage(
         msg.key.remoteJid,
@@ -5034,9 +5034,11 @@ ${raidDamage}`
     ]
 
     const attackName =
-        attacks[Math.floor(Math.random() * attacks.length)]
+    attacks[Math.floor(Math.random() * attacks.length)]
 
-    await sock.sendMessage(
+console.log("userId =", userId)
+
+await sock.sendMessage(
     msg.key.remoteJid,
     {
         image: {
@@ -5054,9 +5056,7 @@ ${attackName}
 ${bossDamage}
 
 ❤️ HP:
-${me.bossHp}/${me.bossMaxHp}`
-    },
-    {
+${me.bossHp}/${me.bossMaxHp}`,
         mentions: [userId]
     }
 )
