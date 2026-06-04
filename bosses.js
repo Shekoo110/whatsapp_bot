@@ -10,11 +10,13 @@ followers: [
 {
     name: "Gin",
     hp: 15000,
+    ability: "poison"
     image: "ضع رابط صورة جين"
 },
 {
     name: "Tosen",
     hp: 15000,
+        ability: "blind"
     image: "ضع رابط صورة توسن"
 }
 ],
@@ -38,11 +40,13 @@ followers: [
 {
     name: "Jugram",
     hp: 18000,
+    ability: "reflect"
     image: "ضع رابط صورة جوجرام"
 },
 {
     name: "Uryu",
     hp: 18000,
+        ability: "dodge"
     image: "ضع رابط صورة أوريو"
 }
 ],
@@ -66,11 +70,13 @@ followers: [
 {
     name: "Hikone",
     hp: 16000,
+    ability: "bonusDamage"
     image: "ضع رابط صورة هيكوني"
 },
 {
     name: "Aura",
     hp: 16000,
+        ability: "healBoss"
     image: "ضع رابط صورة أورا"
 }
 ],
@@ -93,11 +99,13 @@ followers: [
 {
     name: "Saturn",
     hp: 20000,
+    ability: "healBoss"
     image: "ضع رابط صورة ساتورن"
 },
 {
     name: "Garling",
     hp: 20000,
+        ability: "bonusDamage"
     image: "ضع رابط صورة جارلينغ"
 }
 ],
@@ -121,11 +129,13 @@ followers: [
 {
     name: "Zoro",
     hp: 25000,
+    ability: "bonusDamage"
     image: "ضع رابط صورة زورو"
 },
 {
     name: "Sanji",
     hp: 25000,
+    ability: "healBoss"
     image: "ضع رابط صورة سانجي"
 }
 ],
@@ -149,11 +159,14 @@ followers: [
 {
     name: "Obito",
     hp: 20000,
+    ability: "dodge"
     image: "ضع رابط صورة أوبيتو"
 },
 {
     name: "Pain",
     hp: 20000,
+    ability: "reflect"
+
     image: "ضع رابط صورة باين"
 }
 ],
@@ -177,11 +190,13 @@ followers: [
 {
     name: "King",
     hp: 20000,
+    ability: "reduceDamage"
     image: "ضع رابط صورة كينغ"
 },
 {
     name: "Queen",
     hp: 20000,
+        ability: "poison"
     image: "ضع رابط صورة كوين"
 }
 ],
@@ -204,11 +219,13 @@ followers: [
 {
     name: "Rayleigh",
     hp: 18000,
+    ability: "bonusDamage"
     image: "ضع رابط صورة رايلي"
 },
 {
     name: "Gaban",
     hp: 18000,
+    ability: "reflect"
     image: "ضع رابط صورة غابان"
 }
 ],
@@ -232,11 +249,13 @@ followers: [
 {
     name: "Youpi",
     hp: 22000,
+    ability: "bonusDamage"
     image: "ضع رابط صورة يوبي"
 },
 {
     name: "Pouf",
     hp: 22000,
+        ability: "healBoss"
     image: "ضع رابط صورة بوف"
 }
 ],
@@ -259,11 +278,13 @@ followers: [
 {
     name: "Shiryu",
     hp: 20000,
+    ability: "dodge"
     image: "ضع رابط صورة شيريو"
 },
 {
     name: "Burgess",
     hp: 20000,
+    ability: "critical"
     image: "ضع رابط صورة بورغيس"
 }
 ],
