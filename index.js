@@ -4394,6 +4394,20 @@ if (
 }
 
 me.lastBossAttack = bossNow
+            
+
+await Player.updateOne(
+    { _id: me._id },
+    {
+        $set: {
+            lastBossAttack: bossNow
+        }
+    }
+)
+            console.log(
+    "Cooldown saved:",
+    bossNow
+)
 
 const strongest = me.characters.sort(
     (a, b) => b.power - a.power
@@ -4907,11 +4921,11 @@ if ((me.lifestealBonus || 0) > 0) {
 
 if (currentBoss.hp <= 0) {
 
-    if (currentBoss.finished) return
+    if (currentBoss.hp <= 0) {
 
-    currentBoss.finished = true
     currentBoss.killer = userId
     currentBoss.hp = 0
+
 }
 
 await Boss.updateOne(
@@ -5081,7 +5095,13 @@ await me.save()
 } // نهاية if (Math.random() <= 0.35)
 
 } // نهاية if (currentBoss.groupAttackCount >= 15)
-
+    
+console.log(
+    "Boss HP:",
+    currentBoss.hp,
+    "Finished:",
+    currentBoss.finished
+)
 // =========================
 // 🧨 نهاية الزعيم
 // =========================
