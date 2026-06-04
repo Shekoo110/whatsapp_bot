@@ -4387,43 +4387,29 @@ if (!me || !me.characters.length) {
 
 if (me.bossDead) {
 
-    if (
-        me.bossRespawn &&
-        Date.now() >= me.bossRespawn.getTime()
-    ) {
+    const respawn = me.bossRespawn
+        ? new Date(me.bossRespawn).getTime()
+        : 0
+
+    if (Date.now() >= respawn) {
 
         me.bossDead = false
-
-        me.bossHp = Math.floor(
-            me.bossMaxHp / 2
-        )
-
+        me.bossHp = Math.floor(me.bossMaxHp / 2)
         me.bossRespawn = null
 
         await me.save()
 
     } else {
 
-        const left = Math.ceil(
-            (
-                me.bossRespawn.getTime() -
-                Date.now()
-            ) / 60000
-        )
+        const left = Math.ceil((respawn - Date.now()) / 60000)
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
-`💀 أنت ميت حالياً
-
-⏳ العودة بعد ${left} دقيقة`
-            }
-        )
+        return safeSend(msg.key.remoteJid, {
+            text: `💀 أنت ميت\n\n⏳ العودة بعد ${left} دقيقة`
+        })
     }
 }
 
-let now = Date.now()
+const now = Date.now()
 
 if (
     me.lastBossAttack &&
@@ -4966,7 +4952,7 @@ if (currentBoss.hp <= 0) {
 }
 
 await Boss.updateOne(
-    {},
+    { _id: currentBoss._id },
     {
         $set: {
             hp: currentBoss.hp
