@@ -5075,9 +5075,12 @@ ${me.bossHp}/${me.bossMaxHp}`,
 )
 
 await me.save()
-        } // نهاية else
+
+} // نهاية else
 
 } // نهاية if (Math.random() <= 0.35)
+
+} // نهاية if (currentBoss.groupAttackCount >= 15)
 
 // =========================
 // 🧨 نهاية الزعيم
