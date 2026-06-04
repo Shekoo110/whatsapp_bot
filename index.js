@@ -7217,6 +7217,7 @@ ranking.sort(
 
 const top15 =
     ranking.slice(0, 15)
+    if (!top15.length) return
 
 const first = top15[0]?.player
 const second = top15[1]?.player
