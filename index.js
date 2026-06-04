@@ -1187,10 +1187,29 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
         }
     if (text === '.الترتيب') {
 
-const metadata =
-    await sock.groupMetadata(
-        msg.key.remoteJid
+let metadata
+
+try {
+
+    metadata =
+        await sock.groupMetadata(
+            msg.key.remoteJid
+        )
+
+} catch (e) {
+
+    console.log(
+        'groupMetadata error:',
+        e
     )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ تعذر جلب بيانات المجموعة'
+        }
+    )
+}
 
 const participants =
     metadata.participants.map(
