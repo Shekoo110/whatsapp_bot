@@ -4759,6 +4759,7 @@ if (ability.effect === "summon") {
             }
         )
     }
+}
 
 
 if (ability.effect === "storm") {
@@ -5102,10 +5103,9 @@ if ((me.lifestealBonus || 0) > 0) {
 
 if (currentBoss.hp <= 0) {
 
-    if (currentBoss.hp <= 0) {
-
     currentBoss.killer = userId
     currentBoss.hp = 0
+    currentBoss.finished = true
 
 }
 
@@ -5113,11 +5113,12 @@ await Boss.updateOne(
     { _id: currentBoss._id },
     {
         $set: {
-            hp: currentBoss.hp
+            hp: currentBoss.hp,
+            finished: currentBoss.finished,
+            killer: currentBoss.killer
         }
     }
 )
-
 me.bossDamage =
     (me.bossDamage || 0) + damage
 
