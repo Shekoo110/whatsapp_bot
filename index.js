@@ -912,12 +912,13 @@ async function generateCharacterShop() {
 async function spawnBoss(sock, groupId) {
 
     currentBoss = {
-        ...bosses[Math.floor(Math.random() * bosses.length)],
+    ...bosses[Math.floor(Math.random() * bosses.length)],
 
-        enraged: false,
-        turnCounter: 0,
-        activeFollowers: []
-    }
+    enraged: false,
+    turnCounter: 0,
+    activeFollowers: [],
+    groupAttackCount: 0
+}
 
     await Boss.deleteMany({})
     await Boss.create(currentBoss)
@@ -4684,6 +4685,64 @@ await Boss.updateOne(
 
 me.bossDamage =
     (me.bossDamage || 0) + damage
+            currentBoss.groupAttackCount =
+    (currentBoss.groupAttackCount || 0) + 1
+            if (currentBoss.groupAttackCount >= 15) {
+
+    currentBoss.groupAttackCount = 0
+
+    const players =
+        await Player.find({
+            bossDead: { $ne: true }
+        })
+
+    const raidDamage =
+        Math.floor(
+            (currentBoss.attack || 3000) * 1.5
+        )
+
+    for (const p of players) {
+
+        p.bossHp =
+            Math.max(
+                0,
+                (p.bossHp || p.bossMaxHp) -
+                raidDamage
+            )
+
+        if (p.bossHp <= 0) {
+
+            p.bossHp = 0
+            p.bossDead = true
+
+            p.bossRespawn =
+                new Date(
+                    Date.now() +
+                    10 * 60 * 1000
+                )
+        }
+
+        await p.save()
+    }
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: currentBoss.image
+            },
+
+            caption: `🌋 ${currentBoss.name}
+
+💥 أطلق ضربة جماعية
+
+⚔️ أصاب ${players.length} لاعب
+
+❤️ الضرر:
+${raidDamage}`
+        }
+    )
+}
             if (Math.random() <= 0.35) {
 
     const bossDamage =
