@@ -5569,22 +5569,44 @@ if (strongest.rarity === 'SSS') {
     )
 }
 
-const imagePath =
-    path.join(
-        __dirname,
-        strongest.image
+if (
+    strongest.image.startsWith("http://") ||
+    strongest.image.startsWith("https://")
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: strongest.image
+            },
+            caption: attackCaption
+        }
     )
+}
+
+const imagePath =
+    path.join(__dirname, strongest.image)
+
+if (!fs.existsSync(imagePath)) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `❌ صورة الشخصية غير موجودة:
+
+${strongest.name}`
+        }
+    )
+}
 
 return sock.sendMessage(
     msg.key.remoteJid,
     {
-        image:
-            fs.readFileSync(imagePath),
-
+        image: fs.readFileSync(imagePath),
         caption: attackCaption
     }
 )
-}
         
         if (text === '.زعيم') {
 
