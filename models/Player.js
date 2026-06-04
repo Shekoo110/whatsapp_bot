@@ -71,8 +71,31 @@ ultimateCooldown: { type: Number, default: 0 },
     // =========================
     // BOSS SYSTEM
     // =========================
-    bossDamage: { type: Number, default: 0 },
-    lastBossAttack: { type: Number, default: 0 },
+    // =========================
+// BOSS SYSTEM
+// =========================
+bossDamage: { type: Number, default: 0 },
+lastBossAttack: { type: Number, default: 0 },
+
+bossHp: {
+    type: Number,
+    default: 0
+},
+
+bossMaxHp: {
+    type: Number,
+    default: 0
+},
+
+bossDead: {
+    type: Boolean,
+    default: false
+},
+
+bossRespawn: {
+    type: Date,
+    default: null
+},
 
     // =========================
     // TOWER SYSTEM
