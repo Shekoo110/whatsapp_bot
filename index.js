@@ -5317,7 +5317,7 @@ if (currentBoss.hp <= 0) {
 
     currentBoss.killer = userId
     currentBoss.hp = 0
-    currentBoss.finished = true
+    
 
 }
 
@@ -5409,7 +5409,7 @@ ${mentionText}`,
     }
 )
             
-            if (Math.random() <= 0.35) {
+            if (Math.random() <= 0.85) {
 
     const bossDamage =
         currentBoss.attack || 3000
