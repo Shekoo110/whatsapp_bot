@@ -4483,6 +4483,35 @@ currentBoss.hp = Math.max(
     0,
     (currentBoss.hp || 0) - damage
 )
+            if (
+    !currentBoss.enraged &&
+    currentBoss.hp <= currentBoss.maxHp / 2
+) {
+
+    currentBoss.enraged = true
+
+    currentBoss.attack =
+        Math.floor(
+            (currentBoss.attack || 3000) * 1.5
+        )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: currentBoss.image
+            },
+
+            caption: `😡 ${currentBoss.name}
+
+دخل حالة الغضب!
+
+🔥 الضرر زاد 50%
+
+⚔️ احذروا... الزعيم أصبح أخطر!`
+        }
+    )
+}
 
 if ((me.lifestealBonus || 0) > 0) {
 
@@ -4536,11 +4565,20 @@ me.bossDamage =
                 Date.now() + 10 * 60 * 1000
             )
 
-        abilityText += `
+        await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: {
+            url: currentBoss.image
+        },
 
-💀 ${currentBoss.name} قضى عليك
+        caption: `💀 ${currentBoss.name} قضى عليك
 
-⏳ ستعود بعد 10 دقائق`
+⏳ ستعود بعد 10 دقائق
+
+❤️ ستعود بنصف HP`
+    }
+)
     } else {
 
         abilityText += `
@@ -4597,7 +4635,7 @@ if (currentBoss.hp <= 0) {
 return safeSend(
     msg.key.remoteJid,
     {
-        text: `⚔️ هجوم على الزعيم
+        const attackCaption = `⚔️ هجوم على الزعيم
 
 🧿 الشخصية:
 ${strongest.name}
@@ -4617,6 +4655,34 @@ ${currentBoss.name}
 
 ❤️ المتبقي:
 ${currentBoss.hp}/${currentBoss.maxHp}`
+
+if (strongest.rarity === 'SSS') {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: strongest.image
+            },
+
+            caption: attackCaption
+        }
+    )
+}
+
+const imagePath =
+    path.join(
+        __dirname,
+        strongest.image
+    )
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image:
+            fs.readFileSync(imagePath),
+
+        caption: attackCaption
     }
 )
 }
