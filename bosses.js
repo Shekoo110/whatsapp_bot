@@ -10,13 +10,13 @@ followers: [
 {
     name: "Gin",
     hp: 15000,
-    ability: "poison"
+    ability: "poison",
     image: "https://files.catbox.moe/g9e6ey.jpg"
 },
 {
     name: "Tosen",
     hp: 15000,
-        ability: "blind"
+    ability: "blind",
     image: "https://files.catbox.moe/6e9lvz.jpg"
 }
 ],
@@ -40,13 +40,13 @@ followers: [
 {
     name: "Jugram",
     hp: 18000,
-    ability: "reflect"
+    ability: "reflect",
     image: "https://files.catbox.moe/1vuy9d.jpg"
 },
 {
     name: "Uryu",
     hp: 18000,
-        ability: "dodge"
+    ability: "dodge",
     image: "https://files.catbox.moe/q77oxp.jpg"
 }
 ],
@@ -70,13 +70,13 @@ followers: [
 {
     name: "Hikone",
     hp: 16000,
-    ability: "bonusDamage"
+    ability: "bonusDamage",
     image: "https://files.catbox.moe/i1l10b.jpg"
 },
 {
     name: "Aura",
     hp: 16000,
-        ability: "healBoss"
+    ability: "healBoss",
     image: "https://files.catbox.moe/sve9lh.jpg"
 }
 ],
@@ -99,13 +99,13 @@ followers: [
 {
     name: "Saturn",
     hp: 20000,
-    ability: "healBoss"
+    ability: "healBoss",
     image: "https://files.catbox.moe/iispeh.jpg"
 },
 {
     name: "Garling",
     hp: 20000,
-        ability: "bonusDamage"
+    ability: "bonusDamage",
     image: "https://files.catbox.moe/42bjc5.jpg"
 }
 ],
@@ -129,13 +129,13 @@ followers: [
 {
     name: "Zoro",
     hp: 25000,
-    ability: "bonusDamage"
+    ability: "bonusDamage",
     image: "https://files.catbox.moe/wvaecf.jpg"
 },
 {
     name: "Sanji",
     hp: 25000,
-    ability: "healBoss"
+    ability: "healBoss",
     image: "https://files.catbox.moe/8hufgb.jpg"
 }
 ],
@@ -159,14 +159,13 @@ followers: [
 {
     name: "Obito",
     hp: 20000,
-    ability: "dodge"
+    ability: "dodge",
     image: "https://files.catbox.moe/p7lq99.jpg"
 },
 {
     name: "Pain",
     hp: 20000,
-    ability: "reflect"
-
+    ability: "reflect",
     image: "https://files.catbox.moe/p3o4ww.jpg"
 }
 ],
@@ -190,13 +189,13 @@ followers: [
 {
     name: "King",
     hp: 20000,
-    ability: "reduceDamage"
+    ability: "reduceDamage",
     image: "https://files.catbox.moe/9c6tda.jpg"
 },
 {
     name: "Queen",
     hp: 20000,
-        ability: "poison"
+    ability: "poison",
     image: "https://files.catbox.moe/zat21v.jpg"
 }
 ],
@@ -219,13 +218,13 @@ followers: [
 {
     name: "Rayleigh",
     hp: 18000,
-    ability: "bonusDamage"
+    ability: "bonusDamage",
     image: "https://files.catbox.moe/0qz0nl.jpg"
 },
 {
     name: "Gaban",
     hp: 18000,
-    ability: "reflect"
+    ability: "reflect",
     image: "https://files.catbox.moe/pqq9da.jpg"
 }
 ],
@@ -249,13 +248,13 @@ followers: [
 {
     name: "Youpi",
     hp: 22000,
-    ability: "bonusDamage"
+    ability: "bonusDamage",
     image: "https://files.catbox.moe/rht29c.jpg"
 },
 {
     name: "Pouf",
     hp: 22000,
-        ability: "healBoss"
+    ability: "healBoss",
     image: "https://files.catbox.moe/sxvyby.jpg"
 }
 ],
@@ -278,13 +277,13 @@ followers: [
 {
     name: "Shiryu",
     hp: 20000,
-    ability: "dodge"
+    ability: "dodge",
     image: "https://files.catbox.moe/uhxd0l.jpg"
 },
 {
     name: "Burgess",
     hp: 20000,
-    ability: "critical"
+    ability: "critical",
     image: "https://files.catbox.moe/ejt1ox.jpg"
 }
 ],
