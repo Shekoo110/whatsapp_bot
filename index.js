@@ -6841,6 +6841,10 @@ async function distributeBossRewards(sock, groupId) {
     const players = await Player.find({
         bossDamage: { $gt: 0 }
     })
+    const killer =
+    players.find(
+        p => p.userId === currentBoss?.killer
+    )
 
     if (!players.length) return
 
@@ -6850,83 +6854,113 @@ async function distributeBossRewards(sock, groupId) {
 
     const first = players[0]
     const second = players[1]
+    const third = players[2]
 
-    if (first) {
-        first.money = (first.money || 0) + 10000
-        first.xp = (first.xp || 0) + 1000
+    const first = players[0]
+const second = players[1]
+const third = players[2]
 
-        const legendaryChars = characters.filter(
-    c => c.rarity === "اسطوري"
-)
+if (first) {
 
-        if (legendaryChars.length) {
-            const reward =
-                legendaryChars[Math.floor(Math.random() * legendaryChars.length)]
+    first.money =
+        (first.money || 0) + 10000
 
-            first.characters = first.characters || []
-            first.characters.push(JSON.parse(JSON.stringify(reward)))
-        }
+    first.xp =
+        (first.xp || 0) + 1000
 
-        await first.save()
-    }
+    first.boxes = first.boxes || {}
 
-    if (second) {
-        second.money = (second.money || 0) + 5000
-        second.xp = (second.xp || 0) + 500
+    first.boxes.sss_chance =
+        (first.boxes.sss_chance || 0) + 1
 
-        const roll = Math.random() * 100
+    first.boxes.sss_high =
+        (first.boxes.sss_high || 0) + 1
 
-        let reward = null
+    await first.save()
+}
 
-        if (roll <= 30) {
-            const legendaryChars = characters.filter(
-    c => c.rarity === "اسطوري"
-)
+if (second) {
 
-            if (legendaryChars.length) {
-                reward =
-                    legendaryChars[Math.floor(Math.random() * legendaryChars.length)]
-            }
+    second.money =
+        (second.money || 0) + 5000
 
-        } else if (roll <= 80) {
-            const epicChars = characters.filter(
-    c => c.rarity === "ممتاز"
-)
+    second.xp =
+        (second.xp || 0) + 500
 
-            if (epicChars.length) {
-                reward =
-                    epicChars[Math.floor(Math.random() * epicChars.length)]
-            }
-        }
+    second.boxes = second.boxes || {}
 
-        if (reward) {
-            second.characters = second.characters || []
-            second.characters.push(JSON.parse(JSON.stringify(reward)))
-        }
+    second.boxes.sss_high =
+        (second.boxes.sss_high || 0) + 1
 
-        await second.save()
-    }
+    second.boxes.legendary =
+        (second.boxes.legendary || 0) + 1
 
-    for (let i = 2; i < players.length; i++) {
+    await second.save()
+}
 
-        const player = players[i]
+if (third) {
 
-        player.money = (player.money || 0) + 2500
-        player.xp = (player.xp || 0) + 500
+    third.money =
+        (third.money || 0) + 2500
 
-        const epicChars = characters.filter(
-    c => c.rarity === "ممتاز"
-)
+    third.xp =
+        (third.xp || 0) + 500
 
-        if (epicChars.length) {
-            const reward =
-                epicChars[Math.floor(Math.random() * epicChars.length)]
+    third.boxes = third.boxes || {}
 
-            player.characters = player.characters || []
-            player.characters.push(JSON.parse(JSON.stringify(reward)))
-        }
+    third.boxes.legendary =
+        (third.boxes.legendary || 0) + 1
 
-        await player.save()
+    third.boxes.epic =
+        (third.boxes.epic || 0) + 1
+
+    await third.save()
+}
+
+for (let i = 3; i < players.length; i++) {
+
+    const player = players[i]
+
+    player.money =
+        (player.money || 0) + 2500
+
+    player.xp =
+        (player.xp || 0) + 500
+
+    player.boxes = player.boxes || {}
+
+    player.boxes.epic =
+        (player.boxes.epic || 0) + 2
+
+    await player.save()
+}
+
+    for (let i = 3; i < players.length; i++) {
+
+    const player = players[i]
+
+    player.money =
+        (player.money || 0) + 2500
+
+    player.xp =
+        (player.xp || 0) + 500
+
+    player.boxes = player.boxes || {}
+
+    player.boxes.epic =
+        (player.boxes.epic || 0) + 2
+
+    await player.save()
+}
+    if (killer) {
+
+    killer.boxes =
+        killer.boxes || {}
+
+    killer.boxes.sss_high =
+        (killer.boxes.sss_high || 0) + 1
+
+    await killer.save()
     }
 
     const rankingData = players.map(p => ({
@@ -6938,7 +6972,8 @@ async function distributeBossRewards(sock, groupId) {
     {},
     {
         $set: {
-            bossDamage: 0
+            bossDamage: 0,
+            bossHits: 0
         }
     }
 )
