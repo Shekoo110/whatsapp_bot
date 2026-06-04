@@ -5119,10 +5119,7 @@ if (currentBoss.hp <= 0) {
         })
     }
 }
-
-return safeSend(
-    msg.key.remoteJid,
-    {
+        
         const attackCaption = `⚔️ هجوم على الزعيم
 
 🧿 الشخصية:
