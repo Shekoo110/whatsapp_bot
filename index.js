@@ -4948,25 +4948,26 @@ me.bossHits =
 
     for (const p of players) {
 
-        const newHp =
-    Math.max(
-        0,
-        (p.bossHp || p.bossMaxHp) - raidDamage
-    )
+    const newHp =
+        Math.max(
+            0,
+            (p.bossHp || p.bossMaxHp) - raidDamage
+        )
 
-await Player.updateOne(
-    { _id: p._id },
-    {
-        $set: {
-            bossHp: newHp,
-            bossDead: newHp <= 0,
-            bossRespawn:
-                newHp <= 0
-                ? new Date(Date.now() + 10 * 60 * 1000)
-                : p.bossRespawn
+    await Player.updateOne(
+        { _id: p._id },
+        {
+            $set: {
+                bossHp: newHp,
+                bossDead: newHp <= 0,
+                bossRespawn:
+                    newHp <= 0
+                    ? new Date(Date.now() + 10 * 60 * 1000)
+                    : p.bossRespawn
+            }
         }
-    }
-)
+    )
+}
 const mentions =
     players.map(p => p.userId)
 
@@ -4999,7 +5000,7 @@ ${mentionText}`,
         mentions
     }
 )
-            }
+            
             if (Math.random() <= 0.35) {
 
     const bossDamage =
