@@ -4160,6 +4160,47 @@ if (!me || !me.characters.length) {
         text: '❌ لا تملك شخصيات'
     })
 }
+            // =========================
+// BOSS HP SYSTEM
+// =========================
+
+if (me.bossDead) {
+
+    if (
+        me.bossRespawn &&
+        Date.now() >= me.bossRespawn.getTime()
+    ) {
+
+        me.bossDead = false
+
+        me.bossHp = Math.floor(
+            me.bossMaxHp / 2
+        )
+
+        me.bossRespawn = null
+
+        await me.save()
+
+    } else {
+
+        const left = Math.ceil(
+            (
+                me.bossRespawn.getTime() -
+                Date.now()
+            ) / 60000
+        )
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`💀 أنت ميت حالياً
+
+⏳ العودة بعد ${left} دقيقة`
+            }
+        )
+    }
+}
 
 const now = Date.now()
 
@@ -4473,6 +4514,45 @@ await Boss.updateOne(
 
 me.bossDamage =
     (me.bossDamage || 0) + damage
+            if (Math.random() <= 0.35) {
+
+    const bossDamage =
+        currentBoss.attack || 3000
+
+    me.bossHp =
+        Math.max(
+            0,
+            (me.bossHp || me.bossMaxHp) -
+            bossDamage
+        )
+
+    if (me.bossHp <= 0) {
+
+        me.bossHp = 0
+        me.bossDead = true
+
+        me.bossRespawn =
+            new Date(
+                Date.now() + 10 * 60 * 1000
+            )
+
+        abilityText += `
+
+💀 ${currentBoss.name} قضى عليك
+
+⏳ ستعود بعد 10 دقائق`
+    } else {
+
+        abilityText += `
+
+👑 هجوم مضاد من الزعيم
+
+💥 الضرر: ${bossDamage}
+
+❤️ HP:
+${me.bossHp}/${me.bossMaxHp}`
+    }
+}
 
 await me.save()
 
