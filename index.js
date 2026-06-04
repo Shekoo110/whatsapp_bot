@@ -7029,23 +7029,7 @@ for (let i = 3; i < players.length; i++) {
     await player.save()
 }
 
-    for (let i = 3; i < players.length; i++) {
-
-    const player = players[i]
-
-    player.money =
-        (player.money || 0) + 2500
-
-    player.xp =
-        (player.xp || 0) + 500
-
-    player.boxes = player.boxes || {}
-
-    player.boxes.epic =
-        (player.boxes.epic || 0) + 2
-
-    await player.save()
-}
+    
     if (killer) {
 
     killer.boxes =
