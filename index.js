@@ -5037,13 +5037,13 @@ ${raidDamage}`
         attacks[Math.floor(Math.random() * attacks.length)]
 
     await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            image: {
-                url: currentBoss.image
-            },
+    msg.key.remoteJid,
+    {
+        image: {
+            url: currentBoss.image
+        },
 
-            caption: `👑 ${currentBoss.name}
+        caption: `👑 ${currentBoss.name}
 
 ${attackName}
 
@@ -5054,12 +5054,11 @@ ${attackName}
 ${bossDamage}
 
 ❤️ HP:
-${me.bossHp}/${me.bossMaxHp}`
-        },
-        {
-            mentions: [userId]
-        }
-    )
+${me.bossHp}/${me.bossMaxHp}`,
+
+        mentions: [userId]
+    }
+)
 }
 
 await me.save()
