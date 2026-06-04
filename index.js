@@ -1203,6 +1203,16 @@ await sock.sendMessage(
 
 }
 
+if (text === '.جوائز_الترتيب') {
+
+await distributeRankingRewards(
+    sock,
+    msg.key.remoteJid
+)
+
+}
+    
+
     if (text.startsWith('.تحدي')) {
 
     const target =
@@ -7166,6 +7176,179 @@ ${ranking}
 console.log("AFTER SEND MESSAGE")
 
 } // إغلاق distributeBossRewards
+
+async function distributeRankingRewards(sock, groupId) {
+
+const metadata =
+    await sock.groupMetadata(groupId)
+
+const participants =
+    metadata.participants.map(
+        p => p.id
+    )
+
+const players =
+    await Player.find({
+        userId: {
+            $in: participants
+        }
+    })
+
+const ranking = players.map(player => {
+
+    const totalPower =
+        (player.characters || [])
+            .reduce(
+                (sum, c) =>
+                    sum + (c.power || 0),
+                0
+            )
+
+    return {
+        player,
+        power: totalPower
+    }
+})
+
+ranking.sort(
+    (a, b) =>
+        b.power - a.power
+)
+
+const top15 =
+    ranking.slice(0, 15)
+
+const first = top15[0]?.player
+const second = top15[1]?.player
+const third = top15[2]?.player
+
+if (first) {
+
+    first.boxes = first.boxes || {}
+
+    first.boxes.sss_high =
+        (first.boxes.sss_high || 0) + 1
+
+    first.boxes.sss_chance =
+        (first.boxes.sss_chance || 0) + 1
+
+    const sssChars =
+        characters.filter(
+            c => c.rarity === 'SSS'
+        )
+
+    if (sssChars.length) {
+
+        const reward =
+            sssChars[
+                Math.floor(
+                    Math.random() *
+                    sssChars.length
+                )
+            ]
+
+        first.characters =
+            first.characters || []
+
+        first.characters.push(
+            JSON.parse(
+                JSON.stringify(reward)
+            )
+        )
+    }
+
+    await first.save()
+}
+
+if (second) {
+
+    second.boxes = second.boxes || {}
+
+    second.boxes.sss_high =
+        (second.boxes.sss_high || 0) + 2
+
+    second.boxes.legendary =
+        (second.boxes.legendary || 0) + 2
+
+    await second.save()
+}
+
+if (third) {
+
+    third.boxes = third.boxes || {}
+
+    third.boxes.sss_high =
+        (third.boxes.sss_high || 0) + 1
+
+    third.boxes.legendary =
+        (third.boxes.legendary || 0) + 2
+
+    await third.save()
+}
+
+for (let i = 3; i < top15.length; i++) {
+
+    const player =
+        top15[i].player
+
+    player.boxes =
+        player.boxes || {}
+
+    if (i <= 9) {
+
+        player.boxes.legendary =
+            (player.boxes.legendary || 0) + 2
+
+        player.boxes.epic =
+            (player.boxes.epic || 0) + 2
+
+    } else {
+
+        player.boxes.epic =
+            (player.boxes.epic || 0) + 2
+
+        player.boxes.rare =
+            (player.boxes.rare || 0) + 2
+    }
+
+    await player.save()
+}
+
+let result =
+
+`🏆 ═════〔 جوائز الترتيب 〕═════ 🏆
+
+🥇 @${first?.userId.split('@')[0] || 'لا يوجد'}
+🌌 شخصية SSS
+📦 SSS High
+📦 SSS Chance
+
+🥈 @${second?.userId.split('@')[0] || 'لا يوجد'}
+📦 2 SSS High
+📦 2 Legendary
+
+🥉 @${third?.userId.split('@')[0] || 'لا يوجد'}
+📦 1 SSS High
+📦 2 Legendary
+
+━━━━━━━━━━━━━━
+
+🎉 تم توزيع الجوائز على أفضل 15 لاعب`
+
+await sock.sendMessage(
+    groupId,
+    {
+        text: result,
+        mentions: [
+            first?.userId,
+            second?.userId,
+            third?.userId
+        ].filter(Boolean)
+    }
+)
+
+}
+    
 }) // <-- هذا الإغلاق الصحيح والوحيد لـ messages.upsert (بعد نهاية كل الأوامر)
 } // <-- هذا الإغلاق الصحيح لدالة startBot بالكامل
 
