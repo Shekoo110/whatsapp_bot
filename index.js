@@ -5054,12 +5054,12 @@ ${attackName}
 ${bossDamage}
 
 ❤️ HP:
-${me.bossHp}/${me.bossMaxHp}`,
-
+${me.bossHp}/${me.bossMaxHp}`
+    },
+    {
         mentions: [userId]
     }
 )
-}
 
 await me.save()
 
