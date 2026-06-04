@@ -6384,10 +6384,16 @@ async function distributeBossRewards(sock, groupId) {
         damage: p.bossDamage || 0
     }))
 
-    for (const player of players) {
-        player.bossDamage = 0
-        await player.save()
+    await Player.updateMany(
+    {},
+    {
+        $set: {
+            bossDamage: 0
+        }
     }
+)
+
+console.log("All boss damage reset")
 
     const mentions = players.map(p =>
         p.userId.includes("@")
@@ -6414,18 +6420,40 @@ await sock.sendMessage(groupId, {
 })
 
 await sock.sendMessage(groupId, {
-    text: `🏆 تم هزيمة الزعيم العالمي!
+    text: `🏆 ═══〔 نتائج الزعيم العالمي 〕═══ 🏆
 
 🥇 المركز الأول
 @${players[0]?.userId.split('@')[0] || 'لا يوجد'}
+🎁 10000 مال
+🎁 1000 XP
+🎁 شخصية أسطورية
+
+━━━━━━━━━━━━━━━━━━
 
 🥈 المركز الثاني
 @${players[1]?.userId.split('@')[0] || 'لا يوجد'}
+🎁 5000 مال
+🎁 500 XP
 
-📊 الترتيب:
+━━━━━━━━━━━━━━━━━━
+
+🥉 المركز الثالث وما بعده
+🎁 2500 مال
+🎁 500 XP
+🎁 شخصية ممتازة
+
+━━━━━━━━━━━━━━━━━━
+
+📊 الترتيب النهائي
+
 ${ranking}
 
-🎉 تم توزيع الجوائز بنجاح`,
+━━━━━━━━━━━━━━━━━━
+
+🎁 تم توزيع الجوائز على الفائزين
+⭐ شكراً لجميع المشاركين
+
+⚔️ استعدوا للزعيم القادم!`,
     mentions
 })
 
