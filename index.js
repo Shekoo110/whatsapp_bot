@@ -4333,7 +4333,15 @@ if (currentBoss.hp <= 0) {
 
 const me = await Player.findOne({ userId })
 
-            if (me.bossDead) {
+if (!me) {
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ لا تملك حساباً، أنشئ حساب أولاً'
+    })
+}
+
+if (me.bossDead) {
+    // كودك هنا
+}
 
     if (
         me.bossRespawn &&
