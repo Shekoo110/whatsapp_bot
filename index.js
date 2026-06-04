@@ -4936,9 +4936,10 @@ me.bossHits =
     currentBoss.groupAttackCount = 0
 
     const players =
-        await Player.find({
-            bossDead: { $ne: true }
-        })
+    await Player.find({
+        bossDead: { $ne: true },
+        bossHits: { $gt: 0 }
+    })
 
     const raidDamage =
         Math.floor(
@@ -4966,27 +4967,39 @@ await Player.updateOne(
         }
     }
 )
+const mentions =
+    players.map(p => p.userId)
 
+const mentionText =
+    players
+        .map(
+            p => `@${p.userId.split('@')[0]}`
+        )
+        .join('\n')
         
 
     await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            image: {
-                url: currentBoss.image
-            },
+    msg.key.remoteJid,
+    {
+        image: {
+            url: currentBoss.image
+        },
 
-            caption: `🌋 ${currentBoss.name}
+        caption: `🌋 ${currentBoss.name}
 
 💥 أطلق ضربة جماعية
 
-⚔️ أصاب ${players.length} لاعب
+⚔️ أصاب ${players.length} مقاتل
 
-❤️ الضرر:
-${raidDamage}`
-        }
-    )
-}
+❤️ الضرر: ${raidDamage}
+
+🎯 المستهدفون:
+${mentionText}`,
+
+        mentions
+    }
+)
+            }
             if (Math.random() <= 0.35) {
 
     const bossDamage =
@@ -5044,7 +5057,6 @@ await sock.sendMessage(
         image: {
             url: currentBoss.image
         },
-
         caption: `👑 ${currentBoss.name}
 
 ${attackName}
