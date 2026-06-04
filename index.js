@@ -4855,7 +4855,12 @@ if ((me.lifestealBonus || 0) > 0) {
 ❤️ استعدت ${heal} HP`
 }
 
-if (currentBoss.hp < 0) {
+if (currentBoss.hp <= 0) {
+
+    if (currentBoss.finished) return
+
+    currentBoss.finished = true
+    currentBoss.killer = userId
     currentBoss.hp = 0
 }
 
@@ -6841,6 +6846,8 @@ async function distributeBossRewards(sock, groupId) {
     const players = await Player.find({
         bossDamage: { $gt: 0 }
     })
+
+    const killerId = currentBoss?.killer
     const killer =
     players.find(
         p => p.userId === currentBoss?.killer
@@ -7005,40 +7012,71 @@ await sock.sendMessage(groupId, {
 })
 
 await sock.sendMessage(groupId, {
-    text: `🏆 ═══〔 نتائج الزعيم العالمي 〕═══ 🏆
+    text: `🏆 ═══════〔 نتائج الزعيم العالمي 〕══════ 🏆
 
-🥇 المركز الأول
-@${players[0]?.userId.split('@')[0] || 'لا يوجد'}
-🎁 10000 مال
-🎁 1000 XP
-🎁 شخصية أسطورية
+🥇 ═══ المركز الأول ═══
 
-━━━━━━━━━━━━━━━━━━
+👑 @${players[0]?.userId.split('@')[0] || 'لا يوجد'}
 
-🥈 المركز الثاني
-@${players[1]?.userId.split('@')[0] || 'لا يوجد'}
-🎁 5000 مال
-🎁 500 XP
+💰 10000 مال
+⭐ 1000 XP
+
+📦 1 SSS Chance Box
+📦 1 SSS High Box
 
 ━━━━━━━━━━━━━━━━━━
 
-🥉 المركز الثالث وما بعده
-🎁 2500 مال
-🎁 500 XP
-🎁 شخصية ممتازة
+🥈 ═══ المركز الثاني ═══
+
+⚔️ @${players[1]?.userId.split('@')[0] || 'لا يوجد'}
+
+💰 5000 مال
+⭐ 500 XP
+
+📦 1 SSS High Box
+📦 1 Legendary Box
 
 ━━━━━━━━━━━━━━━━━━
 
-📊 الترتيب النهائي
+🥉 ═══ المركز الثالث ═══
+
+🔥 @${players[2]?.userId.split('@')[0] || 'لا يوجد'}
+
+💰 2500 مال
+⭐ 500 XP
+
+📦 1 Legendary Box
+📦 1 Epic Box
+
+━━━━━━━━━━━━━━━━━━
+
+🎖️ بقية المشاركين
+
+💰 2500 مال
+⭐ 500 XP
+
+📦 2 Epic Boxes
+
+━━━━━━━━━━━━━━━━━━
+
+☠️ ═══ الضربة القاضية ═══
+
+@${killerId?.split('@')[0] || 'لا يوجد'}
+
+🎁 1 SSS High Box إضافي
+
+━━━━━━━━━━━━━━━━━━
+
+📊 ═══ الترتيب النهائي ═══
 
 ${ranking}
 
 ━━━━━━━━━━━━━━━━━━
 
-🎁 تم توزيع الجوائز على الفائزين
-⭐ شكراً لجميع المشاركين
+🎉 تم توزيع جميع الجوائز بنجاح
 
-⚔️ استعدوا للزعيم القادم!`,
+🌍 الزعيم العالمي سقط!
+⚔️ استعدوا للمعركة القادمة!`,
     mentions
 })
 
