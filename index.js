@@ -1837,7 +1837,72 @@ return safeSend(msg.key.remoteJid, {
 })
 }
 
+if (text === '.الدم') {
 
+    const players = await Player.find({
+        bossHits: { $gt: 0 }
+    })
+
+    if (!players.length) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد مشاركون حالياً'
+            }
+        )
+    }
+
+    players.sort(
+        (a, b) =>
+            (b.bossHp || 0) -
+            (a.bossHp || 0)
+    )
+
+    const mentions =
+        players.map(
+            p => p.userId
+        )
+
+    const hpList =
+        players.map((p, i) => {
+
+            const hp =
+                p.bossHp || 0
+
+            const maxHp =
+                p.bossMaxHp || 0
+
+            const status =
+                p.bossDead
+                ? '💀 ميت'
+                : '❤️ حي'
+
+            return `${i + 1}️⃣ @${p.userId.split('@')[0]}
+
+${status}
+❤️ ${hp}/${maxHp}`
+        }).join('\n\n━━━━━━━━━━━━━━\n\n')
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🏥 ═════〔 حالة المقاتلين 〕═════ 🏥
+
+📊 الترتيب حسب HP الحالي
+
+━━━━━━━━━━━━━━
+
+${hpList}
+
+━━━━━━━━━━━━━━
+
+⚔️ المشاركون: ${players.length}`,
+            mentions
+        }
+    )
+}
 
 if (text === '.ألتميت') {
 const fight = await PvP.findOne({  
@@ -5334,11 +5399,12 @@ if ((me.lifestealBonus || 0) > 0) {
 
 if (currentBoss.hp <= 0) {
 
-    currentBoss.killer = userId
     currentBoss.hp = 0
-    
 
-}
+    if (!currentBoss.killer) {
+        currentBoss.killer = userId
+    }
+
 
 await Boss.updateOne(
     { _id: currentBoss._id },
@@ -5508,7 +5574,7 @@ await me.save()
 } // نهاية if (Math.random() <= 0.35)
 
 } // نهاية if (currentBoss.groupAttackCount >= 15)
-    
+    await me.save()
 console.log(
     "Boss HP:",
     currentBoss.hp,
@@ -7514,11 +7580,12 @@ for (let i = 3; i < players.length; i++) {
 
 console.log("All boss damage reset")
 
-    const mentions = players.map(p =>
-        p.userId.includes("@")
-            ? p.userId
-            : p.userId + "@s.whatsapp.net"
-    )
+    const mentions = [
+    ...new Set([
+        ...players.map(p => p.userId),
+        killerId
+    ].filter(Boolean))
+]
 
     
     let ranking = ''
