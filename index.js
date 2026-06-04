@@ -5404,7 +5404,7 @@ if (currentBoss.hp <= 0) {
     if (!currentBoss.killer) {
         currentBoss.killer = userId
     }
-
+}
 
 await Boss.updateOne(
     { _id: currentBoss._id },
