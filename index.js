@@ -4186,6 +4186,41 @@ if (currentBoss.hp <= 0) {
 
 const me = await Player.findOne({ userId })
 
+            if (me.bossDead) {
+
+    if (
+        me.bossRespawn &&
+        Date.now() >= me.bossRespawn
+    ) {
+
+        me.bossDead = false
+
+        me.bossHp = Math.floor(
+            me.bossMaxHp / 2
+        )
+
+        await me.save()
+
+    } else {
+
+        const left = Math.ceil(
+            (me.bossRespawn - Date.now())
+            / 60000
+        )
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: `💀 أنت ميت
+
+⏳ العودة بعد ${left} دقيقة
+
+❤️ ستعود بنصف HP`
+            }
+        )
+    }
+}
+
 if (!me || !me.characters.length) {
     return safeSend(msg.key.remoteJid, {
         text: '❌ لا تملك شخصيات'
@@ -4685,6 +4720,7 @@ me.bossDamage =
 ❤️ ستعود بنصف HP`
     }
 )
+        await me.save()
     } else {
 
         abilityText += `
