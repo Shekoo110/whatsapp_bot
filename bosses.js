@@ -4,8 +4,23 @@ const bosses = [
 name: "Aizen",
 hp: 50000,
 maxHp: 50000,
-  attack: 2500,
+attack: 2500,
+
+followers: [
+{
+    name: "Gin",
+    hp: 15000,
+    image: "ضع رابط صورة جين"
+},
+{
+    name: "Tosen",
+    hp: 15000,
+    image: "ضع رابط صورة توسن"
+}
+],
+
 image: "https://i.ibb.co/9ksxPcRw/527968451e980d63fa2d4a7c1895b289.jpg",
+
 ability: {
 name: "Kyoka Suigetsu",
 description: "قام أيزن بخداع الجميع وخفض الضرر القادم 50%",
@@ -17,8 +32,23 @@ effect: "halfDamage"
 name: "Yhwach",
 hp: 70000,
 maxHp: 70000,
-  attack: 2500,
+attack: 2500,
+
+followers: [
+{
+    name: "Jugram",
+    hp: 18000,
+    image: "ضع رابط صورة جوجرام"
+},
+{
+    name: "Uryu",
+    hp: 18000,
+    image: "ضع رابط صورة أوريو"
+}
+],
+
 image: "https://i.ibb.co/HW8VPVx/52432833eade63aa7067622060e66183.jpg",
+
 ability: {
 name: "The Almighty",
 description: "رأى يوهاباخ المستقبل وتجنب الهجمة بالكامل",
@@ -30,8 +60,23 @@ effect: "dodge"
 name: "Tokinada",
 hp: 60000,
 maxHp: 60000,
-  attack: 2500,
+attack: 2500,
+
+followers: [
+{
+    name: "Hikone",
+    hp: 16000,
+    image: "ضع رابط صورة هيكوني"
+},
+{
+    name: "Aura",
+    hp: 16000,
+    image: "ضع رابط صورة أورا"
+}
+],
+
 image: "https://i.ibb.co/LDdFC0sT/17145c15b01b425c4562f5dedda5ae28.jpg",
+
 ability: {
 name: "Enrakyoten",
 description: "نسخ قدرة قوية واستعاد 4000 HP",
@@ -44,6 +89,20 @@ name: "Imu",
 hp: 100000,
 maxHp: 100000,
   attack: 3000,
+followers: [
+{
+    name: "Saturn",
+    hp: 20000,
+    image: "ضع رابط صورة ساتورن"
+},
+{
+    name: "Garling",
+    hp: 20000,
+    image: "ضع رابط صورة جارلينغ"
+}
+],
+
+  
 image: "https://i.ibb.co/pvVx2yTN/24f563ae16e1fd49977688a5c800c7e6.jpg",
 ability: {
 name: "Unknown Power",
@@ -57,6 +116,21 @@ name: "Joy Boy",
 hp: 90000,
 maxHp: 90000,
   attack: 3500,
+
+followers: [
+{
+    name: "Zoro",
+    hp: 25000,
+    image: "ضع رابط صورة زورو"
+},
+{
+    name: "Sanji",
+    hp: 25000,
+    image: "ضع رابط صورة سانجي"
+}
+],
+
+  
 image: "https://i.ibb.co/fGMK2s9z/c59baa23779c58bc8351e2f4a308d419.jpg",
 ability: {
 name: "Nika",
@@ -70,6 +144,21 @@ name: "Madara",
 hp: 65000,
 maxHp: 65000,
   attack: 3000,
+
+followers: [
+{
+    name: "Obito",
+    hp: 20000,
+    image: "ضع رابط صورة أوبيتو"
+},
+{
+    name: "Pain",
+    hp: 20000,
+    image: "ضع رابط صورة باين"
+}
+],
+
+  
 image: "https://i.ibb.co/whT9p1GX/6d2b34e75a541170762589b638248d60.jpg",
 ability: {
 name: "Susanoo",
@@ -82,6 +171,21 @@ effect: "heal"
 name: "Kaido",
 hp: 80000,
 maxHp: 80000,
+  attack: 3000,
+
+followers: [
+{
+    name: "King",
+    hp: 20000,
+    image: "ضع رابط صورة كينغ"
+},
+{
+    name: "Queen",
+    hp: 20000,
+    image: "ضع رابط صورة كوين"
+}
+],
+  
 image: "https://i.ibb.co/m531jPmT/3efd2af2492ded6dc0c1f69b1c65c533.jpg",
 ability: {
 name: "Dragon Form",
@@ -94,6 +198,22 @@ effect: "reduceDamage"
 name: "Roger",
 hp: 85000,
 maxHp: 85000,
+  attack: 3000,
+
+followers: [
+{
+    name: "Rayleigh",
+    hp: 18000,
+    image: "ضع رابط صورة رايلي"
+},
+{
+    name: "Gaban",
+    hp: 18000,
+    image: "ضع رابط صورة غابان"
+}
+],
+
+  
 image: "https://i.ibb.co/rKwwTPhv/49eabbd5a9f5ee5fd47ed6eef7ac1156.jpg",
 ability: {
 name: "Conqueror Haki",
@@ -106,6 +226,21 @@ effect: "reduceDamage"
 name: "Meruem",
 hp: 55000,
 maxHp: 55000,
+  attack: 2500,
+
+followers: [
+{
+    name: "Youpi",
+    hp: 22000,
+    image: "ضع رابط صورة يوبي"
+},
+{
+    name: "Pouf",
+    hp: 22000,
+    image: "ضع رابط صورة بوف"
+}
+],
+  
 image: "https://i.ibb.co/M5Jkz69y/af5a90f6f02b1b6671b51a4c701a5ed6.jpg",
 ability: {
 name: "Evolution",
@@ -118,6 +253,21 @@ effect: "heal"
 name: "Teach",
 hp: 75000,
 maxHp: 75000,
+  attack: 2500,
+
+followers: [
+{
+    name: "Shiryu",
+    hp: 20000,
+    image: "ضع رابط صورة شيريو"
+},
+{
+    name: "Burgess",
+    hp: 20000,
+    image: "ضع رابط صورة بورغيس"
+}
+],
+  
 image: "https://i.ibb.co/ns9FFjSG/4905692f38d6e5225eab3be16b5ab855.jpg",
 ability: {
 name: "Darkness",
