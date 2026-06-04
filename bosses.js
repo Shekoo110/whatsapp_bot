@@ -4,6 +4,7 @@ const bosses = [
 name: "Aizen",
 hp: 50000,
 maxHp: 50000,
+  attack: 2500,
 image: "https://i.ibb.co/9ksxPcRw/527968451e980d63fa2d4a7c1895b289.jpg",
 ability: {
 name: "Kyoka Suigetsu",
@@ -16,6 +17,7 @@ effect: "halfDamage"
 name: "Yhwach",
 hp: 70000,
 maxHp: 70000,
+  attack: 2500,
 image: "https://i.ibb.co/HW8VPVx/52432833eade63aa7067622060e66183.jpg",
 ability: {
 name: "The Almighty",
@@ -28,6 +30,7 @@ effect: "dodge"
 name: "Tokinada",
 hp: 60000,
 maxHp: 60000,
+  attack: 2500,
 image: "https://i.ibb.co/LDdFC0sT/17145c15b01b425c4562f5dedda5ae28.jpg",
 ability: {
 name: "Enrakyoten",
@@ -40,6 +43,7 @@ effect: "heal"
 name: "Imu",
 hp: 100000,
 maxHp: 100000,
+  attack: 3000,
 image: "https://i.ibb.co/pvVx2yTN/24f563ae16e1fd49977688a5c800c7e6.jpg",
 ability: {
 name: "Unknown Power",
@@ -52,6 +56,7 @@ effect: "bigHeal"
 name: "Joy Boy",
 hp: 90000,
 maxHp: 90000,
+  attack: 3500,
 image: "https://i.ibb.co/fGMK2s9z/c59baa23779c58bc8351e2f4a308d419.jpg",
 ability: {
 name: "Nika",
@@ -64,6 +69,7 @@ effect: "doubleDamage"
 name: "Madara",
 hp: 65000,
 maxHp: 65000,
+  attack: 3000,
 image: "https://i.ibb.co/whT9p1GX/6d2b34e75a541170762589b638248d60.jpg",
 ability: {
 name: "Susanoo",
