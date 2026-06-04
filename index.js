@@ -4479,7 +4479,69 @@ const xpGain = Math.max(
 
 me.xp = (me.xp || 0) + xpGain
 
-currentBoss.hp = Math.max(
+if (
+    currentBoss.activeFollowers &&
+    currentBoss.activeFollowers.length > 0
+) {
+
+    const follower =
+        currentBoss.activeFollowers[0]
+
+    follower.hp -= damage
+
+    if (follower.hp <= 0) {
+
+        await sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                image: {
+                    url: follower.image
+                },
+                caption: `💀 تم القضاء على التابع
+
+⚔️ ${follower.name}
+
+🎉 أصبح الطريق إلى الزعيم أقرب!`
+            }
+        )
+
+        currentBoss.activeFollowers.shift()
+
+        if (
+            currentBoss.activeFollowers.length === 0
+        ) {
+
+            await sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    text: `✅ تم القضاء على جميع الأتباع
+
+👑 يمكنكم مهاجمة الزعيم مباشرة الآن!`
+                }
+            )
+        }
+    }
+
+    await me.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: `⚔️ هجوم على تابع
+
+👥 التابع:
+${follower.name}
+
+💥 الضرر:
+${damage}
+
+❤️ المتبقي:
+${Math.max(0, follower.hp)}`
+        }
+    )
+}
+            
+            currentBoss.hp = Math.max(
     0,
     (currentBoss.hp || 0) - damage
 )
@@ -4495,6 +4557,13 @@ currentBoss.hp = Math.max(
             (currentBoss.attack || 3000) * 1.5
         )
 
+    currentBoss.activeFollowers =
+        JSON.parse(
+            JSON.stringify(
+                currentBoss.followers || []
+            )
+        )
+
     await sock.sendMessage(
         msg.key.remoteJid,
         {
@@ -4505,6 +4574,12 @@ currentBoss.hp = Math.max(
             caption: `😡 ${currentBoss.name}
 
 دخل حالة الغضب!
+
+👥 استدعى أتباعه:
+
+${currentBoss.activeFollowers
+.map(f => `⚔️ ${f.name}`)
+.join('\n')}
 
 🔥 الضرر زاد 50%
 
@@ -4710,6 +4785,19 @@ ${currentBoss.name}
 ❤️ الصحة:
 ${currentBoss.hp}/${currentBoss.maxHp}
 
+${currentBoss.activeFollowers?.length
+? `
+
+👥 الأتباع الأحياء:
+
+${currentBoss.activeFollowers
+.map(f =>
+`⚔️ ${f.name}
+❤️ ${f.hp} HP`
+)
+.join('\n\n')}`
+: '\n✅ لا يوجد أتباع أحياء'}
+
 ━━━━━━━━━━━━━━━━━━
 
 ✨ القدرة الخاصة:
@@ -4717,6 +4805,7 @@ ${currentBoss.ability.name}
 
 📖 الوصف:
 ${currentBoss.ability.description}
+
 
 ━━━━━━━━━━━━━━━━━━
 
