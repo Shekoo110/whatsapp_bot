@@ -2,8 +2,8 @@ const bosses = [
 
 {
 name: "Aizen",
-hp: 50000,
-maxHp: 50000,
+hp: 1000000,
+maxHp: 1000000,
 attack: 2500,
 
 followers: [
@@ -32,8 +32,8 @@ effect: "halfDamage"
 
 {
 name: "Yhwach",
-hp: 70000,
-maxHp: 70000,
+hp: 1000000,
+maxHp: 1000000,
 attack: 2500,
 
 followers: [
@@ -62,8 +62,8 @@ effect: "dodge"
 
 {
 name: "Tokinada",
-hp: 60000,
-maxHp: 60000,
+hp: 1000000,
+maxHp: 1000000,
 attack: 2500,
 
 followers: [
@@ -92,8 +92,8 @@ effect: "heal"
 
 {
 name: "Imu",
-hp: 100000,
-maxHp: 100000,
+hp: 1000000,
+maxHp: 1000000,
   attack: 3000,
 followers: [
 {
@@ -121,8 +121,8 @@ effect: "bigHeal"
 
 {
 name: "Joy Boy",
-hp: 90000,
-maxHp: 90000,
+hp: 1000000,
+maxHp: 1000000,
   attack: 3500,
 
 followers: [
@@ -151,8 +151,8 @@ effect: "doubleDamage"
 
 {
 name: "Madara",
-hp: 65000,
-maxHp: 65000,
+hp: 1000000,
+maxHp: 1000000,
   attack: 3000,
 
 followers: [
@@ -181,8 +181,8 @@ effect: "heal"
 
 {
 name: "Kaido",
-hp: 80000,
-maxHp: 80000,
+hp: 1000000,
+maxHp: 1000000,
   attack: 3000,
 
 followers: [
@@ -210,8 +210,8 @@ effect: "reduceDamage"
 
 {
 name: "Roger",
-hp: 85000,
-maxHp: 85000,
+hp: 1000000,
+maxHp: 1000000,
   attack: 3000,
 
 followers: [
@@ -240,8 +240,8 @@ effect: "reduceDamage"
 
 {
 name: "Meruem",
-hp: 55000,
-maxHp: 55000,
+hp: 1000000,
+maxHp: 1000000,
   attack: 2500,
 
 followers: [
@@ -269,8 +269,8 @@ effect: "heal"
 
 {
 name: "Teach",
-hp: 75000,
-maxHp: 75000,
+hp: 1000000,
+maxHp: 1000000,
   attack: 2500,
 
 followers: [
