@@ -2009,7 +2009,60 @@ return safeSend(msg.key.remoteJid, {
 })
 }
 
+if (text === '.مساهمات') {
 
+    const players =
+        await Player.find({})
+            .sort({ bossDamage: -1 })
+            .limit(10)
+
+    const me =
+        await Player.findOne({ userId })
+
+    let leaderboard =
+        '🏆 أفضل المقاتلين ضد الزعيم\n\n'
+
+    for (
+        let i = 0;
+        i < players.length;
+        i++
+    ) {
+
+        const player =
+            players[i]
+
+        const medal =
+            i === 0 ? '🥇' :
+            i === 1 ? '🥈' :
+            i === 2 ? '🥉' :
+            `#${i + 1}`
+
+        leaderboard +=
+`${medal}
+
+💥 ${player.bossDamage || 0} ضرر
+
+⚔️ ${player.bossHits || 0} هجمة
+
+━━━━━━━━━━
+
+`
+    }
+
+    leaderboard +=
+`📊 مساهمتك
+
+💥 ${me?.bossDamage || 0} ضرر
+
+⚔️ ${me?.bossHits || 0} هجمة`
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: leaderboard
+        }
+    )
+}
 
 if (text === '.هجوم الخصم') {
 
