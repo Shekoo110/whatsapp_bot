@@ -1138,31 +1138,25 @@ sock.ev.on('connection.update', async (update) => {
     }
 
     if (connection === 'open') {
+
         console.log('البوت اشتغل')
+
+        if (currentBoss) {
+
+            console.log(
+                '✅ تم استعادة الزعيم المحفوظ'
+            )
+
+        } else {
+
+            await spawnBoss(
+                sock,
+                GROUP_ID
+            )
+        }
     }
+
 })
-
-    console.log(
-        "registered =",
-        state.creds.registered
-    )
-
-    
-
-    if (currentBoss) {
-
-        console.log(
-            '✅ تم استعادة الزعيم المحفوظ'
-        )
-
-    } else {
-
-        await spawnBoss(
-            sock,
-            GROUP_ID
-        )
-    }
-}
 
     if (connection === 'close') {
 
