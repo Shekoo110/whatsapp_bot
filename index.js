@@ -1041,17 +1041,33 @@ async function startBot() {
 
     const savedBoss = await Boss.findOne()
 
-    if (savedBoss) {
+if (savedBoss) {
 
-        currentBoss = savedBoss
+    currentBoss = savedBoss
 
-        console.log('✅ تم تحميل الزعيم المحفوظ')
-        console.log('Loaded Boss finished =', currentBoss.finished)
+    if (currentBoss.finished === undefined)
+        currentBoss.finished = false
 
-    } else {
+    if (currentBoss.killer === undefined)
+        currentBoss.killer = null
 
-        console.log('👑 لا يوجد زعيم محفوظ')
-    }
+    await Boss.updateOne(
+        {},
+        {
+            $set: {
+                finished: currentBoss.finished,
+                killer: currentBoss.killer
+            }
+        }
+    )
+
+    console.log('✅ تم تحميل الزعيم المحفوظ')
+    console.log('Loaded Boss finished =', currentBoss.finished)
+
+} else {
+
+    console.log('👑 لا يوجد زعيم محفوظ')
+}
 
     const { state, saveCreds } =
         await useMultiFileAuthState('auth')
