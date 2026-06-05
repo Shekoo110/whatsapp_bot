@@ -1122,42 +1122,57 @@ if (savedBoss) {
             qrCodeData = await QRCode.toDataURL(qr)
         }
 
-        if (connection === 'open') {
+        const GROUP_ID =
+    "120363020823525909@g.us"
+
+if (connection === 'open') {
 
     console.log('البوت اشتغل')
 
-    const GROUP_ID = "120363020823525909@g.us"
+    await new Promise(
+        resolve => setTimeout(resolve, 5000)
+    )
 
     if (currentBoss) {
 
-        console.log('✅ تم استعادة الزعيم المحفوظ')
+        console.log(
+            '✅ تم استعادة الزعيم المحفوظ'
+        )
 
     } else {
 
-        await spawnBoss(sock, GROUP_ID)
+        await spawnBoss(
+            sock,
+            GROUP_ID
+        )
+    }
+}
+
+let lastBossHour = -1
+
+setInterval(async () => {
+
+    const now = new Date()
+
+    if (
+        now.getMinutes() === 0 &&
+        now.getHours() !== lastBossHour &&
+        !currentBoss
+    ) {
+
+        lastBossHour = now.getHours()
+
+        await spawnBoss(
+            sock,
+            GROUP_ID
+        )
+
+        console.log(
+            '👑 تم إنشاء زعيم جديد'
+        )
     }
 
-    let lastBossHour = -1
-
-    setInterval(async () => {
-
-        const now = new Date()
-
-        if (
-            now.getMinutes() === 0 &&
-            now.getHours() !== lastBossHour &&
-            !currentBoss
-        ) {
-
-            lastBossHour = now.getHours()
-
-            await spawnBoss(sock, GROUP_ID)
-
-            console.log('👑 تم إنشاء زعيم جديد')
-        }
-
-    }, 60000)
-}
+}, 60000)
 
         if (connection === 'close') {
 
