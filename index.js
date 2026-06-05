@@ -1081,31 +1081,6 @@ const sock = makeWASocket({
     auth: state,
 })
 
-console.log(
-    "registered =",
-    state.creds.registered
-)
-
-const PHONE_NUMBER =
-    "201105749333"
-
-if (!state.creds.registered) {
-
-    console.log(
-        "Requesting Pairing Code..."
-    )
-
-    const code =
-        await sock.requestPairingCode(
-            PHONE_NUMBER
-        )
-
-    console.log(
-        "🔑 Pairing Code:",
-        code
-    )
-}
-
     // =========================
     // Shop (مرة واحدة فقط)
     // =========================
@@ -1139,39 +1114,54 @@ if (!state.creds.registered) {
     // =========================
     // CONNECTION
     // =========================
+   const GROUP_ID =
+        "120363020823525909@g.us"
     sock.ev.on('connection.update', async (update) => {
 
-        const { connection, qr } = update
+    const { connection, qr } = update
 
-        if (qr) {
-            qrCodeData = await QRCode.toDataURL(qr)
+    if (qr) {
+        qrCodeData = await QRCode.toDataURL(qr)
+    }
+
+    
+
+    if (connection === 'open') {
+
+        console.log('البوت اشتغل')
+
+        if (!state.creds.registered) {
+
+            const code =
+                await sock.requestPairingCode(
+                    "201105749333"
+                )
+
+            console.log(
+                "🔑 Pairing Code:",
+                code
+            )
         }
 
-        const GROUP_ID =
-    "120363020823525909@g.us"
-
-if (connection === 'open') {
-
-    console.log('البوت اشتغل')
-
-    await new Promise(
-        resolve => setTimeout(resolve, 5000)
-    )
-
-    if (currentBoss) {
-
-        console.log(
-            '✅ تم استعادة الزعيم المحفوظ'
+        await new Promise(
+            resolve => setTimeout(resolve, 5000)
         )
 
-    } else {
+        if (currentBoss) {
 
-        await spawnBoss(
-            sock,
-            GROUP_ID
-        )
+            console.log(
+                '✅ تم استعادة الزعيم المحفوظ'
+            )
+
+        } else {
+
+            await spawnBoss(
+                sock,
+                GROUP_ID
+            )
+        }
     }
-}
+})
 
 let lastBossHour = -1
 
