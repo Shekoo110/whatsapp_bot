@@ -1081,6 +1081,29 @@ if (savedBoss) {
         auth: state,
     })
 
+    const { state, saveCreds } =
+    await useMultiFileAuthState('auth')
+
+const sock = makeWASocket({
+    auth: state,
+})
+
+const PHONE_NUMBER =
+    "201105749333"
+
+if (!state.creds.registered) {
+
+    const code =
+        await sock.requestPairingCode(
+            PHONE_NUMBER
+        )
+
+    console.log(
+        "🔑 Pairing Code:",
+        code
+    )
+}
+
     // =========================
     // Shop (مرة واحدة فقط)
     // =========================
