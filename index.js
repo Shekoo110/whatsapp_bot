@@ -1084,7 +1084,32 @@ const sock = makeWASocket({
     require('@whiskeysockets/baileys/package.json').version
 )
 
+if (!state.creds.registered) {
 
+    setTimeout(async () => {
+
+        try {
+
+            const code =
+                await sock.requestPairingCode(
+                    "201105749333"
+                )
+
+            console.log(
+                "PAIRING CODE:",
+                code
+            )
+
+        } catch (e) {
+
+            console.log(
+                "PAIRING ERROR:",
+                e
+            )
+        }
+
+    }, 5000)
+}
     // =========================
     // Shop (مرة واحدة فقط)
     // =========================
