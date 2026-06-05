@@ -1080,6 +1080,9 @@ const { state, saveCreds } =
 const sock = makeWASocket({
     auth: state,
 })
+    console.log(
+    require('@whiskeysockets/baileys/package.json').version
+)
 
 
     // =========================
