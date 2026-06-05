@@ -1081,6 +1081,37 @@ const sock = makeWASocket({
     auth: state,
 })
 
+console.log(
+    "registered =",
+    state.creds.registered
+)
+
+if (!state.creds.registered) {
+
+    console.log(
+        "🚀 Requesting Pairing Code..."
+    )
+
+    try {
+
+        const code =
+            await sock.requestPairingCode(
+                "201105749333"
+            )
+
+        console.log(
+            "🔑 Pairing Code:",
+            code
+        )
+
+    } catch (err) {
+
+        console.log(
+            "❌ Pairing Error:",
+            err
+        )
+    }
+}
     // =========================
     // Shop (مرة واحدة فقط)
     // =========================
@@ -1133,24 +1164,6 @@ sock.ev.on('connection.update', async (update) => {
             "registered =",
             state.creds.registered
         )
-
-        
-
-        await new Promise(
-    resolve => setTimeout(resolve, 10000)
-)
-        if (!state.creds.registered) {
-
-    const code =
-        await sock.requestPairingCode(
-            "201105749333"
-        )
-
-    console.log(
-        "🔑 Pairing Code:",
-        code
-    )
-}
 
         if (currentBoss) {
 
