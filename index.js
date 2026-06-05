@@ -1086,6 +1086,9 @@ console.log(
     state.creds.registered
 )
 
+const PHONE_NUMBER =
+    "201105749333"
+
 if (!state.creds.registered) {
 
     console.log(
