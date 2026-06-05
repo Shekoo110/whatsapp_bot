@@ -4316,7 +4316,7 @@ ${floor.power}`
     if (floor.floor === 30) {
 
         player.towerCompleted = true
-        player.title = '👑 ملك الأبطال'
+        player.title = '🌌 حاكم الأكوان'
 
         player.attackBonus += 10
         player.maxCharacters += 5
@@ -4431,6 +4431,60 @@ ${player.towerFloor}`
         }
     )
         }
+
+    if (text === '.ريست_البرج') {
+
+    let player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا تملك حساباً'
+            }
+        )
+    }
+
+    player.towerFloor = 1
+
+    player.usedCharacters = []
+
+    player.towerCompleted = false
+
+    // يبقى اللقب محفوظاً
+    // player.title = null
+
+    player.attackBonus = 0
+    player.defenseBonus = 0
+    player.hpBonus = 0
+    player.speedBonus = 0
+
+    
+
+    await player.save()
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🔄 تم إعادة تعيين البرج
+
+🏰 الطابق الحالي: 1
+
+📉 تم حذف جميع مكافآت البرج:
+⚔️ الهجوم
+🛡️ الدفاع
+❤️ الصحة
+⚡ السرعة
+
+👑 تم الاحتفاظ باللقب:
+${player.title || 'لا يوجد'}
+
+يمكنك بدء البرج من جديد.`
+        }
+    )
+    }
 
         if (text.startsWith('.شراءصندوق ')) {
 
