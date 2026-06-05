@@ -1080,12 +1080,7 @@ const { state, saveCreds } =
 const sock = makeWASocket({
     auth: state,
 })
-    const { state, saveCreds } =
-    await useMultiFileAuthState('auth')
 
-const sock = makeWASocket({
-    auth: state
-})
 
 if (!state.creds.registered) {
 
