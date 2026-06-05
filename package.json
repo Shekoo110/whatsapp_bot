@@ -8,6 +8,8 @@
   "dependencies": {
     "@google/genai": "^1.10.0",
     "@whiskeysockets/baileys": "^7.0.0-rc13",
+    "axios": "^1.11.0",
+    "canvas": "^3.2.0",
     "express": "^5.2.1",
     "mongoose": "^8.15.1",
     "qrcode": "^1.5.4",
