@@ -1342,6 +1342,29 @@ await sock.sendMessage(
 )
 
 }
+    if (text === ".card") {
+
+    const buffer =
+    await generateCard(1)
+
+    if (!buffer) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: "❌ لم يتم العثور على الشخصية"
+            }
+        )
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: buffer,
+            caption: "🎴 Cid Kagenou"
+        }
+    )
+    }
 
 if (text === '.جوائز_الترتيب') {
 
