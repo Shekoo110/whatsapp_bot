@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Cid Kagenou",
+    "anime": "The Eminence in Shadow",
+    "rarity": "SSR",
+    "stars": 4,
+    "element": "Dark",
+    "quote": "I am the shadow that lurks in darkness.",
+    "image": "https://your-image-link.jpg"
+  },
+
+  {
+    "id": 2,
+    "name": "Alexia Midgar",
+    "anime": "The Eminence in Shadow",
+    "rarity": "SR",
+    "stars": 3,
+    "element": "Light",
+    "quote": "A princess who seeks true strength.",
+    "image": "https://your-image-link.jpg"
+  },
+
+  {
+    "id": 3,
+    "name": "Rimuru Tempest",
+    "anime": "That Time I Got Reincarnated as a Slime",
+    "rarity": "UR",
+    "stars": 5,
+    "element": "Water",
+    "quote": "A king who unites all races.",
+    "image": "https://your-image-link.jpg"
+  }
+]
