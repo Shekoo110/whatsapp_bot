@@ -4180,6 +4180,39 @@ ${character.anime}`
     )
 }
 
+if (text === '.ريست_البرج_للجميع') {
+
+await Player.updateMany(
+    {},
+    {
+        $set: {
+            towerFloor: 1,
+            usedCharacters: [],
+            towerCompleted: false,
+            attackBonus: 0,
+            defenseBonus: 0,
+            hpBonus: 0,
+            speedBonus: 0
+        }
+    }
+)
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🔄 تم إعادة تعيين البرج لجميع اللاعبين
+
+✅ الطابق عاد إلى 1
+✅ تم حذف مكافآت البرج
+✅ تم مسح الشخصيات المستخدمة
+✅ تم الاحتفاظ بالألقاب
+✅ تم الاحتفاظ بزيادة المخزون (+5)`
+}
+)
+}
+    
 if (text.startsWith('.طابق')) {
 
     let player = await Player.findOne({ userId })
