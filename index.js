@@ -1119,44 +1119,35 @@ const sock = makeWASocket({
     "120363020823525909@g.us"
 
 sock.ev.on('connection.update', async (update) => {
-console.log(update)
+
+    console.log(update)
+
     const { connection, qr } = update
-
-    if (qr) {
-        qrCodeData = await QRCode.toDataURL(qr)
-    }
-
-    if (connection === 'open') {
-
-    console.log('البوت اشتغل')
 
     console.log(
         "registered =",
         state.creds.registered
     )
 
-    if (!state.creds.registered) {
-
-        try {
-
-            const code =
-                await sock.requestPairingCode(
-                    "201105749333"
-                )
-
-            console.log(
-                "🔑 Pairing Code:",
-                code
-            )
-
-        } catch (err) {
-
-            console.log(
-                "❌ Pairing Error:",
-                err
-            )
-        }
+    if (update.qr) {
+        console.log("QR RECEIVED")
     }
+
+    if (qr) {
+        qrCodeData = await QRCode.toDataURL(qr)
+    }
+
+    if (connection === 'open') {
+        console.log('البوت اشتغل')
+    }
+})
+
+    console.log(
+        "registered =",
+        state.creds.registered
+    )
+
+    
 
     if (currentBoss) {
 
