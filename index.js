@@ -1081,37 +1081,7 @@ const sock = makeWASocket({
     auth: state,
 })
 
-console.log(
-    "registered =",
-    state.creds.registered
-)
 
-if (!state.creds.registered) {
-
-    console.log(
-        "🚀 Requesting Pairing Code..."
-    )
-
-    try {
-
-        const code =
-            await sock.requestPairingCode(
-                "201105749333"
-            )
-
-        console.log(
-            "🔑 Pairing Code:",
-            code
-        )
-
-    } catch (err) {
-
-        console.log(
-            "❌ Pairing Error:",
-            err
-        )
-    }
-}
     // =========================
     // Shop (مرة واحدة فقط)
     // =========================
@@ -1158,27 +1128,50 @@ console.log(update)
 
     if (connection === 'open') {
 
-        console.log('البوت اشتغل')
+    console.log('البوت اشتغل')
 
-        console.log(
-            "registered =",
-            state.creds.registered
-        )
+    console.log(
+        "registered =",
+        state.creds.registered
+    )
 
-        if (currentBoss) {
+    if (!state.creds.registered) {
+
+        try {
+
+            const code =
+                await sock.requestPairingCode(
+                    "201105749333"
+                )
 
             console.log(
-                '✅ تم استعادة الزعيم المحفوظ'
+                "🔑 Pairing Code:",
+                code
             )
 
-        } else {
+        } catch (err) {
 
-            await spawnBoss(
-                sock,
-                GROUP_ID
+            console.log(
+                "❌ Pairing Error:",
+                err
             )
         }
     }
+
+    if (currentBoss) {
+
+        console.log(
+            '✅ تم استعادة الزعيم المحفوظ'
+        )
+
+    } else {
+
+        await spawnBoss(
+            sock,
+            GROUP_ID
+        )
+    }
+}
 
     if (connection === 'close') {
 
