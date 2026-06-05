@@ -1156,8 +1156,6 @@ sock.ev.on('connection.update', async (update) => {
         }
     }
 
-})
-
     if (connection === 'close') {
 
         console.log('انقطع الاتصال')
@@ -1167,7 +1165,7 @@ sock.ev.on('connection.update', async (update) => {
         }, 5000)
     }
 
-}) // ← يغلق connection.update هنا فقط
+})
 
 let lastBossHour = -1
 
