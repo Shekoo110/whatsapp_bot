@@ -4,10 +4,12 @@ const {
 } = require("canvas")
 
 const axios = require("axios")
-const path = require("path")
 
 const cards =
 require("./cards.json")
+
+const frames =
+require("./frames")
 
 async function generateCard(cardId) {
 
@@ -48,18 +50,15 @@ async function generateCard(cardId) {
         1536
     )
 
-    // تحميل الإطار المناسب
+    // تحميل الإطار حسب الندرة
     const frame =
     await loadImage(
-        path.join(
-            __dirname,
-            "assets",
-            "cards",
-            `${character.rarity}.png`
-        )
+        frames[
+            character.rarity
+        ]
     )
 
-    // رسم الإطار فوق الشخصية
+    // رسم الإطار
     ctx.drawImage(
         frame,
         0,
