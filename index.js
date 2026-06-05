@@ -1115,8 +1115,9 @@ const sock = makeWASocket({
     // CONNECTION
     // =========================
    const GROUP_ID =
-        "120363020823525909@g.us"
-    sock.ev.on('connection.update', async (update) => {
+    "120363020823525909@g.us"
+
+sock.ev.on('connection.update', async (update) => {
 
     const { connection, qr } = update
 
@@ -1124,11 +1125,13 @@ const sock = makeWASocket({
         qrCodeData = await QRCode.toDataURL(qr)
     }
 
-    
-
     if (connection === 'open') {
 
         console.log('البوت اشتغل')
+        console.log(
+    "registered =",
+    state.creds.registered
+)
 
         if (!state.creds.registered) {
 
