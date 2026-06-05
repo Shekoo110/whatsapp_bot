@@ -17,8 +17,9 @@ const mongoose = require('mongoose')
 const PvP = require('./models/PvP')
 const bossAbilities = require('./bossAbilities')
 const { createCanvas } = require("canvas")
-const cards =
-require("./cards.json")
+const {
+    generateCard
+} = require("./cardGenerator")
 
 console.log("Canvas OK")
 const bosses = require('./bosses')
