@@ -950,6 +950,8 @@ async function spawnBoss(sock, groupId) {
     await Boss.deleteMany({})
     await Boss.create(currentBoss)
 
+    console.log("Created Boss:", currentBoss.finished)
+
     const players = await Player.find({})
 
 for (const player of players) {
@@ -1039,15 +1041,17 @@ async function startBot() {
 
     const savedBoss = await Boss.findOne()
 
-if (savedBoss) {
+    if (savedBoss) {
 
-    currentBoss = savedBoss
-    console.log('✅ تم تحميل الزعيم المحفوظ')
+        currentBoss = savedBoss
 
-} else {
+        console.log('✅ تم تحميل الزعيم المحفوظ')
+        console.log('Loaded Boss finished =', currentBoss.finished)
 
-    console.log('👑 لا يوجد زعيم محفوظ')
-}
+    } else {
+
+        console.log('👑 لا يوجد زعيم محفوظ')
+    }
 
     const { state, saveCreds } =
         await useMultiFileAuthState('auth')
