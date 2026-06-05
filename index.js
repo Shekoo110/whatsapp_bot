@@ -1036,10 +1036,15 @@ async function startBot() {
 
     const savedBoss = await Boss.findOne()
 
-    if (savedBoss) {
-        currentBoss = savedBoss
-        console.log('✅ تم تحميل الزعيم المحفوظ')
-    }
+if (savedBoss) {
+
+    currentBoss = savedBoss
+    console.log('✅ تم تحميل الزعيم المحفوظ')
+
+} else {
+
+    console.log('👑 لا يوجد زعيم محفوظ')
+}
 
     const { state, saveCreds } =
         await useMultiFileAuthState('auth')
@@ -3054,7 +3059,8 @@ ${player.usedCharacters?.length || 0}/30
                 !player.shop.items.length
 
             if (needRefresh) {
-                const { generateEquipmentShop } = require('./systems/shopSystem')
+                const { generateEquipmentShop } =
+require('./utils/shop')
                 const shopItems = generateEquipmentShop()
 
                 player.shop.items = shopItems
