@@ -5370,7 +5370,23 @@ ${Math.max(0, follower.hp)}`
     0,
     (currentBoss.hp || 0) - damage
 )
-            if (
+
+await Boss.updateOne(
+    {},
+    {
+        $set: {
+            hp: currentBoss.hp,
+            attack: currentBoss.attack,
+            enraged: currentBoss.enraged,
+            activeFollowers: currentBoss.activeFollowers,
+            groupAttackCount: currentBoss.groupAttackCount,
+            killer: currentBoss.killer,
+            finished: currentBoss.finished
+        }
+    }
+)
+
+if (
     !currentBoss.enraged &&
     currentBoss.hp <= currentBoss.maxHp / 2
 ) {
@@ -5389,14 +5405,26 @@ ${Math.max(0, follower.hp)}`
             )
         )
 
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            image: {
-                url: currentBoss.image
-            },
+    await Boss.updateOne(
+    {},
+    {
+        $set: {
+            hp: currentBoss.hp,
+            attack: currentBoss.attack,
+            enraged: currentBoss.enraged,
+            activeFollowers: currentBoss.activeFollowers
+        }
+    }
+)
 
-            caption: `😡 ${currentBoss.name}
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: {
+            url: currentBoss.image
+        },
+
+        caption: `😡 ${currentBoss.name}
 
 دخل حالة الغضب!
 
@@ -5409,8 +5437,8 @@ ${currentBoss.activeFollowers
 🔥 الضرر زاد 50%
 
 ⚔️ احذروا... الزعيم أصبح أخطر!`
-        }
-    )
+    }
+)
 }
 
 if ((me.lifestealBonus || 0) > 0) {
