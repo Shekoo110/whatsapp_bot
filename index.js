@@ -1081,10 +1081,16 @@ const sock = makeWASocket({
     auth: state,
 })
 
-const PHONE_NUMBER =
-    "201105749333"
+console.log(
+    "registered =",
+    state.creds.registered
+)
 
 if (!state.creds.registered) {
+
+    console.log(
+        "Requesting Pairing Code..."
+    )
 
     const code =
         await sock.requestPairingCode(
