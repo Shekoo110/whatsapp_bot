@@ -25,8 +25,51 @@ async function generateCard(cardId) {
     const ctx =
     canvas.getContext("2d")
 
-    // سنكمل هنا لاحقاً
+    // تحميل صورة الشخصية
+    const response =
+    await axios.get(
+        character.image,
+        {
+            responseType: "arraybuffer"
+        }
+    )
 
+    const characterImage =
+    await loadImage(
+        Buffer.from(response.data)
+    )
+
+    // رسم الشخصية
+    ctx.drawImage(
+        characterImage,
+        0,
+        0,
+        1024,
+        1536
+    )
+
+    // تحميل الإطار المناسب
+    const frame =
+    await loadImage(
+        path.join(
+            __dirname,
+            "assets",
+            "cards",
+            `${character.rarity}.png`
+        )
+    )
+
+    // رسم الإطار فوق الشخصية
+    ctx.drawImage(
+        frame,
+        0,
+        0,
+        1024,
+        1536
+    )
+
+    // إرجاع الصورة
+    return canvas.toBuffer("image/png")
 }
 
 module.exports = {
