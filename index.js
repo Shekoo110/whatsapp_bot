@@ -934,15 +934,18 @@ async function spawnBoss(sock, groupId) {
     }
 
     currentBoss = {
-        ...bosses[Math.floor(Math.random() * bosses.length)],
+    ...bosses[Math.floor(Math.random() * bosses.length)],
 
-        abilities: randomAbilities,
+    abilities: randomAbilities,
 
-        enraged: false,
-        turnCounter: 0,
-        activeFollowers: [],
-        groupAttackCount: 0
-    }
+    enraged: false,
+    turnCounter: 0,
+    activeFollowers: [],
+    groupAttackCount: 0,
+
+    finished: false,
+    killer: null
+}
 
     await Boss.deleteMany({})
     await Boss.create(currentBoss)
@@ -5435,7 +5438,7 @@ if (currentBoss.hp <= 0) {
 }
 
 await Boss.updateOne(
-    { _id: currentBoss._id },
+    {},
     {
         $set: {
             hp: currentBoss.hp,
