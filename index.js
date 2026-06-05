@@ -1096,18 +1096,40 @@ if (savedBoss) {
 
         if (connection === 'open') {
 
-            console.log('البوت اشتغل')
+    console.log('البوت اشتغل')
 
-            const GROUP_ID = "120363020823525909@g.us"
+    const GROUP_ID = "120363020823525909@g.us"
+
+    if (currentBoss) {
+
+        console.log('✅ تم استعادة الزعيم المحفوظ')
+
+    } else {
+
+        await spawnBoss(sock, GROUP_ID)
+    }
+
+    let lastBossHour = -1
+
+    setInterval(async () => {
+
+        const now = new Date()
+
+        if (
+            now.getMinutes() === 0 &&
+            now.getHours() !== lastBossHour &&
+            !currentBoss
+        ) {
+
+            lastBossHour = now.getHours()
 
             await spawnBoss(sock, GROUP_ID)
 
-            setInterval(async () => {
-                if (!currentBoss) {
-                    await spawnBoss(sock, GROUP_ID)
-                }
-            }, 60 * 60 * 1000)
+            console.log('👑 تم إنشاء زعيم جديد')
         }
+
+    }, 60000)
+}
 
         if (connection === 'close') {
 
