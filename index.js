@@ -1128,10 +1128,11 @@ sock.ev.on('connection.update', async (update) => {
     if (connection === 'open') {
 
         console.log('البوت اشتغل')
+
         console.log(
-    "registered =",
-    state.creds.registered
-)
+            "registered =",
+            state.creds.registered
+        )
 
         if (!state.creds.registered) {
 
@@ -1164,7 +1165,17 @@ sock.ev.on('connection.update', async (update) => {
             )
         }
     }
-})
+
+    if (connection === 'close') {
+
+        console.log('انقطع الاتصال')
+
+        setTimeout(() => {
+            startBot()
+        }, 5000)
+    }
+
+}) // ← يغلق connection.update هنا فقط
 
 let lastBossHour = -1
 
@@ -1191,16 +1202,6 @@ setInterval(async () => {
     }
 
 }, 60000)
-
-        if (connection === 'close') {
-
-            console.log('انقطع الاتصال')
-
-            setTimeout(() => {
-                startBot()
-            }, 5000)
-        }
-    })
 
     // =========================
 // الرسائل
