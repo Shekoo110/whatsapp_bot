@@ -2964,6 +2964,30 @@ ${damage}
         )
     }
 
+let needSave = false
+
+if (player.attackBonus === undefined) {
+    player.attackBonus = 0
+    needSave = true
+}
+
+if (player.defenseBonus === undefined) {
+    player.defenseBonus = 0
+    needSave = true
+}
+
+if (player.hpBonus === undefined) {
+    player.hpBonus = 0
+    needSave = true
+}
+
+if (player.speedBonus === undefined) {
+    player.speedBonus = 0
+    needSave = true
+}
+
+if (needSave) await player.save()
+            
     if (player.towerCompleted) {
         return sock.sendMessage(
             msg.key.remoteJid,
