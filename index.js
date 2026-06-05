@@ -1149,7 +1149,7 @@ if (!state.creds.registered) {
     "120363020823525909@g.us"
 
 sock.ev.on('connection.update', async (update) => {
-
+console.log(update)
     const { connection, qr } = update
 
     if (qr) {
