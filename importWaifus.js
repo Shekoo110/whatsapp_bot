@@ -155,94 +155,93 @@ module.exports = async function importWaifus() {
 
     for (const anime of animes) {
 
-        try {
+    try {
 
-            console.log(
-                `Searching ${anime}`
+        console.log(
+            `Searching ${anime}`
+        )
+
+        const media =
+            await searchAnime(
+                anime
             )
 
-            const media =
-                await searchAnime(
-                    anime
-                )
+        if (!media)
+            continue
 
-            if (!media)
+        const data =
+            await getCharacters(
+                media.id
+            )
+
+        const chars =
+            data.characters.nodes
+
+        for (const c of chars) {
+
+            if (
+                !c.gender ||
+                c.gender.toLowerCase() !==
+                    'female'
+            ) {
                 continue
-
-            const data =
-                await getCharacters(
-                    media.id
-                )
-
-            const chars =
-                data.characters.nodes
-
-            for (const c of chars) {
-
-                if (
-                    !c.gender ||
-                    c.gender.toLowerCase() !==
-                        'female'
-                ) {
-                    continue
-                }
-
-                const exists =
-                    await Waifu.findOne({
-                        anilistId: c.id
-                    })
-
-                if (exists)
-                    continue
-
-                await Waifu.create({
-
-                    anilistId: c.id,
-
-                    name:
-                        c.name.full,
-
-                    anime:
-                        data.title.romaji,
-
-                    image:
-                        c.image.large,
-
-                    gender:
-                        'Female',
-
-                    rarity:
-                        getRarity(),
-
-                    value:
-                        Math.max(
-                            100,
-                            Math.floor(
-                                (c.favourites || 0) /
-                                    10
-                            )
-                        )
-                })
-
-                imported++
             }
 
-            console.log(
-                `${anime} done`
-            )
+            const exists =
+                await Waifu.findOne({
+                    anilistId: c.id
+                })
 
-        catch (err) {
+            if (exists)
+                continue
 
-    console.log(
-        `${anime} failed`
-    )
+            await Waifu.create({
 
-    console.log(
-        err.response?.data || err.message
-    )
+                anilistId: c.id,
+
+                name:
+                    c.name.full,
+
+                anime:
+                    data.title.romaji,
+
+                image:
+                    c.image.large,
+
+                gender:
+                    'Female',
+
+                rarity:
+                    getRarity(),
+
+                value:
+                    Math.max(
+                        100,
+                        Math.floor(
+                            (c.favourites || 0) / 10
+                        )
+                    )
+            })
+
+            imported++
+        }
+
+        console.log(
+            `${anime} done`
+        )
+
+    } catch (err) {
+
+        console.log(
+            `${anime} failed`
+        )
+
+        console.log(
+            err.response?.data || err.message
+        )
+    }
 }
 
-    console.log(
-        `Imported ${imported} waifus`
-    )
-}
+console.log(
+    `Imported ${imported} waifus`
+)
