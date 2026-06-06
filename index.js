@@ -1098,15 +1098,11 @@ if (!state.creds.registered) {
 
         try {
 
-            const code =
-                await sock.requestPairingCode(
-                    "201105749333"
-                )
-
-            console.log(
-                "PAIRING CODE:",
-                code
+            const code = await sock.requestPairingCode(
+                "201105749333"
             )
+
+            console.log(code)
 
         } catch (e) {
 
@@ -1139,13 +1135,10 @@ if (!state.creds.registered) {
 
     await saveCreds()
 
-    console.log(
-        '💾 SESSION SAVED'
-    )
+    console.log('💾 SESSION SAVED')
 
     console.log(
-        'AUTH EXISTS:',
-        fs.existsSync('./auth')
+        fs.readdirSync('./auth')
     )
 
 })
