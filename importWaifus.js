@@ -145,7 +145,7 @@ await sleep(1500)
 
 module.exports = async function importWaifus() {
 
-    await Waifu.deleteMany({})
+ //   await Waifu.deleteMany({})
 console.log('Old waifus deleted')
 
     let imported = 0
