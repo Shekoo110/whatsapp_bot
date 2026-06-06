@@ -1086,18 +1086,19 @@ if (!fs.existsSync('./auth')) {
     fs.mkdirSync('./auth', { recursive: true })
 }
 
-    console.log('AUTH DELETED')
-}
-
 console.log(
     'AUTH EXISTS:',
     fs.existsSync('./auth')
 )
 
+const { state, saveCreds } =
+    await useMultiFileAuthState('auth')
+
 const sock = makeWASocket({
-    auth: state,
+    auth: state
 })
-    sock.ev.on('creds.update', saveCreds)
+
+sock.ev.on('creds.update', saveCreds)
 
 console.log(
     require('@whiskeysockets/baileys/package.json').version
