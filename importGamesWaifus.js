@@ -222,81 +222,160 @@ let imported = 0
             err.message
         )
     }
-/*
-    // ====================
-    // WUWA
-    // ====================
+// ====================
+// WUTHERING WAVES
+// ====================
 
-    try {
+try {
 
-        const res =
-            await axios.get(
-                'https://wuwa-api.projektcode.com/v1/characters?limit=200'
-            )
-
-        for (const c of res.data.data) {
-
-            if (
-                maleWuWa.includes(
-                    c.name
-                )
-            ) {
-                continue
+    const res =
+        await axios.get(
+            'https://wutheringwaves.fandom.com/api.php',
+            {
+                params: {
+                    action: 'query',
+                    list: 'categorymembers',
+                    cmtitle:
+                        'Category:Resonators_by_Release_Date',
+                    cmlimit: 500,
+                    format: 'json'
+                }
             }
+        )
 
-            const exists =
-                await Waifu.findOne({
-                    name: c.name,
-                    anime:
-                        'Wuthering Waves'
-                })
+    const males = [
 
-            if (exists)
-                continue
+        'Aalto',
+        'Brant',
+        'Calcharo',
+        'Jiyan',
+        'Lingyang',
+        'Mortefi',
+        'Xiangli Yao',
+        'Yuanwu',
+        'Rover'
+    ]
 
-            const rarity =
-                convertRarity(
-                    c.rarity || 5
-                )
+    const fourStars = [
 
-            await Waifu.create({
+        'Yangyang',
+        'Chixia',
+        'Baizhi',
+        'Sanhua',
+        'Taoqi',
+        'Youhu'
+    ]
 
-                name: c.name,
+    const characters =
+        res.data.query.categorymembers
 
-                anime:
-                    'Wuthering Waves',
+    for (const char of characters) {
 
-                source: 'Game',
+        const name =
+            char.title.trim()
 
-                image:
-                    c.images?.icon ||
-                    '',
-
-                gender: 'Female',
-
-                rarity,
-
-                value:
-                    getValue(
-                        rarity
-                    )
-            })
-
-            imported++
+        if (
+            males.includes(name)
+        ) {
+            continue
         }
 
-        console.log(
-            'WuWa done'
-        )
+        const exists =
+            await Waifu.findOne({
+                name,
+                anime:
+                    'Wuthering Waves'
+            })
 
-    } catch (err) {
+        if (exists)
+            continue
+
+        let image = ''
+
+        try {
+
+            const page =
+                await axios.get(
+                    'https://wutheringwaves.fandom.com/api.php',
+                    {
+                        params: {
+                            action: 'query',
+                            prop:
+                                'pageimages',
+                            titles:
+                                name,
+                            piprop:
+                                'original',
+                            format:
+                                'json'
+                        }
+                    }
+                )
+
+            const pages =
+                page.data.query.pages
+
+            const pageData =
+                Object.values(
+                    pages
+                )[0]
+
+            image =
+                pageData.original?.source ||
+                ''
+
+        } catch {}
+
+        const stars =
+            fourStars.includes(name)
+                ? 4
+                : 5
+
+        const rarity =
+            convertRarity(stars)
+
+        await Waifu.create({
+
+            name,
+
+            anime:
+                'Wuthering Waves',
+
+            source:
+                'Game',
+
+            image,
+
+            gender:
+                'Female',
+
+            rarity,
+
+            value:
+                getValue(
+                    rarity
+                )
+        })
+
+        imported++
 
         console.log(
-            'WuWa failed',
-            err.message
+            'Imported WuWa:',
+            name
         )
     }
-*/
+
+    console.log(
+        'WuWa done'
+    )
+
+} catch (err) {
+
+    console.log(
+        'WuWa failed',
+        err.message
+    )
+}
     console.log(
         `Imported ${imported} game waifus`
     )
