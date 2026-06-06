@@ -3,13 +3,24 @@ const Waifu = require('./models/Waifu')
 module.exports = async function updateAnimeImages(limit = 10) {
 
     const waifus =
-        await Waifu.find({
+    await Waifu.find({
 
-            source: 'Anime',
+        source: 'Anime',
 
-            imageUpdated: false
+        $or: [
 
-        }).limit(limit)
+            {
+                imageUpdated: false
+            },
+
+            {
+                imageUpdated: {
+                    $exists: false
+                }
+            }
+        ]
+
+    }).limit(limit)
 
     console.log(
         `Found ${waifus.length} waifus to update`
