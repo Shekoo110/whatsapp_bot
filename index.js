@@ -1085,6 +1085,7 @@ console.log(
 const sock = makeWASocket({
     auth: state,
 })
+    sock.ev.on('creds.update', saveCreds)
 
 console.log(
     require('@whiskeysockets/baileys/package.json').version
@@ -1213,6 +1214,11 @@ sock.ev.on('connection.update', async (update) => {
     }
 
     if (connection === 'close') {
+
+    console.log(
+        "CLOSE REASON:",
+        update?.lastDisconnect?.error
+    )
 
     console.log('انقطع الاتصال')
 
