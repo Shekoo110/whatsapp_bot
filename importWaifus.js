@@ -146,7 +146,20 @@ await sleep(1500)
 module.exports = async function importWaifus() {
 
  //   await Waifu.deleteMany({})
-console.log('Old waifus deleted')
+//console.log('Old waifus deleted')
+    const count =
+    await Waifu.countDocuments({
+        source: 'Anime'
+    })
+
+if (count > 0) {
+
+    console.log(
+        'Anime waifus already imported'
+    )
+
+    return
+}
 
     let imported = 0
 
