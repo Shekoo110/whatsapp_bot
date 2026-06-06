@@ -3,9 +3,10 @@ const mongoose = require('mongoose')
 const waifuSchema = new mongoose.Schema({
 
     anilistId: {
-        type: Number,
-        unique: true
-    },
+    type: Number,
+    default: null,
+    sparse: true
+},
 
     name: String,
 
