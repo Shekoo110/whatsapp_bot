@@ -46,17 +46,20 @@ image: String,
     claimedBy: {
         type: String,
         default: null
-    },
-
     claimedAt: {
-        type: Date,
-        default: null
-    },
+    type: Date,
+    default: null
+},
 
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+imageUpdated: {
+    type: Boolean,
+    default: false
+},
+
+createdAt: {
+    type: Date,
+    default: Date.now
+}
 
 })
 
