@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.10.0",
-    "@whiskeysockets/baileys": "^7.0.0-rc13",
+    "@whiskeysockets/baileys": "latest"
     "axios": "^1.11.0",
     "canvas": "^3.2.0",
     "express": "^5.2.1",
