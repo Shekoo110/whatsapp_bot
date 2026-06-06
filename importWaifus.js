@@ -160,7 +160,7 @@ module.exports = async function importWaifus() {
     let imported = 0
 
     for (const anime of animes) {
-
+await sleep(3000)
     try {
 
         console.log(
