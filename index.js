@@ -570,8 +570,22 @@ mongoose.connect(process.env.MONGODB_URI)
 
     console.log('✅ MongoDB Connected')
 
-    await PvP.deleteMany({})
-    console.log('PvP cleared')
+    try {
+
+        await mongoose.connection.db
+            .collection('waifus')
+            .dropIndex('anilistId_1')
+
+        console.log(
+            'anilistId index deleted'
+        )
+
+    } catch (err) {
+
+        console.log(
+            'index not found'
+        )
+    }
 
     await importWaifus()
     await importGamesWaifus()
