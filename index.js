@@ -1074,8 +1074,7 @@ if (savedBoss) {
     console.log('👑 لا يوجد زعيم محفوظ')
 }
 
-const { state, saveCreds } =
-    await useMultiFileAuthState('auth')
+
     const fs = require('fs')
 
 if (!fs.existsSync('./auth')) {
