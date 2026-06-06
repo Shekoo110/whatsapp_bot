@@ -16,6 +16,8 @@ console.log('Bot starting...')
 const importGamesWaifus =
     require('./importGamesWaifus')
 const mongoose = require('mongoose')
+const updateAnimeImages =
+    require('./updateAnimeImages')
 const PvP = require('./models/PvP')
 const bossAbilities = require('./bossAbilities')
 const { createCanvas } = require("canvas")
@@ -589,7 +591,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
     await importWaifus()
     await importGamesWaifus()
-
+await updateAnimeImages(5)
     const totalWaifus =
         await Waifu.countDocuments()
 
