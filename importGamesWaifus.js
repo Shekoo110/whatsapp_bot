@@ -296,9 +296,8 @@ let imported = 0
             err.message
         )
     }
-
+*/
     console.log(
         `Imported ${imported} game waifus`
     )
 }
-*/
