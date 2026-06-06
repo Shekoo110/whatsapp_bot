@@ -1090,8 +1090,7 @@ console.log(
     require('@whiskeysockets/baileys/package.json').version
 )
 
-console.log("CREDS:")
-console.log(state.creds)
+
 
 if (!state.creds.registered) {
 
@@ -1208,14 +1207,24 @@ sock.ev.on('connection.update', async (update) => {
 
     if (connection === 'close') {
 
-        console.log('انقطع الاتصال')
+    console.log('انقطع الاتصال')
+
+    const shouldReconnect =
+        state.creds.registered
+
+    if (shouldReconnect) {
 
         setTimeout(() => {
             startBot()
         }, 5000)
-    }
 
-})
+    } else {
+
+        console.log(
+            'بانتظار إكمال الربط...'
+        )
+    }
+}
 
 let lastBossHour = -1
 
