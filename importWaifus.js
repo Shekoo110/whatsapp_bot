@@ -245,3 +245,5 @@ module.exports = async function importWaifus() {
 console.log(
     `Imported ${imported} waifus`
 )
+
+}
