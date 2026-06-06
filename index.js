@@ -574,6 +574,14 @@ mongoose.connect(process.env.MONGODB_URI)
 
     await importWaifus()
 
+    const totalWaifus =
+        await Waifu.countDocuments()
+
+    console.log(
+        'TOTAL WAIFUS:',
+        totalWaifus
+    )
+
 })
 .catch(err =>
     console.log(
