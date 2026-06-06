@@ -44,9 +44,11 @@ image: String,
     },
 
     claimedBy: {
-        type: String,
-        default: null
-    claimedAt: {
+    type: String,
+    default: null
+},
+
+claimedAt: {
     type: Date,
     default: null
 },
