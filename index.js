@@ -5,7 +5,8 @@ const {
 
 const fs = require('fs')
 const path = require('path')
-
+const axios = require('axios')
+const Waifu = require('./models/Waifu')
 const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
 const QRCode = require("qrcode")
@@ -560,6 +561,9 @@ function getRandomCharacterByBox(boxType) {
     ]
 }
 
+const importWaifus =
+require('./importWaifus')
+
 mongoose.connect(process.env.MONGODB_URI)
 .then(async () => {
 
@@ -568,7 +572,15 @@ mongoose.connect(process.env.MONGODB_URI)
     await PvP.deleteMany({})
     console.log('PvP cleared')
 
+    await importWaifus()
+
 })
+.catch(err =>
+    console.log(
+        'MongoDB Error:',
+        err
+    )
+)
 .catch(err => console.log('MongoDB Error:', err))
 
 const safeLoadPlayers = () => {
