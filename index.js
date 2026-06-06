@@ -1496,7 +1496,51 @@ await distributeRankingRewards(
 )
 
 }
+
     
+    if (text === '.رول') {
+
+    const waifus =
+        await Waifu.find()
+
+    if (!waifus.length) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد شخصيات.'
+            }
+        )
+    }
+
+    const waifu =
+        waifus[
+            Math.floor(
+                Math.random() *
+                waifus.length
+            )
+        ]
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: waifu.image
+            },
+
+            caption:
+`🎲 سحبت وايفو جديدة!
+
+👸 ${waifu.name}
+
+📺 ${waifu.anime}
+
+⭐ ${waifu.rarity}
+
+💎 القيمة: ${waifu.value}`
+        }
+    )
+}
 
     if (text.startsWith('.تحدي')) {
 
