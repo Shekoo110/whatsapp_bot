@@ -231,13 +231,16 @@ module.exports = async function importWaifus() {
                 `${anime} done`
             )
 
-        } catch (err) {
+        catch (err) {
 
-            console.log(
-                `${anime} failed`
-            )
-        }
-    }
+    console.log(
+        `${anime} failed`
+    )
+
+    console.log(
+        err.response?.data || err.message
+    )
+}
 
     console.log(
         `Imported ${imported} waifus`
