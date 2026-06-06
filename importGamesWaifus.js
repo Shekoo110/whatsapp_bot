@@ -77,29 +77,27 @@ module.exports = async function importGamesWaifus() {
 
     try {
 
-        const list =
+    const list =
+        await axios.get(
+            'https://genshin.jmp.blue/characters'
+        )
 
-        const list =
+    for (const slug of list.data) {
+
+        const char =
             await axios.get(
-                'https://genshin.jmp.blue/characters'
+                `https://genshin.jmp.blue/characters/${slug}`
             )
 
-        for (const slug of list.data) {
+        const c = char.data
 
-            const char =
-                await axios.get(
-                    `https://genshin.jmp.blue/characters/${slug}`
-                )
-
-            const c = char.data
-
-            if (
-                maleGenshin.includes(
-                    c.name
-                )
-            ) {
-                continue
-            }
+        if (
+            maleGenshin.includes(
+                c.name
+            )
+        ) {
+            continue
+        }
 
             const exists =
                 await Waifu.findOne({
