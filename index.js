@@ -1078,21 +1078,17 @@ const { state, saveCreds } =
     await useMultiFileAuthState('auth')
     const fs = require('fs')
 
-if (fs.existsSync('./auth')) {
-
-    const fs = require('fs')
-
 if (!fs.existsSync('./auth')) {
     fs.mkdirSync('./auth', { recursive: true })
 }
+
+const { state, saveCreds } =
+    await useMultiFileAuthState('auth')
 
 console.log(
     'AUTH EXISTS:',
     fs.existsSync('./auth')
 )
-
-const { state, saveCreds } =
-    await useMultiFileAuthState('auth')
 
 const sock = makeWASocket({
     auth: state
@@ -1104,13 +1100,11 @@ console.log(
     require('@whiskeysockets/baileys/package.json').version
 )
 
-
-
 sock.ev.on('connection.update', async (update) => {
 
-    const { connection } = update
-
     console.log(update)
+
+    const { connection } = update
 
     if (
         connection === 'connecting' &&
@@ -1123,9 +1117,10 @@ sock.ev.on('connection.update', async (update) => {
                 setTimeout(resolve, 20000)
             )
 
-            const code = await sock.requestPairingCode(
-    "66937912691"
-)
+            const code =
+                await sock.requestPairingCode(
+                    "66937912691"
+                )
 
             console.log(
                 'PAIRING CODE:',
