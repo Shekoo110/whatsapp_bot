@@ -1076,6 +1076,17 @@ if (savedBoss) {
 
 const { state, saveCreds } =
     await useMultiFileAuthState('auth')
+    const fs = require('fs')
+
+if (fs.existsSync('./auth')) {
+
+    fs.rmSync('./auth', {
+        recursive: true,
+        force: true
+    })
+
+    console.log('AUTH DELETED')
+}
 
 console.log(
     'AUTH EXISTS:',
