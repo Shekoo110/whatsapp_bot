@@ -1,6 +1,13 @@
 const axios = require('axios')
 const Waifu = require('./models/Waifu')
 
+function sleep(ms) {
+    return new Promise(
+        resolve =>
+            setTimeout(resolve, ms)
+    )
+}
+
 const animes = [
     'BLEACH',
     'Naruto',
@@ -98,15 +105,17 @@ async function getCharacters(id) {
         }`
 
         const res = await axios.post(
-            'https://graphql.anilist.co',
-            {
-                query,
-                variables: {
-                    id,
-                    page
-                }
-            }
-        )
+    'https://graphql.anilist.co',
+    {
+        query,
+        variables: {
+            id,
+            page
+        }
+    }
+)
+
+await sleep(1500)
 
         const media =
             res.data.data.Media
@@ -135,9 +144,6 @@ async function getCharacters(id) {
 }
 
 module.exports = async function importWaifus() {
-
-    await Waifu.deleteMany({})
-    console.log('Old waifus deleted')
 
     const count =
         await Waifu.countDocuments()
