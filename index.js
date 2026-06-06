@@ -1085,9 +1085,13 @@ console.log(
 const sock = makeWASocket({
     auth: state,
 })
-    console.log(
+
+console.log(
     require('@whiskeysockets/baileys/package.json').version
 )
+
+console.log("CREDS:")
+console.log(state.creds)
 
 if (!state.creds.registered) {
 
