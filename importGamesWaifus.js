@@ -245,16 +245,17 @@ try {
 
     const males = [
 
-        'Aalto',
-        'Brant',
-        'Calcharo',
-        'Jiyan',
-        'Lingyang',
-        'Mortefi',
-        'Xiangli Yao',
-        'Yuanwu',
-        'Rover'
-    ]
+    'Aalto',
+    'Brant',
+    'Calcharo',
+    'Jiyan',
+    'Lingyang',
+    'Mortefi',
+    'Xiangli Yao',
+    'Yuanwu',
+    'Rover',
+    'Luuk Herssen'
+]
 
     const fourStars = [
 
@@ -264,7 +265,6 @@ try {
         'Sanhua',
         'Taoqi',
         'Youhu'
-        'Luuk Herssen'
     ]
 
     const characters =
