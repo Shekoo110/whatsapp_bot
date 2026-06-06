@@ -13,7 +13,8 @@ const QRCode = require("qrcode")
 const cooldowns = new Map()
 
 console.log('Bot starting...')
-
+const importGamesWaifus =
+    require('./importGamesWaifus')
 const mongoose = require('mongoose')
 const PvP = require('./models/PvP')
 const bossAbilities = require('./bossAbilities')
@@ -573,6 +574,7 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('PvP cleared')
 
     await importWaifus()
+    await importGamesWaifus()
 
     const totalWaifus =
         await Waifu.countDocuments()
