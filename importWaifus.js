@@ -55,50 +55,89 @@ async function searchAnime(title) {
 
 async function getCharacters(id) {
 
-    const query = `
-    query ($id:Int) {
-        Media(id:$id,type:ANIME) {
+    let allCharacters = []
+    let page = 1
+    let hasNextPage = true
+    let animeTitle = ''
 
-            title {
-                romaji
-            }
+    while (hasNextPage) {
 
-            characters(perPage:100) {
+        const query = `
+        query ($id:Int,$page:Int) {
+            Media(id:$id,type:ANIME) {
 
-                nodes {
+                title {
+                    romaji
+                }
 
-                    id
+                characters(
+                    page:$page
+                    perPage:50
+                ) {
 
-                    gender
-
-                    favourites
-
-                    name {
-                        full
+                    pageInfo {
+                        hasNextPage
                     }
 
-                    image {
-                        large
+                    nodes {
+
+                        id
+                        gender
+                        favourites
+
+                        name {
+                            full
+                        }
+
+                        image {
+                            large
+                        }
                     }
                 }
             }
-        }
-    }`
+        }`
 
-    const res = await axios.post(
-        'https://graphql.anilist.co',
-        {
-            query,
-            variables: {
-                id
+        const res = await axios.post(
+            'https://graphql.anilist.co',
+            {
+                query,
+                variables: {
+                    id,
+                    page
+                }
             }
-        }
-    )
+        )
 
-    return res.data.data.Media
+        const media =
+            res.data.data.Media
+
+        animeTitle =
+            media.title.romaji
+
+        allCharacters.push(
+            ...media.characters.nodes
+        )
+
+        hasNextPage =
+            media.characters.pageInfo.hasNextPage
+
+        page++
+    }
+
+    return {
+        title: {
+            romaji: animeTitle
+        },
+        characters: {
+            nodes: allCharacters
+        }
+    }
 }
 
 module.exports = async function importWaifus() {
+
+    await Waifu.deleteMany({})
+    console.log('Old waifus deleted')
 
     const count =
         await Waifu.countDocuments()
