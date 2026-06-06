@@ -1096,6 +1096,8 @@ sock.ev.on('connection.update', async (update) => {
 
     const { connection } = update
 
+    console.log(update)
+
     if (
         connection === 'connecting' &&
         !state.creds.registered
@@ -1103,20 +1105,24 @@ sock.ev.on('connection.update', async (update) => {
 
         try {
 
+            await new Promise(resolve =>
+                setTimeout(resolve, 20000)
+            )
+
             const code =
                 await sock.requestPairingCode(
-                    "201105749333"
+                    '201105749333'
                 )
 
             console.log(
-                "PAIRING CODE:",
+                'PAIRING CODE:',
                 code
             )
 
         } catch (e) {
 
             console.log(
-                "PAIRING ERROR:",
+                'PAIRING ERROR:',
                 e
             )
         }
