@@ -1092,17 +1092,26 @@ console.log(
 
 
 
-if (!state.creds.registered) {
+sock.ev.on('connection.update', async (update) => {
 
-    setTimeout(async () => {
+    const { connection } = update
+
+    if (
+        connection === 'connecting' &&
+        !state.creds.registered
+    ) {
 
         try {
 
-            const code = await sock.requestPairingCode(
-                "201105749333"
-            )
+            const code =
+                await sock.requestPairingCode(
+                    "20115749333"
+                )
 
-            console.log(code)
+            console.log(
+                "PAIRING CODE:",
+                code
+            )
 
         } catch (e) {
 
@@ -1111,9 +1120,8 @@ if (!state.creds.registered) {
                 e
             )
         }
-
-    }, 5000)
-}
+    }
+})
     // =========================
     // Shop (مرة واحدة فقط)
     // =========================
