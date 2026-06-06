@@ -1,10 +1,7 @@
 const axios = require('axios')
-const mongoose = require('mongoose')
 const Waifu = require('./models/Waifu')
 
-mongoose.connect(process.env.MONGODB_URI)
-
-const titles = [
+const animes = [
     'BLEACH',
     'Naruto',
     'One Piece',
@@ -19,95 +16,191 @@ const titles = [
     'Tokyo Ghoul'
 ]
 
-async function getMediaId(title) {
+function getRarity() {
+
+    const r = Math.random()
+
+    if (r < 0.01) return 'SSS'
+    if (r < 0.05) return 'SS'
+    if (r < 0.15) return 'S'
+    if (r < 0.35) return 'A'
+
+    return 'B'
+}
+
+async function searchAnime(title) {
 
     const query = `
-    query {
-      Media(search: "${title}", type: ANIME) {
-        id
-      }
+    query ($search:String) {
+        Media(search:$search,type:ANIME) {
+            id
+            title {
+                romaji
+            }
+        }
     }`
 
     const res = await axios.post(
         'https://graphql.anilist.co',
-        { query }
+        {
+            query,
+            variables: {
+                search: title
+            }
+        }
     )
 
-    return res.data.data.Media.id
+    return res.data.data.Media
 }
 
-async function importAnime(title) {
+async function getCharacters(id) {
 
-    const mediaId = await getMediaId(title)
+    const query = `
+    query ($id:Int) {
+        Media(id:$id,type:ANIME) {
 
-    let page = 1
-
-    while (true) {
-
-        const query = `
-        query {
-          Media(id:${mediaId}, type:ANIME) {
-            characters(page:${page}, perPage:50) {
-              nodes {
-                id
-                gender
-                name {
-                  full
-                }
-                image {
-                  large
-                }
-              }
+            title {
+                romaji
             }
-          }
-        }`
 
-        const res = await axios.post(
-            'https://graphql.anilist.co',
-            { query }
+            characters(perPage:100) {
+
+                nodes {
+
+                    id
+
+                    gender
+
+                    favourites
+
+                    name {
+                        full
+                    }
+
+                    image {
+                        large
+                    }
+                }
+            }
+        }
+    }`
+
+    const res = await axios.post(
+        'https://graphql.anilist.co',
+        {
+            query,
+            variables: {
+                id
+            }
+        }
+    )
+
+    return res.data.data.Media
+}
+
+module.exports = async function importWaifus() {
+
+    const count =
+        await Waifu.countDocuments()
+
+    if (count > 0) {
+
+        console.log(
+            'Waifus already imported'
         )
 
-        const chars =
-            res.data.data.Media.characters.nodes
+        return
+    }
 
-        if (!chars.length) break
+    let imported = 0
 
-        for (const c of chars) {
+    for (const anime of animes) {
 
-            if (c.gender !== 'Female')
+        try {
+
+            console.log(
+                `Searching ${anime}`
+            )
+
+            const media =
+                await searchAnime(
+                    anime
+                )
+
+            if (!media)
                 continue
 
-            const exists =
-                await Waifu.findOne({
-                    anilistId: c.id
+            const data =
+                await getCharacters(
+                    media.id
+                )
+
+            const chars =
+                data.characters.nodes
+
+            for (const c of chars) {
+
+                if (
+                    !c.gender ||
+                    c.gender.toLowerCase() !==
+                        'female'
+                ) {
+                    continue
+                }
+
+                const exists =
+                    await Waifu.findOne({
+                        anilistId: c.id
+                    })
+
+                if (exists)
+                    continue
+
+                await Waifu.create({
+
+                    anilistId: c.id,
+
+                    name:
+                        c.name.full,
+
+                    anime:
+                        data.title.romaji,
+
+                    image:
+                        c.image.large,
+
+                    gender:
+                        'Female',
+
+                    rarity:
+                        getRarity(),
+
+                    value:
+                        Math.max(
+                            100,
+                            Math.floor(
+                                (c.favourites || 0) /
+                                    10
+                            )
+                        )
                 })
 
-            if (exists)
-                continue
+                imported++
+            }
 
-            await Waifu.create({
-                anilistId: c.id,
-                name: c.name.full,
-                image: c.image.large,
-                source: title,
-                type: 'anime'
-            })
+            console.log(
+                `${anime} done`
+            )
+
+        } catch (err) {
+
+            console.log(
+                `${anime} failed`
+            )
         }
-
-        page++
     }
 
-    console.log(`Imported ${title}`)
+    console.log(
+        `Imported ${imported} waifus`
+    )
 }
-
-async function main() {
-
-    for (const title of titles) {
-        await importAnime(title)
-    }
-
-    console.log('Finished')
-    process.exit()
-}
-
-main()
