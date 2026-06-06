@@ -572,7 +572,7 @@ mongoose.connect(process.env.MONGODB_URI)
     await PvP.deleteMany({})
     console.log('PvP cleared')
 
-  //  await importWaifus()
+    await importWaifus()
 
     const totalWaifus =
         await Waifu.countDocuments()
