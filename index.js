@@ -1080,10 +1080,11 @@ const { state, saveCreds } =
 
 if (fs.existsSync('./auth')) {
 
-    fs.rmSync('./auth', {
-        recursive: true,
-        force: true
-    })
+    const fs = require('fs')
+
+if (!fs.existsSync('./auth')) {
+    fs.mkdirSync('./auth', { recursive: true })
+}
 
     console.log('AUTH DELETED')
 }
