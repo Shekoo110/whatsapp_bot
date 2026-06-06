@@ -1116,10 +1116,9 @@ sock.ev.on('connection.update', async (update) => {
                 setTimeout(resolve, 20000)
             )
 
-            const code =
-                await sock.requestPairingCode(
-                    "66937912691"
-                )
+            const code = await sock.requestPairingCode(
+    "201105749333"
+)
 
             console.log(
                 'PAIRING CODE:',
