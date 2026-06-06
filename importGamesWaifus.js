@@ -57,13 +57,27 @@ const maleWuWa = [
 
 module.exports = async function importGamesWaifus() {
 
-    let imported = 0
+    const count =
+        await Waifu.countDocuments({
+            source: 'Game'
+        })
+
+    if (count > 0) {
+
+        console.log(
+            'Game waifus already imported'
+        )
+
+        return
+    }
 
     // ====================
     // GENSHIN
     // ====================
 
     try {
+
+        const list =
 
         const list =
             await axios.get(
