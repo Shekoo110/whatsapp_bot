@@ -10,10 +10,14 @@ const waifuSchema = new mongoose.Schema({
 
     name: String,
 
-    anime: String,
+anime: String,
 
-    image: String,
+source: {
+    type: String,
+    default: 'Anime'
+},
 
+image: String,
     gender: {
         type: String,
         default: 'Female'
