@@ -1225,6 +1225,7 @@ sock.ev.on('connection.update', async (update) => {
         )
     }
 }
+    })
 
 let lastBossHour = -1
 
