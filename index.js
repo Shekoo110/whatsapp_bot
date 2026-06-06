@@ -1077,6 +1077,11 @@ if (savedBoss) {
 const { state, saveCreds } =
     await useMultiFileAuthState('auth')
 
+console.log(
+    'AUTH EXISTS:',
+    fs.existsSync('./auth')
+)
+
 const sock = makeWASocket({
     auth: state,
 })
@@ -1127,7 +1132,20 @@ if (!state.creds.registered) {
     // =========================
     // حفظ الجلسة
     // =========================
-    sock.ev.on('creds.update', saveCreds)
+    sock.ev.on('creds.update', async () => {
+
+    await saveCreds()
+
+    console.log(
+        '💾 SESSION SAVED'
+    )
+
+    console.log(
+        'AUTH EXISTS:',
+        fs.existsSync('./auth')
+    )
+
+})
 
     // =========================
     // safeSend
