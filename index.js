@@ -1520,13 +1520,28 @@ await sock.sendMessage(
     )
     }
 
+const ownerNumber = "966536471289@s.whatsapp.net"
+
+function isOwner(msg) {
+    const sender =
+        msg.key.participant || msg.key.remoteJid
+
+    return sender === ownerNumber
+}
+
 if (text === '.جوائز_الترتيب') {
 
-await distributeRankingRewards(
-    sock,
-    msg.key.remoteJid
-)
+    if (!isOwner(msg)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ هذا الأمر للمطور فقط' }
+        )
+    }
 
+    await distributeRankingRewards(
+        sock,
+        msg.key.remoteJid
+    )
 }
 
 
