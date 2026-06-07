@@ -10,11 +10,6 @@ async function getWikipediaImage(name) {
         const url =
             `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`
 
-        console.log(
-            "Wikipedia URL:",
-            url
-        )
-
         const { data } =
             await axios.get(url, {
                 headers: {
@@ -39,9 +34,10 @@ async function getWikipediaImage(name) {
 module.exports = async function updateAnimeImages(limit = 319) {
 
     const waifus =
-    await Waifu.find({
-        source: 'Anime'
-    }).limit(limit)
+        await Waifu.find({
+            source: 'Anime'
+        }).limit(limit)
+
     let updated = 0
 
     console.log(
@@ -52,52 +48,33 @@ module.exports = async function updateAnimeImages(limit = 319) {
 
         try {
 
-            console.log(
-                "Anime:",
-                waifu.anime
-            )
-
-            console.log(
-                "Name:",
-                waifu.name
-            )
-
             const wikiImage =
                 await getWikipediaImage(
                     waifu.name
                 )
 
-            console.log(
-    "Wikipedia Image:",
-    wikiImage
-)
+            if (
+                wikiImage &&
+                wikiImage !== waifu.image
+            ) {
 
-console.log(
-    "Current Image:",
-    waifu.image
-)
+                waifu.image =
+                    wikiImage
 
-console.log(
-    "Equal:",
-    wikiImage === waifu.image
-)
+                waifu.imageUpdated =
+                    true
 
-if (
-    wikiImage &&
-    wikiImage !== waifu.image
-)
+                waifu.imageUpdatedAt =
+                    new Date()
 
-    waifu.image = wikiImage
-    waifu.imageUpdated = true
+                await waifu.save()
 
-    await waifu.save()
+                updated++
 
-    updated++
-
-    console.log(
-        `Updated: ${waifu.name}`
-    )
-}
+                console.log(
+                    `Updated: ${waifu.name}`
+                )
+            }
 
             await new Promise(
                 r => setTimeout(r, 500)
