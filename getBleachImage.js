@@ -1,21 +1,52 @@
-const axios = require("axios");
-const cheerio = require("cheerio");
+const axios = require('axios')
+const cheerio = require('cheerio')
 
-async function getBleachImage() {
+module.exports = async function getBleachImage(name) {
+
     try {
-        const url = "https://bleach.fandom.com/wiki/Rukia_Kuchiki";
 
-        const { data } = await axios.get(url);
+        const pageName =
+            name.replace(/ /g, '_')
 
-        const $ = cheerio.load(data);
+        const url =
+            `https://bleach.fandom.com/wiki/${pageName}`
 
-        const img = $(".pi-image-thumbnail").attr("src");
+        const { data } =
+            await axios.get(url, {
+                headers: {
+                    'User-Agent':
+                        'Mozilla/5.0'
+                }
+            })
 
-        console.log("Image URL:", img);
+        const $ = cheerio.load(data)
+
+        let image = null
+
+        $('aside img').each((i, el) => {
+
+            const src =
+                $(el).attr('src')
+
+            if (
+                src &&
+                src.startsWith('http')
+            ) {
+
+                image = src
+
+                return false
+            }
+        })
+
+        return image
 
     } catch (err) {
-        console.log("Error:", err.message);
+
+        console.log(
+            `BLEACH IMAGE ERROR: ${name}`
+        )
+
+        return null
     }
 }
-
-getBleachImage();
