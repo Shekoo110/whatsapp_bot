@@ -2,6 +2,31 @@ const Waifu = require('./models/Waifu')
 const axios = require('axios')
 const cheerio = require('cheerio')
 
+const axios = require("axios");
+
+async function getWikipediaImage(name) {
+
+    try {
+
+        const url =
+            `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`;
+
+        const { data } =
+            await axios.get(url);
+
+        return data.thumbnail?.source || null;
+
+    } catch (err) {
+
+        console.log(
+            "Wikipedia Error:",
+            err.message
+        );
+
+        return null;
+    }
+}
+
 const animeWikiMap = {
     "BLEACH": "https://bleach.fandom.com/wiki",
 
@@ -102,17 +127,33 @@ console.log(
     baseUrl
 )
 
-if (!baseUrl)
-    continue
-
 const wikiImage =
-    await getWikiImage(
-        waifu.name,
-        baseUrl
+    await getWikipediaImage(
+        waifu.name
     )
 
 console.log(
-    "Wiki Image:",
+    "Anime:",
+    waifu.anime
+)
+
+console.log(
+    "Name:",
+    waifu.name
+)
+
+console.log(
+    "Base URL:",
+    baseUrl
+)
+
+const wikiImage =
+    await getWikipediaImage(
+        waifu.name
+    )
+
+console.log(
+    "Wikipedia Image:",
     wikiImage
 )
 
