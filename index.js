@@ -1850,14 +1850,14 @@ if (text === '.جوائز_الترتيب') {
     }
 
     const existing =
-        await WaifuTrade.findOne({
-            $or: [
-                { user1: sender },
-                { user2: sender },
-                { user1: target },
-                { user2: target }
-            ]
-        })
+    await WaifuTrade.findOne({
+        $or: [
+            { user1: userId },
+            { user2: userId },
+            { user1: target },
+            { user2: target }
+        ]
+    })
 
     if (existing) {
 
@@ -2235,7 +2235,7 @@ await sock.sendMessage(
 
 }
 
-    if (text.startsWith('.عرض ')) {
+    if (text.startsWith('.اعرض ')) {
 
 const trade =
     await WaifuTrade.findOne({
