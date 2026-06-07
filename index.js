@@ -1159,7 +1159,7 @@ await new Promise(resolve =>
         
         const code =
     await sock.requestPairingCode(
-        "966536471289"
+        "201105749333"
     )
 
         console.log(
