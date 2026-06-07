@@ -17,13 +17,13 @@ function getValue(rarity) {
     switch (rarity) {
 
         case 'UR':
-            return 25000
+            return 1500
 
         case 'SSR':
-            return 10000
+            return 100
 
         default:
-            return 5000
+            return 50
     }
 }
 
