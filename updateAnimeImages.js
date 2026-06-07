@@ -60,20 +60,36 @@ for (const waifu of waifus) {
     try {
 
         const baseUrl =
-            animeWikiMap[waifu.anime]
+    animeWikiMap[waifu.anime]
 
-        if (!baseUrl)
-            continue
+console.log(
+    "Anime:",
+    waifu.anime
+)
 
-        console.log(
-            `Checking ${waifu.name}`
-        )
+console.log(
+    "Name:",
+    waifu.name
+)
 
-        const wikiImage =
-            await getWikiImage(
-                waifu.name,
-                baseUrl
-            )
+console.log(
+    "Base URL:",
+    baseUrl
+)
+
+if (!baseUrl)
+    continue
+
+const wikiImage =
+    await getWikiImage(
+        waifu.name,
+        baseUrl
+    )
+
+console.log(
+    "Wiki Image:",
+    wikiImage
+)
 
         if (
             wikiImage &&
