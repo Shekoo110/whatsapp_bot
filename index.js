@@ -21,7 +21,7 @@ console.log('Bot starting...')
 const importGamesWaifus =
     require('./importGamesWaifus')
 const mongoose = require('mongoose')
-
+const lastRolls = new Map()
 const PvP = require('./models/PvP')
 const bossAbilities = require('./bossAbilities')
 const { createCanvas } = require("canvas")
@@ -1699,12 +1699,17 @@ if (text === '.update waifus images') {
     }
 
     const waifu =
-        waifus[
-            Math.floor(
-                Math.random() *
-                waifus.length
-            )
-        ]
+    waifus[
+        Math.floor(
+            Math.random() *
+            waifus.length
+        )
+    ]
+
+lastRolls.set(
+    sender,
+    waifu._id.toString()
+)
 
     await sock.sendMessage(
         msg.key.remoteJid,
@@ -1723,6 +1728,69 @@ if (text === '.update waifus images') {
 ⭐ ${waifu.rarity}
 
 💎 القيمة: ${waifu.value}`
+        }
+    )
+}
+
+    if (text === '.مطالبة') {
+
+    const waifuId =
+        lastRolls.get(sender)
+
+    if (!waifuId) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ اسحب وايفو أولاً'
+            }
+        )
+    }
+
+    const waifu =
+        await Waifu.findById(
+            waifuId
+        )
+
+    if (!waifu) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ لم يتم العثور على الوايفو'
+            }
+        )
+    }
+
+    if (waifu.claimedBy) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ هذه الوايفو مملوكة بالفعل'
+            }
+        )
+    }
+
+    waifu.claimedBy = sender
+    waifu.claimedAt = new Date()
+    waifu.claims += 1
+
+    await waifu.save()
+
+    lastRolls.delete(sender)
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🎉 تمت المطالبة بنجاح
+
+👸 ${waifu.name}
+📺 ${waifu.anime}`
         }
     )
 }
