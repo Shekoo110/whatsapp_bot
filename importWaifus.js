@@ -236,17 +236,7 @@ await sleep(3000)
             if (exists)
                 continue
 
-            await Waifu.create({
-
-                anilistId: c.id,
-
-                name:
-                    c.name.full,
-
-                anime:
-                    data.title.romaji,
-
-                const baseUrl = animeWikiMap[data.title.romaji];
+            const baseUrl = animeWikiMap[data.title.romaji];
 
 const wikiImage = baseUrl
     ? await getWikiInfoboxImage(c.name.full, baseUrl)
@@ -262,10 +252,7 @@ await Waifu.create({
     gender: 'Female',
     rarity: getRarity(),
     value: Math.max(100, Math.floor((c.favourites || 0) / 10))
-
-                        )
-                    )
-            })
+});
 
             imported++
         }
