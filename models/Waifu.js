@@ -3,21 +3,36 @@ const mongoose = require('mongoose')
 const waifuSchema = new mongoose.Schema({
 
     anilistId: {
-    type: Number,
-    default: null,
-    sparse: true
-},
+        type: Number,
+        default: null,
+        sparse: true
+    },
 
     name: String,
+    anime: String,
 
-anime: String,
+    source: {
+        type: String,
+        default: 'Anime'
+    },
 
-source: {
-    type: String,
-    default: 'Anime'
-},
+    image: String,
 
-image: String,
+    imageSource: {
+        type: String,
+        default: 'anilist'
+    },
+
+    imageUpdated: {
+        type: Boolean,
+        default: false
+    },
+
+    imageUpdatedAt: {
+        type: Date,
+        default: null
+    },
+
     gender: {
         type: String,
         default: 'Female'
@@ -44,29 +59,19 @@ image: String,
     },
 
     claimedBy: {
-    type: String,
-    default: null
-},
+        type: String,
+        default: null
+    },
 
-claimedAt: {
-    type: Date,
-    default: null
-},
+    claimedAt: {
+        type: Date,
+        default: null
+    },
 
-imageUpdated: {
-    type: Boolean,
-    default: false
-},
-
-createdAt: {
-    type: Date,
-    default: Date.now
-}
-
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 })
 
-module.exports =
-mongoose.model(
-    'Waifu',
-    waifuSchema
-)
+module.exports = mongoose.model('Waifu', waifuSchema)
