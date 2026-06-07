@@ -82,7 +82,10 @@ console.log(
     wikiImage === waifu.image
 )
 
-if (wikiImage) {
+if (
+    wikiImage &&
+    wikiImage !== waifu.image
+)
 
     waifu.image = wikiImage
     waifu.imageUpdated = true
