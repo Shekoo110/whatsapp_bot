@@ -596,7 +596,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
     await importWaifus()
     await importGamesWaifus()
-await restoreAniListImages(500)
+await restoreAniListImages(700)
     const totalWaifus =
         await Waifu.countDocuments()
 
