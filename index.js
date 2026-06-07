@@ -1330,7 +1330,7 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
 
     const msg = messages[0]
     if (!msg?.message) return
-
+console.log(JSON.stringify(msg, null, 2))
 console.log("participant:", msg.key.participant)
 console.log("remoteJid:", msg.key.remoteJid)
     
@@ -1523,21 +1523,14 @@ await sock.sendMessage(
     )
     }
 
-const ownerNumber = "966536471289@s.whatsapp.net"
-
-function getSender(msg) {
-    return msg.key.participant || msg.key.remoteJid
-}
+const ownerId = "175114725408817"
 
 function isOwner(msg) {
-    let sender = getSender(msg)
+    const sender =
+        (msg.key.participant || msg.key.remoteJid).split("@")[0]
 
-    // مهم: لو فيه LID نحولها لاحتمالين
-    sender = sender.replace("@lid", "@s.whatsapp.net")
-
-    return sender === ownerNumber
+    return sender === ownerId
 }
-
 if (text === '.جوائز_الترتيب') {
 
     if (!isOwner(msg)) {
