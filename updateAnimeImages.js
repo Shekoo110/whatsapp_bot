@@ -146,11 +146,6 @@ console.log(
     baseUrl
 )
 
-const wikiImage =
-    await getWikipediaImage(
-        waifu.name
-    )
-
 console.log(
     "Wikipedia Image:",
     wikiImage
