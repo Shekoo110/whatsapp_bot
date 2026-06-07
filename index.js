@@ -1516,6 +1516,105 @@ await distributeRankingRewards(
 
 }
 
+
+
+const animeWikiMap = {
+    "BLEACH": "https://bleach.fandom.com/wiki",
+    "Naruto": "https://naruto.fandom.com/wiki",
+    "One Piece": "https://onepiece.fandom.com/wiki",
+    "Dragon Ball Z": "https://dragonball.fandom.com/wiki",
+    "Dragon Ball Super": "https://dragonball.fandom.com/wiki",
+    "Hunter x Hunter": "https://hunterxhunter.fandom.com/wiki",
+    "Fairy Tail": "https://fairytail.fandom.com/wiki",
+    "Jujutsu Kaisen": "https://jujutsu-kaisen.fandom.com/wiki",
+    "Black Clover": "https://blackclover.fandom.com/wiki",
+    "Demon Slayer": "https://kimetsu-no-yaiba.fandom.com/wiki",
+    "Attack on Titan": "https://attackontitan.fandom.com/wiki",
+    "Tokyo Ghoul": "https://tokyoghoul.fandom.com/wiki"
+};
+
+async function getWikiImage(name, baseUrl) {
+    try {
+        const url = `${baseUrl}/${name.replace(/ /g, "_")}`;
+
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+
+        const img =
+            $(".pi-image-thumbnail").attr("src") ||
+            $(".image img").first().attr("src");
+
+        return img || null;
+
+    } catch (err) {
+        return null;
+    }
+}
+
+// ==========================
+// 🔥 داخل message handler
+// ==========================
+
+if (text === '.update waifus images') {
+
+    let waifus = await Waifu.find({});
+    let updated = 0;
+
+    await sock.sendMessage(msg.key.remoteJid, {
+        text: `⏳ بدأ تحديث الصور...\n📦 العدد: ${waifus.length}`
+    });
+
+    for (const w of waifus) {
+
+        try {
+
+            const baseUrl = animeWikiMap[w.anime];
+
+            if (!baseUrl) continue;
+
+            const wikiImage = await getWikiImage(
+                w.name,
+                baseUrl
+            );
+
+            if (wikiImage && wikiImage !== w.image) {
+
+                await Waifu.updateOne(
+                    { _id: w._id },
+                    {
+                        image: wikiImage,
+                        imageUpdated: true
+                    }
+                );
+
+                updated++;
+            }
+
+            await new Promise(
+                r => setTimeout(r, 500)
+            );
+
+        } catch (e) {
+
+            console.log(
+                "error updating:",
+                w.name
+            );
+        }
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم الانتهاء
+
+🖼️ الصور المحدثة: ${updated}`
+        }
+    );
+}
+
+module.exports = handleUpdateWaifusImages;
     
     if (text === '.رول') {
 
