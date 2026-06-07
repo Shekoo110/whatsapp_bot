@@ -1611,7 +1611,7 @@ if (text === '.جوائز_الترتيب') {
         )
     }
 
-    if (target === sender) {
+    if (target === userId) {
 
         return sock.sendMessage(
             msg.key.remoteJid,
@@ -1757,7 +1757,7 @@ ${target.split('@')[0]}
         }
     )
 }
-if (text === '.قبول') {
+if (text === '.اقبل') {
 
     const trade =
         await WaifuTrade.findOne({
@@ -2008,7 +2008,7 @@ await sock.sendMessage(
 
 }
 
-    if (text.startsWith('.اعرض ')) {
+    if (text.startsWith('.عرض ')) {
 
 const trade =
     await WaifuTrade.findOne({
@@ -2389,6 +2389,66 @@ await sock.sendMessage(
         {
             text:
                 '❌ تم إلغاء التبادل'
+        }
+    )
+}
+
+    if (text.startsWith('.اعرضوايفو ')) {
+
+    const userId =
+        msg.key.participant ||
+        msg.key.remoteJid
+
+    const number =
+        parseInt(
+            text.split(' ')[1]
+        )
+
+    if (isNaN(number)) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ مثال:\n.اعرضوايفو 1'
+            }
+        )
+    }
+
+    const waifus =
+        await Waifu.find({
+            claimedBy: userId
+        })
+
+    const waifu =
+        waifus[number - 1]
+
+    if (!waifu) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ لا توجد وايفو بهذا الرقم'
+            }
+        )
+    }
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: waifu.image
+            },
+
+            caption:
+`👸 ${waifu.name}
+
+📺 ${waifu.anime}
+
+⭐ ${waifu.rarity}
+
+💎 القيمة: ${waifu.value}`
         }
     )
 }
