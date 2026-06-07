@@ -40,14 +40,20 @@ async function getWikiImage(name, baseUrl) {
             `${baseUrl}/${name.replace(/ /g, "_")}`
 
         const { data } =
-            await axios.get(url)
+    await axios.get(url)
 
-        const $ = cheerio.load(data)
+console.log("URL:", url)
+console.log("Page length:", data.length)
 
-        const img =
-            $('meta[property="og:image"]').attr("content") ||
-            $(".pi-image-thumbnail").attr("src") ||
-            $(".image img").first().attr("src")
+const $ = cheerio.load(data)
+
+const img =
+    $('meta[property="og:image"]').attr("content") ||
+    $('meta[name="twitter:image"]').attr("content") ||
+    $(".pi-image-thumbnail").attr("src") ||
+    $(".image img").first().attr("src")
+
+console.log("Found image:", img)
 
         return img || null
 
