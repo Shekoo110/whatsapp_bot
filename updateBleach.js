@@ -12,20 +12,7 @@ async function updateBleach(
 
             anime: 'BLEACH',
 
-            source: 'Anime',
-
-            $or: [
-
-                {
-                    imageUpdated: false
-                },
-
-                {
-                    imageUpdated: {
-                        $exists: false
-                    }
-                }
-            ]
+            source: 'Anime'
 
         }).limit(limit)
 
@@ -39,28 +26,41 @@ async function updateBleach(
             `Checking ${waifu.name}`
         )
 
-        const image =
-            await getBleachImage(
-                waifu.name
+        try {
+
+            const image =
+                await getBleachImage(
+                    waifu.name
+                )
+
+            if (!image) {
+
+                console.log(
+                    `BLEACH IMAGE ERROR: ${waifu.name}`
+                )
+
+                continue
+            }
+
+            waifu.image = image
+            waifu.imageUpdated = true
+
+            await waifu.save()
+
+            console.log(
+                `Updated ${waifu.name}`
             )
 
-        if (!image) {
+        } catch (err) {
 
             console.log(
                 `BLEACH IMAGE ERROR: ${waifu.name}`
             )
 
-            continue
+            console.log(
+                err.message
+            )
         }
-
-        waifu.image = image
-        waifu.imageUpdated = true
-
-        await waifu.save()
-
-        console.log(
-            `Updated ${waifu.name}`
-        )
     }
 
     console.log(
