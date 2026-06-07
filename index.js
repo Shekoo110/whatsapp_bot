@@ -6,6 +6,7 @@ const {
 const fs = require('fs')
 const path = require('path')
 const axios = require('axios')
+const pendingSwaps = new Map()
 const Waifu = require('./models/Waifu')
 const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
@@ -3322,6 +3323,229 @@ return safeSend(msg.key.remoteJid, {
 })
 }
 
+    if (text.startsWith('.بدل ')) {
+
+    const target =
+        msg.message?.extendedTextMessage
+            ?.contextInfo
+            ?.mentionedJid?.[0]
+
+    if (!target) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ منشن اللاعب'
+            }
+        )
+    }
+
+    const args =
+        text.split(' ')
+
+    const myNumber =
+        parseInt(args[1])
+
+    const hisNumber =
+        parseInt(args[2])
+
+    if (
+        isNaN(myNumber) ||
+        isNaN(hisNumber)
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ مثال:\n.بدل 1 30 @اللاعب'
+            }
+        )
+    }
+
+    const me =
+        await Player.findOne({
+            userId
+        })
+
+    const other =
+        await Player.findOne({
+            userId: target
+        })
+
+    if (!other) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ اللاعب غير موجود'
+            }
+        )
+    }
+
+    const myChar =
+        me.characters[myNumber - 1]
+
+    const hisChar =
+        other.characters[hisNumber - 1]
+
+    if (!myChar) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ شخصيتك غير موجودة'
+            }
+        )
+    }
+
+    if (!hisChar) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ شخصية اللاعب غير موجودة'
+            }
+        )
+    }
+
+    pendingSwaps.set(
+        target,
+        {
+            from: userId,
+            to: target,
+
+            myNumber,
+            hisNumber
+        }
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🔄 طلب تبديل
+
+👤 @${userId.split('@')[0]}
+🎁 ${myChar.name}
+
+🔁 مقابل
+
+👤 @${target.split('@')[0]}
+🎁 ${hisChar.name}
+
+اكتب:
+.قبول_بدل
+
+أو
+
+.رفض_بدل`,
+            mentions: [
+                userId,
+                target
+            ]
+        }
+    )
+}
+
+if (text === '.قبول_بدل') {
+
+    const request =
+        pendingSwaps.get(userId)
+
+    if (!request) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ لا يوجد طلب'
+            }
+        )
+    }
+
+    const player1 =
+        await Player.findOne({
+            userId: request.from
+        })
+
+    const player2 =
+        await Player.findOne({
+            userId: request.to
+        })
+
+    const char1 =
+        player1.characters[
+            request.myNumber - 1
+        ]
+
+    const char2 =
+        player2.characters[
+            request.hisNumber - 1
+        ]
+
+    if (!char1 || !char2) {
+
+        pendingSwaps.delete(
+            userId
+        )
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ إحدى الشخصيات غير موجودة'
+            }
+        )
+    }
+
+    player1.characters[
+        request.myNumber - 1
+    ] = char2
+
+    player2.characters[
+        request.hisNumber - 1
+    ] = char1
+
+    await player1.save()
+    await player2.save()
+
+    pendingSwaps.delete(
+        userId
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم التبديل بنجاح
+
+${char1.name}
+↔
+${char2.name}`
+        }
+    )
+}
+
+    if (text === '.رفض_بدل') {
+
+    const request =
+        pendingSwaps.get(userId)
+
+    if (!request) return
+
+    pendingSwaps.delete(
+        userId
+    )
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ تم رفض التبديل'
+        }
+    )
+    }
+    
 if (text === '.مساهمات') {
 
     const players =
