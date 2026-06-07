@@ -2,7 +2,14 @@ const Waifu = require('./models/Waifu')
 const getBleachImage =
     require('./getBleachImage')
 
-const count =
+
+
+module.exports =
+async function updateBleach(
+    limit = 10
+) {
+
+    const count =
     await Waifu.countDocuments({
         anime: 'BLEACH'
     })
@@ -11,11 +18,6 @@ console.log(
     'BLEACH COUNT:',
     count
 )
-
-module.exports =
-async function updateBleach(
-    limit = 10
-) {
 
     const waifus =
     await Waifu.find({
