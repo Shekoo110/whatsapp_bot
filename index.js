@@ -1116,6 +1116,11 @@ if (savedBoss) {
 
     const fs = require('fs')
 
+console.log(
+    'AUTH BEFORE:',
+    fs.existsSync('./auth')
+)
+
 if (fs.existsSync('./auth')) {
 
     fs.rmSync('./auth', {
@@ -1126,9 +1131,19 @@ if (fs.existsSync('./auth')) {
     console.log('Auth deleted')
 }
 
+console.log(
+    'AUTH AFTER DELETE:',
+    fs.existsSync('./auth')
+)
+
 fs.mkdirSync('./auth', {
     recursive: true
 })
+
+console.log(
+    'AUTH AFTER CREATE:',
+    fs.existsSync('./auth')
+)
 
 const { state, saveCreds } =
     await useMultiFileAuthState('auth')
