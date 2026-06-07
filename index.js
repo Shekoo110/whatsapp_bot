@@ -15,7 +15,8 @@ const QRCode = require("qrcode")
 const cooldowns = new Map()
 const cheerio = require("cheerio");
 console.log("cheerio loaded OK");
-
+const WaifuTrade =
+    require('./models/WaifuTrade')
 console.log('Bot starting...')
 const importGamesWaifus =
     require('./importGamesWaifus')
@@ -1546,6 +1547,118 @@ if (text === '.جوائز_الترتيب') {
     )
 }
 
+    if (body.startsWith('.تبادل')) {
+
+    const target =
+        msg.message?.extendedTextMessage
+            ?.contextInfo
+            ?.mentionedJid?.[0]
+
+    if (!target) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ منشن اللاعب الذي تريد التبادل معه'
+            }
+        )
+    }
+
+    if (target === sender) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ لا يمكنك التبادل مع نفسك'
+            }
+        )
+    }
+
+    const existing =
+        await WaifuTrade.findOne({
+            $or: [
+                { user1: sender },
+                { user2: sender },
+                { user1: target },
+                { user2: target }
+            ]
+        })
+
+    if (existing) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ أحد اللاعبين لديه تبادل مفتوح بالفعل'
+            }
+        )
+    }
+
+    await WaifuTrade.create({
+
+        user1: sender,
+        user2: target
+
+    })
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🤝 تم إنشاء طلب تبادل
+
+👤 الطرف الأول:
+${sender.split('@')[0]}
+
+👤 الطرف الثاني:
+${target.split('@')[0]}
+
+للإكمال اكتب:
+
+.قبول`
+        }
+    )
+}
+if (body === '.قبول') {
+
+    const trade =
+        await WaifuTrade.findOne({
+            user2: sender
+        })
+
+    if (!trade) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ لا يوجد طلب تبادل بانتظارك'
+            }
+        )
+    }
+
+    trade.accepted = true
+
+    await trade.save()
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم قبول التبادل
+
+الآن كل لاعب يختار الوايفو التي يريد عرضها:
+
+.اعرض رقم_الوايفو
+
+مثال:
+.اعرض 3`
+        }
+    )
+}
 
 if (text === '.update waifus images') {
 
