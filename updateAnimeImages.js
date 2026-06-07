@@ -39,8 +39,12 @@ async function getWikiImage(name, baseUrl) {
         const url =
             `${baseUrl}/${name.replace(/ /g, "_")}`
 
-        const { data } =
-    await axios.get(url)
+        const { data } = await axios.get(url, {
+    headers: {
+        "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/125.0 Safari/537.36"
+    }
+})
 
 console.log("URL:", url)
 console.log("Page length:", data.length)
