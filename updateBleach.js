@@ -12,19 +12,46 @@ async function updateBleach(
 
             anime: 'BLEACH',
 
-            source: 'Anime'
+            source: 'Anime',
+
+            $or: [
+
+                {
+                    imageUpdated: false
+                },
+
+                {
+                    imageUpdated: {
+                        $exists: false
+                    }
+                }
+            ]
 
         }).limit(limit)
 
+    console.log(
+        `Found ${waifus.length} BLEACH waifus`
+    )
+
     for (const waifu of waifus) {
+
+        console.log(
+            `Checking ${waifu.name}`
+        )
 
         const image =
             await getBleachImage(
                 waifu.name
             )
 
-        if (!image)
+        if (!image) {
+
+            console.log(
+                `BLEACH IMAGE ERROR: ${waifu.name}`
+            )
+
             continue
+        }
 
         waifu.image = image
         waifu.imageUpdated = true
@@ -35,4 +62,8 @@ async function updateBleach(
             `Updated ${waifu.name}`
         )
     }
+
+    console.log(
+        'BLEACH update finished'
+    )
 }
