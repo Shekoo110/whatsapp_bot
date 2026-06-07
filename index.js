@@ -668,11 +668,6 @@ app.get('/health', (req, res) => {
 
 let qrCodeData = ""
 
-// ===== صفحة QR =====
-
-app.get("/", (req, res) => {
-
-    if (qrCodeData) {
 
 // ===== صفحة QR =====
 
@@ -1172,7 +1167,7 @@ await new Promise(resolve =>
         
         const code =
     await sock.requestPairingCode(
-        "966536471289"
+        "201105749333"
     )
 
         console.log(
