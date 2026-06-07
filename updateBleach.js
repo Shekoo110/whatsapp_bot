@@ -8,13 +8,17 @@ async function updateBleach(
 ) {
 
     const waifus =
-        await Waifu.find({
+    await Waifu.find({
 
-            anime: 'BLEACH',
+        anime: 'BLEACH',
 
-            source: 'Anime'
+        source: 'Anime',
 
-        }).limit(limit)
+        imageUpdated: {
+            $ne: true
+        }
+
+    }).limit(limit)
 
     console.log(
         `Found ${waifus.length} BLEACH waifus`
