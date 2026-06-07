@@ -2,7 +2,6 @@ const Waifu = require('./models/Waifu')
 const axios = require('axios')
 const cheerio = require('cheerio')
 
-const axios = require("axios");
 
 async function getWikipediaImage(name) {
 
