@@ -14,8 +14,7 @@ const QRCode = require("qrcode")
 const cooldowns = new Map()
 const cheerio = require("cheerio");
 console.log("cheerio loaded OK");
-const updateBleach =
-    require('./updateBleach')
+
 console.log('Bot starting...')
 const importGamesWaifus =
     require('./importGamesWaifus')
@@ -594,7 +593,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
     await importWaifus()
     await importGamesWaifus()
-await updateBleach(20)
+
     const totalWaifus =
         await Waifu.countDocuments()
 
