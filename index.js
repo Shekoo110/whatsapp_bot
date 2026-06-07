@@ -9,6 +9,27 @@ const axios = require('axios')
 const Waifu = require('./models/Waifu')
 const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
+const app = express()
+
+app.get('/', (req, res) => {
+
+    res.send('Bot Online')
+})
+
+app.get('/health', (req, res) => {
+
+    res.status(200).send('OK')
+})
+
+app.listen(
+    process.env.PORT || 3000,
+    () => {
+
+        console.log(
+            'Server running'
+        )
+    }
+)
 const QRCode = require("qrcode")
 const cooldowns = new Map()
 const cheerio = require("cheerio");
