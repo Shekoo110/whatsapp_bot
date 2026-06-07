@@ -33,6 +33,25 @@ async function getWikipediaImage(name) {
 
 module.exports = async function updateAnimeImages(limit = 319) {
 
+    console.log(
+        "Total:",
+        await Waifu.countDocuments({})
+    )
+
+    console.log(
+        "Anime:",
+        await Waifu.countDocuments({
+            source: "Anime"
+        })
+    )
+
+    console.log(
+        "Game:",
+        await Waifu.countDocuments({
+            source: "Game"
+        })
+    )
+
     const waifus =
         await Waifu.find({
             source: 'Anime'
@@ -52,29 +71,30 @@ module.exports = async function updateAnimeImages(limit = 319) {
                 await getWikipediaImage(
                     waifu.name
                 )
-        console.log(
-    `${waifu.name} => ${wikiImage ? 'FOUND' : 'NOT FOUND'}`
-)
+
+            console.log(
+                `${waifu.name} => ${wikiImage ? 'FOUND' : 'NOT FOUND'}`
+            )
 
             if (wikiImage) {
 
-    waifu.image =
-        wikiImage
+                waifu.image =
+                    wikiImage
 
-    waifu.imageUpdated =
-        true
+                waifu.imageUpdated =
+                    true
 
-    waifu.imageUpdatedAt =
-        new Date()
+                waifu.imageUpdatedAt =
+                    new Date()
 
-    await waifu.save()
+                await waifu.save()
 
-    updated++
+                updated++
 
-    console.log(
-        `Updated: ${waifu.name}`
-    )
-}
+                console.log(
+                    `Updated: ${waifu.name}`
+                )
+            }
 
             await new Promise(
                 r => setTimeout(r, 500)
