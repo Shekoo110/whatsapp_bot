@@ -11,7 +11,8 @@ const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
 const QRCode = require("qrcode")
 const cooldowns = new Map()
-
+const cheerio = require("cheerio");
+console.log("cheerio loaded OK");
 console.log('Bot starting...')
 const importGamesWaifus =
     require('./importGamesWaifus')
