@@ -63,12 +63,8 @@ async function getWikiImage(name, baseUrl) {
         const url =
             `${baseUrl}/${name.replace(/ /g, "_")}`
 
-        const { data } = await axios.get(url, {
-    headers: {
-        "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/125.0 Safari/537.36"
-    }
-})
+        const { data } =
+    await axios.get(url);
 
 console.log("URL:", url)
 console.log("Page length:", data.length)
@@ -85,9 +81,17 @@ console.log("Found image:", img)
 
         return img || null
 
-    } catch (err) {
+    catch (err) {
 
-    console.log("ERROR:", err.message)
+    console.log(
+        "Wikipedia URL:",
+        url
+    )
+
+    console.log(
+        "Wikipedia Error:",
+        err.message
+    )
 
     return null
 }
