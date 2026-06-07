@@ -1011,6 +1011,7 @@ async function spawnBoss(sock, groupId) {
 
     await Boss.deleteMany({})
     await Boss.create(currentBoss)
+    console.log("Boss saved to MongoDB")
 
     console.log("Created Boss:", currentBoss.finished)
 
