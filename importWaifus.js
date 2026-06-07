@@ -1,5 +1,40 @@
 const axios = require('axios')
 const Waifu = require('./models/Waifu')
+const cheerio = require("cheerio"); // إذا غير موجود أضفه
+
+const animeWikiMap = {
+    "BLEACH": "https://bleach.fandom.com/wiki",
+    "Naruto": "https://naruto.fandom.com/wiki",
+    "One Piece": "https://onepiece.fandom.com/wiki",
+    "Dragon Ball Z": "https://dragonball.fandom.com/wiki",
+    "Dragon Ball Super": "https://dragonball.fandom.com/wiki",
+    "Hunter x Hunter": "https://hunterxhunter.fandom.com/wiki",
+    "Fairy Tail": "https://fairytail.fandom.com/wiki",
+    "Jujutsu Kaisen": "https://jujutsu-kaisen.fandom.com/wiki",
+    "Black Clover": "https://blackclover.fandom.com/wiki",
+    "Demon Slayer": "https://kimetsu-no-yaiba.fandom.com/wiki",
+    "Attack on Titan": "https://attackontitan.fandom.com/wiki",
+    "Tokyo Ghoul": "https://tokyoghoul.fandom.com/wiki"
+};
+
+async function getWikiInfoboxImage(name, wikiBaseUrl) {
+    try {
+        const url = `${wikiBaseUrl}/${name.replace(/ /g, "_")}`;
+
+        const { data } = await axios.get(url);
+
+        const $ = cheerio.load(data);
+
+        const img =
+            $(".pi-image-thumbnail").attr("src") ||
+            $(".image img").first().attr("src");
+
+        return img || null;
+
+    } catch (err) {
+        return null;
+    }
+}
 
 function sleep(ms) {
     return new Promise(
@@ -212,7 +247,8 @@ await sleep(3000)
                     data.title.romaji,
 
                 image:
-                    c.image.large,
+    (await getWikiInfoboxImage(c.name.full, "https://bleach.fandom.com/wiki")) ||
+    c.image.large,
 
                 gender:
                     'Female',
