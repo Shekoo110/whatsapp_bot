@@ -39,8 +39,9 @@ async function getWikipediaImage(name) {
 module.exports = async function updateAnimeImages(limit = 319) {
 
     const waifus =
-        await Waifu.find({}).limit(limit)
-
+    await Waifu.find({
+        source: 'Anime'
+    }).limit(limit)
     let updated = 0
 
     console.log(
