@@ -21,6 +21,11 @@ new mongoose.Schema({
     favoriteWaifu: {
         type: Number,
         default: null
+    },
+
+    wives: {
+        type: [String],
+        default: []
     }
 
 })
