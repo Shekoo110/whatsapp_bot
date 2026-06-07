@@ -975,6 +975,9 @@ async function generateCharacterShop() {
 
 async function spawnBoss(sock, groupId) {
 
+    console.log('🔥 SPAWN BOSS CALLED')
+    console.trace()
+
     const randomAbilities = []
 
     while (randomAbilities.length < 3) {
@@ -1294,27 +1297,25 @@ sock.ev.on('connection.update', async (update) => {
 
     if (connection === 'open') {
 
-        console.log('البوت اشتغل')
+    console.log('البوت اشتغل')
 
-        if (
-    currentBoss &&
-    (
-        !currentBoss.finished ||
-        currentBoss.respawnAt > Date.now()
-    )
-) {
+        console.log('Boss HP =', currentBoss?.hp)
+console.log('Boss Finished =', currentBoss?.finished)
+console.log('Boss Respawn =', currentBoss?.respawnAt)
 
-    console.log(
-        '✅ تم استعادة الزعيم المحفوظ'
-    )
+    if (currentBoss) {
 
-} else {
+        console.log(
+            '✅ تم استعادة الزعيم المحفوظ'
+        )
 
-    await spawnBoss(
-        sock,
-        GROUP_ID
-    )
-}
+    } else {
+
+        await spawnBoss(
+            sock,
+            GROUP_ID
+        )
+    }
     }
 
     if (connection === 'close') {
