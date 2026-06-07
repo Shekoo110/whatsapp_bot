@@ -1795,6 +1795,358 @@ lastRolls.set(
     )
 }
 
+    if (text === '.مجموعتي') {
+
+const waifus =
+    await Waifu.find({
+        claimedBy: sender
+    })
+
+if (!waifus.length) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ لا تملك أي وايفو'
+        }
+    )
+}
+
+let message =
+
+`📚 مجموعتك
+
+━━━━━━━━━━━━
+
+`
+
+waifus.forEach(
+    (waifu, index) => {
+
+        message +=
+
+`${index + 1}. ${waifu.name}
+📺 ${waifu.anime}
+⭐ ${waifu.rarity}
+
+`
+}
+)
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text: message
+    }
+)
+
+}
+
+    if (text.startsWith('.اعرض ')) {
+
+const trade =
+    await WaifuTrade.findOne({
+        $or: [
+            { user1: sender },
+            { user2: sender }
+        ]
+    })
+
+if (!trade) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ أنت لست داخل تبادل'
+        }
+    )
+}
+
+if (!trade.accepted) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ يجب قبول التبادل أولاً'
+        }
+    )
+}
+
+const number =
+    parseInt(
+        text.split(' ')[1]
+    )
+
+if (isNaN(number)) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ اختر رقمًا صحيحًا'
+        }
+    )
+}
+
+const waifus =
+    await Waifu.find({
+        claimedBy: sender
+    })
+
+const waifu =
+    waifus[number - 1]
+
+if (!waifu) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ رقم غير موجود'
+        }
+    )
+}
+
+if (trade.user1 === sender) {
+
+    trade.waifu1 =
+        waifu._id
+
+    trade.ready1 = false
+
+} else {
+
+    trade.waifu2 =
+        waifu._id
+
+    trade.ready2 = false
+}
+
+await trade.save()
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`✅ تم عرض
+
+👸 ${waifu.name}
+📺 ${waifu.anime}
+
+اكتب:
+.جاهز`
+}
+)
+}
+    if (text === '.جاهز') {
+
+const trade =
+    await WaifuTrade.findOne({
+        $or: [
+            { user1: sender },
+            { user2: sender }
+        ]
+    })
+
+if (!trade) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ أنت لست داخل تبادل'
+        }
+    )
+}
+
+if (!trade.accepted) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ لم يتم قبول التبادل بعد'
+        }
+    )
+}
+
+if (trade.user1 === sender) {
+
+    if (!trade.waifu1) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ اعرض وايفو أولاً'
+            }
+        )
+    }
+
+    trade.ready1 = true
+
+} else {
+
+    if (!trade.waifu2) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ اعرض وايفو أولاً'
+            }
+        )
+    }
+
+    trade.ready2 = true
+}
+
+await trade.save()
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`✅ تم تسجيل جاهزيتك
+
+👤 الطرف الأول:
+${trade.ready1 ? '✅' : '❌'}
+
+👤 الطرف الثاني:
+${trade.ready2 ? '✅' : '❌'}
+
+إذا أصبح الطرفان جاهزين استخدم:
+.تأكيد`
+}
+)
+}
+
+if (text === '.تأكيد') {
+
+const trade =
+    await WaifuTrade.findOne({
+        $or: [
+            { user1: sender },
+            { user2: sender }
+        ]
+    })
+
+if (!trade) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ لا يوجد تبادل نشط'
+        }
+    )
+}
+
+if (!trade.accepted) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ لم يتم قبول التبادل بعد'
+        }
+    )
+}
+
+if (
+    !trade.ready1 ||
+    !trade.ready2
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ يجب أن يكون الطرفان جاهزين'
+        }
+    )
+}
+
+const waifu1 =
+    await Waifu.findById(
+        trade.waifu1
+    )
+
+const waifu2 =
+    await Waifu.findById(
+        trade.waifu2
+    )
+
+if (!waifu1 || !waifu2) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ تعذر العثور على الوايفوهات'
+        }
+    )
+}
+
+waifu1.claimedBy =
+    trade.user2
+
+waifu2.claimedBy =
+    trade.user1
+
+await waifu1.save()
+await waifu2.save()
+
+await WaifuTrade.deleteOne({
+    _id: trade._id
+})
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🎉 تم التبادل بنجاح
+
+👤 ${trade.user1.split('@')[0]}
+⇄
+👤 ${trade.user2.split('@')[0]}
+
+تم نقل الملكية بنجاح`
+}
+)
+}
+
+    if (text === '.الغاء') {
+
+    const trade =
+        await WaifuTrade.findOne({
+            $or: [
+                { user1: sender },
+                { user2: sender }
+            ]
+        })
+
+    if (!trade) return
+
+    await WaifuTrade.deleteOne({
+        _id: trade._id
+    })
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ تم إلغاء التبادل'
+        }
+    )
+}
+    
     if (text.startsWith('.تحدي')) {
 
     const target =
