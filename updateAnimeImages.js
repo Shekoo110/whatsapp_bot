@@ -1,6 +1,6 @@
 const Waifu = require('./models/Waifu')
 const axios = require('axios')
-const cheerio = require('cheerio')
+
 
 console.log("USING WIKIPEDIA API")
 
@@ -28,48 +28,6 @@ async function getWikipediaImage(name) {
 }
 
 
-
-
-async function getWikiImage(name, baseUrl) {
-
-    try {
-
-        const url =
-            `${baseUrl}/${name.replace(/ /g, "_")}`
-
-        const { data } =
-            await axios.get(url)
-
-        console.log("URL:", url)
-        console.log("Page length:", data.length)
-
-        const $ = cheerio.load(data)
-
-        const img =
-            $('meta[property="og:image"]').attr("content") ||
-            $('meta[name="twitter:image"]').attr("content") ||
-            $(".pi-image-thumbnail").attr("src") ||
-            $(".image img").first().attr("src")
-
-        console.log("Found image:", img)
-
-        return img || null
-
-    } catch (err) {
-
-        console.log(
-            "URL:",
-            `${baseUrl}/${name.replace(/ /g, "_")}`
-        )
-
-        console.log(
-            "ERROR:",
-            err.message
-        )
-
-        return null
-    }
-}
 
 module.exports = async function updateAnimeImages(limit = 319) {
 
