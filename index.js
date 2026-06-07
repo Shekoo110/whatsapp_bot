@@ -1108,29 +1108,61 @@ if (savedBoss) {
 
     currentBoss = savedBoss
 
-    if (currentBoss.finished === undefined)
-        currentBoss.finished = false
+if (currentBoss.finished === undefined)
+    currentBoss.finished = false
 
-    if (currentBoss.killer === undefined)
-        currentBoss.killer = null
+if (currentBoss.killer === undefined)
+    currentBoss.killer = null
+
+if (
+    currentBoss.finished &&
+    currentBoss.respawnAt &&
+    currentBoss.respawnAt > Date.now()
+) {
+
+    console.log(
+        '💀 الزعيم ميت وينتظر إعادة الظهور'
+    )
+
+} else if (
+    currentBoss.finished &&
+    currentBoss.respawnAt &&
+    currentBoss.respawnAt <= Date.now()
+) {
+
+    console.log(
+        '⏰ انتهى وقت إعادة الظهور'
+    )
+
+    await Boss.deleteMany({})
+
+    currentBoss = null
+}
+
+if (currentBoss) {
 
     await Boss.updateOne(
         {},
         {
             $set: {
                 finished: currentBoss.finished,
-                killer: currentBoss.killer
+                killer: currentBoss.killer,
+                respawnAt: currentBoss.respawnAt
             }
         }
     )
 
-    console.log('✅ تم تحميل الزعيم المحفوظ')
-    console.log('Loaded Boss finished =', currentBoss.finished)
+    console.log(
+        '✅ تم تحميل الزعيم المحفوظ'
+    )
+
+    console.log(
+        'Loaded Boss finished =',
+        currentBoss.finished
+    )
+}
 
 } else {
-
-    console.log('👑 لا يوجد زعيم محفوظ')
-}
 
 
     const fs = require('fs')
@@ -1266,19 +1298,25 @@ sock.ev.on('connection.update', async (update) => {
 
         console.log('البوت اشتغل')
 
-        if (currentBoss) {
+        if (
+    currentBoss &&
+    (
+        !currentBoss.finished ||
+        currentBoss.respawnAt > Date.now()
+    )
+) {
 
-            console.log(
-                '✅ تم استعادة الزعيم المحفوظ'
-            )
+    console.log(
+        '✅ تم استعادة الزعيم المحفوظ'
+    )
 
-        } else {
+} else {
 
-            await spawnBoss(
-                sock,
-                GROUP_ID
-            )
-        }
+    await spawnBoss(
+        sock,
+        GROUP_ID
+    )
+}
     }
 
     if (connection === 'close') {
@@ -6780,9 +6818,24 @@ if (currentBoss.hp <= 0) {
             msg.key.remoteJid
         )
 
-        await Boss.deleteMany({})
+        currentBoss.hp = 0
+currentBoss.finished = true
 
-        currentBoss = null
+currentBoss.respawnAt =
+    Date.now() + 60 * 60 * 1000
+
+await Boss.updateOne(
+    {},
+    {
+        $set: {
+            hp: 0,
+            finished: true,
+            respawnAt: currentBoss.respawnAt
+        }
+    }
+)
+
+currentBoss.finished = true
 
         return safeSend(msg.key.remoteJid, {
             text: `👑 تم هزيمة الزعيم!`
