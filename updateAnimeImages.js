@@ -97,8 +97,8 @@ module.exports = async function updateAnimeImages(limit = 319) {
             }
 
             await new Promise(
-                r => setTimeout(r, 500)
-            )
+    r => setTimeout(r, 2000)
+)
 
         } catch (err) {
 
