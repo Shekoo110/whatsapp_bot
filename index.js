@@ -1818,17 +1818,20 @@ if (text === '.update waifus images') {
     )
 }
     
-    if (text === '.رول') {
+    
+
+if (text === '.رول') {
 
     const sender =
         msg.key.participant ||
         msg.key.remoteJid
 
     const waifus =
-        await Waifu.find()
-
-
-
+    await Waifu.find({
+        image: {
+            $nin: [null, '']
+        }
+    })
     if (!waifus.length) {
 
         return sock.sendMessage(
@@ -1840,17 +1843,38 @@ if (text === '.update waifus images') {
     }
 
     const waifu =
-    waifus[
-        Math.floor(
-            Math.random() *
-            waifus.length
-        )
-    ]
+        waifus[
+            Math.floor(
+                Math.random() *
+                waifus.length
+            )
+        ]
 
-lastRolls.set(
-    sender,
-    waifu._id.toString()
-)
+    lastRolls.set(
+        sender,
+        waifu._id.toString()
+    )
+
+    if (!waifu.image) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`🎲 سحبت وايفو جديدة!
+
+👸 ${waifu.name}
+
+📺 ${waifu.anime}
+
+⭐ ${waifu.rarity}
+
+💎 القيمة: ${waifu.value}
+
+⚠️ لا توجد صورة لهذه الوايفو`
+            }
+        )
+    }
 
     await sock.sendMessage(
         msg.key.remoteJid,
