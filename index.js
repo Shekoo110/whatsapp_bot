@@ -6735,26 +6735,37 @@ await me.save()
 } // نهاية if (Math.random() <= 0.35)
 
 } // نهاية if (currentBoss.groupAttackCount >= 15)
-    await me.save()
+
+await me.save()
+
+if (!currentBoss) {
+
+    console.log("No current boss")
+
+    return
+}
+
 console.log(
     "Boss HP:",
     currentBoss.hp,
     "Finished:",
     currentBoss.finished
 )
+
 // =========================
 // 🧨 نهاية الزعيم
 // =========================
+
 if (currentBoss.hp <= 0) {
 
     if (currentBoss.finished) return
+
     currentBoss.finished = true
 
     console.log("BOSS DEAD")
     console.log("Starting reward distribution")
 
     try {
-
         await distributeBossRewards(
             sock,
             msg.key.remoteJid
