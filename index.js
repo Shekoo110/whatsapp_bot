@@ -9,7 +9,8 @@ const axios = require('axios')
 const Waifu = require('./models/Waifu')
 const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
-
+const restoreAniListImages =
+    require('./restoreAniListImages')
 const QRCode = require("qrcode")
 const cooldowns = new Map()
 const cheerio = require("cheerio");
@@ -593,7 +594,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
     await importWaifus()
     await importGamesWaifus()
-
+await restoreAniListImages(500)
     const totalWaifus =
         await Waifu.countDocuments()
 
