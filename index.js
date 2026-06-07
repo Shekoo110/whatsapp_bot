@@ -1915,24 +1915,24 @@ lastRolls.set(
         )
     }
 
-    waifu.claimedBy = sender
-    waifu.claimedAt = new Date()
-    waifu.claims += 1
+    waifu.claimedBy = userId
+waifu.claimedAt = new Date()
+waifu.claims += 1
 
-    await waifu.save()
+await waifu.save()
 
-    lastRolls.delete(sender)
+lastRolls.delete(userId)
 
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
 `🎉 تمت المطالبة بنجاح
 
 👸 ${waifu.name}
 📺 ${waifu.anime}`
-        }
-    )
+    }
+)
 }
 
     if (text === '.مجموعتي') {
@@ -2033,7 +2033,7 @@ if (isNaN(number)) {
 
 const waifus =
     await Waifu.find({
-        claimedBy: sender
+        claimedBy: userId
     })
 
 const waifu =
@@ -2050,7 +2050,7 @@ if (!waifu) {
     )
 }
 
-if (trade.user1 === sender) {
+if (trade.user1 === userId) {
 
     trade.waifu1 =
         waifu._id
@@ -2113,8 +2113,7 @@ if (!trade.accepted) {
         }
     )
 }
-
-if (trade.user1 === sender) {
+if (trade.user1 === userId) {
 
     if (!trade.waifu1) {
 
