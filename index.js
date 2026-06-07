@@ -1444,6 +1444,232 @@ console.log("remoteJid:", msg.key.remoteJid)
                 }
             )
         }
+
+    if (text.startsWith('.زواج ')) {
+
+const userId =
+    msg.key.participant ||
+    msg.key.remoteJid
+
+const number =
+    parseInt(text.split(' ')[1])
+
+if (isNaN(number)) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ مثال:\n.زواج 1'
+        }
+    )
+}
+
+let player =
+    await WaifuPlayer.findOne({
+        userId
+    })
+
+if (!player) {
+
+    player =
+        await WaifuPlayer.create({
+            userId
+        })
+}
+
+player.wives =
+    player.wives || []
+
+if (player.wives.length >= 4) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '💍 الحد الأقصى 4 زوجات'
+        }
+    )
+}
+
+const waifus =
+    await Waifu.find({
+        claimedBy: userId
+    })
+
+const waifu =
+    waifus[number - 1]
+
+if (!waifu) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ وايفو غير موجودة'
+        }
+    )
+}
+
+if (
+    player.wives.includes(
+        waifu._id.toString()
+    )
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '💍 هذه زوجتك بالفعل'
+        }
+    )
+}
+
+player.wives.push(
+    waifu._id.toString()
+)
+
+await player.save()
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`💍 تم الزواج من
+
+👸 ${waifu.name}`
+}
+)
+}
+if (text === '.زوجاتي') {
+
+const userId =
+    msg.key.participant ||
+    msg.key.remoteJid
+
+const player =
+    await WaifuPlayer.findOne({
+        userId
+    })
+
+if (
+    !player ||
+    !player.wives ||
+    !player.wives.length
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '💔 لا تملك أي زوجة'
+        }
+    )
+}
+
+const wives =
+    await Waifu.find({
+        _id: {
+            $in: player.wives
+        }
+    })
+
+let message =
+
+`💍 زوجاتك (${wives.length}/4)
+
+`
+
+wives.forEach(
+    (wife, index) => {
+
+        message +=
+
+`${index + 1}. ${wife.name}
+📺 ${wife.anime}
+⭐ ${wife.rarity}
+
+`
+}
+)
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text: message
+    }
+)
+
+}
+    if (text.startsWith('.طلاق ')) {
+
+const userId =
+    msg.key.participant ||
+    msg.key.remoteJid
+
+const number =
+    parseInt(text.split(' ')[1])
+
+const player =
+    await WaifuPlayer.findOne({
+        userId
+    })
+
+if (
+    !player ||
+    !player.wives ||
+    !player.wives.length
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '💔 لا تملك أي زوجة'
+        }
+    )
+}
+
+const wifeId =
+    player.wives[number - 1]
+
+if (!wifeId) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ رقم غير موجود'
+        }
+    )
+}
+
+const wife =
+    await Waifu.findById(
+        wifeId
+    )
+
+player.wives.splice(
+    number - 1,
+    1
+)
+
+await player.save()
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`💔 تم الطلاق
+
+👸 ${wife?.name || 'وايفو'}`
+}
+)
+}
+    
     if (text === '.الترتيب') {
 
 let metadata
