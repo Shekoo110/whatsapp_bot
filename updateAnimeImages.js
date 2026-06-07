@@ -2,6 +2,7 @@ const Waifu = require('./models/Waifu')
 const axios = require('axios')
 const cheerio = require('cheerio')
 
+console.log("USING WIKIPEDIA API")
 
 async function getWikipediaImage(name) {
 
@@ -26,35 +27,8 @@ async function getWikipediaImage(name) {
     }
 }
 
-const animeWikiMap = {
-    "BLEACH": "https://bleach.fandom.com/wiki",
 
-    "Naruto": "https://naruto.fandom.com/wiki",
 
-    "ONE PIECE": "https://onepiece.fandom.com/wiki",
-    "One Piece": "https://onepiece.fandom.com/wiki",
-
-    "Dragon Ball Z": "https://dragonball.fandom.com/wiki",
-    "Dragon Ball Super": "https://dragonball.fandom.com/wiki",
-
-    "Hunter x Hunter": "https://hunterxhunter.fandom.com/wiki",
-
-    "Fairy Tail": "https://fairytail.fandom.com/wiki",
-
-    "Jujutsu Kaisen": "https://jujutsu-kaisen.fandom.com/wiki",
-
-    "Black Clover": "https://blackclover.fandom.com/wiki",
-
-    "Demon Slayer": "https://kimetsu-no-yaiba.fandom.com/wiki",
-    "Kimetsu no Yaiba": "https://kimetsu-no-yaiba.fandom.com/wiki",
-
-    "Attack on Titan": "https://attackontitan.fandom.com/wiki",
-    "Shingeki no Kyojin": "https://attackontitan.fandom.com/wiki",
-
-    "Tokyo Ghoul": "https://tokyoghoul.fandom.com/wiki",
-
-    "Onigiri": "https://onigiri.fandom.com/wiki"
-}
 
 async function getWikiImage(name, baseUrl) {
 
@@ -112,8 +86,7 @@ for (const waifu of waifus) {
 
     try {
 
-        const baseUrl =
-    animeWikiMap[waifu.anime]
+    
 
 console.log(
     "Anime:",
