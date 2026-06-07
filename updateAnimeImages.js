@@ -1,7 +1,6 @@
 const Waifu = require('./models/Waifu')
 const axios = require('axios')
 
-
 console.log("USING WIKIPEDIA API")
 
 async function getWikipediaImage(name) {
@@ -9,115 +8,108 @@ async function getWikipediaImage(name) {
     try {
 
         const url =
-            `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`;
+            `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`
+
+        console.log(
+            "Wikipedia URL:",
+            url
+        )
 
         const { data } =
-            await axios.get(url);
+            await axios.get(url, {
+                headers: {
+                    "User-Agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/125.0 Safari/537.36"
+                }
+            })
 
-        return data.thumbnail?.source || null;
+        return data.thumbnail?.source || null
 
     } catch (err) {
 
         console.log(
             "Wikipedia Error:",
             err.message
-        );
+        )
 
-        return null;
+        return null
     }
 }
-
-
 
 module.exports = async function updateAnimeImages(limit = 319) {
 
-const waifus =
-    await Waifu.find({}).limit(limit)
+    const waifus =
+        await Waifu.find({}).limit(limit)
 
-let updated = 0
+    let updated = 0
 
-console.log(
-    `Found ${waifus.length} waifus`
-)
-
-for (const waifu of waifus) {
-
-    try {
-
-    
-
-console.log(
-    "Anime:",
-    waifu.anime
-)
-
-console.log(
-    "Name:",
-    waifu.name
-)
-
-console.log(
-    "Base URL:",
-    baseUrl
-)
-
-const wikiImage =
-    await getWikipediaImage(
-        waifu.name
+    console.log(
+        `Found ${waifus.length} waifus`
     )
 
-console.log(
-    "Anime:",
-    waifu.anime
-)
+    for (const waifu of waifus) {
 
-console.log(
-    "Name:",
-    waifu.name
-)
+        try {
 
-console.log(
-    "Base URL:",
-    baseUrl
-)
+            console.log(
+                "Anime:",
+                waifu.anime
+            )
 
-console.log(
-    "Wikipedia Image:",
-    wikiImage
-)
+            console.log(
+                "Name:",
+                waifu.name
+            )
 
-        if (
-            wikiImage &&
-            wikiImage !== waifu.image
-        ) {
+            const wikiImage =
+                await getWikipediaImage(
+                    waifu.name
+                )
 
-            waifu.image =
+            console.log(
+                "Wikipedia Image:",
                 wikiImage
+            )
 
-            waifu.imageUpdated =
-                true
+            if (
+                wikiImage &&
+                wikiImage !== waifu.image
+            ) {
 
-            await waifu.save()
+                waifu.image =
+                    wikiImage
 
-            updated++
+                waifu.imageUpdated =
+                    true
+
+                await waifu.save()
+
+                updated++
+
+                console.log(
+                    `Updated: ${waifu.name}`
+                )
+            }
+
+            await new Promise(
+                r => setTimeout(r, 500)
+            )
+
+        } catch (err) {
+
+            console.log(
+                `Failed: ${waifu.name}`
+            )
+
+            console.log(
+                err.message
+            )
         }
-
-        await new Promise(
-            r => setTimeout(r, 500)
-        )
-
-    } catch (err) {
-
-        console.log(
-            `Failed: ${waifu.name}`
-        )
     }
-}
 
-console.log(
-    `Updated ${updated} images`
-)
+    console.log(
+        `Updated ${updated} images`
+    )
 
-return updated
-
+    return updated
 }
