@@ -57,10 +57,12 @@ console.log("Found image:", img)
 
         return img || null
 
-    } catch {
+    } catch (err) {
 
-        return null
-    }
+    console.log("ERROR:", err.message)
+
+    return null
+}
 }
 
 module.exports = async function updateAnimeImages(limit = 319) {
