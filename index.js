@@ -28,7 +28,8 @@ const { createCanvas } = require("canvas")
 const {
     generateCard
 } = require("./cardGenerator")
-
+const WaifuPlayer =
+    require('./models/WaifuPlayer')
 console.log("Canvas OK")
 const bosses = require('./bosses')
 const characters = require('./characters.json')
@@ -1622,6 +1623,95 @@ ${target.split('@')[0]}
         }
     )
 }
+
+    if (text.startsWith('.كاكيرا ')) {
+
+    const trade =
+        await WaifuTrade.findOne({
+            $or: [
+                { user1: sender },
+                { user2: sender }
+            ]
+        })
+
+    if (!trade) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ أنت لست داخل تبادل'
+            }
+        )
+    }
+
+    const amount =
+        parseInt(
+            text.split(' ')[1]
+        )
+
+    if (
+        isNaN(amount) ||
+        amount <= 0
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ مبلغ غير صالح'
+            }
+        )
+    }
+
+    const player =
+        await WaifuPlayer.findOne({
+            userId: sender
+        })
+
+    if (!player) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ اللاعب غير موجود'
+            }
+        )
+    }
+
+    if (player.kakera < amount) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    `❌ لا تملك ${amount} كاكيرا`
+            }
+        )
+    }
+
+    if (trade.user1 === sender) {
+
+        trade.kakera1 = amount
+        trade.ready1 = false
+
+    } else {
+
+        trade.kakera2 = amount
+        trade.ready2 = false
+    }
+
+    await trade.save()
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                `💎 تم إضافة ${amount} كاكيرا إلى التبادل`
+        }
+    )
+}
 if (body === '.قبول') {
 
     const trade =
@@ -2073,25 +2163,107 @@ if (
 }
 
 const waifu1 =
-    await Waifu.findById(
-        trade.waifu1
-    )
+await Waifu.findById(
+trade.waifu1
+)
 
 const waifu2 =
-    await Waifu.findById(
-        trade.waifu2
-    )
+await Waifu.findById(
+trade.waifu2
+)
 
 if (!waifu1 || !waifu2) {
 
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-                '❌ تعذر العثور على الوايفوهات'
-        }
-    )
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+            '❌ تعذر العثور على الوايفوهات'
+    }
+)
+
 }
+
+const player1 =
+await WaifuPlayer.findOne({
+userId: trade.user1
+})
+
+const player2 =
+await WaifuPlayer.findOne({
+userId: trade.user2
+})
+
+if (!player1 || !player2) {
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+            '❌ تعذر العثور على اللاعبين'
+    }
+)
+
+}
+
+if (
+player1.kakera < trade.kakera1 ||
+player2.kakera < trade.kakera2
+) {
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+            '❌ أحد اللاعبين لا يملك الكاكيرا المطلوبة'
+    }
+)
+
+}
+
+waifu1.claimedBy =
+trade.user2
+
+waifu2.claimedBy =
+trade.user1
+
+player1.kakera -=
+trade.kakera1
+
+player2.kakera +=
+trade.kakera1
+
+player2.kakera -=
+trade.kakera2
+
+player1.kakera +=
+trade.kakera2
+
+await waifu1.save()
+await waifu2.save()
+
+await player1.save()
+await player2.save()
+
+await WaifuTrade.deleteOne({
+_id: trade._id
+})
+
+await sock.sendMessage(
+msg.key.remoteJid,
+{
+text:
+`🎉 تم التبادل بنجاح
+
+💎 كاكيرا الطرف الأول:
+${trade.kakera1}
+
+💎 كاكيرا الطرف الثاني:
+${trade.kakera2}
+
+✅ تم نقل الوايفوهات والكاكيرا`
+}
+)
 
 waifu1.claimedBy =
     trade.user2
