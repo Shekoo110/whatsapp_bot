@@ -1162,9 +1162,6 @@ if (currentBoss) {
     )
 }
 
-} else {
-
-
     const fs = require('fs')
 
 if (!fs.existsSync('./auth')) {
