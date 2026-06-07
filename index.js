@@ -1181,7 +1181,7 @@ sock.ev.on('connection.update', async (update) => {
             )
 
             const code = await sock.requestPairingCode(
-    "201105749333"
+    "66937912691"
 )
 
             console.log(
