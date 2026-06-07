@@ -246,21 +246,23 @@ await sleep(3000)
                 anime:
                     data.title.romaji,
 
-                image:
-    (await getWikiInfoboxImage(c.name.full, "https://bleach.fandom.com/wiki")) ||
-    c.image.large,
+                const baseUrl = animeWikiMap[data.title.romaji];
 
-                gender:
-                    'Female',
+const wikiImage = baseUrl
+    ? await getWikiInfoboxImage(c.name.full, baseUrl)
+    : null;
 
-                rarity:
-                    getRarity(),
+await Waifu.create({
+    anilistId: c.id,
+    name: c.name.full,
+    anime: data.title.romaji,
 
-                value:
-                    Math.max(
-                        100,
-                        Math.floor(
-                            (c.favourites || 0) / 10
+    image: wikiImage || c.image.large,
+
+    gender: 'Female',
+    rarity: getRarity(),
+    value: Math.max(100, Math.floor((c.favourites || 0) / 10))
+
                         )
                     )
             })
