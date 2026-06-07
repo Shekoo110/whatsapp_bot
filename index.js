@@ -1548,7 +1548,7 @@ if (text === '.جوائز_الترتيب') {
     )
 }
 
-    if (body.startsWith('.تبادل')) {
+    if text.startsWith('.تبادل') {
 
     const target =
         msg.message?.extendedTextMessage
@@ -1712,7 +1712,7 @@ ${target.split('@')[0]}
         }
     )
 }
-if (body === '.قبول') {
+if (text === '.قبول') {
 
     const trade =
         await WaifuTrade.findOne({
