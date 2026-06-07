@@ -3323,7 +3323,8 @@ return safeSend(msg.key.remoteJid, {
 })
 }
 
-    if (text.startsWith('.بدل ')) {
+
+        if (text.startsWith('.بدل ')) {
 
     const target =
         msg.message?.extendedTextMessage
@@ -3334,8 +3335,7 @@ return safeSend(msg.key.remoteJid, {
         return sock.sendMessage(
             msg.key.remoteJid,
             {
-                text:
-                    '❌ منشن اللاعب'
+                text: '❌ منشن اللاعب'
             }
         )
     }
@@ -3372,12 +3372,20 @@ return safeSend(msg.key.remoteJid, {
             userId: target
         })
 
+    if (!me) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ بياناتك غير موجودة'
+            }
+        )
+    }
+
     if (!other) {
         return sock.sendMessage(
             msg.key.remoteJid,
             {
-                text:
-                    '❌ اللاعب غير موجود'
+                text: '❌ اللاعب غير موجود'
             }
         )
     }
@@ -3413,7 +3421,6 @@ return safeSend(msg.key.remoteJid, {
         {
             from: userId,
             to: target,
-
             myNumber,
             hisNumber
         }
@@ -3446,6 +3453,7 @@ return safeSend(msg.key.remoteJid, {
         }
     )
 }
+        
 
 if (text === '.قبول_بدل') {
 
