@@ -577,6 +577,17 @@ mongoose.connect(process.env.MONGODB_URI)
 
     console.log('✅ MongoDB Connected')
 
+    currentBoss =
+        await Boss.findOne({})
+
+    if (currentBoss) {
+
+        console.log(
+            'Boss loaded:',
+            currentBoss.name
+        )
+    }
+
     try {
 
         await mongoose.connection.db
@@ -594,9 +605,6 @@ mongoose.connect(process.env.MONGODB_URI)
         )
     }
 
-  //  await importWaifus()
-  //  await importGamesWaifus()
-// await restoreAniListImages(700)
     const totalWaifus =
         await Waifu.countDocuments()
 
