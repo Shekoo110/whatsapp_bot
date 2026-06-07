@@ -1161,7 +1161,7 @@ if (currentBoss) {
         currentBoss.finished
     )
 }
-
+}
     const fs = require('fs')
 
 if (!fs.existsSync('./auth')) {
