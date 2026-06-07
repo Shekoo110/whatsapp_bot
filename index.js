@@ -1080,7 +1080,7 @@ ${
 // =========================
 // تشغيل البوت
 // =========================
-
+let pairingRequested = false
 async function startBot() {
 
     const savedBoss = await Boss.findOne()
@@ -1145,34 +1145,33 @@ sock.ev.on('connection.update', async (update) => {
     const { connection } = update
 
     if (
-        connection === 'connecting' &&
-        !state.creds.registered
-    ) {
+    connection === 'connecting' &&
+    !state.creds.registered &&
+    !pairingRequested
+) {
 
-        try {
+    pairingRequested = true
 
-            await new Promise(resolve =>
-                setTimeout(resolve, 20000)
+    try {
+
+        const code =
+            await sock.requestPairingCode(
+                "966536471289"
             )
 
-            const code = await sock.requestPairingCode(  
-"201105749333"
-)
+        console.log(
+            'PAIRING CODE:',
+            code
+        )
 
-            console.log(
-                'PAIRING CODE:',
-                code
-            )
+    } catch (e) {
 
-        } catch (e) {
-
-            console.log(
-                'PAIRING ERROR:',
-                e
-            )
-        }
+        console.log(
+            'PAIRING ERROR:',
+            e
+        )
     }
-})
+}
     // =========================
     // Shop (مرة واحدة فقط)
     // =========================
