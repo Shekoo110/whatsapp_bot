@@ -52,6 +52,9 @@ module.exports = async function updateAnimeImages(limit = 319) {
                 await getWikipediaImage(
                     waifu.name
                 )
+        console.log(
+    `${waifu.name} => ${wikiImage ? 'FOUND' : 'NOT FOUND'}`
+)
 
             if (
                 wikiImage &&
