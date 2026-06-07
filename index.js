@@ -1671,12 +1671,12 @@ ${target.split('@')[0]}
     if (text.startsWith('.كاكيرا ')) {
 
     const trade =
-        await WaifuTrade.findOne({
-            $or: [
-                { user1: sender },
-                { user2: sender }
-            ]
-        })
+    await WaifuTrade.findOne({
+        $or: [
+            { user1: userId },
+            { user2: userId }
+        ]
+    })
 
     if (!trade) {
 
@@ -1760,7 +1760,7 @@ if (text === '.قبول') {
 
     const trade =
         await WaifuTrade.findOne({
-            user2: sender
+            user2: userId
         })
 
     if (!trade) {
@@ -1819,8 +1819,14 @@ if (text === '.update waifus images') {
     
     if (text === '.رول') {
 
+    const sender =
+        msg.key.participant ||
+        msg.key.remoteJid
+
     const waifus =
         await Waifu.find()
+
+
 
     if (!waifus.length) {
 
@@ -1869,7 +1875,7 @@ lastRolls.set(
     if (text === '.مطالبة') {
 
     const waifuId =
-        lastRolls.get(sender)
+        lastRolls.get(userId)
 
     if (!waifuId) {
 
@@ -1933,7 +1939,7 @@ lastRolls.set(
 
 const waifus =
     await Waifu.find({
-        claimedBy: sender
+        claimedBy: userId
     })
 
 if (!waifus.length) {
@@ -1982,8 +1988,8 @@ await sock.sendMessage(
 const trade =
     await WaifuTrade.findOne({
         $or: [
-            { user1: sender },
-            { user2: sender }
+            { user1: userId },
+            { user2: userId }
         ]
     })
 
@@ -2081,8 +2087,8 @@ await sock.sendMessage(
 const trade =
     await WaifuTrade.findOne({
         $or: [
-            { user1: sender },
-            { user2: sender }
+            { user1: userId },
+            { user2: userId }
         ]
     })
 
@@ -2165,8 +2171,8 @@ if (text === '.تأكيد') {
 const trade =
     await WaifuTrade.findOne({
         $or: [
-            { user1: sender },
-            { user2: sender }
+            { user1: userId },
+            { user2: userId }
         ]
     })
 
@@ -2343,8 +2349,8 @@ await sock.sendMessage(
     const trade =
         await WaifuTrade.findOne({
             $or: [
-                { user1: sender },
-                { user2: sender }
+                { user1: userId },
+                { user2: userId }
             ]
         })
 
