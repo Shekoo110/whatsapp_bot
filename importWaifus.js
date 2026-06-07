@@ -160,7 +160,7 @@ let imported = 0
 
 for (const anime of animes) {
 
-    await sleep(3000)
+    await sleep(5000)
 
     try {
 
