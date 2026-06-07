@@ -1158,9 +1158,9 @@ await new Promise(resolve =>
         )  
         
         const code =
-            await sock.requestPairingCode(
-                "966536471289"
-            )
+    await sock.requestPairingCode(
+        "201105749333"
+    )
 
         console.log(
             'PAIRING CODE:',
