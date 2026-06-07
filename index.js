@@ -1548,7 +1548,7 @@ if (text === '.جوائز_الترتيب') {
     )
 }
 
-    if text.startsWith('.تبادل') {
+    if (text.startsWith('.تبادل')) {
 
     const target =
         msg.message?.extendedTextMessage
