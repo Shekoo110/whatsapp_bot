@@ -53,9 +53,9 @@ module.exports = async function updateAnimeImages(limit = 319) {
     )
 
     const waifus =
-        await Waifu.find({
-            source: 'Anime'
-        }).limit(limit)
+    await Waifu.find({
+        anime: { $exists: true }
+    }).limit(limit)
 
     let updated = 0
 
