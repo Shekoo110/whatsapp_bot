@@ -68,29 +68,33 @@ module.exports = async function updateAnimeImages(limit = 319) {
                 )
 
             console.log(
-                "Wikipedia Image:",
-                wikiImage
-            )
+    "Wikipedia Image:",
+    wikiImage
+)
 
-            if (
-                wikiImage &&
-                wikiImage !== waifu.image
-            ) {
+console.log(
+    "Current Image:",
+    waifu.image
+)
 
-                waifu.image =
-                    wikiImage
+console.log(
+    "Equal:",
+    wikiImage === waifu.image
+)
 
-                waifu.imageUpdated =
-                    true
+if (wikiImage) {
 
-                await waifu.save()
+    waifu.image = wikiImage
+    waifu.imageUpdated = true
 
-                updated++
+    await waifu.save()
 
-                console.log(
-                    `Updated: ${waifu.name}`
-                )
-            }
+    updated++
+
+    console.log(
+        `Updated: ${waifu.name}`
+    )
+}
 
             await new Promise(
                 r => setTimeout(r, 500)
