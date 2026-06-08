@@ -15,9 +15,57 @@ function getRandomEvent() {
     ]
 }
 
+async function startEvent(
+    sock,
+    jid
+) {
+
+    if (eventRunning)
+        return
+
+    eventRunning = true
+
+    participants = []
+
+    currentEvent =
+        getRandomEvent()
+
+    await sock.sendMessage(
+        jid,
+        {
+            text:
+`🎮 حدث جديد!
+
+🎯 ${currentEvent.name}
+
+📝 اكتب:
+${currentEvent.command}
+
+👥 المشاركون: 0/5
+
+⏳ لديك 30 ثانية`
+        }
+    )
+
+    setTimeout(
+        () => {
+
+            eventRunning = false
+
+            currentEvent = null
+
+            participants = []
+
+        },
+        30000
+    )
+}
+
 module.exports = {
 
     getRandomEvent,
+
+    startEvent,
 
     get currentEvent() {
         return currentEvent
