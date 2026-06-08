@@ -106,7 +106,9 @@ if (!global.shopStarted) {
 
     }, 24 * 60 * 60 * 1000) // كل 24 ساعة
 }
-
+const {
+    giveReward
+} = require('./eventRewards')
 const Player = require('./models/Player')
 const abilityIcons = {
     attack: "⚔️",
@@ -1508,15 +1510,14 @@ ${joined}/5`
 }
 
 const winners =
-    eventManager.pickWinners(
-        msg.key.remoteJid
-    )
+eventManager.pickWinners(
+msg.key.remoteJid
+)
 
 groupData.eventRunning =
-    false
+false
 
 let result =
-
 `🏆 انتهى الحدث
 
 🎯 ${groupData.currentEvent.name}
@@ -1527,17 +1528,23 @@ let result =
 
 for (const id of winners) {
 
-    result +=
+const reward =
+    await giveReward(id)
 
-"👑 @${id.split('@')[0]} "
+result +=
+
+`👑 @${id.split('@')[0]}
+🎁 ${reward}
+
+`
 }
 
 await sock.sendMessage(
-    msg.key.remoteJid,
-    {
-        text: result,
-        mentions: winners
-    }
+msg.key.remoteJid,
+{
+text: result,
+mentions: winners
+}
 )
 
 groupData.participants = []
@@ -1545,7 +1552,6 @@ groupData.participants = []
 groupData.currentEvent = null
 
 return
-
 }
     // =========================
 // 🧠 QUIZ SYSTEM
