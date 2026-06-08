@@ -39,6 +39,14 @@ const {
     quizData
 } = require('./quiz')
 const path = require('path')
+const ownerId = "175114725408817"
+
+function isOwner(msg) {
+    const sender =
+        (msg.key.participant || msg.key.remoteJid).split("@")[0]
+
+    return sender === ownerId
+}
 const axios = require('axios')
 const pendingSwaps = new Map()
 const Waifu = require('./models/Waifu')
@@ -1857,6 +1865,13 @@ return sock.sendMessage(
     
     if (text === '.الترتيب') {
 
+if (!isOwner(msg)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ هذا الأمر للمطور فقط' }
+        )
+    }
+        
 let metadata
 
 try {
@@ -1981,14 +1996,7 @@ await sock.sendMessage(
     )
     }
 
-const ownerId = "175114725408817"
 
-function isOwner(msg) {
-    const sender =
-        (msg.key.participant || msg.key.remoteJid).split("@")[0]
-
-    return sender === ownerId
-}
 if (text === '.جوائز_الترتيب') {
 
     if (!isOwner(msg)) {
