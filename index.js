@@ -1159,7 +1159,7 @@ ${
 // =========================
 // تشغيل البوت
 // =========================
-
+            
 
 let pairingRequested = false
 let currentBoss = null
@@ -1192,7 +1192,6 @@ async function startBot() {
 
         console.log("CONNECTION UPDATE:", update)
 
-        // 🔥 Pairing
         if (
             !state.creds.registered &&
             !pairingRequested
@@ -1212,119 +1211,94 @@ async function startBot() {
             }
         }
 
-        // ✅ Open
         if (connection === "open") {
+
             console.log("✅ BOT CONNECTED")
 
             if (!currentBoss) {
+
                 console.log("👑 لا يوجد زعيم محفوظ")
 
                 await spawnBoss(sock, GROUP_ID)
 
                 currentBoss = await Boss.findOne()
             }
+
+            if (currentBoss) {
+
+                currentBoss.finished = currentBoss.finished ?? false
+                currentBoss.killer = currentBoss.killer ?? null
+
+                if (currentBoss.finished && !currentBoss.respawnAt) {
+
+                    console.log('⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه')
+
+                    await Boss.deleteMany({})
+
+                    currentBoss = null
+
+                    await spawnBoss(sock, GROUP_ID)
+
+                    currentBoss = await Boss.findOne()
+                }
+
+                else if (
+                    currentBoss.finished &&
+                    currentBoss.respawnAt &&
+                    currentBoss.respawnAt > Date.now()
+                ) {
+                    console.log('💀 الزعيم ميت وينتظر إعادة الظهور')
+                }
+            }
         }
     })
 
-    
-
-
-// =========================
-// معالجة البوس
-// =========================
-if (currentBoss) {
-
-    currentBoss.finished = currentBoss.finished ?? false
-    currentBoss.killer = currentBoss.killer ?? null
-
-    // 💀 ميت بدون وقت إعادة ظهور
-    if (currentBoss.finished && !currentBoss.respawnAt) {
-
-        console.log('⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه')
-
-        await Boss.deleteMany({})
-
-        currentBoss = null
-
-        await spawnBoss(sock, GROUP_ID)
-
-        currentBoss = await Boss.findOne()
-    }
-
-    // ⏳ ينتظر إعادة الظهور
-    else if (
-        currentBoss.finished &&
-        currentBoss.respawnAt &&
-        currentBoss.respawnAt > Date.now()
-    ) {
-        console.log('💀 الزعيم ميت وينتظر إعادة الظهور')
-    }
-
-    // 👇 هذا داخل نفس البلوك
-    console.log('Boss is active or waiting respawn')
-}
-
-const savedBoss = await Boss.findOne()
+    const savedBoss = await Boss.findOne()
 
     console.log(
         'Loaded Boss:',
         JSON.stringify(savedBoss, null, 2)
     )
-}
-}
 
     currentBoss = savedBoss
-}
 
-setInterval(async () => {
+    // ✅ لازم يكون داخل startBot
+    setInterval(async () => {
 
-    try {
-
-        console.log(
-            'Boss Check:',
-            currentBoss?.finished,
-            currentBoss?.respawnAt
-        )
-
-        if (
-            currentBoss &&
-            currentBoss.finished &&
-            currentBoss.respawnAt &&
-            currentBoss.respawnAt <= Date.now()
-        ) {
+        try {
 
             console.log(
-                '👑 إعادة إنشاء الزعيم'
+                'Boss Check:',
+                currentBoss?.finished,
+                currentBoss?.respawnAt
             )
 
-            await Boss.deleteMany({})
+            if (
+                currentBoss &&
+                currentBoss.finished &&
+                currentBoss.respawnAt &&
+                currentBoss.respawnAt <= Date.now()
+            ) {
 
-            currentBoss = null
+                console.log('👑 إعادة إنشاء الزعيم')
 
-            await spawnBoss(
-                sock,
-                GROUP_ID
-            )
+                await Boss.deleteMany({})
 
-            currentBoss =
-                await Boss.findOne()
+                currentBoss = null
 
-            console.log(
-                '✅ تم إنشاء الزعيم بنجاح'
-            )
+                await spawnBoss(sock, GROUP_ID)
+
+                currentBoss = await Boss.findOne()
+
+                console.log('✅ تم إنشاء الزعيم بنجاح')
+            }
+
+        } catch (err) {
+            console.log('Boss Respawn Error:', err)
         }
 
-    } catch (err) {
-
-        console.log(
-            'Boss Respawn Error:',
-            err
-        )
-    }
-
-}, 60000)
-
-
+    }, 60000)
+}
 
     
     // =========================
