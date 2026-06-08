@@ -10,6 +10,8 @@ let answeredUsers = new Set()
 
 let usedQuestions = []
 
+let playerProgress = {}
+
 function normalize(text) {
 
     return text
@@ -59,6 +61,8 @@ async function startQuestion(
 
     answeredUsers.clear()
 
+    playerProgress = {}
+
     currentQuestion =
         getRandomQuestion()
 
@@ -70,7 +74,7 @@ async function startQuestion(
 
 ❓ ${currentQuestion.question}
 
-🏆 أول من يجيب يحصل على نقطة`
+🏆 أول من يكمل الإجابة يحصل على نقطة`
         }
     )
 }
@@ -83,26 +87,54 @@ function checkAnswer(
     if (!currentQuestion)
         return false
 
-    const playerAnswer =
-        normalize(answer)
+    const words =
+        answer
+            .split(/\s+/)
+            .map(normalize)
 
-    const correct =
-        currentQuestion.answers.some(
-            a =>
-                normalize(a) ===
-                playerAnswer
-        )
+    if (!playerProgress[userId]) {
 
-    if (!correct)
-        return false
-
-    if (!scoreboard[userId]) {
-        scoreboard[userId] = 0
+        playerProgress[userId] =
+            new Set()
     }
 
-    scoreboard[userId] += 1
+    for (const word of words) {
 
-    return true
+        const correct =
+            currentQuestion.answers.find(
+                a =>
+                    normalize(a) === word
+            )
+
+        if (correct) {
+
+            playerProgress[userId].add(
+                normalize(correct)
+            )
+        }
+    }
+
+    const required =
+        currentQuestion.required || 1
+
+    if (
+        playerProgress[userId].size >=
+        required
+    ) {
+
+        if (!scoreboard[userId]) {
+
+            scoreboard[userId] = 0
+        }
+
+        scoreboard[userId] += 1
+
+        delete playerProgress[userId]
+
+        return true
+    }
+
+    return false
 }
 
 module.exports = {
@@ -132,6 +164,8 @@ module.exports = {
 
         answeredUsers,
 
-        usedQuestions
+        usedQuestions,
+
+        playerProgress
     }
 }
