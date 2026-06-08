@@ -1466,6 +1466,8 @@ const userId =
 msg.key.participant ||
 msg.key.remoteJid
 
+if (msg.key.fromMe) return
+
 const groupData =
 eventManager.getGroupData(
 msg.key.remoteJid
