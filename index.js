@@ -1265,16 +1265,11 @@ if (currentBoss) {
         currentBoss.respawnAt &&
         currentBoss.respawnAt > Date.now()
     ) {
-
         console.log('💀 الزعيم ميت وينتظر إعادة الظهور')
     }
-}
-}
 
-    if (currentBoss) {
-    console.log(
-        'Boss is active or waiting respawn'
-    )
+    // 👇 هذا داخل نفس البلوك
+    console.log('Boss is active or waiting respawn')
 }
 
 
