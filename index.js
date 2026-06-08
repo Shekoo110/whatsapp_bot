@@ -598,11 +598,26 @@ mongoose.connect(process.env.MONGO_URI)
     currentBoss =
         await Boss.findOne({})
 
+    console.log(
+        'Loaded Boss Full:',
+        JSON.stringify(currentBoss, null, 2)
+    )
+
     if (currentBoss) {
 
         console.log(
             'Boss loaded:',
             currentBoss.name
+        )
+
+        console.log(
+            'Boss finished:',
+            currentBoss.finished
+        )
+
+        console.log(
+            'Boss respawnAt:',
+            currentBoss.respawnAt
         )
     }
 
@@ -7558,6 +7573,24 @@ nextHour.setHours(
     nextHour.getHours() + 1
 )
 
+currentBoss.respawnAt =
+    nextHour.getTime()
+
+console.log(
+    'RESPAWN SET:',
+    currentBoss.respawnAt
+)
+
+await Boss.updateOne(
+    {},
+    {
+        $set: {
+            hp: 0,
+            finished: true,
+            respawnAt: currentBoss.respawnAt
+        }
+    }
+)
 currentBoss.respawnAt =
     nextHour.getTime()
         console.log(
