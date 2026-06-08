@@ -1342,39 +1342,39 @@ sock.ev.on('connection.update', async (update) => {
 
     const { connection, qr } = update
 
-console.log("registered =", state.creds.registered)
-console.log("pairingRequested =", pairingRequested)
-console.log("connection =", connection)
+    console.log("registered =", state.creds.registered)
+    console.log("pairingRequested =", pairingRequested)
+    console.log("connection =", connection)
 
-if (
-    connection === 'connecting' &&
-    !state.creds.registered &&
-    !pairingRequested
-) {
+    if (
+        connection === 'connecting' &&
+        !state.creds.registered &&
+        !pairingRequested
+    ) {
 
-    console.log("ENTERED PAIRING BLOCK")
+        console.log("ENTERED PAIRING BLOCK")
 
-    pairingRequested = true
+        pairingRequested = true
 
-    try {
+        try {
 
-        await new Promise(resolve =>
-            setTimeout(resolve, 20000)
-        )
+            await new Promise(resolve =>
+                setTimeout(resolve, 20000)
+            )
 
-        const code = await sock.requestPairingCode(
-            "201105749333"
-        )
+            const code = await sock.requestPairingCode(
+                "201105749333"
+            )
 
-        console.log("PAIRING CODE:", code)
+            console.log("PAIRING CODE:", code)
 
-    } catch (e) {
+        } catch (e) {
 
-        console.log("PAIRING ERROR:", e)
+            console.log("PAIRING ERROR:", e)
 
+        }
     }
-}
-    }
+})
 
     // open
     if (connection === 'open') {
