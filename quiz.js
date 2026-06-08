@@ -1,205 +1,138 @@
 const questions = require('./questions')
 
 let quizActive = false
-
 let currentQuestion = null
-
 let scoreboard = {}
-
 let answeredUsers = new Set()
-
 let usedQuestions = []
-
 let playerProgress = {}
-
 let questionSolved = false
 
 function normalize(text) {
-
-return String(text)
-    .toLowerCase()
-
-    .replace(/غ/g, 'ج')
-    .replace(/ة/g, 'ه')
-    .replace(/ى/g, 'ي')
-
-    .replace(/أ/g, 'ا')
-    .replace(/إ/g, 'ا')
-    .replace(/آ/g, 'ا')
-
-    .replace(/ؤ/g, 'و')
-    .replace(/ئ/g, 'ي')
-
-    .replace(/[^\u0600-\u06FFa-z0-9\s]/g, '')
-
-    .replace(/\s+/g, ' ')
-
-    .trim()
-
+    return String(text)
+        .toLowerCase()
+        .replace(/غ/g, 'ج')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/أ/g, 'ا')
+        .replace(/إ/g, 'ا')
+        .replace(/آ/g, 'ا')
+        .replace(/ؤ/g, 'و')
+        .replace(/ئ/g, 'ي')
+        .replace(/[^\u0600-\u06FFa-z0-9\s]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim()
 }
 
 function getRandomQuestion() {
-
-const availableQuestions =
-    questions.filter(
-        (_, index) =>
-            !usedQuestions.includes(index)
-    )
-
-if (!availableQuestions.length) {
-
-    usedQuestions = []
-
-    return getRandomQuestion()
-}
-
-const randomQuestion =
-    availableQuestions[
-        Math.floor(
-            Math.random() *
-            availableQuestions.length
+    const availableQuestions =
+        questions.filter(
+            (_, index) => !usedQuestions.includes(index)
         )
-    ]
 
-const originalIndex =
-    questions.indexOf(
-        randomQuestion
-    )
+    if (!availableQuestions.length) {
+        usedQuestions = []
+        return getRandomQuestion()
+    }
 
-usedQuestions.push(
-    originalIndex
-)
+    const randomQuestion =
+        availableQuestions[
+            Math.floor(Math.random() * availableQuestions.length)
+        ]
 
-return randomQuestion
+    const originalIndex = questions.indexOf(randomQuestion)
+    usedQuestions.push(originalIndex)
 
+    return randomQuestion
 }
 
-async function startQuestion(
-sock,
-jid
-) {
+async function startQuestion(sock, jid) {
 
-answeredUsers.clear()
+    answeredUsers.clear()
+    playerProgress = {}
+    questionSolved = false
 
-playerProgress = {}
+    currentQuestion = getRandomQuestion()
 
-questionSolved = false
-
-currentQuestion =
-    getRandomQuestion()
-
-await sock.sendMessage(
-    jid,
-    {
+    await sock.sendMessage(jid, {
         text:
-
 `🎯 سؤال جديد
 
 ❓ ${currentQuestion.question}
 
 🏆 أول من يكمل الإجابة يحصل على نقطة`
-}
-)
-}
-
-function checkAnswer(
-userId,
-answer
-) {
-
-if (!currentQuestion)
-    return false
-
-if (questionSolved)
-    return false
-
-const words =
-    String(answer)
-        .split(/\s+/)
-        .map(normalize)
-
-if (!playerProgress[userId]) {
-
-    playerProgress[userId] =
-        new Set()
+    })
 }
 
-for (const word of words) {
+function checkAnswer(userId, answer) {
 
-    const correct =
-        currentQuestion.answers.find(
-            answer =>
-                normalize(answer) ===
-                word
-        )
+    if (!currentQuestion) return false
+    if (questionSolved) return false
 
-    if (correct) {
+    const normalizedAnswer = normalize(answer)
 
-        playerProgress[userId].add(
-            normalize(correct)
-        )
-    }
-}
-
-const required =
-    currentQuestion.required || 1
-
-if (
-    playerProgress[userId].size >=
-    required
-) {
-
-    if (!scoreboard[userId]) {
-
-        scoreboard[userId] = 0
+    // إنشاء سجل اللاعب إذا غير موجود
+    if (!playerProgress[userId]) {
+        playerProgress[userId] = {
+            text: ''
+        }
     }
 
-    scoreboard[userId] += 1
+    // 🔥 نجمع كل رسائل اللاعب داخل نفس السؤال
+    playerProgress[userId].text += ' ' + normalizedAnswer
 
-    questionSolved = true
+    const fullText = playerProgress[userId].text
 
-    delete playerProgress[userId]
+    const correctParts =
+        currentQuestion.answers.map(a => normalize(a))
 
-    return true
-}
+    let matchedCount = 0
 
-return false
+    for (const part of correctParts) {
+        if (fullText.includes(part)) {
+            matchedCount++
+        }
+    }
 
+    const required = currentQuestion.required || correctParts.length
+
+    if (matchedCount >= required) {
+
+        scoreboard[userId] = (scoreboard[userId] || 0) + 1
+
+        questionSolved = true
+
+        delete playerProgress[userId]
+
+        return true
+    }
+
+    return false
 }
 
 module.exports = {
+    getRandomQuestion,
+    startQuestion,
+    checkAnswer,
 
-getRandomQuestion,
+    quizData: {
+        get quizActive() {
+            return quizActive
+        },
+        set quizActive(value) {
+            quizActive = value
+        },
 
-startQuestion,
+        get currentQuestion() {
+            return currentQuestion
+        },
+        set currentQuestion(value) {
+            currentQuestion = value
+        },
 
-checkAnswer,
-
-quizData: {
-
-    get quizActive() {
-        return quizActive
-    },
-
-    set quizActive(value) {
-        quizActive = value
-    },
-
-    get currentQuestion() {
-        return currentQuestion
-    },
-
-    set currentQuestion(value) {
-        currentQuestion = value
-    },
-
-    scoreboard,
-
-    answeredUsers,
-
-    usedQuestions,
-
-    playerProgress
-}
-
+        scoreboard,
+        answeredUsers,
+        usedQuestions,
+        playerProgress
+    }
 }
