@@ -3297,8 +3297,20 @@ if (!player1Data || !player2Data) {
     })
 }
 
-const hp1 = getTotalStats(player1Data).hp
-const hp2 = getTotalStats(player2Data).hp
+function getGroupHP(player) {
+
+    if (!player.characters?.length)
+        return 1000
+
+    return player.characters.reduce(
+        (total, char) =>
+            total + Number(char.hp || 0),
+        0
+    )
+}
+
+const hp1 = getGroupHP(player1Data)
+const hp2 = getGroupHP(player2Data)
 
 await PvP.create({
     player1: userId,
