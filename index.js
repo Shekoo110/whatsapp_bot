@@ -1378,7 +1378,7 @@ sock.ev.on('connection.update', async (update) => {
             )
         }
     }
-})
+
 
     if (connection === 'close') {
 
