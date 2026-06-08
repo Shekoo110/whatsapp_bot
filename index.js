@@ -1451,26 +1451,29 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
     // 🧠 QUIZ SYSTEM (هنا فقط)
     // =========================
 
-    if (quizData.quizActive) {
+    if (
+    quizData.quizActive &&
+    text !== '.انهاء_مسابقة'
+) {
 
-        const isCorrect = checkAnswer(userId, text)
+    const isCorrect = checkAnswer(userId, text)
 
-        if (isCorrect) {
+    if (isCorrect) {
 
-            await sock.sendMessage(msg.key.remoteJid, {
-                text: `🎉 @${userId.split('@')[0]} إجابة صحيحة +1 نقطة 🏆`,
-                mentions: [userId]
-            })
+        await sock.sendMessage(msg.key.remoteJid, {
+            text: `🎉 @${userId.split('@')[0]} إجابة صحيحة +1 نقطة 🏆`,
+            mentions: [userId]
+        })
 
-            setTimeout(() => {
-                if (quizData.quizActive) {
-                    startQuestion(sock, msg.key.remoteJid)
-                }
-            }, 2000)
-        }
-
-        return
+        setTimeout(() => {
+            if (quizData.quizActive) {
+                startQuestion(sock, msg.key.remoteJid)
+            }
+        }, 2000)
     }
+
+    return
+}
 
     // =========================
     // الأوامر العادية هنا
