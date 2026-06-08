@@ -1433,21 +1433,6 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
         msg.key.remoteJid
 
     // =========================
-    // cooldown
-    // =========================
-    const key = userId + '_global'
-    const now = Date.now()
-
-    if (
-        cooldowns.has(key) &&
-        now - cooldowns.get(key) < 2000
-    ) {
-        return
-    }
-
-    cooldowns.set(key, now)
-
-    // =========================
 // 🧠 QUIZ SYSTEM
 // =========================
 
@@ -1479,9 +1464,7 @@ if (
 
         setTimeout(() => {
 
-            if (
-                quizData.quizActive
-            ) {
+            if (quizData.quizActive) {
 
                 startQuestion(
                     sock,
@@ -1494,6 +1477,22 @@ if (
 
     return
 }
+
+// =========================
+// cooldown
+// =========================
+
+const key = userId + '_global'
+const now = Date.now()
+
+if (
+    cooldowns.has(key) &&
+    now - cooldowns.get(key) < 2000
+) {
+    return
+}
+
+cooldowns.set(key, now)
 
     // =========================
     // الأوامر العادية هنا
