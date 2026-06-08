@@ -1146,7 +1146,7 @@ const GROUP_ID =
     "120363020823525909@g.us"
 
 async function startBot() {
-
+console.log("START BOT")
 
 
     if (!fs.existsSync('./auth')) {
@@ -1159,7 +1159,7 @@ async function startBot() {
     const sock = makeWASocket({
         auth: state
     })
-    
+    console.log("SOCKET CREATED")
 
     sock.ev.on('creds.update', saveCreds)
 
@@ -1325,7 +1325,10 @@ setInterval(async () => {
     // =========================
    
 
+console.log("BEFORE CONNECTION UPDATE")
+
 sock.ev.on('connection.update', async (update) => {
+    console.log("CONNECTION UPDATE:", update)
 
     console.log(update)
 
