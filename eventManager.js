@@ -201,6 +201,35 @@ return winners
 
 }
 
+function getExpiredEvents() {
+
+const expired = []
+
+for (const jid in groupEvents) {
+
+    const data =
+        groupEvents[jid]
+
+    if (
+        data.eventRunning &&
+        Date.now() - data.startedAt >=
+        120000
+    ) {
+
+        expired.push({
+            jid,
+            event:
+                data.currentEvent,
+            participants:
+                [...data.participants]
+        })
+    }
+}
+
+return expired
+
+}
+
 module.exports = {
 
 getRandomEvent,
@@ -213,6 +242,8 @@ pickWinners,
 
 finishEvent,
 
-getGroupData
+getGroupData,
+
+getExpiredEvents
 
 }
