@@ -1448,40 +1448,48 @@ if (
 ) {
 
     const isCorrect =
-        checkAnswer(userId, text)
+    checkAnswer(userId, text)
 
-    if (isCorrect) {
+if (isCorrect) {
 
-        await sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
+    const seconds =
+        (
+            Date.now() -
+            quizData.questionStartTime
+        ) / 1000
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
 `🎉 إجابة صحيحة!
 
 🏆 الفائز: @${userId.split('@')[0]}
 
+⏱️ الوقت: ${seconds.toFixed(1)} ثانية
+
 ⭐ +1 نقطة`,
-                mentions: [userId]
-            },
-            {
-                quoted: msg
-            }
-        )
+            mentions: [userId]
+        },
+        {
+            quoted: msg
+        }
+    )
 
-        setTimeout(() => {
+    setTimeout(() => {
 
-            if (quizData.quizActive) {
+        if (quizData.quizActive) {
 
-                startQuestion(
-                    sock,
-                    msg.key.remoteJid
-                )
-            }
+            startQuestion(
+                sock,
+                msg.key.remoteJid
+            )
+        }
 
-        }, 2000)
-    }
+    }, 2000)
+}
 
-    return
+return
 }
 
 // =========================
