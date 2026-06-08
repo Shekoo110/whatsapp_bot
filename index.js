@@ -968,35 +968,7 @@ function createPlayer() {
         title: null
     }
 }
-if (
-    eventManager.eventRunning &&
-    eventManager.currentEvent &&
-    text ===
-        eventManager.currentEvent.command
-) {
 
-    const joined =
-        eventManager.joinEvent(
-            msg.key.participant ||
-            msg.key.remoteJid
-        )
-
-    if (!joined)
-        return
-
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-`✅ انضممت للحدث
-
-👥 المشاركون:
-${eventManager.participants.length}/5`
-        }
-    )
-
-    return
-}
 
 // =========================
 // متجر الشخصيات
@@ -1484,6 +1456,76 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
     const userId =
         msg.key.participant ||
         msg.key.remoteJid
+
+    if (
+    eventManager.eventRunning &&
+    eventManager.currentEvent &&
+    text.trim() ===
+        eventManager.currentEvent.command
+)
+
+const joined =
+    eventManager.joinEvent(
+        userId
+    )
+
+if (!joined)
+    return
+
+if (joined < 5) {
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`✅ انضممت للحدث
+
+👥 المشاركون:
+${joined}/5`
+}
+)
+
+    return
+}
+
+const winners =
+    eventManager.pickWinners()
+
+eventManager.eventRunning =
+    false
+
+let result =
+
+`🏆 انتهى الحدث
+
+🎯 ${eventManager.currentEvent.name}
+
+الفائزون:
+
+`
+
+for (const id of winners) {
+
+    result +=
+`👑 @${id.split('@')[0]}
+`
+}
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text: result,
+        mentions: winners
+    }
+)
+
+eventManager.participants = []
+
+eventManager.currentEvent = null
+
+return
+}
 
     // =========================
 // 🧠 QUIZ SYSTEM
