@@ -19,10 +19,25 @@ const BossSchema = new mongoose.Schema({
     turnCounter: Number,
     groupAttackCount: Number,
 
-    killer: String,
-    finished: Boolean
+    killer: {
+        type: String,
+        default: null
+    },
+
+    finished: {
+        type: Boolean,
+        default: false
+    },
+
+    respawnAt: {
+        type: Number,
+        default: null
+    }
 
 })
 
 module.exports =
-    mongoose.model('Boss', BossSchema)
+    mongoose.model(
+        'Boss',
+        BossSchema
+    )
