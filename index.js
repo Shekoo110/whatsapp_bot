@@ -1157,11 +1157,19 @@ console.log("START BOT")
         await useMultiFileAuthState('auth')
 
     const sock = makeWASocket({
-        auth: state
-    })
-    console.log("SOCKET CREATED")
+    auth: state
+})
+console.log("SOCKET CREATED")
 
-    sock.ev.on('creds.update', saveCreds)
+console.log("REACHED A")
+
+sock.ev.on('connection.update', async (update) => {
+    console.log("CONNECTION UPDATE:", update)
+})
+
+console.log("REACHED B")
+
+sock.ev.on('creds.update', saveCreds)
 
     const savedBoss = await Boss.findOne()
 
