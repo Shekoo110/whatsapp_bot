@@ -1,3 +1,11 @@
+process.on('uncaughtException', (err) => {
+    console.error('❌ Crash Error:', err)
+})
+
+process.on('unhandledRejection', (err) => {
+    console.error('❌ Promise Error:', err)
+})
+
 const {
     default: makeWASocket,
     useMultiFileAuthState
@@ -83,7 +91,11 @@ const Market = require('./models/Market')
 const Shop = require('./models/Shop')
 // require / imports هنا
 
+console.log("MONGO =", process.env.MONGO_URI)
 
+if (!process.env.MONGO_URI) {
+    console.log("❌ MONGO_URI is missing in Render!")
+}
 // 👇 هنا مباشرة
 
 
@@ -578,7 +590,7 @@ function getRandomCharacterByBox(boxType) {
 const importWaifus =
 require('./importWaifus')
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGO_URI)
 .then(async () => {
 
     console.log('✅ MongoDB Connected')
@@ -626,7 +638,7 @@ mongoose.connect(process.env.MONGODB_URI)
         err
     )
 )
-.catch(err => console.log('MongoDB Error:', err))
+
 
 const safeLoadPlayers = () => {
     try {
