@@ -4,6 +4,10 @@ const {
 } = require('@whiskeysockets/baileys')
 
 const fs = require('fs')
+const {
+    startQuestion,
+    quizData
+} = require('./quiz')
 const path = require('path')
 const axios = require('axios')
 const pendingSwaps = new Map()
@@ -1436,6 +1440,50 @@ console.log("remoteJid:", msg.key.remoteJid)
         // .صوره
         // =========================
 
+if (body === '.بدا_مسابقة') {
+
+    if (quizData.quizActive) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ توجد مسابقة تعمل بالفعل'
+            }
+        )
+    }
+
+    quizData.quizActive = true
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '🎉 بدأت المسابقة!'
+        }
+    )
+
+    await startQuestion(
+        sock,
+        msg.key.remoteJid
+    )
+
+    return
+}
+
+    if (body === '.ايقاف_مسابقة') {
+
+    quizData.quizActive = false
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '🛑 تم إيقاف المسابقة'
+        }
+    )
+}
+    
         if (text === '.صوره') {
 
             const folderPath = './images'
