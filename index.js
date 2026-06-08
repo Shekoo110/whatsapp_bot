@@ -1137,106 +1137,76 @@ ${
 // تشغيل البوت
 // =========================
 let pairingRequested = false
+
+
 async function startBot() {
 
     const savedBoss = await Boss.findOne()
 
-console.log(
-    'Loaded Boss:',
-    JSON.stringify(savedBoss, null, 2)
-)
-
-if (savedBoss) {
+    console.log(
+        'Loaded Boss:',
+        JSON.stringify(savedBoss, null, 2)
+    )
 
     currentBoss = savedBoss
 
-    if (
-        currentBoss.finished &&
-        !currentBoss.respawnAt
-    ) {
-
-        console.log(
-            '⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه'
-        )
-
-        await Boss.deleteMany({})
-
-        currentBoss = null
-    }
-
+    // =========================
+    // إنشاء بوس إذا غير موجود
+    // =========================
     if (!currentBoss) {
 
-        console.log(
-            '👑 لا يوجد زعيم، سيتم إنشاء زعيم جديد'
-        )
+        console.log('👑 لا يوجد زعيم، سيتم إنشاء زعيم جديد')
 
-        await spawnBoss(
-            sock,
-            GROUP_ID
-        )
+        await spawnBoss(sock, GROUP_ID)
 
-        currentBoss =
-            await Boss.findOne()
+        currentBoss = await Boss.findOne()
     }
-}
-if (currentBoss) {
 
-    if (currentBoss.finished === undefined)
-        currentBoss.finished = false
+    // =========================
+    // معالجة البوس
+    // =========================
+    if (currentBoss) {
 
-    if (currentBoss.killer === undefined)
-        currentBoss.killer = null
+        currentBoss.finished = currentBoss.finished ?? false
+        currentBoss.killer = currentBoss.killer ?? null
 
-    if (
-        currentBoss.finished &&
-        currentBoss.respawnAt &&
-        currentBoss.respawnAt > Date.now()
-    ) {
+        // ميت بدون respawn
+        if (currentBoss.finished && !currentBoss.respawnAt) {
 
-        console.log(
-            '💀 الزعيم ميت وينتظر إعادة الظهور'
-        )
+            console.log('⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه')
 
-    } else if (
-        currentBoss.finished &&
-        currentBoss.respawnAt &&
-        currentBoss.respawnAt <= Date.now()
-    ) {
-
-        console.log(
-            '⏰ انتهى وقت إعادة الظهور'
-        )
-
-        await Boss.deleteMany({})
-
-        currentBoss = null
-    }
-}
-
-if (currentBoss) {
-
-    await Boss.updateOne(
-        {},
-        {
-            $set: {
-                finished: currentBoss.finished,
-                killer: currentBoss.killer,
-                respawnAt: currentBoss.respawnAt
-            }
+            await Boss.deleteMany({})
+            currentBoss = null
+            return
         }
-    )
 
-    console.log(
-        '✅ تم تحميل الزعيم المحفوظ'
-    )
+        // انتهى وقت الريسباون
+        if (
+            currentBoss.finished &&
+            currentBoss.respawnAt &&
+            currentBoss.respawnAt <= Date.now()
+        ) {
 
-    console.log(
-        'Loaded Boss finished =',
-        currentBoss.finished
-    )
+            console.log('⏰ انتهى وقت إعادة الظهور')
+
+            await Boss.deleteMany({})
+            currentBoss = null
+            return
+        }
+
+        // ينتظر الريسباون
+        if (
+            currentBoss.finished &&
+            currentBoss.respawnAt &&
+            currentBoss.respawnAt > Date.now()
+        ) {
+
+            console.log('💀 الزعيم ميت وينتظر إعادة الظهور')
+        }
+
+        console.log('Boss is active or waiting respawn')
+    }
 }
-}
-    const fs = require('fs')
 
 if (!fs.existsSync('./auth')) {
     fs.mkdirSync('./auth', { recursive: true })
