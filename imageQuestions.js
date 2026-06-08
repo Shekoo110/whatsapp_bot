@@ -1,70 +1,70 @@
 {
-    image: 'رابط_صورة_لوفي',
+    image: 'https://files.catbox.moe/u7l9rb.jpg',
     answers: ['لوفي']
 },
 
 {
-    image: 'رابط_صورة_زورو',
+    image: 'https://files.catbox.moe/f8a6gc.jpg',
     answers: ['زورو']
 },
 
 {
-    image: 'رابط_صورة_نامي',
+    image: 'https://files.catbox.moe/qwwabn.jpg',
     answers: ['نامي']
 },
 
 {
-    image: 'رابط_صورة_سانجي',
+    image: 'https://files.catbox.moe/15fpg9.jpg',
     answers: ['سانجي']
 },
 
 {
-    image: 'رابط_صورة_اوسوب',
+    image: 'https://files.catbox.moe/rj8e47.jpg',
     answers: ['اوسوب']
 },
 
 {
-    image: 'رابط_صورة_تشوبر',
+    image: 'https://files.catbox.moe/zwmynw.jpg',
     answers: ['تشوبر']
 },
 
 {
-    image: 'رابط_صورة_روبين',
+    image: 'https://files.catbox.moe/k40nw3.jpg',
     answers: ['روبين']
 },
 
 {
-    image: 'رابط_صورة_فرانكي',
+    image: 'https://files.catbox.moe/gwqoj2.jpg',
     answers: ['فرانكي']
 },
 
 {
-    image: 'رابط_صورة_بروك',
+    image: 'https://files.catbox.moe/ar3e4v.jpg',
     answers: ['بروك']
 },
 
 {
-    image: 'رابط_صورة_جينبي',
+    image: 'https://files.catbox.moe/kl1of3.jpg',
     answers: ['جينبي', 'جيمبي']
 },
 
 {
-    image: 'رابط_صورة_شانكس',
+    image: 'https://files.catbox.moe/7ksqj9.jpg',
     answers: ['شانكس']
 },
 
 {
-    image: 'رابط_صورة_ايس',
+    image: 'https://files.catbox.moe/1w9r24.jpg',
     answers: ['ايس', 'ايس']
 },
 
 {
-    image: 'رابط_صورة_سابو',
+    image: 'https://files.catbox.moe/s45tcs.jpg',
     answers: ['سابو']
 },
 
 {
-    image: 'رابط_صورة_لاو',
+    image: 'https://files.catbox.moe/n5061z.jpg',
     answers: ['لاو']
 },
 
@@ -74,423 +74,423 @@
 },
 
 {
-    image: 'رابط_صورة_دوفلامينغو',
+    image: 'https://files.catbox.moe/0l2p98.jpg',
     answers: ['دوفلامينغو', 'دوفلامينجو']
 },
 
 {
-    image: 'رابط_صورة_كايدو',
+    image: 'https://files.catbox.moe/blvjxp.jpg',
     answers: ['كايدو']
 },
 
 {
-    image: 'رابط_صورة_بيغ_مام',
+    image: 'https://files.catbox.moe/9qs5sx.jpg',
     answers: ['بيغ مام', 'بيق مام']
 },
 
 {
-    image: 'رابط_صورة_كاتاكوري',
+    image: 'https://files.catbox.moe/ggkci3.jpg',
     answers: ['كاتاكوري']
 },
 
 {
-    image: 'رابط_صورة_كيد',
+    image: 'https://files.catbox.moe/r07m6d.jpg',
     answers: ['كيد']
 },
 
 {
-    image: 'رابط_صورة_كونان',
+    image: 'https://files.catbox.moe/iqi3ox.jpg',
     answers: ['كونان']
 },
 
 {
-    image: 'رابط_صورة_ران',
+    image: 'https://files.catbox.moe/4nimi2.jpg',
     answers: ['ران']
 },
 
 {
-    image: 'رابط_صورة_كوغورو',
+    image: 'https://files.catbox.moe/go518a.jpg',
     answers: ['كوغورو', 'موري']
 },
 
 {
-    image: 'رابط_صورة_هايبرا',
+    image: 'https://files.catbox.moe/wv1wc8.jpg',
     answers: ['اي', 'شيري''هايبرا', 'هايبارا']
 },
 
 {
-    image: 'رابط_صورة_هيجي',
+    image: 'https://files.catbox.moe/ip2w76.jpg',
     answers: ['هيجي']
 },
 {
-    image: 'رابط_صورة_كايتو_كيد',
+    image: 'https://files.catbox.moe/bf41gz.jpg',
     answers: ['كايتو كيد', 'كيد']
 },
 
 {
-    image: 'رابط_صورة_اكاي',
+    image: 'https://files.catbox.moe/wynoob.jpg',
     answers: ['اكاي']
 },
 
 {
-    image: 'رابط_صورة_ساتو',
+    image: 'https://files.catbox.moe/e60be0.jpg',
     answers: ['اكاشي']
 },
 
 {
-    image: 'رابط_صورة_تاكاغي',
+    image: 'https://files.catbox.moe/6mh0xb.jpg',
     answers: ['اوميني', 'دايكي']
 },
 
 {
-    image: 'رابط_صورة_جين',
+    image: 'https://files.catbox.moe/4urj3y.jpg',
     answers: ['جين', 'غين', 'قين']
 },
 
 {
-    image: 'رابط_صورة_غوكو',
+    image: 'https://files.catbox.moe/q57b07.jpg',
     answers: ['غوكو', 'قوكو']
 },
 
 {
-    image: 'رابط_صورة_فيجيتا',
+    image: 'https://files.catbox.moe/fp6i7b.jpg',
     answers: ['فيجيتا', 'فيقيتا']
 },
 
 {
-    image: 'رابط_صورة_غوهان',
+    image: 'https://files.catbox.moe/kjg8h3.jpg',
     answers: ['غوهان', 'قوهان']
 },
 
 {
-    image: 'رابط_صورة_ترانكس',
+    image: 'https://files.catbox.moe/c1og7u.jpg',
     answers: ['ترانكس']
 },
 
 {
-    image: 'رابط_صورة_بيكولو',
+    image: 'https://files.catbox.moe/1r5lxg.jpg',
     answers: ['بيكولو']
 },
 
 {
-    image: 'رابط_صورة_فريزا',
+    image: 'https://files.catbox.moe/o2hmiz.jpg',
     answers: ['فريزا']
 },
 
 {
-    image: 'رابط_صورة_سيل',
+    image: 'https://files.catbox.moe/5znj0e.jpg',
     answers: ['سيل']
 },
 
 {
-    image: 'رابط_صورة_بوو',
+    image: 'https://files.catbox.moe/g35rxl.jpg',
     answers: ['كيسي']
 },
 
 {
-    image: 'رابط_صورة_بيروس',
+    image: 'https://files.catbox.moe/ki17w5.jpg',
     answers: ['بيروس']
 },
 
 {
-    image: 'رابط_صورة_ويس',
+    image: 'https://files.catbox.moe/jyjxi9.jpg',
     answers: ['ويس']
 },
 
 {
-    image: 'رابط_صورة_ايتشيغو',
+    image: 'https://files.catbox.moe/y809fh.jpg',
     answers: ['ايتشيغو', 'ايتشيقو']
 },
 
 {
-    image: 'رابط_صورة_روكيا',
+    image: 'https://files.catbox.moe/dlm92s.jpg',
     answers: ['روكيا']
 },
 
 {
-    image: 'رابط_صورة_اوريهيمي',
+    image: 'https://files.catbox.moe/ahs9ig.jpg',
     answers: ['اوريهيمي', 'اينوي']
 },
 
 {
-    image: 'رابط_صورة_اوريو',
+    image: 'https://files.catbox.moe/i0t7m7.jpg',
     answers: ['اوريو', 'ايشيدا']
 },
 
 {
-    image: 'رابط_صورة_بياكويا',
+    image: 'https://files.catbox.moe/kiz1w8.jpg',
     answers: ['بياكويا', 'بياكيا']
 },
 
 {
-    image: 'رابط_صورة_رينجي',
+    image: 'https://files.catbox.moe/gvz6wr.jpg',
     answers: ['رينجي']
 },
 
 {
-    image: 'رابط_صورة_ايزن',
+    image: 'https://files.catbox.moe/wgv0sk.jpg',
     answers: ['ايزن']
 },
 
 {
-    image: 'رابط_صورة_زاراكي',
+    image: 'https://files.catbox.moe/hhubd3.jpg',
     answers: ['زاراكي']
 },
 
 {
-    image: 'رابط_صورة_كيسكي',
+    image: 'https://files.catbox.moe/l3hdwd.jpg',
     answers: ['كيسكي', 'اوراهارا']
 },
 
 {
-    image: 'رابط_صورة_يورويتشي',
+    image: 'https://files.catbox.moe/96oxv5.jpg',
     answers: ['يورويتشي', 'يوريتشي']
 },
 {
-    image: 'رابط_صورة_تانجيرو',
+    image: 'https://files.catbox.moe/z6yrxu.jpg',
     answers: ['تانجيرو']
 },
 
 {
-    image: 'رابط_صورة_نيزوكو',
+    image: 'https://files.catbox.moe/1pry64.jpg',
     answers: ['نيزوكو']
 },
 
 {
-    image: 'رابط_صورة_زينيتسو',
+    image: 'https://files.catbox.moe/5jpjd8.jpg',
     answers: ['زينيتسو']
 },
 
 {
-    image: 'رابط_صورة_اينوسكي',
+    image: 'https://files.catbox.moe/msv1if.jpg',
     answers: ['اينوسكي']
 },
 
 {
-    image: 'رابط_صورة_غيو',
+    image: 'https://files.catbox.moe/cizo1o.jpg',
     answers: ['غيو', 'قيو']
 },
 
 {
-    image: 'رابط_صورة_شينوبو',
+    image: 'https://files.catbox.moe/6vpi72.jpg',
     answers: ['شينوبو']
 },
 
 {
-    image: 'رابط_صورة_رينغوكو',
+    image: 'https://files.catbox.moe/zzchud.jpg',
     answers: ['رينغوكو']
 },
 
 {
-    image: 'رابط_صورة_ميتسوري',
+    image: 'https://files.catbox.moe/yylv3s.jpg',
     answers: ['ميتسوري']
 },
 
 {
-    image: 'رابط_صورة_موزان',
+    image: 'https://files.catbox.moe/doyeyn.jpg',
     answers: ['موزان']
 },
 
 {
-    image: 'رابط_صورة_اكازا',
+    image: 'https://files.catbox.moe/pji628.jpg',
     answers: ['اكازا']
 },
 
 {
-    image: 'رابط_صورة_يوجي',
+    image: 'https://files.catbox.moe/zlqnqr.jpg',
     answers: ['يوجي']
 },
 
 {
-    image: 'رابط_صورة_ميغومي',
+    image: 'https://files.catbox.moe/lvec7l.jpg',
     answers: ['ميغومي']
 },
 
 {
-    image: 'رابط_صورة_نوبارا',
+    image: 'https://files.catbox.moe/3f5s40.jpg',
     answers: ['نوبارا']
 },
 
 {
-    image: 'رابط_صورة_غوجو',
+    image: 'https://files.catbox.moe/eb9tg6.jpg',
     answers: ['غوجو', 'قوجو']
 },
 
 {
-    image: 'رابط_صورة_سوكونا',
+    image: 'https://files.catbox.moe/pxcezv.jpg',
     answers: ['سوكونا']
 },
 
 {
-    image: 'رابط_صورة_غيتو',
+    image: 'https://files.catbox.moe/znbzmz.jpg',
     answers: ['كيوراكو', 'كيوراك']
 },
 
 {
-    image: 'رابط_صورة_يوتا',
+    image: 'https://files.catbox.moe/0syc95.jpg',
     answers: ['يوتا']
 },
 
 {
-    image: 'رابط_صورة_ماكي',
+    image: 'https://files.catbox.moe/watraz.jpg',
     answers: ['ماكي']
 },
 
 {
-    image: 'رابط_صورة_توجي',
+    image: 'https://files.catbox.moe/ak1nqw.jpg',
     answers: ['يامي']
 },
 
 {
-    image: 'رابط_صورة_نانامي',
+    image: 'https://files.catbox.moe/mitq1q.jpg',
     answers: ['نانامي']
 },
 
 {
-    image: 'رابط_صورة_ناروتو',
+    image: 'https://files.catbox.moe/0k3ibo.jpg',
     answers: ['ناروتو']
 },
 
 {
-    image: 'رابط_صورة_ساسكي',
+    image: 'https://files.catbox.moe/7o57i5.jpg',
     answers: ['ساسكي']
 },
 
 {
-    image: 'رابط_صورة_ساكورا',
+    image: 'https://files.catbox.moe/x8z85s.jpg',
     answers: ['ساكرا', 'ساكورا']
 },
 
 {
-    image: 'رابط_صورة_كاكاشي',
+    image: 'https://files.catbox.moe/bkxqu7.jpg',
     answers: ['كاكاشي']
 },
 
 {
-    image: 'رابط_صورة_ايتاتشي',
+    image: 'https://files.catbox.moe/sgfhsg.jpg',
     answers: ['ايتاتشي', 'ايتاشي']
 },
 {
-    image: 'رابط_صورة_مادارا',
+    image: 'https://files.catbox.moe/sh63pv.jpg',
     answers: ['مادارا']
 },
 
 {
-    image: 'رابط_صورة_اوبيتو',
+    image: 'https://files.catbox.moe/bxe7ky.jpg',
     answers: ['اوبيتو', 'توبي']
 },
 
 {
-    image: 'رابط_صورة_هاشيراما',
+    image: 'https://files.catbox.moe/6bg44r.jpg',
     answers: ['هاشيراما']
 },
 
 {
-    image: 'رابط_صورة_ميناتو',
+    image: 'https://files.catbox.moe/uvvei3.jpg',
     answers: ['ميناتو']
 },
 
 {
-    image: 'رابط_صورة_جيرايا',
+    image: 'https://files.catbox.moe/rqzgt7.jpg',
     answers: ['جيرايا']
 },
 
 {
-    image: 'رابط_صورة_ايرين',
+    image: 'https://files.catbox.moe/lyameg.jpg',
     answers: ['ايرين']
 },
 
 {
-    image: 'رابط_صورة_ميكاسا',
+    image: 'https://files.catbox.moe/c16o65.jpg',
     answers: ['ميكاسا']
 },
 
 {
-    image: 'رابط_صورة_ارمين',
+    image: 'https://files.catbox.moe/nzci9d.jpg',
     answers: ['اسكانور']
 },
 
 {
-    image: 'رابط_صورة_ليفاي',
+    image: 'https://files.catbox.moe/qm4inq.jpg',
     answers: ['ليفاي', 'ليفاي اكرمان']
 },
 
 {
-    image: 'رابط_صورة_هانجي',
+    image: 'https://files.catbox.moe/jf4g7c.jpg',
     answers: ['يونا']
 },
 
 {
-    image: 'رابط_صورة_ايروين',
+    image: 'https://files.catbox.moe/m765qf.jpg',
     answers: ['بوا', 'هانكوك']
 },
 
 {
-    image: 'رابط_صورة_راينر',
+    image: 'https://files.catbox.moe/aukbz0.jpg',
     answers: ['روجر']
 },
 
 {
-    image: 'رابط_صورة_اني',
+    image: 'https://files.catbox.moe/vlb7as.jpg',
     answers: ['غارب', 'جارب']
 },
 
 {
-    image: 'رابط_صورة_زيك',
+    image: 'https://files.catbox.moe/r2manl.png',
     answers: ['رايلي']
 },
 
 {
-    image: 'رابط_صورة_بيك',
+    image: 'https://files.catbox.moe/13z7y4.jpg',
     answers: ['تيتش']
 },
 
 {
-    image: 'رابط_صورة_غون',
+    image: 'https://files.catbox.moe/zgdpu5.jpg',
     answers: ['غون', 'قون', 'جون']
 },
 
 {
-    image: 'رابط_صورة_كيلوا',
+    image: 'https://files.catbox.moe/7bga5k.jpg',
     answers: ['كيلوا']
 },
 
 {
-    image: 'رابط_صورة_كورابيكا',
+    image: 'https://files.catbox.moe/zq7mvv.jpg',
     answers: ['شوتو']
 },
 
 {
-    image: 'رابط_صورة_ليوريو',
+    image: 'https://files.catbox.moe/6gj258.jpg',
     answers: ['دابي', 'تويا']
 },
 
 {
-    image: 'رابط_صورة_هيسوكا',
+    image: 'https://files.catbox.moe/8ax37o.jpg',
     answers: ['هيسوكا', 'مورو']
 },
 
 {
-    image: 'رابط_صورة_ايلومي',
+    image: 'https://files.catbox.moe/1ijjbr.jpg',
     answers: ['ايلومي']
 },
 
 {
-    image: 'رابط_صورة_كرولو',
+    image: 'https://files.catbox.moe/cfbgb2.jpg',
     answers: ['كرولو']
 },
 
 {
-    image: 'رابط_صورة_كايتو',
+    image: 'https://files.catbox.moe/yoc52t.jpg',
     answers: ['كايتو']
 },
 
 {
-    image: 'رابط_صورة_ميرويم',
+    image: 'https://files.catbox.moe/09rawz.jpg',
     answers: ['ميرويم', 'ميريوم']
 },
 
 {
-    image: 'رابط_صورة_بيتو',
+    image: 'https://files.catbox.moe/53nerd.jpg',
     answers: ['بيتو']
 }
