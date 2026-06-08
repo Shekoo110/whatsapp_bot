@@ -6,7 +6,8 @@ function getRandomEvent() {
 
 return events[
     Math.floor(
-        Math.random() * events.length
+        Math.random() *
+        events.length
     )
 ]
 
@@ -22,7 +23,11 @@ if (!groupEvents[jid]) {
 
         participants: [],
 
-        eventRunning: false
+        eventRunning: false,
+
+        timeout: null,
+
+        startedAt: 0
     }
 }
 
@@ -40,11 +45,23 @@ const data =
     getGroupData(jid)
 
 if (data.eventRunning)
-    return
+    return false
+
+if (data.timeout) {
+
+    clearTimeout(
+        data.timeout
+    )
+
+    data.timeout = null
+}
 
 data.eventRunning = true
 
 data.participants = []
+
+data.startedAt =
+    Date.now()
 
 data.currentEvent =
     sharedEvent ||
@@ -68,18 +85,27 @@ ${data.currentEvent.command}
 }
 )
 
-setTimeout(
-    () => {
+data.timeout =
+    setTimeout(
+        () => {
 
-        data.eventRunning = false
+            data.eventRunning =
+                false
 
-        data.currentEvent = null
+            data.currentEvent =
+                null
 
-        data.participants = []
+            data.participants =
+                []
 
-    },
-    120000
-)
+            data.timeout =
+                null
+
+        },
+        120000
+    )
+
+return true
 
 }
 
@@ -141,6 +167,39 @@ return shuffled.slice(
 
 }
 
+function finishEvent(jid) {
+
+const data =
+    getGroupData(jid)
+
+if (!data.eventRunning)
+    return null
+
+const winners =
+    pickWinners(jid)
+
+if (data.timeout) {
+
+    clearTimeout(
+        data.timeout
+    )
+
+    data.timeout = null
+}
+
+data.eventRunning =
+    false
+
+data.currentEvent =
+    null
+
+data.participants =
+    []
+
+return winners
+
+}
+
 module.exports = {
 
 getRandomEvent,
@@ -150,6 +209,8 @@ startEvent,
 joinEvent,
 
 pickWinners,
+
+finishEvent,
 
 getGroupData
 
