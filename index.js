@@ -1364,24 +1364,27 @@ sock.ev.on('connection.update', async (update) => {
 
     // ✅ حالة الاتصال
     if (connection === 'open') {
-        console.log("✅ BOT CONNECTED")
-    
-        console.log('البوت اشتغل')
 
-        if (currentBoss) {
+    console.log("✅ BOT CONNECTED")
 
-            console.log(
-                '✅ تم استعادة الزعيم المحفوظ'
-            )
+    console.log('البوت اشتغل')
 
-        } else {
+    startAutoEvents(sock)
 
-            await spawnBoss(
-                sock,
-                GROUP_ID
-            )
-        }
+    if (currentBoss) {
+
+        console.log(
+            '✅ تم استعادة الزعيم المحفوظ'
+        )
+
+    } else {
+
+        await spawnBoss(
+            sock,
+            GROUP_ID
+        )
     }
+}
 
 
     if (connection === 'close') {
