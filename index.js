@@ -3513,12 +3513,27 @@ attacker =
 const playerData =
 await Player.findOne({ userId })
 
-    const now = Date.now()
+    const lastSkill =
+    userId === fight.player1
+        ? fight.skillTurn1
+        : fight.skillTurn2
 
-if (playerData.skillCooldown > now) {
-    return safeSend(msg.key.remoteJid, {
-        text: `⏳ المهارة في كولداون\nانتظر ${Math.ceil((playerData.skillCooldown - now) / 1000)} ثانية`
-    })
+if (fight.turnCount - lastSkill < 2) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`⏳ لا يمكنك استخدام المهارة الآن
+
+تحتاج انتظار جولتين`
+        }
+    )
+}
+    if (userId === fight.player1) {
+    fight.skillTurn1 = fight.turnCount
+} else {
+    fight.skillTurn2 = fight.turnCount
 }
 
 const attackerStats =
@@ -3578,7 +3593,7 @@ fight.turn =
         : fight.player1  
 
 fight.lastMove = new Date()  
-
+fight.turnCount++
 await fight.save()  
 
 return safeSend(msg.key.remoteJid, {  
@@ -3929,16 +3944,28 @@ attacker =
     ]
 
 }
-const playerData =
-await Player.findOne({ userId })
-    const now = Date.now()
+const lastUltimate =
+    userId === fight.player1
+        ? fight.ultimateTurn1
+        : fight.ultimateTurn2
 
-if (playerData.skillCooldown > now) {
-    return safeSend(msg.key.remoteJid, {
-        text: `⏳ المهارة في كولداون\nانتظر ${Math.ceil((playerData.skillCooldown - now) / 1000)} ثانية`
-    })
+if (fight.turnCount - lastUltimate < 5) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`⏳ لا يمكنك استخدام الألتميت الآن
+
+تحتاج انتظار 5 جولات`
+        }
+    )
 }
-
+    if (userId === fight.player1) {
+    fight.ultimateTurn1 = fight.turnCount
+} else {
+    fight.ultimateTurn2 = fight.turnCount
+}
 const attackerStats =
 getTotalStats(playerData)
 
@@ -3993,7 +4020,7 @@ fight.turn =
         : fight.player1  
 
 fight.lastMove = new Date()  
-
+fight.turnCount++
 await fight.save()  
 
 return safeSend(msg.key.remoteJid, {  
