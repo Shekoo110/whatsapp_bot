@@ -307,27 +307,31 @@ ${answers.join(' - ')}`
     }
 
     // صورة
-    const imageQuestion =
-        getRandomImageQuestion()
+const imageQuestion =
+    getRandomImageQuestion()
 
-    currentQuestion = {
-        type: 'image',
-        answers:
-            imageQuestion.answers
-    }
+console.log(
+    'IMAGE QUESTION:',
+    imageQuestion
+)
 
-    return await sock.sendMessage(
-        jid,
-        {
-            image: {
-                url:
-                    imageQuestion.image
-            },
-            caption:
-                '🖼️ من هذه الشخصية؟'
-        }
-    )
+currentQuestion = {
+    type: 'image',
+    answers:
+        imageQuestion.answers
 }
+
+return await sock.sendMessage(
+    jid,
+    {
+        image: {
+            url:
+                imageQuestion.image
+        },
+        caption:
+            '🖼️ من هذه الشخصية؟'
+    }
+)
 
 function checkAnswer(
     userId,
