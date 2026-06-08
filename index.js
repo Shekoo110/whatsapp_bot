@@ -6,6 +6,7 @@ const {
 const fs = require('fs')
 const {
     startQuestion,
+    checkAnswer,
     quizData
 } = require('./quiz')
 const path = require('path')
