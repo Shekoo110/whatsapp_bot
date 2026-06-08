@@ -1138,8 +1138,20 @@ ${
 // =========================
 let pairingRequested = false
 
-
 async function startBot() {
+
+    if (!fs.existsSync('./auth')) {
+        fs.mkdirSync('./auth', { recursive: true })
+    }
+
+    const { state, saveCreds } =
+        await useMultiFileAuthState('auth')
+
+    const sock = makeWASocket({
+        auth: state
+    })
+
+    sock.ev.on('creds.update', saveCreds)
 
     const savedBoss = await Boss.findOne()
 
@@ -1150,113 +1162,119 @@ async function startBot() {
 
     currentBoss = savedBoss
 
-    // =========================
-    // إنشاء بوس إذا غير موجود
-    // =========================
     if (!currentBoss) {
 
-        console.log('👑 لا يوجد زعيم، سيتم إنشاء زعيم جديد')
+        console.log(
+            '👑 لا يوجد زعيم، سيتم إنشاء زعيم جديد'
+        )
 
-        await spawnBoss(sock, GROUP_ID)
+        await spawnBoss(
+            sock,
+            GROUP_ID
+        )
 
-        currentBoss = await Boss.findOne()
+        currentBoss =
+            await Boss.findOne()
     }
 
-    // =========================
-    // معالجة البوس
-    // =========================
-    if (currentBoss) {
+// =========================
+// معالجة البوس
+// =========================
+if (currentBoss) {
 
-        currentBoss.finished = currentBoss.finished ?? false
-        currentBoss.killer = currentBoss.killer ?? null
+    currentBoss.finished =
+        currentBoss.finished ?? false
 
-        // ميت بدون respawn
-        if (currentBoss.finished && !currentBoss.respawnAt) {
+    currentBoss.killer =
+        currentBoss.killer ?? null
 
-            console.log('⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه')
-
-            await Boss.deleteMany({})
-            currentBoss = null
-            return
-        }
-
-        // انتهى وقت الريسباون
-        if (
-            currentBoss.finished &&
-            currentBoss.respawnAt &&
-            currentBoss.respawnAt <= Date.now()
-        ) {
-
-            console.log('⏰ انتهى وقت إعادة الظهور')
-
-            await Boss.deleteMany({})
-            currentBoss = null
-            return
-        }
-
-        // ينتظر الريسباون
-        if (
-            currentBoss.finished &&
-            currentBoss.respawnAt &&
-            currentBoss.respawnAt > Date.now()
-        ) {
-
-            console.log('💀 الزعيم ميت وينتظر إعادة الظهور')
-        }
-
-        console.log('Boss is active or waiting respawn')
-    }
-}
-
-if (!fs.existsSync('./auth')) {
-    fs.mkdirSync('./auth', { recursive: true })
-}
-
-const { state, saveCreds } =
-    await useMultiFileAuthState('auth')
-
-console.log(
-    'AUTH EXISTS:',
-    fs.existsSync('./auth')
-)
-
-const sock = makeWASocket({
-    auth: state
-})
-
-sock.ev.on('creds.update', saveCreds)
-
-setInterval(async () => {
-
-    console.log(
-        'Boss Check:',
-        currentBoss?.finished,
-        currentBoss?.respawnAt
-    )
-
+    // ميت بدون وقت إعادة ظهور
     if (
-        currentBoss &&
         currentBoss.finished &&
-        currentBoss.respawnAt &&
-        currentBoss.respawnAt <= Date.now()
+        !currentBoss.respawnAt
     ) {
 
         console.log(
-            '👑 إعادة إنشاء الزعيم'
+            '⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه'
         )
 
         await Boss.deleteMany({})
 
         currentBoss = null
 
-        await spawnBoss(
-            sock,
-            GROUP_ID
+        return
+    }
+
+    // ينتظر إعادة الظهور
+    if (
+        currentBoss.finished &&
+        currentBoss.respawnAt &&
+        currentBoss.respawnAt > Date.now()
+    ) {
+
+        console.log(
+            '💀 الزعيم ميت وينتظر إعادة الظهور'
+        )
+    }
+}
+
+    if (currentBoss) {
+    console.log(
+        'Boss is active or waiting respawn'
+    )
+}
+
+
+
+setInterval(async () => {
+
+    try {
+
+        console.log(
+            'Boss Check:',
+            currentBoss?.finished,
+            currentBoss?.respawnAt
+        )
+
+        if (
+            currentBoss &&
+            currentBoss.finished &&
+            currentBoss.respawnAt &&
+            currentBoss.respawnAt <= Date.now()
+        ) {
+
+            console.log(
+                '👑 إعادة إنشاء الزعيم'
+            )
+
+            await Boss.deleteMany({})
+
+            currentBoss = null
+
+            await spawnBoss(
+                sock,
+                GROUP_ID
+            )
+
+            currentBoss =
+                await Boss.findOne()
+
+            console.log(
+                '✅ تم إنشاء الزعيم بنجاح'
+            )
+        }
+
+    } catch (err) {
+
+        console.log(
+            'Boss Respawn Error:',
+            err
         )
     }
 
 }, 60000)
-
+}
+startBot()
 sock.ev.on('connection.update', async (update) => {
 
     console.log(update)
@@ -7593,8 +7611,7 @@ await Boss.updateOne(
         }
     }
 )
-currentBoss.respawnAt =
-    nextHour.getTime()
+
         console.log(
     'RESPAWN AT:',
     new Date(currentBoss.respawnAt)
