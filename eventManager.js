@@ -8,32 +8,34 @@ let eventRunning = false
 
 function getRandomEvent() {
 
-    return events[
-        Math.floor(
-            Math.random() * events.length
-        )
-    ]
+return events[
+    Math.floor(
+        Math.random() * events.length
+    )
+]
+
 }
 
 async function startEvent(
-    sock,
-    jid
+sock,
+jid
 ) {
 
-    if (eventRunning)
-        return
+if (eventRunning)
+    return
 
-    eventRunning = true
+eventRunning = true
 
-    participants = []
+participants = []
 
-    currentEvent =
-        getRandomEvent()
+currentEvent =
+    getRandomEvent()
 
-    await sock.sendMessage(
-        jid,
-        {
-            text:
+await sock.sendMessage(
+    jid,
+    {
+        text:
+
 `🎮 حدث جديد!
 
 🎯 ${currentEvent.name}
@@ -44,72 +46,101 @@ ${currentEvent.command}
 👥 المشاركون: 0/5
 
 ⏳ لديك 30 ثانية`
-        }
-    )
+}
+)
 
-    setTimeout(
-        () => {
+setTimeout(
+    () => {
 
-            eventRunning = false
+        eventRunning = false
 
-            currentEvent = null
+        currentEvent = null
 
-            participants = []
+        participants = []
 
-        },
-        30000
-    )
+    },
+    30000
+)
+
 }
 
 function joinEvent(userId) {
 
-    if (!eventRunning)
-        return false
+if (!eventRunning)
+    return false
 
-    if (
-        participants.includes(userId)
+if (
+    participants.includes(userId)
+)
+    return false
+
+if (
+    participants.length >= 5
+)
+    return false
+
+participants.push(userId)
+
+return participants.length
+
+}
+
+function pickWinners() {
+
+const shuffled =
+    [...participants]
+    .sort(
+        () =>
+            Math.random() - 0.5
     )
-        return false
 
-    if (
-        participants.length >= 5
+const winnerCount =
+    Math.random() < 0.5
+        ? 2
+        : 3
+
+return shuffled.slice(
+    0,
+    Math.min(
+        winnerCount,
+        shuffled.length
     )
-        return false
+)
 
-    participants.push(userId)
-
-    return true
 }
 
 module.exports = {
 
-    getRandomEvent,
+getRandomEvent,
 
-    startEvent,
+startEvent,
 
-    joinEvent,
+joinEvent,
 
-    get currentEvent() {
-        return currentEvent
-    },
+pickWinners,
 
-    set currentEvent(value) {
-        currentEvent = value
-    },
+get currentEvent() {
+    return currentEvent
+},
 
-    get participants() {
-        return participants
-    },
+set currentEvent(value) {
+    currentEvent = value
+},
 
-    set participants(value) {
-        participants = value
-    },
+get participants() {
+    return participants
+},
 
-    get eventRunning() {
-        return eventRunning
-    },
+set participants(value) {
+    participants = value
+},
 
-    set eventRunning(value) {
-        eventRunning = value
-    }
+get eventRunning() {
+    return eventRunning
+},
+
+set eventRunning(value) {
+    eventRunning = value
+}
+
 }
