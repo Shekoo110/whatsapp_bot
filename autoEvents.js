@@ -13,32 +13,39 @@ const eventGroups = [
 
 function startAutoEvents(sock) {
 
-setInterval(
-    async () => {
+async function launchEvent() {
 
-        try {
+    try {
 
-            const sharedEvent =
-                eventManager.getRandomEvent()
+        const sharedEvent =
+            eventManager.getRandomEvent()
 
-            for (const groupId of eventGroups) {
+        for (const groupId of eventGroups) {
 
-                await eventManager.startEvent(
-                    sock,
-                    groupId,
-                    sharedEvent
-                )
-            }
-
-        } catch (err) {
-
-            console.log(
-                'Auto Event Error:',
-                err
+            await eventManager.startEvent(
+                sock,
+                groupId,
+                sharedEvent
             )
         }
 
-    },
+    } catch (err) {
+
+        console.log(
+            'Auto Event Error:',
+            err
+        )
+    }
+}
+
+// أول حدث مباشرة
+
+launchEvent()
+
+// ثم كل 20 دقيقة
+
+setInterval(
+    launchEvent,
     20 * 60 * 1000
 )
 
