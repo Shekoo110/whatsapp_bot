@@ -1159,16 +1159,15 @@ ${
 // =========================
 // تشغيل البوت
 // =========================
-let pairingRequested = false
 
+
+let pairingRequested = false
 let currentBoss = null
 
-const GROUP_ID =
-    "120363020823525909@g.us"
+const GROUP_ID = "120363020823525909@g.us"
 
 async function startBot() {
-console.log("START BOT")
-
+    console.log("START BOT")
 
     if (!fs.existsSync('./auth')) {
         fs.mkdirSync('./auth', { recursive: true })
@@ -1178,19 +1177,43 @@ console.log("START BOT")
         await useMultiFileAuthState('auth')
 
     const sock = makeWASocket({
-    auth: state
-})
-console.log("SOCKET CREATED")
+        auth: state,
+        printQRInTerminal: false
+    })
 
-console.log("REACHED A")
+    console.log("SOCKET CREATED")
 
-sock.ev.on('connection.update', async (update) => {
-    console.log("CONNECTION UPDATE:", update)
-})
+    sock.ev.on('creds.update', saveCreds)
 
-console.log("REACHED B")
+    sock.ev.on('connection.update', async (update) => {
 
-sock.ev.on('creds.update', saveCreds)
+        const { connection } = update
+
+        console.log("CONNECTION UPDATE:", update)
+
+        if (
+            !state.creds.registered &&
+            !pairingRequested
+        ) {
+            pairingRequested = true
+
+            try {
+                await new Promise(r => setTimeout(r, 3000))
+
+                const code = await sock.requestPairingCode("201105749333")
+
+                console.log("🔥 PAIRING CODE:", code)
+
+            } catch (e) {
+                console.log("PAIRING ERROR:", e.message)
+                pairingRequested = false
+            }
+        }
+
+        if (connection === "open") {
+            console.log("✅ BOT CONNECTED")
+        }
+    })
 
     const savedBoss = await Boss.findOne()
 
@@ -1200,6 +1223,7 @@ sock.ev.on('creds.update', saveCreds)
     )
 
     currentBoss = savedBoss
+}
 
 if (!currentBoss) {
 
@@ -1359,42 +1383,22 @@ console.log("BEFORE CONNECTION UPDATE")
 sock.ev.on('connection.update', async (update) => {
 
     console.log("CONNECTION UPDATE:", update)
-    console.log(update)
 
     const connection = update.connection
     const qr = update.qr
 
     console.log("registered =", state.creds.registered)
-    console.log("pairingRequested =", pairingRequested)
     console.log("connection =", connection)
 
-    if (
-        connection === 'connecting' &&
-        !state.creds.registered &&
-        !pairingRequested
-    ) {
-
-        console.log("ENTERED PAIRING BLOCK")
-
-        pairingRequested = true
-
-        try {
-            await new Promise(resolve => setTimeout(resolve, 20000))
-
-            const code = await sock.requestPairingCode(
-                "201105749333"
-            )
-
-            console.log("PAIRING CODE:", code)
-
-        } catch (e) {
-            console.log("PAIRING ERROR:", e)
-        }
+    // ✅ عرض QR فقط
+    if (qr) {
+        console.log("📱 QR CODE:", qr)
     }
 
-    // open
+    // ✅ حالة الاتصال
     if (connection === 'open') {
-
+        console.log("✅ BOT CONNECTED")
+    
         console.log('البوت اشتغل')
 
         if (currentBoss) {
