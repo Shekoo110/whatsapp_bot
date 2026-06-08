@@ -1479,60 +1479,40 @@ if (text === '.بدا_مسابقة') {
     if (text === '.انهاء_مسابقة') {
 
     if (!quizData.quizActive) {
-
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-                    '❌ لا توجد مسابقة حالياً'
-            }
-        )
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا توجد مسابقة حالياً'
+        })
     }
 
     quizData.quizActive = false
+    quizData.currentQuestion = null
 
-    let result =
-        '🏆 نتائج المسابقة\n\n'
+    let result = '🏆 نتائج المسابقة\n\n'
 
-    const ranking =
-        Object.entries(
-            quizData.scoreboard
-        )
-        .sort(
-            (a, b) =>
-                b[1] - a[1]
-        )
+    const ranking = Object.entries(quizData.scoreboard)
+        .sort((a, b) => b[1] - a[1])
 
-    if (!ranking.length) {
-
-        result +=
-            'لا يوجد فائزون'
-    }
-
-    else {
-
-        ranking.forEach(
-            ([id, points], index) => {
-
-                result +=
+    if (ranking.length === 0) {
+        result += '❌ لا يوجد فائزون'
+    } else {
+        ranking.forEach(([id, points], index) => {
+            result +=
 `${index + 1}- @${id.split('@')[0]}
-⭐ ${points}
+⭐ النقاط: ${points}
 
 `
-            }
-        )
+        })
     }
 
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text: result,
-            mentions:
-                ranking.map(
-                    x => x[0]
-                )
-        }
-    )
+    await sock.sendMessage(msg.key.remoteJid, {
+        text: result,
+        mentions: ranking.map(x => x[0])
+    })
+
+    // 🧹 تنظيف إضافي (مهم)
+    quizData.usedQuestions.length = 0
+    quizData.playerProgress = {}
+    quizData.answeredUsers?.clear?.()
 }
     
         if (text === '.صوره') {
