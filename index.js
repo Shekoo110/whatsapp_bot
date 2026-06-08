@@ -1405,10 +1405,11 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
 
     const msg = messages[0]
     if (!msg?.message) return
-console.log(JSON.stringify(msg, null, 2))
-console.log("participant:", msg.key.participant)
-console.log("remoteJid:", msg.key.remoteJid)
-    
+
+    console.log(JSON.stringify(msg, null, 2))
+    console.log("participant:", msg.key.participant)
+    console.log("remoteJid:", msg.key.remoteJid)
+
     const text =
         msg.message.conversation ||
         msg.message.extendedTextMessage?.text
@@ -1419,6 +1420,9 @@ console.log("remoteJid:", msg.key.remoteJid)
         msg.key.participant ||
         msg.key.remoteJid
 
+    // =========================
+    // cooldown
+    // =========================
     const key = userId + '_global'
     const now = Date.now()
 
@@ -1431,10 +1435,33 @@ console.log("remoteJid:", msg.key.remoteJid)
 
     cooldowns.set(key, now)
 
-    // جميع الأوامر تبدأ من هنا
+    // =========================
+    // 🧠 QUIZ SYSTEM (هنا فقط)
+    // =========================
+
+    if (quizData.quizActive) {
+
+        const isCorrect = checkAnswer(userId, text)
+
+        if (isCorrect) {
+
+            await sock.sendMessage(msg.key.remoteJid, {
+                text: `🎉 @${userId.split('@')[0]} إجابة صحيحة +1 نقطة 🏆`,
+                mentions: [userId]
+            })
+
+            setTimeout(() => {
+                if (quizData.quizActive) {
+                    startQuestion(sock, msg.key.remoteJid)
+                }
+            }, 2000)
+        }
+
+        return
+    }
 
     // =========================
-    // الأوامر هنا فقط
+    // الأوامر العادية هنا
     // =========================
 
         // =========================
@@ -1444,36 +1471,32 @@ console.log("remoteJid:", msg.key.remoteJid)
 if (text === '.بدا_مسابقة') {
 
     if (quizData.quizActive) {
-
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-                    '❌ توجد مسابقة شغالة بالفعل'
-            }
-        )
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ توجد مسابقة شغالة بالفعل'
+        })
     }
 
     quizData.quizActive = true
 
-    quizData.scoreboard = {}
+    // 🔥 تصفير النقاط بطريقة آمنة
+    for (const key in quizData.scoreboard) {
+        delete quizData.scoreboard[key]
+    }
 
-    quizData.userAnswers = {}
-
+    // 🧹 تنظيف بيانات اللعب
     quizData.usedQuestions.length = 0
+    quizData.playerProgress = {}
 
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-                '🎮 تم بدء المسابقة'
-        }
-    )
+    // ⚠️ مهم جدًا (لو موجود في الملف)
+    if (typeof questionSolved !== 'undefined') {
+        questionSolved = false
+    }
 
-    await startQuestion(
-        sock,
-        msg.key.remoteJid
-    )
+    await sock.sendMessage(msg.key.remoteJid, {
+        text: '🎮 تم بدء المسابقة'
+    })
+
+    await startQuestion(sock, msg.key.remoteJid)
 }
 
     if (text === '.انهاء_مسابقة') {
@@ -1484,8 +1507,10 @@ if (text === '.بدا_مسابقة') {
         })
     }
 
+    // 🔥 هنا تضيفها مباشرة
     quizData.quizActive = false
     quizData.currentQuestion = null
+    questionSolved = true
 
     let result = '🏆 نتائج المسابقة\n\n'
 
@@ -1509,10 +1534,12 @@ if (text === '.بدا_مسابقة') {
         mentions: ranking.map(x => x[0])
     })
 
-    // 🧹 تنظيف إضافي (مهم)
     quizData.usedQuestions.length = 0
     quizData.playerProgress = {}
-    quizData.answeredUsers?.clear?.()
+
+    if (quizData.answeredUsers) {
+        quizData.answeredUsers.clear()
+    }
 }
     
         if (text === '.صوره') {
