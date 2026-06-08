@@ -1226,15 +1226,7 @@ async function startBot() {
         }
     })
 
-    const savedBoss = await Boss.findOne()
-
-    console.log(
-        'Loaded Boss:',
-        JSON.stringify(savedBoss, null, 2)
-    )
-
-    currentBoss = savedBoss
-}
+    
 
 
 // =========================
@@ -1272,7 +1264,17 @@ if (currentBoss) {
     console.log('Boss is active or waiting respawn')
 }
 
+const savedBoss = await Boss.findOne()
 
+    console.log(
+        'Loaded Boss:',
+        JSON.stringify(savedBoss, null, 2)
+    )
+}
+}
+
+    currentBoss = savedBoss
+}
 
 setInterval(async () => {
 
