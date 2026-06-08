@@ -47,6 +47,8 @@ function isOwner(msg) {
 
     return sender === ownerId
 }
+const startAutoEvents =
+    require('./autoEvents')
 const axios = require('axios')
 const eventManager =
     require('./eventManager')
