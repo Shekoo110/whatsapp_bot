@@ -1126,6 +1126,11 @@ async function startBot() {
 
     const savedBoss = await Boss.findOne()
 
+console.log(
+    'Loaded Boss:',
+    JSON.stringify(savedBoss, null, 2)
+)
+
 if (savedBoss) {
 
     currentBoss = savedBoss
@@ -7569,6 +7574,14 @@ await Boss.updateOne(
             respawnAt: currentBoss.respawnAt
         }
     }
+)
+
+const savedBoss =
+    await Boss.findOne()
+
+console.log(
+    'DB RESPAWN:',
+    savedBoss?.respawnAt
 )
 
 currentBoss.finished = true
