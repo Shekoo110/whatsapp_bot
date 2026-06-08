@@ -74,16 +74,14 @@ async function startQuestion(
         getRandomQuestion()
 
     await sock.sendMessage(
-        jid,
-        {
-            text:
+    jid,
+    {
+        text:
 `🎯 *سؤال جديد*
 
-❓ *${currentQuestion.question}*
-
-🏆 *أول من يكمل الإجابة يحصل على نقطة*`
-        }
-    )
+❓ *${currentQuestion.question}*`
+    }
+)
 }
 
 function checkAnswer(
