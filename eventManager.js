@@ -184,7 +184,8 @@ if (data.timeout) {
         data.timeout
     )
 
-    data.timeout = null
+    data.timeout =
+        null
 }
 
 data.eventRunning =
