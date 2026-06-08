@@ -1273,8 +1273,7 @@ setInterval(async () => {
     }
 
 }, 60000)
-}
-startBot()
+
 sock.ev.on('connection.update', async (update) => {
 
     console.log(update)
