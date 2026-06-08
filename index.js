@@ -1150,20 +1150,35 @@ if (savedBoss) {
 
     currentBoss = savedBoss
 
-if (
-    currentBoss.finished &&
-    !currentBoss.respawnAt
-) {
+    if (
+        currentBoss.finished &&
+        !currentBoss.respawnAt
+    ) {
 
-    console.log(
-        '⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه'
-    )
+        console.log(
+            '⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه'
+        )
 
-    await Boss.deleteMany({})
+        await Boss.deleteMany({})
 
-    currentBoss = null
+        currentBoss = null
+    }
+
+    if (!currentBoss) {
+
+        console.log(
+            '👑 لا يوجد زعيم، سيتم إنشاء زعيم جديد'
+        )
+
+        await spawnBoss(
+            sock,
+            GROUP_ID
+        )
+
+        currentBoss =
+            await Boss.findOne()
+    }
 }
-
 if (currentBoss) {
 
     if (currentBoss.finished === undefined)
