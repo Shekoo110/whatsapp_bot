@@ -1077,8 +1077,9 @@ await player.save()
 }
 
 
+    if (sock.user) {
     await sock.sendMessage(groupId, {
-    text: `╔═════ ✦ 👑 ✦ ═════╗
+        text:`╔═════ ✦ 👑 ✦ ═════╗
 
 🌍 ⚠️  ظهر زعيم عالمي جديد  ⚠️ 🌍
 
@@ -1168,21 +1169,13 @@ async function startBot() {
 
     currentBoss = savedBoss
 
-    if (!currentBoss) {
+if (!currentBoss) {
 
-        console.log(
-            '👑 لا يوجد زعيم، سيتم إنشاء زعيم جديد'
-        )
+    console.log(
+        '👑 لا يوجد زعيم محفوظ'
+    )
 
-        await spawnBoss(
-            sock,
-            GROUP_ID
-        )
-
-        currentBoss =
-            await Boss.findOne()
-    }
-
+}
 // =========================
 // معالجة البوس
 // =========================
@@ -1361,6 +1354,7 @@ await new Promise(resolve =>
    
 
 sock.ev.on('connection.update', async (update) => {
+    console.log('AFTER CONNECTION UPDATE')
 
     console.log(update)
 
