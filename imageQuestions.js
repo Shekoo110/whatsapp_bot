@@ -1,3 +1,4 @@
+const imageQuestions = [
 {
     image: 'https://files.catbox.moe/u7l9rb.jpg',
     answers: ['لوفي']
@@ -504,3 +505,5 @@
     image: 'https://files.catbox.moe/53nerd.jpg',
     answers: ['بيتو']
 }
+]
+module.exports = imageQuestions
