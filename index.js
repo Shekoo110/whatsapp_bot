@@ -1441,7 +1441,7 @@ console.log("remoteJid:", msg.key.remoteJid)
         // .صوره
         // =========================
 
-if (body === '.بدا_مسابقة') {
+if (text === '.بدا_مسابقة') {
 
     if (quizData.quizActive) {
 
@@ -1449,18 +1449,24 @@ if (body === '.بدا_مسابقة') {
             msg.key.remoteJid,
             {
                 text:
-                    '❌ توجد مسابقة تعمل بالفعل'
+                    '❌ توجد مسابقة شغالة بالفعل'
             }
         )
     }
 
     quizData.quizActive = true
 
+    quizData.scoreboard = {}
+
+    quizData.userAnswers = {}
+
+    quizData.usedQuestions.length = 0
+
     await sock.sendMessage(
         msg.key.remoteJid,
         {
             text:
-                '🎉 بدأت المسابقة!'
+                '🎮 تم بدء المسابقة'
         }
     )
 
@@ -1468,19 +1474,63 @@ if (body === '.بدا_مسابقة') {
         sock,
         msg.key.remoteJid
     )
-
-    return
 }
 
-    if (body === '.ايقاف_مسابقة') {
+    if (text === '.انهاء_مسابقة') {
+
+    if (!quizData.quizActive) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    '❌ لا توجد مسابقة حالياً'
+            }
+        )
+    }
 
     quizData.quizActive = false
 
-    return sock.sendMessage(
+    let result =
+        '🏆 نتائج المسابقة\n\n'
+
+    const ranking =
+        Object.entries(
+            quizData.scoreboard
+        )
+        .sort(
+            (a, b) =>
+                b[1] - a[1]
+        )
+
+    if (!ranking.length) {
+
+        result +=
+            'لا يوجد فائزون'
+    }
+
+    else {
+
+        ranking.forEach(
+            ([id, points], index) => {
+
+                result +=
+`${index + 1}- @${id.split('@')[0]}
+⭐ ${points}
+
+`
+            }
+        )
+    }
+
+    await sock.sendMessage(
         msg.key.remoteJid,
         {
-            text:
-                '🛑 تم إيقاف المسابقة'
+            text: result,
+            mentions:
+                ranking.map(
+                    x => x[0]
+                )
         }
     )
 }
