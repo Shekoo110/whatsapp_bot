@@ -1157,6 +1157,7 @@ async function startBot() {
     const sock = makeWASocket({
         auth: state
     })
+    
 
     sock.ev.on('creds.update', saveCreds)
 
@@ -1343,20 +1344,7 @@ await new Promise(resolve =>
         }, 60 * 60 * 1000)
     }
 
-    // =========================
-    // حفظ الجلسة
-    // =========================
-    sock.ev.on('creds.update', async () => {
-
-    await saveCreds()
-
-    console.log('💾 SESSION SAVED')
-
-    console.log(
-        fs.readdirSync('./auth')
-    )
-
-})
+ 
 
     // =========================
     // safeSend
@@ -9903,4 +9891,4 @@ await sock.sendMessage(
 } // <-- هذا الإغلاق الصحيح لدالة startBot بالكامل
 
 // 3. السطر الأخير والوحيد في نهاية الملف لتشغيل البوت
-startBot().catch(console.error);
+startBot().catch(console.error)
