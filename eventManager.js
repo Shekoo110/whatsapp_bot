@@ -61,11 +61,33 @@ ${currentEvent.command}
     )
 }
 
+function joinEvent(userId) {
+
+    if (!eventRunning)
+        return false
+
+    if (
+        participants.includes(userId)
+    )
+        return false
+
+    if (
+        participants.length >= 5
+    )
+        return false
+
+    participants.push(userId)
+
+    return true
+}
+
 module.exports = {
 
     getRandomEvent,
 
     startEvent,
+
+    joinEvent,
 
     get currentEvent() {
         return currentEvent
