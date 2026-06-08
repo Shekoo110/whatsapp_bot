@@ -10,6 +10,17 @@ let answeredUsers = new Set()
 
 let usedQuestions = []
 
+function normalize(text) {
+
+    return text
+        .toLowerCase()
+        .replace(/غ/g, "ج")
+        .replace(/ة/g, "ه")
+        .replace(/ى/g, "ي")
+        .replace(/\s+/g, " ")
+        .trim()
+}
+
 function getRandomQuestion() {
 
     const availableQuestions =
@@ -64,9 +75,40 @@ async function startQuestion(
     )
 }
 
+function checkAnswer(
+    userId,
+    answer
+) {
+
+    if (!currentQuestion)
+        return false
+
+    const playerAnswer =
+        normalize(answer)
+
+    const correct =
+        currentQuestion.answers.some(
+            a =>
+                normalize(a) ===
+                playerAnswer
+        )
+
+    if (!correct)
+        return false
+
+    if (!scoreboard[userId]) {
+        scoreboard[userId] = 0
+    }
+
+    scoreboard[userId] += 1
+
+    return true
+}
+
 module.exports = {
     getRandomQuestion,
     startQuestion,
+    checkAnswer,
 
     quizData: {
 
