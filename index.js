@@ -1242,46 +1242,33 @@ async function startBot() {
 // =========================
 if (currentBoss) {
 
-    currentBoss.finished =
-        currentBoss.finished ?? false
+    currentBoss.finished = currentBoss.finished ?? false
+    currentBoss.killer = currentBoss.killer ?? null
 
-    currentBoss.killer =
-        currentBoss.killer ?? null
+    // 💀 ميت بدون وقت إعادة ظهور
+    if (currentBoss.finished && !currentBoss.respawnAt) {
 
-    // ميت بدون وقت إعادة ظهور
-    if (
-        currentBoss.finished &&
-        !currentBoss.respawnAt
-    ) {
-
-        console.log(
-            '⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه'
-        )
+        console.log('⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه')
 
         await Boss.deleteMany({})
 
         currentBoss = null
 
-await spawnBoss(
-    sock,
-    GROUP_ID
-)
+        await spawnBoss(sock, GROUP_ID)
 
-currentBoss =
-    await Boss.findOne()
+        currentBoss = await Boss.findOne()
     }
 
-    // ينتظر إعادة الظهور
-    if (
+    // ⏳ ينتظر إعادة الظهور
+    else if (
         currentBoss.finished &&
         currentBoss.respawnAt &&
         currentBoss.respawnAt > Date.now()
     ) {
 
-        console.log(
-            '💀 الزعيم ميت وينتظر إعادة الظهور'
-        )
+        console.log('💀 الزعيم ميت وينتظر إعادة الظهور')
     }
+}
 }
 
     if (currentBoss) {
