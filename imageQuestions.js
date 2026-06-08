@@ -69,7 +69,7 @@
 },
 
 {
-    image: 'رابط_صورة_ميهوك',
+    image: 'https://files.catbox.moe/13v3k6.jpg',
     answers: ['ميهوك']
 },
 
@@ -85,7 +85,7 @@
 
 {
     image: 'https://files.catbox.moe/9qs5sx.jpg',
-    answers: ['بيغ مام', 'بيق مام']
+    answers: ['بيغ مام', 'بيق مام''لينلين', 'لين لين']
 },
 
 {
