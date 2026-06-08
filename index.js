@@ -187,8 +187,6 @@ setInterval(async () => {
     }
 }, 60 * 60 * 1000)
 
-let currentBoss = null
-
 
 const ABILITY_CHANCE = 30
 const levelAbilities = {
@@ -7613,20 +7611,9 @@ await Boss.updateOne(
     }
 )
 
-        console.log(
+console.log(
     'RESPAWN AT:',
     new Date(currentBoss.respawnAt)
-)
-
-await Boss.updateOne(
-    {},
-    {
-        $set: {
-            hp: 0,
-            finished: true,
-            respawnAt: currentBoss.respawnAt
-        }
-    }
 )
 
 const savedBoss =
