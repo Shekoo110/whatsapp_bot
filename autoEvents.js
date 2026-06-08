@@ -18,11 +18,15 @@ setInterval(
 
         try {
 
+            const sharedEvent =
+                eventManager.getRandomEvent()
+
             for (const groupId of eventGroups) {
 
                 await eventManager.startEvent(
                     sock,
-                    groupId
+                    groupId,
+                    sharedEvent
                 )
             }
 
