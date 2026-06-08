@@ -1,10 +1,6 @@
 const events = require('./eventList')
 
-let currentEvent = null
-
-let participants = []
-
-let eventRunning = false
+const groupEvents = {}
 
 function getRandomEvent() {
 
@@ -16,19 +12,42 @@ return events[
 
 }
 
+function getGroupData(jid) {
+
+if (!groupEvents[jid]) {
+
+    groupEvents[jid] = {
+
+        currentEvent: null,
+
+        participants: [],
+
+        eventRunning: false
+    }
+}
+
+return groupEvents[jid]
+
+}
+
 async function startEvent(
 sock,
-jid
+jid,
+sharedEvent = null
 ) {
 
-if (eventRunning)
+const data =
+    getGroupData(jid)
+
+if (data.eventRunning)
     return
 
-eventRunning = true
+data.eventRunning = true
 
-participants = []
+data.participants = []
 
-currentEvent =
+data.currentEvent =
+    sharedEvent ||
     getRandomEvent()
 
 await sock.sendMessage(
@@ -38,57 +57,70 @@ await sock.sendMessage(
 
 `🎮 حدث جديد!
 
-🎯 ${currentEvent.name}
+🎯 ${data.currentEvent.name}
 
 📝 اكتب:
-${currentEvent.command}
+${data.currentEvent.command}
 
 👥 المشاركون: 0/5
 
-⏳ لديك 30 ثانية`
+⏳ لديك دقيقتان`
 }
 )
 
 setTimeout(
     () => {
 
-        eventRunning = false
+        data.eventRunning = false
 
-        currentEvent = null
+        data.currentEvent = null
 
-        participants = []
+        data.participants = []
 
     },
-    30000
+    120000
 )
 
 }
 
-function joinEvent(userId) {
+function joinEvent(
+jid,
+userId
+) {
 
-if (!eventRunning)
+const data =
+    getGroupData(jid)
+
+if (!data.eventRunning)
     return false
 
 if (
-    participants.includes(userId)
+    data.participants.includes(
+        userId
+    )
 )
     return false
 
 if (
-    participants.length >= 5
+    data.participants.length >= 5
 )
     return false
 
-participants.push(userId)
+data.participants.push(
+    userId
+)
 
-return participants.length
+return data.participants.length
 
 }
 
-function pickWinners() {
+function pickWinners(jid) {
+
+const data =
+    getGroupData(jid)
 
 const shuffled =
-    [...participants]
+    [...data.participants]
     .sort(
         () =>
             Math.random() - 0.5
@@ -119,28 +151,6 @@ joinEvent,
 
 pickWinners,
 
-get currentEvent() {
-    return currentEvent
-},
-
-set currentEvent(value) {
-    currentEvent = value
-},
-
-get participants() {
-    return participants
-},
-
-set participants(value) {
-    participants = value
-},
-
-get eventRunning() {
-    return eventRunning
-},
-
-set eventRunning(value) {
-    eventRunning = value
-}
+getGroupData
 
 }
