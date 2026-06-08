@@ -1206,6 +1206,12 @@ sock.ev.on('creds.update', saveCreds)
 
 setInterval(async () => {
 
+    console.log(
+        'Boss Check:',
+        currentBoss?.finished,
+        currentBoss?.respawnAt
+    )
+
     if (
         currentBoss &&
         currentBoss.finished &&
@@ -7541,6 +7547,10 @@ nextHour.setHours(
 
 currentBoss.respawnAt =
     nextHour.getTime()
+        console.log(
+    'RESPAWN AT:',
+    new Date(currentBoss.respawnAt)
+)
 
 await Boss.updateOne(
     {},
