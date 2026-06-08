@@ -1167,6 +1167,7 @@ let currentBoss = null
 const GROUP_ID = "120363020823525909@g.us"
 
 async function startBot() {
+
     console.log("START BOT")
 
     if (!fs.existsSync('./auth')) {
@@ -1191,6 +1192,7 @@ async function startBot() {
 
         console.log("CONNECTION UPDATE:", update)
 
+        // 🔥 Pairing
         if (
             !state.creds.registered &&
             !pairingRequested
@@ -1210,8 +1212,17 @@ async function startBot() {
             }
         }
 
+        // ✅ Open
         if (connection === "open") {
             console.log("✅ BOT CONNECTED")
+
+            if (!currentBoss) {
+                console.log("👑 لا يوجد زعيم محفوظ")
+
+                await spawnBoss(sock, GROUP_ID)
+
+                currentBoss = await Boss.findOne()
+            }
         }
     })
 
@@ -1225,20 +1236,6 @@ async function startBot() {
     currentBoss = savedBoss
 }
 
-if (!currentBoss) {
-
-    console.log(
-        '👑 لا يوجد زعيم محفوظ'
-    )
-
-    await spawnBoss(
-        sock,
-        GROUP_ID
-    )
-
-    currentBoss =
-        await Boss.findOne()
-}
 
 // =========================
 // معالجة البوس
