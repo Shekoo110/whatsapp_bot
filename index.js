@@ -1448,27 +1448,47 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
     cooldowns.set(key, now)
 
     // =========================
-    // 🧠 QUIZ SYSTEM (هنا فقط)
-    // =========================
+// 🧠 QUIZ SYSTEM
+// =========================
 
-    if (
+if (
     quizData.quizActive &&
     text !== '.انهاء_مسابقة'
 ) {
 
-    const isCorrect = checkAnswer(userId, text)
+    const isCorrect =
+        checkAnswer(userId, text)
 
     if (isCorrect) {
 
-        await sock.sendMessage(msg.key.remoteJid, {
-            text: `🎉 @${userId.split('@')[0]} إجابة صحيحة +1 نقطة 🏆`,
-            mentions: [userId]
-        })
+        await sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`🎉 إجابة صحيحة!
+
+🏆 الفائز: @${userId.split('@')[0]}
+
+⭐ +1 نقطة`,
+                mentions: [userId]
+            },
+            {
+                quoted: msg
+            }
+        )
 
         setTimeout(() => {
-            if (quizData.quizActive) {
-                startQuestion(sock, msg.key.remoteJid)
+
+            if (
+                quizData.quizActive
+            ) {
+
+                startQuestion(
+                    sock,
+                    msg.key.remoteJid
+                )
             }
+
         }, 2000)
     }
 
