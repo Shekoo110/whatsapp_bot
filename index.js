@@ -1374,7 +1374,7 @@ sock.ev.on('connection.update', async (update) => {
 
         }
     }
-})
+
 
     // open
     if (connection === 'open') {
