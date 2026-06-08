@@ -1,3 +1,9 @@
+const questions =
+    require('./questions')
+
+const imageQuestions =
+    require('./imageQuestions')
+
 let roundsCount = 0
 const MAX_ROUNDS = 50
 let lastMode = -1
