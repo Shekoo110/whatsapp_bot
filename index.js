@@ -48,6 +48,8 @@ function isOwner(msg) {
     return sender === ownerId
 }
 const axios = require('axios')
+const eventManager =
+    require('./eventManager')
 const pendingSwaps = new Map()
 const Waifu = require('./models/Waifu')
 const { calculateDamageAdvanced } = require('./utils/pvp')
@@ -965,6 +967,35 @@ function createPlayer() {
 
         title: null
     }
+}
+if (
+    eventManager.eventRunning &&
+    eventManager.currentEvent &&
+    text ===
+        eventManager.currentEvent.command
+) {
+
+    const joined =
+        eventManager.joinEvent(
+            msg.key.participant ||
+            msg.key.remoteJid
+        )
+
+    if (!joined)
+        return
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ انضممت للحدث
+
+👥 المشاركون:
+${eventManager.participants.length}/5`
+        }
+    )
+
+    return
 }
 
 // =========================
