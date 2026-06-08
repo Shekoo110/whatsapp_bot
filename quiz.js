@@ -301,7 +301,7 @@ lastMode = mode
 
 `✍️ اكتب التالي:
 
-${answers.join(' - ')}`
+${answers.map(a => `*${a}*`).join(' - ')}`
             }
         )
     }
@@ -317,21 +317,19 @@ console.log(
 
 currentQuestion = {
     type: 'image',
-    answers:
-        imageQuestion.answers
+    answers: imageQuestion.answers
 }
 
 return await sock.sendMessage(
     jid,
     {
         image: {
-            url:
-                imageQuestion.image
+            url: imageQuestion.image
         },
-        caption:
-            '🖼️ من هذه الشخصية؟'
+        caption: '🖼️ من هذه الشخصية؟'
     }
 )
+}
 
 function checkAnswer(
     userId,
