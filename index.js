@@ -1150,35 +1150,52 @@ if (savedBoss) {
 
     currentBoss = savedBoss
 
-if (currentBoss.finished === undefined)
-    currentBoss.finished = false
-
-if (currentBoss.killer === undefined)
-    currentBoss.killer = null
-
 if (
     currentBoss.finished &&
-    currentBoss.respawnAt &&
-    currentBoss.respawnAt > Date.now()
+    !currentBoss.respawnAt
 ) {
 
     console.log(
-        '💀 الزعيم ميت وينتظر إعادة الظهور'
-    )
-
-} else if (
-    currentBoss.finished &&
-    currentBoss.respawnAt &&
-    currentBoss.respawnAt <= Date.now()
-) {
-
-    console.log(
-        '⏰ انتهى وقت إعادة الظهور'
+        '⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه'
     )
 
     await Boss.deleteMany({})
 
     currentBoss = null
+}
+
+if (currentBoss) {
+
+    if (currentBoss.finished === undefined)
+        currentBoss.finished = false
+
+    if (currentBoss.killer === undefined)
+        currentBoss.killer = null
+
+    if (
+        currentBoss.finished &&
+        currentBoss.respawnAt &&
+        currentBoss.respawnAt > Date.now()
+    ) {
+
+        console.log(
+            '💀 الزعيم ميت وينتظر إعادة الظهور'
+        )
+
+    } else if (
+        currentBoss.finished &&
+        currentBoss.respawnAt &&
+        currentBoss.respawnAt <= Date.now()
+    ) {
+
+        console.log(
+            '⏰ انتهى وقت إعادة الظهور'
+        )
+
+        await Boss.deleteMany({})
+
+        currentBoss = null
+    }
 }
 
 if (currentBoss) {
