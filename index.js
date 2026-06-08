@@ -1532,6 +1532,19 @@ cooldowns.set(key, now)
         // .صوره
         // =========================
 
+if (text === '.ايدي') {
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`📌 ID:
+
+${msg.key.remoteJid}`
+        }
+    )
+}
+    
 if (text === '.بدا_مسابقة') {
 
     if (quizData.quizActive) {
