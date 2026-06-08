@@ -25,80 +25,138 @@ function normalize(text) {
 }
 
 function getRandomQuestion() {
+
     const availableQuestions =
         questions.filter(
-            (_, index) => !usedQuestions.includes(index)
+            (_, index) =>
+                !usedQuestions.includes(index)
         )
 
     if (!availableQuestions.length) {
+
         usedQuestions = []
+
         return getRandomQuestion()
     }
 
     const randomQuestion =
         availableQuestions[
-            Math.floor(Math.random() * availableQuestions.length)
+            Math.floor(
+                Math.random() *
+                availableQuestions.length
+            )
         ]
 
-    const originalIndex = questions.indexOf(randomQuestion)
-    usedQuestions.push(originalIndex)
+    const originalIndex =
+        questions.indexOf(
+            randomQuestion
+        )
+
+    usedQuestions.push(
+        originalIndex
+    )
 
     return randomQuestion
 }
 
-async function startQuestion(sock, jid) {
+async function startQuestion(
+    sock,
+    jid
+) {
 
     answeredUsers.clear()
+
     playerProgress = {}
+
     questionSolved = false
 
-    currentQuestion = getRandomQuestion()
+    currentQuestion =
+        getRandomQuestion()
 
-    await sock.sendMessage(jid, {
-        text:
-`🎯 سؤال جديد
+    await sock.sendMessage(
+        jid,
+        {
+            text:
+`🎯 *سؤال جديد*
 
-❓ ${currentQuestion.question}
+❓ *${currentQuestion.question}*
 
-🏆 أول من يكمل الإجابة يحصل على نقطة`
-    })
+🏆 *أول من يكمل الإجابة يحصل على نقطة*`
+        }
+    )
 }
 
-function checkAnswer(userId, answer) {
+function checkAnswer(
+    userId,
+    answer
+) {
 
-    if (!currentQuestion) return false
-    if (questionSolved) return false
+    if (!currentQuestion)
+        return false
 
-    const normalizedAnswer = normalize(answer)
+    if (questionSolved)
+        return false
 
-    // إنشاء سجل اللاعب إذا غير موجود
+    const normalizedAnswer =
+        normalize(answer)
+
     if (!playerProgress[userId]) {
+
         playerProgress[userId] = {
             text: ''
         }
     }
 
-    // 🔥 نجمع كل رسائل اللاعب داخل نفس السؤال
-    playerProgress[userId].text += ' ' + normalizedAnswer
+    // تجميع جميع رسائل اللاعب
+    playerProgress[userId].text +=
+        ' ' + normalizedAnswer
 
-    const fullText = playerProgress[userId].text
+    const fullText =
+        playerProgress[userId].text
 
-    const correctParts =
-        currentQuestion.answers.map(a => normalize(a))
+    const uniqueAnswers =
+        [
+            ...new Set(
+                currentQuestion.answers.map(
+                    a => normalize(a)
+                )
+            )
+        ]
 
     let matchedCount = 0
 
-    for (const part of correctParts) {
-        if (fullText.includes(part)) {
+    for (const correct of uniqueAnswers) {
+
+        if (
+            fullText.includes(correct)
+        ) {
             matchedCount++
         }
     }
 
-    const required = currentQuestion.required || correctParts.length
+    const required =
+        currentQuestion.required ||
+        (
+            currentQuestion.type ===
+            'multi'
+                ? Math.min(
+                    3,
+                    uniqueAnswers.length
+                )
+                : 1
+        )
 
-    if (matchedCount >= required) {
+    if (
+        matchedCount >= required
+    ) {
 
-        scoreboard[userId] = (scoreboard[userId] || 0) + 1
+        if (
+            !scoreboard[userId]
+        ) {
+            scoreboard[userId] = 0
+        }
+
+        scoreboard[userId] += 1
 
         questionSolved = true
 
@@ -111,14 +169,19 @@ function checkAnswer(userId, answer) {
 }
 
 module.exports = {
+
     getRandomQuestion,
+
     startQuestion,
+
     checkAnswer,
 
     quizData: {
+
         get quizActive() {
             return quizActive
         },
+
         set quizActive(value) {
             quizActive = value
         },
@@ -126,13 +189,17 @@ module.exports = {
         get currentQuestion() {
             return currentQuestion
         },
+
         set currentQuestion(value) {
             currentQuestion = value
         },
 
         scoreboard,
+
         answeredUsers,
+
         usedQuestions,
+
         playerProgress
     }
 }
