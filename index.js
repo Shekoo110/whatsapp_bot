@@ -1287,46 +1287,7 @@ setInterval(async () => {
 
 }, 60000)
 
-console.log('REGISTERING CONNECTION UPDATE')
 
-sock.ev.on('connection.update', async (update) => {
-
-    console.log(update)
-
-    const { connection } = update
-
-    if (
-    connection === 'connecting' &&
-    !state.creds.registered &&
-    !pairingRequested
-) {
-
-    pairingRequested = true
-
-    try {
-await new Promise(resolve =>  
-            setTimeout(resolve, 20000)  
-        )  
-        
-        const code =
-    await sock.requestPairingCode(
-        "201105749333"
-    )
-
-        console.log(
-            'PAIRING CODE:',
-            code
-        )
-
-    } catch (e) {
-
-        console.log(
-            'PAIRING ERROR:',
-            e
-        )
-    }
-}
-    })
 
     
     // =========================
@@ -1362,47 +1323,62 @@ await new Promise(resolve =>
    
 
 sock.ev.on('connection.update', async (update) => {
-    console.log('AFTER CONNECTION UPDATE')
 
     console.log(update)
 
     const { connection, qr } = update
 
-    console.log(
-        "registered =",
-        state.creds.registered
-    )
+    // pairing code
+    if (
+        connection === 'connecting' &&
+        !state.creds.registered &&
+        !pairingRequested
+    ) {
 
-    if (update.qr) {
-        console.log("QR RECEIVED")
+        pairingRequested = true
+
+        try {
+
+            await new Promise(resolve =>
+                setTimeout(resolve, 20000)
+            )
+
+            const code =
+                await sock.requestPairingCode(
+                    "201105749333"
+                )
+
+            console.log('PAIRING CODE:', code)
+
+        } catch (e) {
+
+            console.log(
+                'PAIRING ERROR:',
+                e
+            )
+        }
     }
 
-    if (qr) {
-        qrCodeData = await QRCode.toDataURL(qr)
-    }
-
+    // open
     if (connection === 'open') {
 
-    console.log('البوت اشتغل')
+        console.log('البوت اشتغل')
 
-        console.log('Boss HP =', currentBoss?.hp)
-console.log('Boss Finished =', currentBoss?.finished)
-console.log('Boss Respawn =', currentBoss?.respawnAt)
+        if (currentBoss) {
 
-    if (currentBoss) {
+            console.log(
+                '✅ تم استعادة الزعيم المحفوظ'
+            )
 
-        console.log(
-            '✅ تم استعادة الزعيم المحفوظ'
-        )
+        } else {
 
-    } else {
-
-        await spawnBoss(
-            sock,
-            GROUP_ID
-        )
+            await spawnBoss(
+                sock,
+                GROUP_ID
+            )
+        }
     }
-    }
+})
 
     if (connection === 'close') {
 
