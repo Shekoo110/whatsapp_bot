@@ -1336,11 +1336,12 @@ setInterval(async () => {
 console.log("BEFORE CONNECTION UPDATE")
 
 sock.ev.on('connection.update', async (update) => {
-    console.log("CONNECTION UPDATE:", update)
 
+    console.log("CONNECTION UPDATE:", update)
     console.log(update)
 
-    const { connection, qr } = update
+    const connection = update.connection
+    const qr = update.qr
 
     console.log("registered =", state.creds.registered)
     console.log("pairingRequested =", pairingRequested)
@@ -1357,10 +1358,7 @@ sock.ev.on('connection.update', async (update) => {
         pairingRequested = true
 
         try {
-
-            await new Promise(resolve =>
-                setTimeout(resolve, 20000)
-            )
+            await new Promise(resolve => setTimeout(resolve, 20000))
 
             const code = await sock.requestPairingCode(
                 "201105749333"
@@ -1369,12 +1367,9 @@ sock.ev.on('connection.update', async (update) => {
             console.log("PAIRING CODE:", code)
 
         } catch (e) {
-
             console.log("PAIRING ERROR:", e)
-
         }
     }
-
 
     // open
     if (connection === 'open') {
