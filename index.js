@@ -1010,7 +1010,8 @@ async function spawnBoss(sock, groupId) {
     groupAttackCount: 0,
 
     finished: false,
-    killer: null
+    killer: null,
+    respawnAt: null
 }
 
     await Boss.deleteMany({})
@@ -1186,9 +1187,30 @@ const sock = makeWASocket({
 
 sock.ev.on('creds.update', saveCreds)
 
-console.log(
-    require('@whiskeysockets/baileys/package.json').version
-)
+setInterval(async () => {
+
+    if (
+        currentBoss &&
+        currentBoss.finished &&
+        currentBoss.respawnAt &&
+        currentBoss.respawnAt <= Date.now()
+    ) {
+
+        console.log(
+            '👑 إعادة إنشاء الزعيم'
+        )
+
+        await Boss.deleteMany({})
+
+        currentBoss = null
+
+        await spawnBoss(
+            sock,
+            GROUP_ID
+        )
+    }
+
+}, 60000)
 
 sock.ev.on('connection.update', async (update) => {
 
@@ -7366,8 +7388,19 @@ if (currentBoss.hp <= 0) {
         currentBoss.hp = 0
 currentBoss.finished = true
 
+const nextHour =
+    new Date()
+
+nextHour.setMinutes(0)
+nextHour.setSeconds(0)
+nextHour.setMilliseconds(0)
+
+nextHour.setHours(
+    nextHour.getHours() + 1
+)
+
 currentBoss.respawnAt =
-    Date.now() + 60 * 60 * 1000
+    nextHour.getTime()
 
 await Boss.updateOne(
     {},
