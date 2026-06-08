@@ -1174,6 +1174,14 @@ if (!currentBoss) {
     console.log(
         '👑 لا يوجد زعيم محفوظ'
     )
+
+    await spawnBoss(
+        sock,
+        GROUP_ID
+    )
+
+    currentBoss =
+        await Boss.findOne()
 }
 
 // =========================
