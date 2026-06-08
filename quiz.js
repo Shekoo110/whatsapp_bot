@@ -41,13 +41,39 @@ function getRandomQuestion() {
     return randomQuestion
 }
 
+async function startQuestion(
+    sock,
+    jid
+) {
+
+    answeredUsers.clear()
+
+    currentQuestion =
+        getRandomQuestion()
+
+    await sock.sendMessage(
+        jid,
+        {
+            text:
+`🎯 *سؤال جديد*
+
+❓ ${currentQuestion.question}
+
+🏆 أول من يجيب يحصل على نقطة`
+        }
+    )
+}
+
 module.exports = {
     getRandomQuestion,
+    startQuestion,
 
     quizData: {
+
         get quizActive() {
             return quizActive
         },
+
         set quizActive(value) {
             quizActive = value
         },
@@ -55,6 +81,7 @@ module.exports = {
         get currentQuestion() {
             return currentQuestion
         },
+
         set currentQuestion(value) {
             currentQuestion = value
         },
