@@ -62,14 +62,15 @@ const wins = [
 for (const combo of wins) {
 
 const [a,b,c] =
-    combo
+combo
 
 if (
-    board[a] === board[b] &&
-    board[b] === board[c]
+board[a] === board[b] &&
+board[b] === board[c]
 ) {
 
-    return board[a]
+return board[a]
+
 }
 
 }
