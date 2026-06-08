@@ -1138,7 +1138,14 @@ ${
 // =========================
 let pairingRequested = false
 
+let currentBoss = null
+
+const GROUP_ID =
+    "120363020823525909@g.us"
+
 async function startBot() {
+
+
 
     if (!fs.existsSync('./auth')) {
         fs.mkdirSync('./auth', { recursive: true })
@@ -1202,7 +1209,13 @@ if (currentBoss) {
 
         currentBoss = null
 
-        return
+await spawnBoss(
+    sock,
+    GROUP_ID
+)
+
+currentBoss =
+    await Boss.findOne()
     }
 
     // ينتظر إعادة الظهور
@@ -1273,6 +1286,8 @@ setInterval(async () => {
     }
 
 }, 60000)
+
+console.log('REGISTERING CONNECTION UPDATE')
 
 sock.ev.on('connection.update', async (update) => {
 
@@ -1357,8 +1372,7 @@ await new Promise(resolve =>
     // =========================
     // CONNECTION
     // =========================
-   const GROUP_ID =
-    "120363020823525909@g.us"
+   
 
 sock.ev.on('connection.update', async (update) => {
 
