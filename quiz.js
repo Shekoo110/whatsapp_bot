@@ -7,6 +7,7 @@ let answeredUsers = new Set()
 let usedQuestions = []
 let playerProgress = {}
 let questionSolved = false
+let questionStartTime = 0
 
 function normalize(text) {
     return String(text)
@@ -66,12 +67,14 @@ async function startQuestion(
 
     answeredUsers.clear()
 
-    playerProgress = {}
+playerProgress = {}
 
-    questionSolved = false
+questionSolved = false
 
-    currentQuestion =
-        getRandomQuestion()
+questionStartTime = Date.now()
+
+currentQuestion =
+    getRandomQuestion()
 
     await sock.sendMessage(
     jid,
@@ -177,12 +180,16 @@ module.exports = {
     quizData: {
 
         get quizActive() {
-            return quizActive
-        },
+    return quizActive
+},
 
-        set quizActive(value) {
-            quizActive = value
-        },
+set quizActive(value) {
+    quizActive = value
+},
+
+get questionStartTime() {
+    return questionStartTime
+},
 
         get currentQuestion() {
             return currentQuestion
