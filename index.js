@@ -1484,6 +1484,19 @@ groupData.currentEvent.command
 ) {
 
 const joined =
+const groupData =
+eventManager.getGroupData(
+msg.key.remoteJid
+)
+
+if (
+groupData.eventRunning &&
+groupData.currentEvent &&
+text.trim() ===
+groupData.currentEvent.command
+) {
+
+const joined =
     eventManager.joinEvent(
         msg.key.remoteJid,
         userId
@@ -1509,18 +1522,19 @@ ${joined}/5`
     return
 }
 
-const winners =
-eventManager.pickWinners(
-msg.key.remoteJid
-)
+const eventName =
+    groupData.currentEvent.name
 
-groupData.eventRunning =
-false
+const winners =
+    eventManager.finishEvent(
+        msg.key.remoteJid
+    )
 
 let result =
+
 `🏆 انتهى الحدث
 
-🎯 ${groupData.currentEvent.name}
+🎯 ${eventName}
 
 الفائزون:
 
@@ -1528,10 +1542,10 @@ let result =
 
 for (const id of winners) {
 
-const reward =
-    await giveReward(id)
+    const reward =
+        await giveReward(id)
 
-result +=
+    result +=
 
 `👑 @${id.split('@')[0]}
 🎁 ${reward}
@@ -1540,18 +1554,15 @@ result +=
 }
 
 await sock.sendMessage(
-msg.key.remoteJid,
-{
-text: result,
-mentions: winners
-}
+    msg.key.remoteJid,
+    {
+        text: result,
+        mentions: winners
+    }
 )
 
-groupData.participants = []
-
-groupData.currentEvent = null
-
 return
+
 }
     // =========================
 // 🧠 QUIZ SYSTEM
