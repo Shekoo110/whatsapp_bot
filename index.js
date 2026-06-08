@@ -1342,13 +1342,14 @@ sock.ev.on('connection.update', async (update) => {
 
     const { connection, qr } = update
 
-    // pairing code
-    if (
-        connection === 'connecting' &&
-        !state.creds.registered &&
-        !pairingRequested
-    ) {
+console.log("registered =", state.creds.registered)
+console.log("pairingRequested =", pairingRequested)
 
+if (
+    connection === 'connecting' &&
+    !state.creds.registered &&
+    !pairingRequested
+) {
         pairingRequested = true
 
         try {
