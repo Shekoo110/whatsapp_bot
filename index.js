@@ -1,3 +1,24 @@
+const fs = require('fs')
+
+function hardResetAuth() {
+    const dirs = [
+        "./auth_info_baileys",
+        "./baileys_auth",
+        "./session"
+    ]
+
+    dirs.forEach(d => {
+        if (fs.existsSync(d)) {
+            fs.rmSync(d, { recursive: true, force: true })
+            console.log("🧹 deleted:", d)
+        }
+    })
+}
+
+const RESET_AUTH = true
+
+if (RESET_AUTH) hardResetAuth()
+
 process.on('uncaughtException', (err) => {
     console.error('❌ Crash Error:', err)
 })
@@ -11,7 +32,7 @@ const {
     useMultiFileAuthState
 } = require('@whiskeysockets/baileys')
 
-const fs = require('fs')
+
 const {
     startQuestion,
     checkAnswer,
