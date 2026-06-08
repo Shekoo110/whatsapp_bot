@@ -79,6 +79,8 @@ const WaifuPlayer =
     require('./models/WaifuPlayer')
 console.log("Canvas OK")
 const bosses = require('./bosses')
+const xo =
+    require('./xo')
 const characters = require('./characters.json')
 const getRank = require('./utils/rank')
 const { getSkillDamage } = require('./utils/skills')
@@ -1727,6 +1729,275 @@ if (text === '.بدا_مسابقة') {
     if (quizData.answeredUsers) {
         quizData.answeredUsers.clear()
     }
+}
+    if (
+text.startsWith('.xo ')
+) {
+
+const target =
+    msg.message
+        ?.extendedTextMessage
+        ?.contextInfo
+        ?.mentionedJid?.[0]
+
+if (!target) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ قم بمنشن اللاعب'
+        }
+    )
+}
+
+if (
+    xo.getGame(
+        msg.key.remoteJid
+    )
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ توجد لعبة حالياً'
+        }
+    )
+}
+
+global.pendingXO =
+    global.pendingXO || {}
+
+global.pendingXO[
+    msg.key.remoteJid
+] = {
+
+    playerX:
+        userId,
+
+    playerO:
+        target
+}
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🎮 تحدي XO
+
+@${target.split('@')[0]}
+
+اكتب:
+
+.موافق
+
+لبدء المباراة`,
+mentions: [target]
+}
+)
+
+return
+
+}
+
+if (
+text === '.موافق'
+) {
+
+global.pendingXO =
+    global.pendingXO || {}
+
+const pending =
+    global.pendingXO[
+        msg.key.remoteJid
+    ]
+
+if (!pending)
+    return
+
+if (
+    pending.playerO !==
+    userId
+)
+    return
+
+xo.createGame(
+    msg.key.remoteJid,
+    pending.playerX,
+    pending.playerO
+)
+
+const game =
+    xo.getGame(
+        msg.key.remoteJid
+    )
+
+delete global.pendingXO[
+    msg.key.remoteJid
+]
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🎮 بدأت المباراة
+
+❌ @${game.playerX.split('@')[0]}
+⭕ @${game.playerO.split('@')[0]}
+
+الدور:
+@${game.turn.split('@')[0]}
+
+${xo.renderBoard(
+game.board
+)}`,
+mentions: [
+game.playerX,
+game.playerO,
+game.turn
+]
+}
+)
+
+return
+
+}
+
+    const game =
+xo.getGame(
+msg.key.remoteJid
+)
+
+if (
+game &&
+/^[1-9]$/.test(text)
+) {
+
+if (
+    game.turn !== userId
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ ليس دورك'
+        }
+    )
+}
+
+const index =
+    Number(text) - 1
+
+if (
+    game.board[index] === '❌' ||
+    game.board[index] === '⭕'
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+                '❌ هذه الخانة مستخدمة'
+        }
+    )
+}
+
+const symbol =
+    userId === game.playerX
+        ? '❌'
+        : '⭕'
+
+game.board[index] =
+    symbol
+
+const winner =
+    xo.checkWinner(
+        game.board
+    )
+
+if (winner) {
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🏆 الفائز
+
+@${userId.split('@')[0]}
+
+${xo.renderBoard(
+game.board
+)}`,
+mentions: [
+userId
+]
+}
+)
+
+    xo.deleteGame(
+        msg.key.remoteJid
+    )
+
+    return
+}
+
+if (
+    xo.isDraw(
+        game.board
+    )
+) {
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🤝 تعادل
+
+${xo.renderBoard(
+game.board
+)}`
+}
+)
+
+    xo.deleteGame(
+        msg.key.remoteJid
+    )
+
+    return
+}
+
+game.turn =
+    game.turn ===
+    game.playerX
+        ? game.playerO
+        : game.playerX
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`${xo.renderBoard(
+game.board
+)}
+
+🎯 الدور:
+
+@${game.turn.split('@')[0]}`,
+mentions: [
+game.turn
+]
+}
+)
+
+return
+
 }
     
         if (text === '.صوره') {
