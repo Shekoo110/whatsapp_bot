@@ -2681,16 +2681,24 @@ if (alivePlayers.length > 1) {
 }
 }
    
+const mentions = [
+    attacker.userId,
+    target.userId
+]
+
+if (global.battleRoyale.currentTurn) {
+    mentions.push(
+        global.battleRoyale.currentTurn
+    )
+}
+
 return sock.sendMessage(
     msg.key.remoteJid,
     {
         text: txt,
-        mentions: [
-            attacker.userId,
-            target.userId
-        ]
+        mentions
     }
-) 
+)
 }
 
     if (text === '.نتائج_رويال') {
