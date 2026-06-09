@@ -2573,7 +2573,7 @@ if (target.hp <= 0) {
 
         txt += `\n💉 عاد بنصف الدم`
 
-    else {
+    } else {
 
     target.hp = 0
 
