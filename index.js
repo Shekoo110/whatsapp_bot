@@ -2319,37 +2319,53 @@ ${readyPlayers.length}
 }
     if (text === '.اقصاء') {
 
-    if (!global.battleRoyale?.started) {
-        return sock.sendMessage(msg.key.remoteJid, {
+if (!global.battleRoyale?.started) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
             text: '❌ لا يوجد باتل رويال نشط'
-        })
-    }
+        }
+    )
+}
 
-    const alive = global.battleRoyale.players.filter(p => p.alive)
-
-    if (alive.length <= 1) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: '🏆 انتهى الباتل رويال'
-        })
-    }
-
-    if (!global.battleRoyale.currentTurn) {
-        const first = alive[Math.floor(Math.random() * alive.length)]
-        global.battleRoyale.currentTurn = first.userId
-    }
-
-    const current = global.battleRoyale.players.find(
-        p => p.userId === global.battleRoyale.currentTurn
+const alive =
+    global.battleRoyale.players.filter(
+        p => p.alive
     )
 
-    if (!current) {
-        global.battleRoyale.currentTurn = null
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: '❌ خطأ في الدور، أعد تشغيل الباتل رويال'
-        })
-    }
+if (alive.length <= 1) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '🏆 انتهى الباتل رويال'
+        }
+    )
+}
 
-    let txt = `🎯 الدور على:
+let current =
+    alive.find(
+        p =>
+            p.userId ===
+            global.battleRoyale.currentTurn
+    )
+
+if (!current) {
+
+    current =
+        alive[
+            Math.floor(
+                Math.random() *
+                alive.length
+            )
+        ]
+
+    global.battleRoyale.currentTurn =
+        current.userId
+}
+
+let txt =
+
+`🎯 الدور الحالي:
 
 @${current.userId.split('@')[0]}
 
@@ -2359,30 +2375,35 @@ ${readyPlayers.length}
 
 `
 
-    let number = 1
+let number = 1
 
-    for (const p of alive) {
+for (const p of alive) {
 
-        if (p.userId === current.userId) continue
+    if (p.userId === current.userId)
+        continue
 
-        txt += `${number}️⃣ @${p.userId.split('@')[0]}
+    txt +=
+
+`${number}️⃣ @${p.userId.split('@')[0]}
 ❤️ ${p.hp}
 
 `
-        number++
-    }
 
-    txt += `\nاكتب:\n.اضرب رقم`
+    number++
+}
 
-    return sock.sendMessage(msg.key.remoteJid, {
+txt += `\nاكتب:\n.اضرب رقم`
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
         text: txt,
-        mentions: [
-            current.userId,
-            ...alive
-                .filter(p => p.userId !== current.userId)
-                .map(p => p.userId)
-        ]
-    })
+        mentions: alive.map(
+            p => p.userId
+        )
+    }
+)
+
 }
     
     
@@ -2550,18 +2571,28 @@ if (target.hp <= 0) {
 
         txt += `\n💉 عاد بنصف الدم`
 
-    } else {
+    else {
 
-        target.hp = 0
-        target.alive = false
-        target.eliminatedAt = Date.now()
+    target.hp = 0
 
-        global.battleRoyale.rankings.push({
-            userId: target.userId
-        })
+    target.alive = false
 
-        txt += `\n☠️ تم إقصاؤه من الرويال`
+    target.eliminatedAt =
+        Date.now()
+
+    global.battleRoyale.rankings.push({
+        userId: target.userId
+    })
+
+    if (
+        global.battleRoyale.currentTurn ===
+        target.userId
+    ) {
+        global.battleRoyale.currentTurn = null
     }
+
+    txt +=
+`\n☠️ تم إقصاؤه من الرويال`
 }
 
 const survivors =
@@ -2625,12 +2656,34 @@ if (survivors.length === 1) {
 
 } else {
 
-    const next = getNextRoyalePlayer()
+    const alivePlayers =
+global.battleRoyale.players.filter(
+p => p.alive
+)
 
-    if (next) {
-        global.battleRoyale.currentTurn =
-            next.userId
-    }
+if (alivePlayers.length > 1) {
+
+const currentIndex =
+    alivePlayers.findIndex(
+        p =>
+            p.userId ===
+            attacker.userId
+    )
+
+const next =
+    alivePlayers[
+        (currentIndex + 1) %
+        alivePlayers.length
+    ]
+
+global.battleRoyale.currentTurn =
+    next.userId
+
+txt +=
+
+`\n\n🎯 الدور التالي:
+
+@${next.userId.split('@')[0]}`
 }
 
 return sock.sendMessage(
