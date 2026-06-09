@@ -2497,24 +2497,26 @@ return sock.sendMessage(
 
     target.hp -= damage
 
-    global.battleRoyale.turns++
+    global.battleRoyale.turnCount++
 
-    if (global.battleRoyale.turns % 3 === 0) {
+if (
+    global.battleRoyale.turnCount % 3 === 0
+) {
 
-        const drop =
-            royaleDrops[
-                Math.floor(
-                    Math.random() *
-                    royaleDrops.length
-                )
-            ]
+    const drop =
+        royaleDrops[
+            Math.floor(
+                Math.random() *
+                royaleDrops.length
+            )
+        ]
 
-        global.battleRoyale.currentDrop = drop
+    global.battleRoyale.currentDrop = drop
 
-        await sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
 `🎁 تم إسقاط دروب جوي!
 
 ${drop.name}
@@ -2524,9 +2526,9 @@ ${drop.name}
 .حصول
 
 سيحصل عليه`
-            }
-        )
-    }
+        }
+    )
+}
 
     let txt =
 `⚔️ @${attacker.userId.split('@')[0]}
