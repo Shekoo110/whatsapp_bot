@@ -68,18 +68,29 @@ ultimateCooldown: { type: Number, default: 0 },
     fights: { type: Number, default: 5 },
     lastFightReset: { type: Number, default: Date.now },
 
-    // =========================
-    // BOSS SYSTEM
-    // =========================
-    // =========================
+// =========================
 // BOSS SYSTEM
 // =========================
-bossDamage: { type: Number, default: 0 },
-    bossHits: {
+
+bossDamage: {
     type: Number,
     default: 0
 },
-lastBossAttack: { type: Number, default: 0 },
+
+totalBossDamage: {
+    type: Number,
+    default: 0
+},
+
+bossHits: {
+    type: Number,
+    default: 0
+},
+
+lastBossAttack: {
+    type: Number,
+    default: 0
+},
 
 bossHp: {
     type: Number,
