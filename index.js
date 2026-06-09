@@ -2719,6 +2719,27 @@ ${poisonDamage}`
         }
     )
 }
+if (text === '.انهاء_رويال') {
+
+    if (!isOwner(msg)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ للمطور فقط' }
+        )
+    }
+
+    global.battleRoyale.active = false
+    global.battleRoyale.started = false
+    global.battleRoyale.players = []
+    global.battleRoyale.currentTurn = null
+    global.battleRoyale.rankings = []
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        { text: '🏁 تم إنهاء الباتل رويال' }
+    )
+}
+    
 
     if (text === '.متبقي') {
 
