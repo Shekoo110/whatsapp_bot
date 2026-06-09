@@ -2174,12 +2174,9 @@ ${global.battleRoyale.players.length}`
 if (text === '.رويال') {
 
     if (!global.battleRoyale.active) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا يوجد رويال حالياً'
-            }
-        )
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا يوجد رويال حالياً'
+        })
     }
 
     const message = `
@@ -2192,13 +2189,14 @@ if (text === '.رويال') {
 🩸 صندوق دم
 `
 
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        { text: message }
-    )
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: message
+    })
 }
-    let txt =
-`🏆 〔 BATTLE ROYALE 〕
+    if (text === '.رويال_تفاصيل') {
+
+    let txt = `
+🏆 〔 BATTLE ROYALE 〕
 
 📊 الحالة:
 ${global.battleRoyale.started ? 'بدأت' : 'التسجيل مفتوح'}
@@ -2207,16 +2205,12 @@ ${global.battleRoyale.started ? 'بدأت' : 'التسجيل مفتوح'}
 ${global.battleRoyale.players.length}
 
 ━━━━━━━━━━━━━━
-
 `
 
-    global.battleRoyale.players.forEach(
-        (p, i) => {
+    global.battleRoyale.players.forEach((p, i) => {
 
-            txt +=
-`${i + 1}️⃣ ${
-p.alive ? '🟢' : '🔴'
-}
+        txt += `
+${i + 1}️⃣ ${p.alive ? '🟢' : '🔴'}
 
 ⚔️ القوة:
 ${p.avgPower || 0}
@@ -2226,15 +2220,11 @@ ${p.hp || 30000}
 
 ━━━━━━━━━━━━━━
 `
-        }
-    )
+    })
 
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text: txt
-        }
-    )
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: txt
+    })
 }
     
     if (text === '.انطلاق_رويال') {
