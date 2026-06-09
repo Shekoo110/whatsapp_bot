@@ -99,7 +99,7 @@ const royaleDrops = [
     {
         name: "🧪 صندوق مسموم",
         type: "damage",
-        value: 5000
+        value: 2000 - 5000
     },
 
     {
@@ -127,7 +127,12 @@ const royaleDrops = [
     {
         name: "🎯 قناص",
         type: "sniper"
-    }
+    },
+    
+    {
+    name: "🛡️ درع",
+    type: "shield"
+}
 ]
 function getNextRoyalePlayer() {
 
@@ -1994,6 +1999,8 @@ ${avgPower}`
             break
 
         case 'reviveHalf':
+            
+            player.shield = true
 
             player.reviveHalf = true
 
@@ -2165,6 +2172,14 @@ ${global.battleRoyale.players.length}`
 
 
 if (text === '.رويال') {
+    الحالة: جاري
+
+عدد المشاركين: 14
+
+عدد الأحياء: 6
+
+الدروب الحالي:
+🩸 صندوق دم
 
     if (!global.battleRoyale.active) {
         return sock.sendMessage(
@@ -2216,7 +2231,17 @@ ${p.hp || 30000}
 }
     
     if (text === '.انطلاق_رويال') {
+active = false
+started = true
 
+        if (global.battleRoyale.players.length < 3) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ يجب وجود 3 لاعبين على الأقل'
+        }
+    )
+}
     if (!isOwner(msg)) {
         return sock.sendMessage(
             msg.key.remoteJid,
