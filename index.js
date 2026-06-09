@@ -1,5 +1,11 @@
 const fs = require('fs')
+process.on('uncaughtException', err => {
+    console.error('Uncaught Exception:', err)
+})
 
+process.on('unhandledRejection', err => {
+    console.error('Unhandled Rejection:', err)
+})
 function hardResetAuth() {
     const dirs = [
         "./auth_info_baileys",
@@ -4479,11 +4485,14 @@ function getGroupHP(player) {
     if (!player.characters?.length)
         return 1000
 
-    return player.characters.reduce(
-        (total, char) =>
-            total + Number(char.hp || 0),
-        0
-    )
+    const totalPower =
+        player.characters.reduce(
+            (total, char) =>
+                total + Number(char.power || 0),
+            0
+        )
+
+    return Math.floor(totalPower / 3)
 }
 
 const hp1 = getGroupHP(player1Data)
