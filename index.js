@@ -2371,7 +2371,6 @@ return sock.sendMessage(
         mentions: [current.userId]
     }
 )
-
 }
 
     
@@ -2415,14 +2414,14 @@ return sock.sendMessage(
         )
     }
 
-    if (attacker.userId !== userId) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ ليس دورك'
-            }
-        )
-    }
+    if (current.userId !== userId) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ ليس دورك'
+        }
+    )
+}
 
     const alive =
         global.battleRoyale.players.filter(
@@ -2565,7 +2564,7 @@ if (target.hp <= 0) {
     txt +=
 `\n☠️ تم إقصاؤه من الرويال`
 }
-
+}
 const survivors =
     global.battleRoyale.players.filter(
         p => p.alive
@@ -2662,7 +2661,7 @@ if (alivePlayers.length > 1) {
 @${nextPlayer.userId.split('@')[0]}`
 }
 }
-   } 
+   
 return sock.sendMessage(
     msg.key.remoteJid,
     {
