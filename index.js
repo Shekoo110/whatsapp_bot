@@ -2317,13 +2317,25 @@ ${readyPlayers.length}
         }
     )
 }
-    if (text === '.اقصاء') {
+    
+
+    
+if (text === '.اقصاء') {
 
 if (!global.battleRoyale?.started) {
     return sock.sendMessage(
         msg.key.remoteJid,
         {
             text: '❌ لا يوجد باتل رويال نشط'
+        }
+    )
+}
+
+if (global.battleRoyale.currentTurn) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '⚔️ الأدوار بدأت بالفعل'
         }
     )
 }
@@ -2342,68 +2354,34 @@ if (alive.length <= 1) {
     )
 }
 
-let current =
-    alive.find(
-        p =>
-            p.userId ===
-            global.battleRoyale.currentTurn
-    )
+const current =
+    alive[
+        Math.floor(
+            Math.random() *
+            alive.length
+        )
+    ]
 
-if (!current) {
-
-    current =
-        alive[
-            Math.floor(
-                Math.random() *
-                alive.length
-            )
-        ]
-
-    global.battleRoyale.currentTurn =
-        current.userId
-}
-
-let txt =
-
-`🎯 الدور الحالي:
-
-@${current.userId.split('@')[0]}
-
-━━━━━━━━━━━━━━
-
-🎯 الأهداف المتاحة:
-
-`
-
-let number = 1
-
-for (const p of alive) {
-
-    if (p.userId === current.userId)
-        continue
-
-    txt +=
-
-`${number}️⃣ @${p.userId.split('@')[0]}
-❤️ ${p.hp}
-
-`
-
-    number++
-}
-
-txt += `\nاكتب:\n.اضرب رقم`
+global.battleRoyale.currentTurn =
+    current.userId
 
 return sock.sendMessage(
     msg.key.remoteJid,
     {
-        text: txt,
-        mentions: alive.map(
-            p => p.userId
-        )
+        text:
+
+`🎯 تم اختيار أول لاعب
+
+@${current.userId.split('@')[0]}
+
+اكتب:
+
+.اضرب رقم`,
+        mentions: [current.userId]
     }
 )
 
+}
 }
     
     
@@ -2663,29 +2641,38 @@ global.battleRoyale.players.filter(
 p => p.alive
 )
 
-if (alivePlayers.length > 1) {
-
-const currentIndex =
-    alivePlayers.findIndex(
-        p =>
-            p.userId ===
-            attacker.userId
+const alivePlayers =
+    global.battleRoyale.players.filter(
+        p => p.alive
     )
 
-const next =
-    alivePlayers[
-        (currentIndex + 1) %
-        alivePlayers.length
-    ]
+if (alivePlayers.length > 1) {
 
-global.battleRoyale.currentTurn =
-    next.userId
+    let nextPlayer
 
-txt +=
+    do {
 
-`\n\n🎯 الدور التالي:
+        nextPlayer =
+            alivePlayers[
+                Math.floor(
+                    Math.random() *
+                    alivePlayers.length
+                )
+            ]
 
-@${next.userId.split('@')[0]}`
+    } while (
+        nextPlayer.userId ===
+        attacker.userId
+    )
+
+    global.battleRoyale.currentTurn =
+        nextPlayer.userId
+
+    txt +=
+
+`\n\n🎯 الدور الآن على:
+
+@${nextPlayer.userId.split('@')[0]}`
 }
 }
    } 
