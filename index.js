@@ -87,6 +87,102 @@ const { getSkillDamage } = require('./utils/skills')
 const Boss = require('./models/Boss')
 const { getTotalStats } = require('./utils/stats')
 const { generateEquipmentShop } = require('./utils/shop')
+
+const royaleDrops = [
+
+    {
+        name: "🩸 صندوق دم",
+        type: "hp",
+        value: 3000
+    },
+
+    {
+        name: "🧪 صندوق مسموم",
+        type: "damage",
+        value: 5000
+    },
+
+    {
+        name: "💉 إحياء",
+        type: "revive"
+    },
+
+    {
+        name: "❤️ إحياء 50%",
+        type: "reviveHalf"
+    },
+
+    {
+        name: "⚔️ سلاح +1000",
+        type: "atk",
+        value: 1000
+    },
+
+    {
+        name: "🔥 سلاح +1500",
+        type: "atk",
+        value: 1500
+    },
+
+    {
+        name: "🎯 قناص",
+        type: "sniper"
+    }
+]
+function getNextRoyalePlayer() {
+
+    const alive =
+        global.battleRoyale.players.filter(
+            p => p.alive
+        )
+
+    if (alive.length <= 1) {
+        return null
+    }
+
+    const currentIndex =
+        alive.findIndex(
+            p =>
+                p.userId ===
+                global.battleRoyale.currentTurn
+        )
+
+    if (currentIndex === -1) {
+        return alive[0]
+    }
+
+    return alive[
+        (currentIndex + 1) %
+        alive.length
+    ]
+}
+function getAliveRoyalePlayers() {
+
+    return global.battleRoyale.players.filter(
+        p => p.alive
+    )
+}
+
+// ======================================
+// BATTLE ROYALE
+// ======================================
+
+global.battleRoyale = {
+
+    active: false,
+
+    started: false,
+
+    players: [],
+
+    currentTurn: null,
+
+    currentDrop: null,
+
+    turnCount: 0,
+
+    rankings: []
+}
 if (!global.shopStarted) {
 
     global.shopStarted = true
@@ -1618,24 +1714,6 @@ if (
 
 cooldowns.set(key, now)
 
-    // ======================================
-// BATTLE ROYALE SYSTEM
-// ======================================
-
-global.battleRoyale = {
-    active: false,
-    started: false,
-
-    players: [],
-
-    currentTurn: null,
-
-    currentDrop: null,
-
-    turnCount: 0,
-
-    rankings: []
-}
 
     // =========================
     // الأوامر العادية هنا
@@ -1699,6 +1777,140 @@ if (text === '.بدء_رويال') {
     )
 }
 
+    if (text.startsWith('.تشكيلة_رويال')) {
+
+    if (!global.battleRoyale?.active) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد باتل رويال مفتوح'
+            }
+        )
+    }
+
+    if (global.battleRoyale.started) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ بدأ الحدث بالفعل'
+            }
+        )
+    }
+
+    const royalePlayer =
+        global.battleRoyale.players.find(
+            p => p.userId === userId
+        )
+
+    if (!royalePlayer) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ يجب التسجيل أولاً عبر .دخول'
+            }
+        )
+    }
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (
+        !player ||
+        !player.characters ||
+        player.characters.length < 3
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ تحتاج 3 شخصيات على الأقل'
+            }
+        )
+    }
+
+    const args =
+        text.split(' ').slice(1)
+
+    if (args.length !== 3) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ مثال:\n.تشكيلة_رويال 1 2 3'
+            }
+        )
+    }
+
+    const indexes =
+        args.map(x => Number(x) - 1)
+
+    if (
+        indexes.some(
+            i =>
+                isNaN(i) ||
+                i < 0 ||
+                i >= player.characters.length
+        )
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ أرقام شخصيات غير صحيحة'
+            }
+        )
+    }
+
+    if (
+        new Set(indexes).size !== 3
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا يمكن تكرار نفس الشخصية'
+            }
+        )
+    }
+
+    const selected =
+        indexes.map(
+            i => player.characters[i]
+        )
+
+    const avgPower =
+        Math.floor(
+            selected.reduce(
+                (a, b) =>
+                    a + (b.power || 0),
+                0
+            ) / 3
+        )
+
+    royalePlayer.team =
+        JSON.parse(
+            JSON.stringify(selected)
+        )
+
+    royalePlayer.avgPower =
+        avgPower
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم حفظ تشكيلتك
+
+1️⃣ ${selected[0].name}
+2️⃣ ${selected[1].name}
+3️⃣ ${selected[2].name}
+
+⚔️ متوسط القوة:
+${avgPower}`
+        }
+    )
+}
+
     if (text === '.دخول') {
 
     if (!global.battleRoyale.active) {
@@ -1735,28 +1947,34 @@ if (text === '.بدء_رويال') {
 
     global.battleRoyale.players.push({
 
-        userId,
+    userId,
 
-        team: [],
+    team: [],
 
-        avgPower: 0,
+    avgPower: 0,
 
-        hp: 30000,
+    hp: 30000,
 
-        alive: true,
+    maxHp: 30000,
 
-        attackBonus: 0,
+    alive: true,
 
-        shield: false,
+    attackBonus: 0,
 
-        sniper: false,
+    shield: false,
 
-        revive: false,
+    sniper: false,
 
-        reviveHalf: false,
+    revive: false,
 
-        attacksReceived: 0
-    })
+    reviveHalf: false,
+
+    poison: 0,
+
+    attacksReceived: 0,
+
+    eliminatedAt: null
+})
 
     return sock.sendMessage(
         msg.key.remoteJid,
@@ -1772,35 +1990,7 @@ ${global.battleRoyale.players.length}`
 
 if (text === '.خروج_رويال') {
 
-    if (!global.battleRoyale.active) {
-        return
-    }
-
-    if (global.battleRoyale.started) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا يمكن الخروج بعد البداية'
-            }
-        )
-    }
-
-    global.battleRoyale.players =
-        global.battleRoyale.players.filter(
-            p => p.userId !== userId
-        )
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text: '✅ خرجت من الرويال'
-        }
-    )
-}
-
-    if (text.startsWith('.تشكيلة_رويال')) {
-
-    if (!global.battleRoyale.active) {
+    if (!global.battleRoyale?.active) {
         return sock.sendMessage(
             msg.key.remoteJid,
             {
@@ -1813,122 +2003,547 @@ if (text === '.خروج_رويال') {
         return sock.sendMessage(
             msg.key.remoteJid,
             {
-                text: '❌ بدأ الرويال بالفعل'
+                text:
+'❌ لا يمكن الخروج بعد بدء الحدث'
             }
         )
     }
 
-    const player =
-        global.battleRoyale.players.find(
+    const index =
+        global.battleRoyale.players.findIndex(
             p => p.userId === userId
         )
 
-    if (!player) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ يجب التسجيل أولاً عبر .دخول'
-            }
-        )
-    }
-
-    const args =
-        text.trim().split(' ').slice(1)
-
-    if (args.length !== 3) {
+    if (index === -1) {
         return sock.sendMessage(
             msg.key.remoteJid,
             {
                 text:
-'❌ مثال:\n.تشكيلة_رويال 1 2 3'
+'❌ أنت غير مسجل في الحدث'
             }
         )
     }
 
-    const dbPlayer =
-        await Player.findOne({ userId })
-
-    if (
-        !dbPlayer ||
-        !dbPlayer.characters ||
-        dbPlayer.characters.length < 3
-    ) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ تحتاج 3 شخصيات على الأقل'
-            }
-        )
-    }
-
-    const indexes =
-        args.map(x => Number(x) - 1)
-
-    if (
-        indexes.some(
-            i =>
-                isNaN(i) ||
-                i < 0 ||
-                i >= dbPlayer.characters.length
-        )
-    ) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ أرقام غير صحيحة'
-            }
-        )
-    }
-
-    const unique =
-        new Set(indexes)
-
-    if (unique.size !== 3) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-'❌ لا يمكن تكرار نفس الشخصية'
-            }
-        )
-    }
-
-    const selected =
-        indexes.map(
-            i => dbPlayer.characters[i]
-        )
-
-    const avgPower =
-        Math.floor(
-            selected.reduce(
-                (sum, c) =>
-                    sum + (c.power || 0),
-                0
-            ) / 3
-        )
-
-    player.team = selected
-
-    player.avgPower = avgPower
+    global.battleRoyale.players.splice(
+        index,
+        1
+    )
 
     return sock.sendMessage(
         msg.key.remoteJid,
         {
             text:
-`✅ تم حفظ تشكيلتك
+`🚪 تم خروجك من الباتل رويال
 
-1️⃣ ${selected[0].name}
-2️⃣ ${selected[1].name}
-3️⃣ ${selected[2].name}
+👥 المتبقون:
+${global.battleRoyale.players.length}`
+        }
+    )
+}
+        
 
-⚔️ متوسط القوة:
-${avgPower}`
+
+if (text === '.رويال') {
+
+    if (!global.battleRoyale.active) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد رويال حالياً'
+            }
+        )
+    }
+
+    let txt =
+`🏆 〔 BATTLE ROYALE 〕
+
+📊 الحالة:
+${global.battleRoyale.started ? 'بدأت' : 'التسجيل مفتوح'}
+
+👥 المشاركون:
+${global.battleRoyale.players.length}
+
+━━━━━━━━━━━━━━
+
+`
+
+    global.battleRoyale.players.forEach(
+        (p, i) => {
+
+            txt +=
+`${i + 1}️⃣ ${
+p.alive ? '🟢' : '🔴'
+}
+
+⚔️ القوة:
+${p.avgPower || 0}
+
+❤️ HP:
+${p.hp || 30000}
+
+━━━━━━━━━━━━━━
+`
+        }
+    )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: txt
+        }
+    )
+}
+    
+    if (text === '.انطلاق_رويال') {
+
+    if (!isOwner(msg)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ للمطور فقط'
+            }
+        )
+    }
+
+    if (!global.battleRoyale.active) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد رويال'
+            }
+        )
+    }
+
+    if (global.battleRoyale.started) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '⚠️ الرويال بدأ بالفعل'
+            }
+        )
+    }
+
+    const readyPlayers =
+        global.battleRoyale.players.filter(
+            p =>
+                p.team &&
+                p.team.length === 3
+        )
+
+    if (readyPlayers.length < 2) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ يجب وجود لاعبين اثنين على الأقل مع تشكيلات'
+            }
+        )
+    }
+
+    global.battleRoyale.players =
+        readyPlayers
+
+    global.battleRoyale.started = true
+
+    const firstPlayer =
+        readyPlayers[
+            Math.floor(
+                Math.random() *
+                readyPlayers.length
+            )
+        ]
+
+    global.battleRoyale.currentTurn =
+        firstPlayer.userId
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🔥 بدأت معركة الباتل رويال
+
+👥 المشاركون:
+${readyPlayers.length}
+
+🎯 أول دور تم اختياره
+
+اكتب:
+
+.متبقي
+
+لمشاهدة الأحياء`
+        }
+    )
+}
+    if (text === '.اقصاء') {
+
+    if (!global.battleRoyale?.started) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد باتل رويال نشط'
+            }
+        )
+    }
+
+    const alive =
+        global.battleRoyale.players.filter(
+            p => p.alive
+        )
+
+    if (alive.length <= 1) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '🏆 انتهى الباتل رويال'
+            }
+        )
+    }
+
+    if (!global.battleRoyale.currentTurn) {
+
+        const first =
+            alive[
+                Math.floor(
+                    Math.random() *
+                    alive.length
+                )
+            ]
+
+        global.battleRoyale.currentTurn =
+            first.userId
+    }
+
+    const current =
+        global.battleRoyale.players.find(
+            p =>
+                p.userId ===
+                global.battleRoyale.currentTurn
+        )
+
+    let txt =
+`🎯 الدور على:
+
+@${current.userId.split('@')[0]}
+
+━━━━━━━━━━━━━━
+
+🎯 الأهداف المتاحة:
+
+`
+
+    let number = 1
+
+    for (const p of alive) {
+
+        if (
+            p.userId ===
+            current.userId
+        ) continue
+
+        txt +=
+`${number}️⃣ @${p.userId.split('@')[0]}
+❤️ ${p.hp}
+
+`
+
+        number++
+    }
+
+    txt +=
+`\nاكتب:
+
+.اضرب رقم`
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: txt,
+            mentions: [
+                current.userId,
+                ...alive.map(
+                    p => p.userId
+                )
+            ]
+        }
+    )
+}
+    
+        
+if (text.startsWith('.اضرب')) {
+
+    if (!global.battleRoyale?.started) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ لا يوجد باتل رويال نشط' }
+        )
+    }
+
+    const attacker =
+        global.battleRoyale.players.find(
+            p =>
+                p.userId ===
+                global.battleRoyale.currentTurn
+        )
+
+    if (!attacker) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ خطأ في الدور الحالي' }
+        )
+    }
+
+    if (attacker.userId !== userId) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            { text: '❌ ليس دورك' }
+        )
+    }
+
+    const alive =
+        global.battleRoyale.players.filter(
+            p =>
+                p.alive &&
+                p.userId !== attacker.userId
+        )
+
+    const num =
+        parseInt(
+            text.split(' ')[1]
+        )
+
+    if (
+        isNaN(num) ||
+        num < 1 ||
+        num > alive.length
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                    `❌ اختر رقماً بين 1 و ${alive.length}`
+            }
+        )
+    }
+
+    const target =
+        alive[num - 1]
+
+    let damage =
+        attacker.avgPower +
+        attacker.attackBonus +
+        Math.floor(
+            Math.random() * 2000
+        )
+
+    if (attacker.sniper) {
+
+        damage *= 2
+
+        attacker.sniper = false
+    }
+
+    if (target.shield) {
+
+        damage =
+    Math.floor(
+        damage * 0.7
+    )
+
+target.shield = false
+}
+
+target.hp -= damage
+
+global.battleRoyale.turns++
+
+if (
+    global.battleRoyale.turns % 3 === 0 &&
+    !global.battleRoyale.currentDrop
+) {
+
+    const drop =
+        royaleDrops[
+            Math.floor(
+                Math.random() *
+                royaleDrops.length
+            )
+        ]
+
+    global.battleRoyale.currentDrop = drop
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🎁 تم إسقاط دروب جوي!
+
+${drop.name}
+
+أول شخص يكتب:
+
+.حصول
+
+سيحصل عليه`
         }
     )
 }
 
-    
-    
+    let txt =
+`⚔️ @${attacker.userId.split('@')[0]}
+
+هاجم
+
+🎯 @${target.userId.split('@')[0]}
+
+💥 الضرر:
+${damage}
+
+❤️ المتبقي:
+${Math.max(0, target.hp)}
+`
+
+    if (target.poison) {
+
+        const poisonDamage =
+            2000
+
+        target.hp -= poisonDamage
+
+        txt +=
+`\n☠️ ضرر السم:
+${poisonDamage}`
+
+        target.poison = false
+    }
+
+    if (target.hp <= 0) {
+
+        if (target.revive) {
+
+            target.revive = false
+
+            target.hp = 30000
+
+            txt +=
+`\n💉 تم إحياء الهدف`
+        }
+
+        else if (
+            target.reviveHalf
+        ) {
+
+            target.reviveHalf =
+                false
+
+            target.hp = 15000
+
+            txt +=
+`\n💉 عاد بنصف الدم`
+        }
+
+        else {
+
+            target.hp = 0
+
+            target.alive = false
+
+            txt +=
+`\n☠️ تم إقصاؤه من الروديال`
+        }
+    }
+
+    const survivors =
+        global.battleRoyale.players.filter(
+            p => p.alive
+        )
+
+    if (survivors.length === 1) {
+
+        txt +=
+`\n\n🏆 الفائز:
+
+@${survivors[0].userId.split('@')[0]}`
+
+        global.battleRoyale.started =
+            false
+    }
+
+    else {
+
+        const next =
+            getNextRoyalePlayer()
+
+        if (next) {
+
+            global.battleRoyale.currentTurn =
+                next.userId
+        }
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: txt,
+            mentions: [
+                attacker.userId,
+                target.userId
+            ]
+        }
+    )
+}
+
+    if (text === '.متبقي') {
+
+    if (!global.battleRoyale?.started) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد باتل رويال نشط'
+            }
+        )
+    }
+
+    const alive =
+        global.battleRoyale.players.filter(
+            p => p.alive
+        )
+
+    let txt =
+`🏹 اللاعبين المتبقين
+
+━━━━━━━━━━━━━━
+
+`
+
+    alive
+        .sort((a, b) => b.hp - a.hp)
+        .forEach((p, i) => {
+
+            txt +=
+`${i + 1}️⃣ @${p.userId.split('@')[0]}
+
+❤️ ${p.hp}
+
+⚔️ ${p.avgPower + p.attackBonus}
+
+━━━━━━━━━━━━━━
+`
+        })
+
+    txt +=
+`\n👥 العدد المتبقي: ${alive.length}`
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: txt,
+            mentions: alive.map(
+                p => p.userId
+            )
+        }
+    )
+}
     
     if (text === '.ايدي') {
 
