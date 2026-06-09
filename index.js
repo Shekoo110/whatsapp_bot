@@ -5714,14 +5714,18 @@ if (text === '.مساهمات') {
 
     const players =
         await Player.find({})
-            .sort({ bossDamage: -1 })
+            .sort({ totalBossDamage: -1 })
             .limit(10)
 
     const me =
         await Player.findOne({ userId })
 
     let leaderboard =
-        '🏆 أفضل المقاتلين ضد الزعيم\n\n'
+`🏆 أفضل المقاتلين ضد جميع الزعماء
+
+━━━━━━━━━━
+
+`
 
     for (
         let i = 0;
@@ -5741,9 +5745,9 @@ if (text === '.مساهمات') {
         leaderboard +=
 `${medal}
 
-💥 ${player.bossDamage || 0} ضرر
+💥 ${(player.totalBossDamage || 0).toLocaleString()} ضرر
 
-⚔️ ${player.bossHits || 0} هجمة
+⚔️ ${(player.bossHits || 0).toLocaleString()} هجمة
 
 ━━━━━━━━━━
 
@@ -5753,9 +5757,9 @@ if (text === '.مساهمات') {
     leaderboard +=
 `📊 مساهمتك
 
-💥 ${me?.bossDamage || 0} ضرر
+💥 ${(me?.totalBossDamage || 0).toLocaleString()} ضرر
 
-⚔️ ${me?.bossHits || 0} هجمة`
+⚔️ ${(me?.bossHits || 0).toLocaleString()} هجمة`
 
     return safeSend(
         msg.key.remoteJid,
@@ -9016,6 +9020,9 @@ await Boss.updateOne(
 )
 me.bossDamage =
     (me.bossDamage || 0) + damage
+
+me.totalBossDamage =
+    (me.totalBossDamage || 0) + damage
 
 me.bossHits =
     (me.bossHits || 0) + 1
