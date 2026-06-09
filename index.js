@@ -2228,8 +2228,7 @@ ${p.hp || 30000}
 }
     
     if (text === '.انطلاق_رويال') {
-active = false
-started = true
+
 
         if (global.battleRoyale.players.length < 3) {
     return sock.sendMessage(
@@ -2475,25 +2474,20 @@ target.hp -= damage
 
 global.battleRoyale.turns++
 
-if (
-    global.battleRoyale.turns % 3 === 0 &&
-    !global.battleRoyale.currentDrop
-) {
+const drop =
+    royaleDrops[
+        Math.floor(
+            Math.random() *
+            royaleDrops.length
+        )
+    ]
 
-    const drop =
-        royaleDrops[
-            Math.floor(
-                Math.random() *
-                royaleDrops.length
-            )
-        ]
+global.battleRoyale.currentDrop = drop
 
-    global.battleRoyale.currentDrop = drop
-
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
 `🎁 تم إسقاط دروب جوي!
 
 ${drop.name}
@@ -2503,8 +2497,8 @@ ${drop.name}
 .حصول
 
 سيحصل عليه`
-        }
-    )
+    }
+)
 }
 
     let txt =
