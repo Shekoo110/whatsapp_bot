@@ -2386,8 +2386,7 @@ ${readyPlayers.length}
 }
     
     
-        
-if (text.startsWith('.اضرب')) {
+        if (text.startsWith('.اضرب')) {
 
     if (!global.battleRoyale?.started) {
         return sock.sendMessage(
@@ -2396,24 +2395,42 @@ if (text.startsWith('.اضرب')) {
         )
     }
 
+    const current = global.battleRoyale.players.find(
+        p => p.userId === global.battleRoyale.currentTurn
+    )
+
     if (!current) {
-    global.battleRoyale.currentTurn = null
-    return sock.sendMessage(msg.key.remoteJid, {
-        text: '❌ خطأ في الدور، أعد تشغيل الباتل رويال'
-    })
-}
+        global.battleRoyale.currentTurn = null
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ خطأ في الدور، أعد تشغيل الباتل رويال'
+            }
+        )
+    }
+
+    const attacker = global.battleRoyale.players.find(
+        p =>
+            p.userId === userId &&
+            p.alive
+    )
 
     if (!attacker) {
         return sock.sendMessage(
             msg.key.remoteJid,
-            { text: '❌ خطأ في الدور الحالي' }
+            {
+                text: '❌ أنت لست مشاركاً في الرويال'
+            }
         )
     }
 
     if (attacker.userId !== userId) {
         return sock.sendMessage(
             msg.key.remoteJid,
-            { text: '❌ ليس دورك' }
+            {
+                text: '❌ ليس دورك'
+            }
         )
     }
 
@@ -2425,9 +2442,7 @@ if (text.startsWith('.اضرب')) {
         )
 
     const num =
-        parseInt(
-            text.split(' ')[1]
-        )
+        parseInt(text.split(' ')[1])
 
     if (
         isNaN(num) ||
@@ -2437,57 +2452,48 @@ if (text.startsWith('.اضرب')) {
         return sock.sendMessage(
             msg.key.remoteJid,
             {
-                text:
-                    `❌ اختر رقماً بين 1 و ${alive.length}`
+                text: `❌ اختر رقماً بين 1 و ${alive.length}`
             }
         )
     }
 
-    const target =
-        alive[num - 1]
+    const target = alive[num - 1]
 
     let damage =
         attacker.avgPower +
         attacker.attackBonus +
-        Math.floor(
-            Math.random() * 2000
-        )
+        Math.floor(Math.random() * 2000)
 
     if (attacker.sniper) {
-
         damage *= 2
-
         attacker.sniper = false
     }
 
     if (target.shield) {
+        damage = Math.floor(damage * 0.7)
+        target.shield = false
+    }
 
-        damage =
-    Math.floor(
-        damage * 0.7
-    )
+    target.hp -= damage
 
-target.shield = false
-}
+    global.battleRoyale.turns++
 
-target.hp -= damage
+    if (global.battleRoyale.turns % 3 === 0) {
 
-global.battleRoyale.turns++
+        const drop =
+            royaleDrops[
+                Math.floor(
+                    Math.random() *
+                    royaleDrops.length
+                )
+            ]
 
-const drop =
-    royaleDrops[
-        Math.floor(
-            Math.random() *
-            royaleDrops.length
-        )
-    ]
+        global.battleRoyale.currentDrop = drop
 
-global.battleRoyale.currentDrop = drop
-
-await sock.sendMessage(
-    msg.key.remoteJid,
-    {
-        text:
+        await sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
 `🎁 تم إسقاط دروب جوي!
 
 ${drop.name}
@@ -2497,9 +2503,9 @@ ${drop.name}
 .حصول
 
 سيحصل عليه`
+            }
+        )
     }
-)
-}
 
     let txt =
 `⚔️ @${attacker.userId.split('@')[0]}
@@ -2517,65 +2523,53 @@ ${Math.max(0, target.hp)}
 
     if (target.poison) {
 
-        const poisonDamage =
-            2000
+    const poisonDamage = 2000
 
-        target.hp -= poisonDamage
+    target.hp -= poisonDamage
 
-        txt +=
+    txt +=
 `\n☠️ ضرر السم:
 ${poisonDamage}`
 
-        target.poison = false
-    }
-
-    if (target.hp <= 0) {
-
-        if (target.revive) {
-
-            target.revive = false
-
-            target.hp = 30000
-
-            txt +=
-`\n💉 تم إحياء الهدف`
-        }
-
-        else if (
-            target.reviveHalf
-        ) {
-
-            target.reviveHalf =
-                false
-
-            target.hp = 15000
-
-            txt +=
-`\n💉 عاد بنصف الدم`
-        }
-
-        else {
-
-    target.hp = 0
-
-    target.alive = false
-
-    target.eliminatedAt =
-        Date.now()
-
-    global.battleRoyale.rankings.push({
-    userId: target.userId
-})
-
-    txt +=
-`\n☠️ تم إقصاؤه من الرويال`
+    target.poison = false
 }
-    const survivors =
-        global.battleRoyale.players.filter(
-            p => p.alive
-        )
 
-    if (survivors.length === 1) {
+if (target.hp <= 0) {
+
+    if (target.revive) {
+
+        target.revive = false
+        target.hp = 30000
+
+        txt += `\n💉 تم إحياء الهدف`
+
+    } else if (target.reviveHalf) {
+
+        target.reviveHalf = false
+        target.hp = 15000
+
+        txt += `\n💉 عاد بنصف الدم`
+
+    } else {
+
+        target.hp = 0
+        target.alive = false
+        target.eliminatedAt = Date.now()
+
+        global.battleRoyale.rankings.push({
+            userId: target.userId
+        })
+
+        txt += `\n☠️ تم إقصاؤه من الرويال`
+    }
+}
+
+const survivors =
+    global.battleRoyale.players.filter(
+        p => p.alive
+    )
+
+if (survivors.length === 1) {
 
     const winner = survivors[0]
 
@@ -2601,23 +2595,18 @@ ${poisonDamage}`
 
             player.money += 500000
             player.xp += 100000
-
             player.boxes.sss_high += 1
-        }
 
-        else if (i === 1) {
+        } else if (i === 1) {
 
             player.money += 250000
             player.xp += 50000
-
             player.boxes.sss_chance += 1
-        }
 
-        else if (i === 2) {
+        } else if (i === 2) {
 
             player.money += 100000
             player.xp += 25000
-
             player.boxes.legendary += 1
         }
 
@@ -2633,29 +2622,27 @@ ${poisonDamage}`
 
     global.battleRoyale.started = false
     global.battleRoyale.active = false
-}
-    else {
 
-        const next =
-            getNextRoyalePlayer()
+} else {
 
-        if (next) {
+    const next = getNextRoyalePlayer()
 
-            global.battleRoyale.currentTurn =
-                next.userId
-        }
+    if (next) {
+        global.battleRoyale.currentTurn =
+            next.userId
     }
+}
 
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text: txt,
-            mentions: [
-                attacker.userId,
-                target.userId
-            ]
-        }
-    )
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text: txt,
+        mentions: [
+            attacker.userId,
+            target.userId
+        ]
+    }
+) 
 }
 
     if (text === '.نتائج_رويال') {
