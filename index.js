@@ -1910,6 +1910,127 @@ ${avgPower}`
         }
     )
 }
+    if (text === '.حصول') {
+
+    if (!global.battleRoyale?.started) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد باتل رويال نشط'
+            }
+        )
+    }
+
+    const player =
+        global.battleRoyale.players.find(
+            p =>
+                p.userId === userId &&
+                p.alive
+        )
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت لست مشاركاً أو تم إقصاؤك'
+            }
+        )
+    }
+
+    const drop =
+        global.battleRoyale.currentDrop
+
+    if (!drop) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد دروب جوي حالياً'
+            }
+        )
+    }
+
+    let rewardText = ''
+
+    switch (drop.type) {
+
+        case 'hp':
+
+            player.hp += drop.value
+
+            rewardText =
+                `❤️ +${drop.value} HP`
+
+            break
+
+        case 'damage':
+
+            player.hp -= drop.value
+
+            if (player.hp < 0)
+                player.hp = 0
+
+            rewardText =
+                `☠️ خسرت ${drop.value} HP`
+
+            break
+
+        case 'atk':
+
+            player.attackBonus +=
+                drop.value
+
+            rewardText =
+                `⚔️ +${drop.value} ضرر`
+
+            break
+
+        case 'revive':
+
+            player.revive = true
+
+            rewardText =
+                '💉 حصلت على إحياء واحد'
+
+            break
+
+        case 'reviveHalf':
+
+            player.reviveHalf = true
+
+            rewardText =
+                '❤️ حصلت على إحياء 50%'
+
+            break
+
+        case 'sniper':
+
+            player.sniper = true
+
+            rewardText =
+                '🎯 الضربة القادمة ×2'
+
+            break
+    }
+
+    global.battleRoyale.currentDrop =
+        null
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🎁 @${userId.split('@')[0]}
+
+حصل على:
+
+${drop.name}
+
+${rewardText}`
+        ,
+            mentions: [userId]
+        }
+    )
+}
 
     if (text === '.دخول') {
 
@@ -2444,15 +2565,20 @@ ${poisonDamage}`
 
         else {
 
-            target.hp = 0
+    target.hp = 0
 
-            target.alive = false
+    target.alive = false
 
-            txt +=
-`\n☠️ تم إقصاؤه من الروديال`
-        }
-    }
+    target.eliminatedAt =
+        Date.now()
 
+    global.battleRoyale.rankings.unshift({
+        userId: target.userId
+    })
+
+    txt +=
+`\n☠️ تم إقصاؤه من الرويال`
+}
     const survivors =
         global.battleRoyale.players.filter(
             p => p.alive
@@ -2460,14 +2586,20 @@ ${poisonDamage}`
 
     if (survivors.length === 1) {
 
-        txt +=
+    global.battleRoyale.rankings.unshift({
+        userId: survivors[0].userId
+    })
+
+    txt +=
 `\n\n🏆 الفائز:
 
 @${survivors[0].userId.split('@')[0]}`
 
-        global.battleRoyale.started =
-            false
-    }
+    global.battleRoyale.started =
+        false
+    global.battleRoyale.active =
+        false
+}
 
     else {
 
@@ -2489,6 +2621,68 @@ ${poisonDamage}`
                 attacker.userId,
                 target.userId
             ]
+        }
+    )
+}
+
+    if (text === '.نتائج_رويال') {
+
+    if (!global.battleRoyale) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد بيانات رويال'
+            }
+        )
+    }
+
+    const rankings =
+        global.battleRoyale.rankings || []
+
+    if (!rankings.length) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد نتائج حالياً'
+            }
+        )
+    }
+
+    let txt =
+`🏆 ═══〔 نتائج الباتل رويال 〕═══ 🏆
+
+`
+
+    const medals = [
+        '🥇',
+        '🥈',
+        '🥉'
+    ]
+
+    rankings
+        .slice(0, 10)
+        .forEach((p, i) => {
+
+            const medal =
+                medals[i] ||
+                `#${i + 1}`
+
+            txt +=
+`${medal} @${p.userId.split('@')[0]}
+
+`
+        })
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: txt,
+            mentions:
+                rankings
+                    .slice(0, 10)
+                    .map(
+                        p => p.userId
+                    )
         }
     )
 }
