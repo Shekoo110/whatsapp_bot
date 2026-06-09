@@ -2382,7 +2382,7 @@ return sock.sendMessage(
 )
 
 }
-}
+
     
     
         if (text.startsWith('.اضرب')) {
