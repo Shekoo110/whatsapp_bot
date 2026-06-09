@@ -2636,11 +2636,7 @@ if (survivors.length === 1) {
 
 } else {
 
-    const alivePlayers =
-global.battleRoyale.players.filter(
-p => p.alive
-)
-
+    
 const alivePlayers =
     global.battleRoyale.players.filter(
         p => p.alive
