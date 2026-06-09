@@ -2687,7 +2687,7 @@ txt +=
 
 @${next.userId.split('@')[0]}`
 }
-
+}
 return sock.sendMessage(
     msg.key.remoteJid,
     {
