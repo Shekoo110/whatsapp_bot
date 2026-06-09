@@ -4551,6 +4551,32 @@ await PvP.create({
         text: 'تم رفض التحدي'
     })
     }
+if (text === '.ريست_تحدي') {
+
+    if (!isOwner(msg)) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ للمطور فقط'
+            }
+        )
+    }
+
+    const result =
+        await PvP.deleteMany({})
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم تصفير جميع التحديات
+
+🗑️ المحذوف:
+${result.deletedCount}`
+        }
+    )
+}
+    
 
     if (text === '.قبول') {
 
