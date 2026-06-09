@@ -2172,14 +2172,6 @@ ${global.battleRoyale.players.length}`
 
 
 if (text === '.رويال') {
-    الحالة: جاري
-
-عدد المشاركين: 14
-
-عدد الأحياء: 6
-
-الدروب الحالي:
-🩸 صندوق دم
 
     if (!global.battleRoyale.active) {
         return sock.sendMessage(
@@ -2190,6 +2182,21 @@ if (text === '.رويال') {
         )
     }
 
+    const message = `
+🏆 حالة الرويال: جاري
+
+👥 عدد المشاركين: 14
+💚 عدد الأحياء: 6
+
+📦 الدروب الحالي:
+🩸 صندوق دم
+`
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        { text: message }
+    )
+}
     let txt =
 `🏆 〔 BATTLE ROYALE 〕
 
