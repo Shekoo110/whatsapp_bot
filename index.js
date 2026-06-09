@@ -2287,16 +2287,7 @@ ${p.hp || 30000}
 
     global.battleRoyale.started = true
 
-    const firstPlayer =
-        readyPlayers[
-            Math.floor(
-                Math.random() *
-                readyPlayers.length
-            )
-        ]
-
-    global.battleRoyale.currentTurn =
-        firstPlayer.userId
+    
 
     return sock.sendMessage(
         msg.key.remoteJid,
