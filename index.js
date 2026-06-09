@@ -2321,51 +2321,36 @@ ${readyPlayers.length}
     if (text === '.اقصاء') {
 
     if (!global.battleRoyale?.started) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا يوجد باتل رويال نشط'
-            }
-        )
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا يوجد باتل رويال نشط'
+        })
     }
 
-    const alive =
-        global.battleRoyale.players.filter(
-            p => p.alive
-        )
+    const alive = global.battleRoyale.players.filter(p => p.alive)
 
     if (alive.length <= 1) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '🏆 انتهى الباتل رويال'
-            }
-        )
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '🏆 انتهى الباتل رويال'
+        })
     }
 
     if (!global.battleRoyale.currentTurn) {
-
-        const first =
-            alive[
-                Math.floor(
-                    Math.random() *
-                    alive.length
-                )
-            ]
-
-        global.battleRoyale.currentTurn =
-            first.userId
+        const first = alive[Math.floor(Math.random() * alive.length)]
+        global.battleRoyale.currentTurn = first.userId
     }
 
-    const current =
-        global.battleRoyale.players.find(
-            p =>
-                p.userId ===
-                global.battleRoyale.currentTurn
-        )
+    const current = global.battleRoyale.players.find(
+        p => p.userId === global.battleRoyale.currentTurn
+    )
 
-    let txt =
-`🎯 الدور على:
+    if (!current) {
+        global.battleRoyale.currentTurn = null
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ خطأ في الدور، أعد تشغيل الباتل رويال'
+        })
+    }
+
+    let txt = `🎯 الدور على:
 
 @${current.userId.split('@')[0]}
 
@@ -2379,38 +2364,28 @@ ${readyPlayers.length}
 
     for (const p of alive) {
 
-        if (
-            p.userId ===
-            current.userId
-        ) continue
+        if (p.userId === current.userId) continue
 
-        txt +=
-`${number}️⃣ @${p.userId.split('@')[0]}
+        txt += `${number}️⃣ @${p.userId.split('@')[0]}
 ❤️ ${p.hp}
 
 `
-
         number++
     }
 
-    txt +=
-`\nاكتب:
+    txt += `\nاكتب:\n.اضرب رقم`
 
-.اضرب رقم`
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text: txt,
-            mentions: [
-                current.userId,
-                ...alive.map(
-                    p => p.userId
-                )
-            ]
-        }
-    )
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: txt,
+        mentions: [
+            current.userId,
+            ...alive
+                .filter(p => p.userId !== current.userId)
+                .map(p => p.userId)
+        ]
+    })
 }
+    
     
         
 if (text.startsWith('.اضرب')) {
@@ -2422,12 +2397,12 @@ if (text.startsWith('.اضرب')) {
         )
     }
 
-    const attacker =
-        global.battleRoyale.players.find(
-            p =>
-                p.userId ===
-                global.battleRoyale.currentTurn
-        )
+    if (!current) {
+    global.battleRoyale.currentTurn = null
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: '❌ خطأ في الدور، أعد تشغيل الباتل رويال'
+    })
+}
 
     if (!attacker) {
         return sock.sendMessage(
@@ -2754,53 +2729,45 @@ ${poisonDamage}`
     if (text === '.متبقي') {
 
     if (!global.battleRoyale?.started) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا يوجد باتل رويال نشط'
-            }
-        )
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا يوجد باتل رويال نشط'
+        })
     }
 
-    const alive =
-        global.battleRoyale.players.filter(
-            p => p.alive
-        )
+    const alive = global.battleRoyale.players.filter(p => p.alive)
 
-    let txt =
-`🏹 اللاعبين المتبقين
+    if (!alive.length) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا يوجد لاعبين أحياء'
+        })
+    }
+
+    let txt = `🏹 اللاعبين المتبقين
 
 ━━━━━━━━━━━━━━
 
 `
 
-    alive
-        .sort((a, b) => b.hp - a.hp)
-        .forEach((p, i) => {
+    const sorted = [...alive].sort((a, b) => b.hp - a.hp)
 
-            txt +=
-`${i + 1}️⃣ @${p.userId.split('@')[0]}
+    sorted.forEach((p, i) => {
+
+        txt += `${i + 1}️⃣ @${p.userId.split('@')[0]}
 
 ❤️ ${p.hp}
 
-⚔️ ${p.avgPower + p.attackBonus}
+⚔️ ${(p.avgPower || 0) + (p.attackBonus || 0)}
 
 ━━━━━━━━━━━━━━
 `
-        })
+    })
 
-    txt +=
-`\n👥 العدد المتبقي: ${alive.length}`
+    txt += `\n👥 العدد المتبقي: ${alive.length}`
 
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text: txt,
-            mentions: alive.map(
-                p => p.userId
-            )
-        }
-    )
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: txt,
+        mentions: alive.map(p => p.userId)
+    })
 }
     
     if (text === '.ايدي') {
