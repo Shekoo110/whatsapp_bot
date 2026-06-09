@@ -2044,6 +2044,19 @@ ${rewardText}`
         }
     )
 }
+    if (text === '.فحصxp') {
+
+    const me = await Player.findOne({ userId })
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`Level: ${me.level}
+XP: ${me.xp}`
+        }
+    )
+    }
 
     if (text === '.دخول') {
 
@@ -4503,8 +4516,17 @@ await PvP.create({
     player2: target,
     turn: target,
     active: false,
+
     hp1,
-    hp2
+    hp2,
+
+    turnCount: 0,
+
+    skillTurn1: -99,
+    skillTurn2: -99,
+
+    ultimateTurn1: -99,
+    ultimateTurn2: -99
 })
 
     return safeSend(msg.key.remoteJid, {
@@ -4546,6 +4568,8 @@ await PvP.create({
         text: 'تم رفض التحدي'
     })
     }
+
+    
 if (text === '.ريست_تحدي') {
 
     if (!isOwner(msg)) {
@@ -4799,14 +4823,16 @@ critMessage =
 }
 if (dodged) {
 
-fight.turn =  
-    userId === fight.player1  
-        ? fight.player2  
-        : fight.player1  
+fight.turn =
+    userId === fight.player1
+        ? fight.player2
+        : fight.player1
 
-fight.lastMove = new Date()  
-fight.turnCount++
-await fight.save()  
+fight.lastMove = new Date()
+
+fight.turnCount = (fight.turnCount || 0) + 1
+
+await fight.save()
 
 return safeSend(msg.key.remoteJid, {  
     text:
@@ -5160,8 +5186,8 @@ const lastUltimate =
     userId === fight.player1
         ? fight.ultimateTurn1
         : fight.ultimateTurn2
-
-if (fight.turnCount - lastUltimate < 5) {
+if ((fight.turnCount || 0) - lastUltimate < 5) {
+    
 
     return safeSend(
         msg.key.remoteJid,
@@ -5226,14 +5252,16 @@ critMessage =
 }
 if (dodged) {
 
-fight.turn =  
-    userId === fight.player1  
-        ? fight.player2  
-        : fight.player1  
+fight.turn =
+    userId === fight.player1
+        ? fight.player2
+        : fight.player1
 
-fight.lastMove = new Date()  
-fight.turnCount++
-await fight.save()  
+fight.lastMove = new Date()
+
+fight.turnCount = (fight.turnCount || 0) + 1
+
+await fight.save()
 
 return safeSend(msg.key.remoteJid, {  
     text:
