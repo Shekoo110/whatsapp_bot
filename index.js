@@ -2572,9 +2572,9 @@ ${poisonDamage}`
     target.eliminatedAt =
         Date.now()
 
-    global.battleRoyale.rankings.unshift({
-        userId: target.userId
-    })
+    global.battleRoyale.rankings.push({
+    userId: target.userId
+})
 
     txt +=
 `\n☠️ تم إقصاؤه من الرويال`
@@ -2586,21 +2586,63 @@ ${poisonDamage}`
 
     if (survivors.length === 1) {
 
-    global.battleRoyale.rankings.unshift({
-        userId: survivors[0].userId
+    const winner = survivors[0]
+
+    global.battleRoyale.rankings.push({
+        userId: winner.userId
     })
+
+    const top3 =
+        [...global.battleRoyale.rankings]
+            .reverse()
+            .slice(0, 3)
+
+    for (let i = 0; i < top3.length; i++) {
+
+        const player =
+            await Player.findOne({
+                userId: top3[i].userId
+            })
+
+        if (!player) continue
+
+        if (i === 0) {
+
+            player.money += 500000
+            player.xp += 100000
+
+            player.boxes.sss_high += 1
+        }
+
+        else if (i === 1) {
+
+            player.money += 250000
+            player.xp += 50000
+
+            player.boxes.sss_chance += 1
+        }
+
+        else if (i === 2) {
+
+            player.money += 100000
+            player.xp += 25000
+
+            player.boxes.legendary += 1
+        }
+
+        await player.save()
+    }
 
     txt +=
 `\n\n🏆 الفائز:
 
-@${survivors[0].userId.split('@')[0]}`
+@${winner.userId.split('@')[0]}
 
-    global.battleRoyale.started =
-        false
-    global.battleRoyale.active =
-        false
+🎁 تم توزيع الجوائز تلقائياً`
+
+    global.battleRoyale.started = false
+    global.battleRoyale.active = false
 }
-
     else {
 
         const next =
