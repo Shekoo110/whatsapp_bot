@@ -83,9 +83,6 @@ const lastRolls = new Map()
 const PvP = require('./models/PvP')
 const Beast =
 require('./database/Beast')
-const Player =
-require('./database/Player')
-
 const beasts =
 require('./systems/beasts')
 
