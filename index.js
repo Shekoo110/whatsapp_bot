@@ -97,8 +97,22 @@ new GoogleGenAI({
     process.env.GEMINI_API_KEY
 })
 
+function normalizeName(name) {
+
+    return name
+        .toLowerCase()
+        .replace(/[أإآ]/g, 'ا')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/[قغج]/g, 'ق')
+        .replace(/[ؤئ]/g, 'ء')
+        .replace(/\s+/g, '')
+        .trim()
+}
+
 async function askGemini(prompt) {
 
+    
     try {
 
         const response =
@@ -121,6 +135,18 @@ async function askGemini(prompt) {
 
         return "❌ خطأ"
     }
+}
+const guessCharacters =
+    require('./guessCharacters')
+
+global.guessGame = {
+    active: false,
+    character: null,
+    questions: 0,
+    maxQuestions: 30,
+    startedAt: 0,
+    players: {},
+    groupId: null
 }
 
 const getRank = require('./utils/rank')
@@ -1769,6 +1795,336 @@ cooldowns.set(key, now)
         // .صوره
         // =========================
 
+
+if (text === '.تخمين') {
+
+    if (global.guessGame.active) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ توجد لعبة تخمين نشطة بالفعل'
+            }
+        )
+    }
+
+    const character =
+        guessCharacters[
+            Math.floor(
+                Math.random() *
+                guessCharacters.length
+            )
+        ]
+
+    global.guessGame = {
+        active: true,
+        character,
+        questions: 0,
+        maxQuestions: 30,
+        startedAt: Date.now(),
+        players: {},
+        groupId: msg.key.remoteJid
+    }
+
+    setTimeout(async () => {
+
+        if (
+            !global.guessGame.active
+        ) return
+
+        const answer =
+            global.guessGame.character
+
+        await safeSend(
+            global.guessGame.groupId,
+            {
+                text:
+`⏰ انتهت اللعبة
+
+🎭 الشخصية:
+
+${answer.name}
+
+📺 الأنمي:
+
+${answer.anime}`
+            }
+        )
+
+        global.guessGame.active = false
+
+    }, 2 * 60 * 1000)
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`🎭 بدأت لعبة التخمين
+
+❓ الحد الأقصى:
+30 سؤال
+
+🎯 لكل لاعب:
+3 محاولات
+
+⏳ المدة:
+دقيقتان
+
+اسأل أي سؤال ينتهي بـ ؟`
+        }
+    )
+}
+
+    if (text === '.حالة_التخمين') {
+
+    if (!global.guessGame.active) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا توجد لعبة نشطة'
+            }
+        )
+    }
+
+    const tries =
+        3 -
+        (
+            global.guessGame
+            .players[userId] || 0
+        )
+
+    const left =
+        Math.max(
+            0,
+            120 -
+            Math.floor(
+                (
+                    Date.now() -
+                    global.guessGame.startedAt
+                ) / 1000
+            )
+        )
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`🎭 لعبة التخمين
+
+❓ الأسئلة:
+${global.guessGame.questions}/${global.guessGame.maxQuestions}
+
+🎯 محاولاتك:
+${tries}/3
+
+⏳ المتبقي:
+${left} ثانية`
+        }
+    )
+}
+
+if (text === '.انهاء_تخمين') {
+
+    if (!global.guessGame.active) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا توجد لعبة نشطة'
+            }
+        )
+    }
+
+    const answer =
+        global.guessGame.character
+
+    global.guessGame.active = false
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`🛑 تم إنهاء اللعبة
+
+🎭 الشخصية:
+
+${answer.name}
+
+📺 ${answer.anime}`
+        }
+    )
+}
+
+    if (
+    global.guessGame?.active &&
+    text.endsWith('؟')
+) {
+
+    if (
+        global.guessGame.questions >=
+        global.guessGame.maxQuestions
+    ) {
+
+        const answer =
+            global.guessGame.character
+
+        global.guessGame.active = false
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ انتهت الأسئلة
+
+🎭 الشخصية كانت:
+
+${answer.name}
+
+📺 ${answer.anime}`
+            }
+        )
+    }
+
+    global.guessGame.questions++
+
+    const character =
+        global.guessGame.character
+
+    const answer =
+        await askGemini(
+
+`أنت حكم لعبة تخمين شخصيات أنمي.
+
+الشخصية السرية:
+${character.name}
+
+الأنمي:
+${character.anime}
+
+الوصف:
+${character.description}
+
+سؤال اللاعب:
+${text}
+
+قواعد الإجابة:
+
+- أجب فقط بكلمة واحدة.
+- نعم
+- لا
+- غير معروف
+
+لا تشرح أبداً.`
+        )
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`❓ السؤال رقم ${global.guessGame.questions}
+
+🤖 ${answer}`
+        }
+    )
+}
+
+    if (
+    global.guessGame?.active &&
+    !text.startsWith('.') &&
+    text.length <= 40
+) {
+
+    const character =
+        global.guessGame.character
+
+    const guesses =
+        character.aliases || [
+            character.name
+        ]
+
+    const playerAttempts =
+        global.guessGame.players[
+            userId
+        ] || 0
+
+    if (playerAttempts >= 3) {
+        return
+    }
+
+    const normalizedInput =
+        normalizeName(text)
+
+    const correct =
+        guesses.some(
+            alias =>
+                normalizeName(alias) ===
+                normalizedInput
+        )
+
+    if (correct) {
+
+        global.guessGame.active = false
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`🏆 فاز اللاعب
+
+@${userId.split('@')[0]}
+
+🎭 الشخصية:
+
+${character.name}
+
+📺 الأنمي:
+
+${character.anime}`,
+                mentions: [userId]
+            }
+        )
+    }
+
+    global.guessGame.players[
+        userId
+    ] = playerAttempts + 1
+
+    const left =
+        3 -
+        global.guessGame.players[
+            userId
+        ]
+
+    if (left <= 0) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ تخمين خاطئ
+
+🚫 انتهت محاولاتك`
+            }
+        )
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ تخمين خاطئ
+
+🎯 المتبقي:
+${left}/3`
+        }
+    )
+}
+    
+    
 if (text === '.بدء_رويال') {
 
     if (!isOwner(msg)) {
