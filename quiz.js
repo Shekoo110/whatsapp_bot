@@ -377,18 +377,16 @@ function checkAnswer(
 
     if (currentQuestion.type === 'repeat') {
 
-    const words =
-        normalize(fullText)
-            .split(' ')
-            .filter(Boolean)
+    const normalizedText =
+    normalize(fullText)
 
-    const allFound =
-        uniqueAnswers.every(
-            answer =>
-                words.includes(
-                    normalize(answer)
-                )
-        )
+const allFound =
+    uniqueAnswers.every(
+        answer =>
+            normalizedText.includes(
+                normalize(answer)
+            )
+    )
 
     if (allFound) {
 
