@@ -1827,39 +1827,10 @@ if (text === '.تخمين') {
         groupId: msg.key.remoteJid
     }
 
-    setTimeout(async () => {
-
-        if (
-            !global.guessGame.active
-        ) return
-
-        const answer =
-            global.guessGame.character
-
-        await safeSend(
-            global.guessGame.groupId,
-            {
-                text:
-`⏰ انتهت اللعبة
-
-🎭 الشخصية:
-
-${answer.name}
-
-📺 الأنمي:
-
-${answer.anime}`
-            }
-        )
-
-        global.guessGame.active = false
-
-    }, 2 * 60 * 1000)
-
     return safeSend(
-        msg.key.remoteJid,
-        {
-text:
+    msg.key.remoteJid,
+    {
+        text:
 `🎭 بدأت لعبة التخمين
 
 ❓ الحد الأقصى:
@@ -1868,16 +1839,16 @@ text:
 🎯 لكل لاعب:
 3 محاولات
 
-⏳ المدة:
-دقيقتان
-
 ❓ اسأل أي سؤال عن الشخصية
 
 🏆 للتخمين اكتب:
 
-.الاجابة ناروتو`
-        }
-    )
+.الاجابة ناروتو
+
+⏰ بعد انتهاء 30 سؤال
+تبدأ مرحلة التخمين لمدة دقيقتين`
+    }
+)
 }
 
     if (text === '.حالة_التخمين') {
@@ -1969,61 +1940,123 @@ ${answer.name}
 ) {
 
     if (
-        global.guessGame.questions >=
-        global.guessGame.maxQuestions
-    ) {
+    global.guessGame.questions >=
+    global.guessGame.maxQuestions
+) {
 
-        const answer =
-            global.guessGame.character
+    if (!global.guessGame.guessPhase) {
 
-        global.guessGame.active = false
+        global.guessGame.guessPhase = true
 
-        return safeSend(
+        await safeSend(
             msg.key.remoteJid,
             {
                 text:
-`❌ انتهت الأسئلة
+`⏰ انتهت الأسئلة الـ 30
 
-🎭 الشخصية كانت:
+🏆 بدأت مرحلة التخمين
+
+اكتب:
+
+.الاجابة اسم_الشخصية
+
+⏳ لديكم دقيقتان`
+            }
+        )
+
+        setTimeout(async () => {
+
+            if (
+                !global.guessGame.active
+            ) return
+
+            const answer =
+                global.guessGame.character
+
+            await safeSend(
+                global.guessGame.groupId,
+                {
+                    text:
+`⏰ انتهت مدة التخمين
+
+🎭 الشخصية:
 
 ${answer.name}
 
-📺 ${answer.anime}`
-            }
-        )
+📺 الأنمي:
+
+${answer.anime}`
+                }
+            )
+
+            global.guessGame.active = false
+
+        }, 2 * 60 * 1000)
     }
+
+    return
+}
 
     global.guessGame.questions++
 
     const character =
         global.guessGame.character
 
+        const animeMatch =
+    text.match(/هل الانمي هو (.+)\?/i)
+
+if (animeMatch) {
+
+    const animeGuess =
+        animeMatch[1].trim()
+
+    const correct =
+        animeGuess.toLowerCase() ===
+        character.anime.toLowerCase()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`❓ السؤال رقم ${global.guessGame.questions}
+
+🤖 ${correct ? "نعم" : "لا"}`
+        }
+    )
+}
+
     const answer =
-        await askGemini(
+    await askGemini(
 
 `أنت حكم لعبة تخمين شخصيات أنمي.
 
-الشخصية السرية:
-${character.name}
-
-الأنمي:
-${character.anime}
-
-الوصف:
-${character.description}
+الشخصية: ${character.name}
+الأنمي: ${character.anime}
 
 سؤال اللاعب:
 ${text}
 
-قواعد الإجابة:
+إذا كان السؤال عن الأنمي نفسه فاعتمد على قيمة الأنمي المذكورة أعلاه فقط.
 
-- أجب فقط بكلمة واحدة.
-- نعم
-- لا
-- غير معروف
+أمثلة:
 
-لا تشرح أبداً.`
-        )
+إذا كان الأنمي Dragon Ball
+وسأل اللاعب:
+هل الأنمي هو Dragon Ball؟
+الإجابة: نعم
+
+إذا كان الأنمي Naruto
+وسأل اللاعب:
+هل الأنمي هو Dragon Ball؟
+الإجابة: لا
+
+أجب فقط بإحدى الكلمات التالية:
+نعم
+لا
+غير معروف
+
+ممنوع أي شرح إضافي.`
+)
 
     return safeSend(
         msg.key.remoteJid,
