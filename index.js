@@ -2346,9 +2346,7 @@ if (!target) {
 
         respawnText =
 
-`\n\n⏳ يعود في:
-
-${deadJuubi.respawnAt.toLocaleString()}`
+"\n\n⏳ يعود في:\n${deadJuubi.respawnAt.toLocaleString()}"
 }
 
     return sock.sendMessage(
@@ -2356,7 +2354,7 @@ ${deadJuubi.respawnAt.toLocaleString()}`
         {
             text:
 
-`❌ الجوبي غير متاح حالياً${respawnText}`
+"❌ الجوبي غير متاح حالياً${respawnText}"
 }
 )
 }
@@ -2380,18 +2378,19 @@ target.hp =
     )
 
 if (!target.rankings) {
-target.rankings = new Map()
+    target.rankings = new Map()
 }
 
 const oldDamage =
-target.rankings.get(userId) || 0
+    target.rankings.get(userId) || 0
 
 target.rankings.set(
-userId,
-oldDamage + damage
+    userId,
+    oldDamage + damage
 )
 
 let result =
+
 `🌌 هجوم على الجوبي
 
 ☠️ قنبلة العشرة ذيول
@@ -2410,29 +2409,29 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
 if (target.hp <= 0) {
 
-target.hp = 0
+    target.hp = 0
 
-target.lastKilledAt =
-    new Date()
+    target.lastKilledAt =
+        new Date()
 
-const respawn =
-    new Date()
+    const respawn =
+        new Date()
 
-respawn.setHours(
-    respawn.getHours() + 2
-)
-
-target.respawnAt =
-    respawn
-
-const ranking =
-    Array.from(
-        target.rankings.entries()
-    ).sort(
-        (a, b) => b[1] - a[1]
+    respawn.setHours(
+        respawn.getHours() + 2
     )
 
-let rewardMsg =
+    target.respawnAt =
+        respawn
+
+    const ranking =
+        Array.from(
+            target.rankings.entries()
+        ).sort(
+            (a, b) => b[1] - a[1]
+        )
+
+    let rewardMsg =
 
 `\n\n━━━━━━━━━━━━━━
 🌌 تم إبادة الجوبي
@@ -2442,61 +2441,61 @@ let rewardMsg =
 
 `
 
-const mentions = []
+    const mentions = []
 
-for (
-    let i = 0;
-    i < ranking.length;
-    i++
-) {
+    for (
+        let i = 0;
+        i < ranking.length;
+        i++
+    ) {
 
-    const [
-        playerId,
-        totalDamage
-    ] = ranking[i]
+        const [
+            playerId,
+            totalDamage
+        ] = ranking[i]
 
-    const p =
-        await Player.findOne({
-            userId: playerId
-        })
+        const p =
+            await Player.findOne({
+                userId: playerId
+            })
 
-    if (!p) continue
+        if (!p) continue
 
-    const reward =
-        target.eggCarrier
-            ? beastRewards.getEggCarrierReward(i + 1)
-            : beastRewards.getNormalReward(i + 1)
+        const reward =
+            target.eggCarrier
+                ? beastRewards.getEggCarrierReward(i + 1)
+                : beastRewards.getNormalReward(i + 1)
 
-    p.money =
-        (p.money || 0)
-        + (reward.money || 0)
+        p.money =
+            (p.money || 0)
+            + (reward.money || 0)
 
-    p.xp =
-        (p.xp || 0)
-        + (reward.xp || 0)
+        p.xp =
+            (p.xp || 0)
+            + (reward.xp || 0)
 
-    p.eggTickets =
-        (p.eggTickets || 0)
-        + (reward.tickets || 0)
+        p.eggTickets =
+            (p.eggTickets || 0)
+            + (reward.tickets || 0)
 
-    p.beastEggs =
-        (p.beastEggs || 0)
-        + (reward.egg || 0)
+        p.beastEggs =
+            (p.beastEggs || 0)
+            + (reward.egg || 0)
 
-    await p.save()
+        await p.save()
 
-    mentions.push(playerId)
+        mentions.push(playerId)
 
-    if (i < 3) {
+        if (i < 3) {
 
-        const medal =
-            i === 0
-            ? '🥇'
-            : i === 1
-            ? '🥈'
-            : '🥉'
+            const medal =
+                i === 0
+                    ? '🥇'
+                    : i === 1
+                    ? '🥈'
+                    : '🥉'
 
-        rewardMsg +=
+            rewardMsg +=
 
 `${medal} @${playerId.split('@')[0]}
 
@@ -2512,7 +2511,7 @@ ${totalDamage.toLocaleString()}
 }
 }
 
-rewardMsg +=
+    rewardMsg +=
 
 `━━━━━━━━━━━━━━
 
@@ -2520,168 +2519,33 @@ rewardMsg +=
 
 ☠️ انتهت المعركة الكبرى`
 
-target.rankings =
-    new Map()
+    target.rankings =
+        new Map()
 
-await target.save()
+    await target.save()
 
-if (!target.rankings) {
-target.rankings = new Map()
-}
-
-const oldDamage =
-target.rankings.get(userId) || 0
-
-target.rankings.set(
-userId,
-oldDamage + damage
-)
-
-let result =
-`🌌 هجوم على الجوبي
-
-☠️ قنبلة العشرة ذيول
-
-⚔️ الشخصية:
-${strongest.name}
-
-💥 الضرر:
-${damage.toLocaleString()}
-
-👹 الوحش:
-الجوبي
-
-❤️ المتبقي:
-${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
-
-if (target.hp <= 0) {
-
-target.hp = 0
-
-target.lastKilledAt =
-    new Date()
-
-const respawn =
-    new Date()
-
-respawn.setHours(
-    respawn.getHours() + 2
-)
-
-target.respawnAt =
-    respawn
-
-const ranking =
-    Array.from(
-        target.rankings.entries()
-    ).sort(
-        (a, b) => b[1] - a[1]
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: rewardMsg,
+            mentions
+        }
     )
 
-let rewardMsg =
-
-`\n\n━━━━━━━━━━━━━━
-🌌 تم إبادة الجوبي
-━━━━━━━━━━━━━━
-
-👑 أساطير المعركة
-
-`
-
-const mentions = []
-
-for (
-    let i = 0;
-    i < ranking.length;
-    i++
-) {
-
-    const [
-        playerId,
-        totalDamage
-    ] = ranking[i]
-
-    const p =
-        await Player.findOne({
-            userId: playerId
-        })
-
-    if (!p) continue
-
-    const reward =
-        target.eggCarrier
-            ? beastRewards.getEggCarrierReward(i + 1)
-            : beastRewards.getNormalReward(i + 1)
-
-    p.money =
-        (p.money || 0)
-        + (reward.money || 0)
-
-    p.xp =
-        (p.xp || 0)
-        + (reward.xp || 0)
-
-    p.eggTickets =
-        (p.eggTickets || 0)
-        + (reward.tickets || 0)
-
-    p.beastEggs =
-        (p.beastEggs || 0)
-        + (reward.egg || 0)
-
-    await p.save()
-
-    mentions.push(playerId)
-
-    if (i < 3) {
-
-        const medal =
-            i === 0
-            ? '🥇'
-            : i === 1
-            ? '🥈'
-            : '🥉'
-
-        rewardMsg +=
-
-`${medal} @${playerId.split('@')[0]}
-
-💥 الضرر:
-${totalDamage.toLocaleString()}
-
-💰 ${reward.money || 0}
-⭐ ${reward.xp || 0}
-🎟️ ${reward.tickets || 0}
-🥚 ${reward.egg || 0}
-
-`
+    result += rewardMsg
 }
-}
-
-rewardMsg +=
-
-`━━━━━━━━━━━━━━
-
-⏳ سيعود بعد ساعتين
-
-☠️ انتهت المعركة الكبرى`
-
-target.rankings =
-    new Map()
 
 await target.save()
 
-await sock.sendMessage(
+return sock.sendMessage(
     msg.key.remoteJid,
     {
-        text: rewardMsg,
-        mentions
+        text: result
     }
 )
 
-result += rewardMsg
-
 }
+    
     
 
     if (text === '.وحشي') {
