@@ -1859,7 +1859,7 @@ ${answer.anime}`
     return safeSend(
         msg.key.remoteJid,
         {
-            text:
+text:
 `🎭 بدأت لعبة التخمين
 
 ❓ الحد الأقصى:
@@ -1871,7 +1871,11 @@ ${answer.anime}`
 ⏳ المدة:
 دقيقتان
 
-اسأل أي سؤال ينتهي بـ ؟`
+❓ اسأل أي سؤال عن الشخصية
+
+🏆 للتخمين اكتب:
+
+.الاجابة ناروتو`
         }
     )
 }
@@ -2034,8 +2038,7 @@ ${text}
 
     if (
     global.guessGame?.active &&
-    !text.startsWith('.') &&
-    text.length <= 40
+    text.startsWith('.الاجابة ')
 ) {
 
     const character =
@@ -2056,7 +2059,11 @@ ${text}
     }
 
     const normalizedInput =
-        normalizeName(text)
+    normalizeName(
+        text
+            .replace('.الاجابة ', '')
+            .trim()
+    )
 
     const correct =
         guesses.some(
