@@ -226,31 +226,71 @@ async function startQuestion(
 
     if (roundsCount >= MAX_ROUNDS) {
 
-        quizActive = false
+    quizActive = false
 
-roundsCount = 0
+    const ranking =
+        Object.entries(scoreboard)
+            .sort((a, b) => b[1] - a[1])
 
-usedQuestions.length = 0
-usedImages.length = 0
-usedRepeats.length = 0
-
-lastMode = -1
-
-        await sock.sendMessage(
-            jid,
-            {
-                text:
-
+    let resultText =
 `🏆 انتهت المسابقة
 
 📊 عدد الجولات: ${MAX_ROUNDS}
 
-🎉 شكراً للجميع`
+📈 الترتيب النهائي:
+
+`
+
+    if (ranking.length) {
+
+        ranking.forEach(
+            ([userId, points], index) => {
+
+                const medals = [
+                    '🥇',
+                    '🥈',
+                    '🥉'
+                ]
+
+                resultText +=
+`${medals[index] || '🏅'} @${userId.split('@')[0]}
+⭐ ${points} نقطة
+
+`
             }
         )
 
-        return
+    } else {
+
+        resultText +=
+'لا يوجد أي فائز.'
     }
+
+    await sock.sendMessage(
+        jid,
+        {
+            text: resultText,
+            mentions:
+                ranking.map(
+                    r => r[0]
+                )
+        }
+    )
+
+    roundsCount = 0
+
+    usedQuestions.length = 0
+    usedImages.length = 0
+    usedRepeats.length = 0
+
+    lastMode = -1
+
+    for (const key in scoreboard) {
+        delete scoreboard[key]
+    }
+
+    return
+}
 
     answeredUsers.clear()
 
