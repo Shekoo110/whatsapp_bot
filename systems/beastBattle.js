@@ -1,165 +1,190 @@
-const beasts = [
+const Beast =
+require('../database/Beast')
 
-{
-    id: 'shukaku',
-    name: 'شكاكو',
-    rarity: 'rare',
+const Player =
+require('../database/Player')
 
-    attack: 0,
-    defense: 15,
-    hp: 0,
-    crit: 0,
-    dodge: 0,
-    reflect: 0,
+const beasts =
+require('./beasts')
 
-    skillChance: 10,
-    skill: 'sand_shield'
-},
+const beastAbilities =
+require('./beastAbilities')
 
-{
-    id: 'matatabi',
-    name: 'ماتاتابي',
-    rarity: 'rare',
+const playerAbilities =
+require('./playerAbilities')
 
-    attack: 0,
-    defense: 0,
-    hp: 0,
-    crit: 0,
-    dodge: 10,
-    reflect: 0,
+const beastRewards =
+require('./beastRewards')
 
-    skillChance: 10,
-    skill: 'blue_flame'
-},
+function randomChance(percent) {
 
-{
-    id: 'isobu',
-    name: 'إيسوبو',
-    rarity: 'rare',
+    return (
+        Math.random() * 100
+    ) < percent
 
-    attack: 0,
-    defense: 0,
-    hp: 10,
-    crit: 0,
-    dodge: 0,
-    reflect: 0,
-
-    skillChance: 10,
-    skill: 'water_barrier'
-},
-
-{
-    id: 'son_goku',
-    name: 'سون غوكو',
-    rarity: 'legendary',
-
-    attack: 25,
-    defense: 0,
-    hp: 0,
-    crit: 0,
-    dodge: 0,
-    reflect: 0,
-
-    skillChance: 12,
-    skill: 'lava_punch'
-},
-
-{
-    id: 'kokuo',
-    name: 'كوكو',
-    rarity: 'legendary',
-
-    attack: 0,
-    defense: 0,
-    hp: 20,
-    crit: 0,
-    dodge: 0,
-    reflect: 0,
-
-    skillChance: 12,
-    skill: 'steam_charge'
-},
-
-{
-    id: 'saiken',
-    name: 'سايكن',
-    rarity: 'legendary',
-
-    attack: 0,
-    defense: 0,
-    hp: 0,
-    crit: 0,
-    dodge: 0,
-    reflect: 10,
-
-    skillChance: 12,
-    skill: 'acid_slime'
-},
-
-{
-    id: 'chomei',
-    name: 'تشومي',
-    rarity: 'legendary',
-
-    attack: 0,
-    defense: 0,
-    hp: 0,
-    crit: 0,
-    dodge: 20,
-    reflect: 0,
-
-    skillChance: 12,
-    skill: 'flight_speed'
-},
-
-{
-    id: 'gyuki',
-    name: 'غيوكي',
-    rarity: 'epic',
-
-    attack: 35,
-    defense: 0,
-    hp: 25,
-    crit: 0,
-    dodge: 0,
-    reflect: 0,
-
-    skillChance: 15,
-    skill: 'tentacle_crush'
-},
-
-{
-    id: 'kurama',
-    name: 'كوراما',
-    rarity: 'epic',
-
-    attack: 40,
-    defense: 0,
-    hp: 0,
-    crit: 20,
-    dodge: 0,
-    reflect: 0,
-
-    skillChance: 15,
-    skill: 'tailed_beast_bomb'
-},
-
-{
-    id: 'juubi',
-    name: 'الجوبي',
-    rarity: 'cosmic',
-
-    attack: 30,
-    defense: 30,
-    hp: 30,
-    crit: 30,
-    dodge: 30,
-    reflect: 30,
-
-    skillChance: 20,
-    skill: 'world_destruction'
 }
 
-]
+function getRandomAbility(list) {
 
-module.exports = beasts
+    return list[
+        Math.floor(
+            Math.random() * list.length
+        )
+    ]
+
+}
+
+async function getBeast(name) {
+
+    return await Beast.findOne({
+        name
+    })
+
+}
+
+async function getPlayer(userId) {
+
+    return await Player.findOne({
+        userId
+    })
+
+}
+
+function getEquippedBeast(player) {
+
+    if (
+        !player ||
+        !player.equippedBeast
+    ) {
+        return null
+    }
+
+    return beasts.find(
+        b =>
+            b.id ===
+            player.equippedBeast
+    )
+
+}
+
+function calculateBeastBonus(
+    player
+) {
+
+    const beast =
+        getEquippedBeast(player)
+
+    if (!beast) {
+
+        return {
+            attack: 0,
+            defense: 0,
+            hp: 0,
+            crit: 0,
+            dodge: 0,
+            reflect: 0
+        }
+
+    }
+
+    return beast
+
+}
+
+function calculatePlayerDamage(
+    player
+) {
+
+    let damage = 1000
+
+    damage +=
+        Math.floor(
+            damage *
+            (
+                player.attackBonus || 0
+            ) / 100
+        )
+
+    const pet =
+        getEquippedBeast(player)
+
+    if (pet) {
+
+        damage +=
+            Math.floor(
+                damage *
+                (
+                    pet.attack || 0
+                ) / 100
+            )
+
+    }
+
+    return damage
+
+}
+
+async function addDamage(
+    beast,
+    player,
+    damage
+) {
+
+    beast.rankings =
+        beast.rankings || {}
+
+    const current =
+        beast.rankings.get(
+            player.userId
+        ) || 0
+
+    beast.rankings.set(
+        player.userId,
+        current + damage
+    )
+
+    beast.hp -= damage
+
+    if (
+        beast.hp < 0
+    ) {
+        beast.hp = 0
+    }
+
+    await beast.save()
+
+}
+
+async function resetBeast(
+    beast
+) {
+
+    beast.hp =
+        beast.maxHp
+
+    beast.rankings =
+        {}
+
+    beast.currentAbility =
+        null
+
+    await beast.save()
+
+}
+
+module.exports = {
+
+    getBeast,
+    getPlayer,
+
+    calculatePlayerDamage,
+    calculateBeastBonus,
+
+    addDamage,
+
+    resetBeast,
+
+    getRandomAbility,
+    randomChance
+
+}
