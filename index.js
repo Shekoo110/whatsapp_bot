@@ -1937,6 +1937,882 @@ cooldowns.set(key, now)
         // .صوره
         // =========================
 
+if (text === '.اقضي') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ ليس لديك حساب'
+            }
+        )
+    }
+
+    if (
+        !player.equippedBeast ||
+        player.equippedBeast !== 'kurama'
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`🦊 يجب تجهيز كوراما أولاً
+
+استخدم:
+.تجهيز كوراما`
+            }
+        )
+    }
+
+    if (
+        !player.characters ||
+        !player.characters.length
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا تملك شخصيات'
+            }
+        )
+    }
+
+    const target =
+        await Beast.findOne({
+            hp: { $gt: 0 }
+        })
+
+    if (!target) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا يوجد وحش حي حالياً'
+            }
+        )
+    }
+
+    const strongest =
+        player.characters.sort(
+            (a, b) => b.power - a.power
+        )[0]
+
+    let damage =
+        Math.floor(
+            strongest.power * 2
+        )
+
+    damage += 6000
+
+    target.hp =
+        Math.max(
+            0,
+            target.hp - damage
+        )
+
+    player.beastKills =
+        (player.beastKills || 0) + 1
+
+    await target.save()
+    await player.save()
+
+    let result =
+`🦊 كوراما هاجم
+
+🔥 كرة البيجو العملاقة
+
+⚔️ الشخصية:
+${strongest.name}
+
+💥 الضرر:
+${damage.toLocaleString()}
+
+👹 الوحش:
+${target.name}
+
+❤️ المتبقي:
+${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
+
+    if (target.hp <= 0) {
+
+        player.money =
+            (player.money || 0) + 50000
+
+        player.xp =
+            (player.xp || 0) + 1000
+
+        await player.save()
+
+        result += `
+
+🏆 تم القضاء على الوحش
+
+💰 +50000 مال
+
+⭐ +1000 XP`
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: result
+        }
+    )
+}
+    if (text === '.اباده') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ ليس لديك حساب'
+            }
+        )
+    }
+
+    if (
+        !player.equippedBeast ||
+        player.equippedBeast !== 'juubi'
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`🌌 يجب تجهيز الجوبي أولاً`
+            }
+        )
+    }
+
+    if (
+        !player.characters ||
+        !player.characters.length
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا تملك شخصيات'
+            }
+        )
+    }
+
+    const target =
+        await Beast.findOne({
+            hp: { $gt: 0 }
+        })
+
+    if (!target) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا يوجد وحش حي حالياً'
+            }
+        )
+    }
+
+    const strongest =
+        player.characters.sort(
+            (a, b) => b.power - a.power
+        )[0]
+
+    let damage =
+        Math.floor(
+            strongest.power * 5
+        )
+
+    damage += 25000
+
+    target.hp =
+        Math.max(
+            0,
+            target.hp - damage
+        )
+
+    player.beastKills =
+        (player.beastKills || 0) + 1
+
+    await target.save()
+    await player.save()
+
+    let result =
+`🌌 الجوبي هاجم
+
+☠️ قنبلة العشرة ذيول
+
+⚔️ الشخصية:
+${strongest.name}
+
+💥 الضرر:
+${damage.toLocaleString()}
+
+👹 الوحش:
+${target.name}
+
+❤️ المتبقي:
+${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
+
+    if (target.hp <= 0) {
+
+        player.money =
+            (player.money || 0)
+            + 200000
+
+        player.xp =
+            (player.xp || 0)
+            + 5000
+
+        await player.save()
+
+        result += `
+
+🏆 تم إبادة الوحش
+
+💰 +200000 مال
+
+⭐ +5000 XP`
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: result
+        }
+    )
+}
+    if (text === '.وحشي') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ ليس لديك حساب'
+            }
+        )
+    }
+
+    if (!player.equippedBeast) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد وحش مجهز'
+            }
+        )
+    }
+
+    const beasts =
+        require('./systems/beasts')
+
+    const beast =
+        beasts.find(
+            b =>
+            b.id === player.equippedBeast
+        )
+
+    if (!beast) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ الوحش غير موجود'
+            }
+        )
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`👹 الوحش المجهز
+
+🏷️ الاسم:
+${beast.name}
+
+⭐ الندرة:
+${beast.rarity}
+
+⚔️ الهجوم:
+${beast.attack || 0}
+
+🛡️ الدفاع:
+${beast.defense || 0}
+
+❤️ HP:
+${beast.hp || 0}
+
+🎯 كريت:
+${beast.crit || 0}
+
+💨 تفادي:
+${beast.dodge || 0}
+
+🪞 انعكاس:
+${beast.reflect || 0}`
+        }
+    )
+}
+
+    if (text === '.وحوشي') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ ليس لديك حساب'
+            }
+        )
+    }
+
+    if (
+        !player.ownedBeasts ||
+        player.ownedBeasts.length === 0
+    ) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا تملك أي وحوش'
+            }
+        )
+    }
+
+    const beasts =
+        require('./systems/beasts')
+
+    let result =
+`👹 وحوشك
+
+━━━━━━━━━━
+
+`
+
+    for (const beastId of player.ownedBeasts) {
+
+        const beast =
+            beasts.find(
+                b => b.id === beastId
+            )
+
+        if (!beast) continue
+
+        const equipped =
+            player.equippedBeast === beast.id
+                ? ' ✅ مجهز'
+                : ''
+
+        result +=
+`🦴 ${beast.name}
+⭐ ${beast.rarity}${equipped}
+
+`
+    }
+
+    result +=
+`━━━━━━━━━━
+
+📦 العدد:
+${player.ownedBeasts.length}`
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: result
+        }
+    )
+}
+
+    if (text.startsWith('.تجهيز_وحش ')) {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) return
+
+    const beastName =
+        text.replace(
+            '.تجهيز_وحش ',
+            ''
+        ).trim()
+
+    const beasts =
+        require('./systems/beasts')
+
+    const beast =
+        beasts.find(
+            b =>
+                b.name === beastName
+        )
+
+    if (!beast) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ هذا الوحش غير موجود'
+            }
+        )
+    }
+
+    if (
+        !player.ownedBeasts.includes(
+            beast.id
+        )
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا تملك هذا الوحش'
+            }
+        )
+    }
+
+    player.equippedBeast =
+        beast.id
+
+    await player.save()
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`✅ تم تجهيز
+
+👹 ${beast.name}`
+        }
+    )
+    }
+
+    if (text === '.فقس_بيضة') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) return
+
+    if (
+        (player.beastEggs || 0)
+        <= 0
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا تملك أي بيضة'
+            }
+        )
+    }
+
+    const beasts =
+        require('./systems/beasts')
+
+    const roll =
+        Math.random() * 100
+
+    let pool =
+
+        roll <= 1
+        ? beasts.filter(
+            b => b.rarity === 'cosmic'
+        )
+
+        : roll <= 10
+        ? beasts.filter(
+            b => b.rarity === 'epic'
+        )
+
+        : roll <= 40
+        ? beasts.filter(
+            b => b.rarity === 'legendary'
+        )
+
+        : beasts.filter(
+            b => b.rarity === 'rare'
+        )
+
+    const beast =
+        pool[
+            Math.floor(
+                Math.random()
+                * pool.length
+            )
+        ]
+
+    player.beastEggs--
+
+    player.beastEggsOpened =
+        (player.beastEggsOpened || 0)
+        + 1
+
+    if (
+        !player.ownedBeasts.includes(
+            beast.id
+        )
+    ) {
+
+        player.ownedBeasts.push(
+            beast.id
+        )
+
+        player.beastCollection =
+            (player.beastCollection || 0)
+            + 1
+    }
+
+    await player.save()
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🥚 تم فقس البيضة
+
+👹 الوحش:
+${beast.name}
+
+⭐ الندرة:
+${beast.rarity}
+
+📚 المجموعة:
+${player.beastCollection}`
+        }
+    )
+}
+if (text === '.متجر_البيض') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) return
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🐾 متجر الوحوش
+
+━━━━━━━━━━━━━━
+
+🎟️ تذاكرك:
+${player.eggTickets || 0}
+
+━━━━━━━━━━━━━━
+
+🐾 شكاكو       300 تذكرة
+🐾 ماتاتابي    300 تذكرة
+🐾 إيسوبو      350 تذكرة
+
+🐾 سون غوكو    500 تذكرة
+🐾 كوكو        500 تذكرة
+🐾 سايكن       500 تذكرة
+
+🐾 تشومي       700 تذكرة
+🐾 غيوكي       800 تذكرة
+
+🐾 كوراما      1500 تذكرة
+
+━━━━━━━━━━━━━━
+
+🌌 الجوبي
+
+لا يباع في المتجر
+
+🏆 مكافأة جمع
+جميع الوحوش التسعة
+
+━━━━━━━━━━━━━━
+
+للشراء:
+
+.شراء_وحش اسم_الوحش
+
+مثال:
+
+.شراء_وحش كوراما`
+        }
+    )
+}
+        if (text.startsWith('.شراء_وحش ')) {
+
+const player =
+    await Player.findOne({ userId })
+
+if (!player) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ لم يتم العثور على حسابك'
+        }
+    )
+}
+
+const beastName =
+    text.replace(
+        '.شراء_وحش ',
+        ''
+    ).trim()
+
+const prices = {
+
+    'شكاكو': 300,
+    'ماتاتابي': 300,
+    'إيسوبو': 350,
+
+    'سون غوكو': 500,
+    'كوكو': 500,
+    'سايكن': 500,
+
+    'تشومي': 700,
+    'غيوكي': 800,
+
+    'كوراما': 1500
+}
+
+const beasts =
+    require('./systems/beasts')
+
+const beast =
+    beasts.find(
+        b => b.name === beastName
+    )
+
+if (!beast) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ الوحش غير موجود في المتجر'
+}
+)
+}
+
+if (beast.id === 'juubi') {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🌌 الجوبي لا يباع في المتجر
+
+🏆 احصل عليه عبر
+جمع جميع الوحوش التسعة`
+}
+)
+}
+
+const price =
+    prices[beastName]
+
+if (!price) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ هذا الوحش غير متاح للشراء'
+}
+)
+}
+
+if (
+    player.ownedBeasts.includes(
+        beast.id
+    )
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+"❌ تملك ${beast.name} بالفعل"
+}
+)
+}
+
+if (
+    (player.eggTickets || 0)
+    < price
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`❌ لا تملك تذاكر كافية
+
+🎟️ المطلوب:
+${price}
+
+🎫 تذاكرك:
+${player.eggTickets || 0}`
+}
+)
+}
+
+player.eggTickets -= price
+
+player.ownedBeasts.push(
+    beast.id
+)
+
+player.beastCollection =
+    (player.beastCollection || 0) + 1
+
+// مكافأة الجوبي عند جمع الجميع
+const requiredBeasts = [
+    'shukaku',
+    'matatabi',
+    'isobu',
+    'son_goku',
+    'kokuo',
+    'saiken',
+    'chomei',
+    'gyuki',
+    'kurama'
+]
+
+const completed =
+    requiredBeasts.every(
+        id =>
+            player.ownedBeasts.includes(id)
+    )
+
+let rewardText = ''
+
+if (
+    completed &&
+    !player.ownedBeasts.includes('juubi')
+) {
+
+    player.ownedBeasts.push(
+        'juubi'
+    )
+
+    rewardText =
+
+`\n\n🌌 إنجاز مكتمل
+
+🏆 جمعت جميع الوحوش
+
+👑 حصلت على الجوبي!`
+}
+
+await player.save()
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🎉 تم شراء الوحش بنجاح
+
+🐾 الوحش:
+${beast.name}
+
+🎟️ السعر:
+${price} تذكرة
+
+🎫 التذاكر المتبقية:
+${player.eggTickets}
+
+📚 عدد الوحوش:
+${player.ownedBeasts.length}${rewardText}`
+}
+)
+}
+
+    if (beast.id === 'juubi') {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'🌌 الجوبي لا يباع في المتجر'
+            }
+        )
+    }
+
+    const price =
+        prices[beastName]
+
+    if (
+        (player.eggTickets || 0)
+        < price
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ تحتاج ${price} تذكرة`
+            }
+        )
+    }
+
+    if (
+        player.ownedBeasts.includes(
+            beast.id
+        )
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ تملك هذا الوحش مسبقاً'
+            }
+        )
+    }
+
+    player.eggTickets -= price
+
+    player.ownedBeasts.push(
+        beast.id
+    )
+
+    player.beastCollection =
+        (player.beastCollection || 0) + 1
+
+    await player.save()
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🎉 تم شراء
+
+🐾 ${beast.name}
+
+🎟️ المتبقي:
+${player.eggTickets}`
+        }
+    )
+}
+
+    
 if (text === '.الوحوش') {
 
     const beasts =
