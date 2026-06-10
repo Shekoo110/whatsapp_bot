@@ -19,6 +19,11 @@ const PlayerSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    
+    maxCharacters: {
+    type: Number,
+    default: 30
+},
 
     // =========================
 // HP SYSTEM (PvP CORE)
