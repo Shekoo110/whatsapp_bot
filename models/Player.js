@@ -245,6 +245,10 @@ beastKills: {
     type: Number,
     default: 0
 },
+    beastCollection: {
+    type: Number,
+    default: 0
+},
     
 
     // =========================
