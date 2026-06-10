@@ -841,7 +841,24 @@ mongoose.connect(process.env.MONGO_URI)
     console.log('✅ MongoDB Connected')
 
     await setupBeasts()
+    
+await Beast.updateOne(
+    { name: 'كوراما' },
+    {
+        $set: {
+            image: 'https://files.catbox.moe/2zadbq.jpg'
+        }
+    }
+)
 
+await Beast.updateOne(
+    { name: 'الجوبي' },
+    {
+        $set: {
+            image: 'https://files.catbox.moe/fdgy5g.webp'
+        }
+    }
+)
     console.log(
         '✅ Beasts Loaded'
     )
