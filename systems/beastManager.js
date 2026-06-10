@@ -1,5 +1,12 @@
 const Beast = require('../database/Beast')
 
+let sockInstance = null
+
+function setSocket(sock) {
+
+    sockInstance = sock
+}
+
 function getNextRespawn() {
 
     const now = new Date()
@@ -89,6 +96,59 @@ async function checkRespawn() {
 
             await resetBeasts()
 
+            if (sockInstance) {
+
+                const groups = [
+
+                    "120363400448225715@g.us",
+
+                    "120363020823525909@g.us"
+                ]
+
+                for (const groupId of groups) {
+
+                    await sockInstance.sendMessage(
+                        groupId,
+                        {
+                            image: {
+                                url: 'https://files.catbox.moe/2zadbq.jpg'
+                            },
+                            caption:
+
+`🦊 استيقظ كوراما
+
+🔥 عاد الوحش العالمي
+
+❤️ HP: 3,000,000
+
+⚔️ استخدم:
+
+.اقضي`
+                        }
+                    )
+
+                    await sockInstance.sendMessage(
+                        groupId,
+                        {
+                            image: {
+                                url: 'https://files.catbox.moe/fdgy5g.webp'
+                            },
+                            caption:
+
+`🌌 استيقظ الجوبي
+
+☠️ عاد الوحش العالمي
+
+❤️ HP: 3,000,000
+
+⚔️ استخدم:
+
+.اباده`
+                        }
+                    )
+                }
+            }
+
             break
         }
     }
@@ -100,5 +160,7 @@ module.exports = {
 
     resetBeasts,
 
-    checkRespawn
+    checkRespawn,
+
+    setSocket
 }
