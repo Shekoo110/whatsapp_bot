@@ -2742,74 +2742,7 @@ ${player.ownedBeasts.length}${rewardText}`
 )
 }
 
-    if (beast.id === 'juubi') {
-
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-'🌌 الجوبي لا يباع في المتجر'
-            }
-        )
-    }
-
-    const price =
-        prices[beastName]
-
-    if (
-        (player.eggTickets || 0)
-        < price
-    ) {
-
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-`❌ تحتاج ${price} تذكرة`
-            }
-        )
-    }
-
-    if (
-        player.ownedBeasts.includes(
-            beast.id
-        )
-    ) {
-
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-'❌ تملك هذا الوحش مسبقاً'
-            }
-        )
-    }
-
-    player.eggTickets -= price
-
-    player.ownedBeasts.push(
-        beast.id
-    )
-
-    player.beastCollection =
-        (player.beastCollection || 0) + 1
-
-    await player.save()
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-
-`🎉 تم شراء
-
-🐾 ${beast.name}
-
-🎟️ المتبقي:
-${player.eggTickets}`
-        }
-    )
-}
+    
 
     
 if (text === '.الوحوش') {
