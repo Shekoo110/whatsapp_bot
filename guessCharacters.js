@@ -156,7 +156,7 @@ module.exports = [
 { name: "سموكر", aliases: ["سموكر"] },
 { name: "أوكيجي", aliases: ["اوكيجي","أوكيجي"] },
 { name: "كيزارو", aliases: ["كيزارو"] },
-{ name: "أكاينو", aliases: ["اكاينو","أكاينو"] }
+{ name: "أكاينو", aliases: ["اكاينو","أكاينو"] },
 
 /* =======================
    BUNGO STRAY DOGS
