@@ -2074,10 +2074,10 @@ if (text === '.اقضي') {
     }
 
     const target =
-        await Beast.findOne({
-            name: 'كوراما',
-            hp: { $gt: 0 }
-        })
+    await Beast.findOne({
+        name: 'كوراما',
+        hp: { $gt: 0 }
+    })
 
     if (!target) {
         return sock.sendMessage(
@@ -2139,11 +2139,27 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
     if (target.hp <= 0) {
 
-        result += `
+    target.lastKilledAt =
+        new Date()
 
-🏆 تم القضاء على كوراما`
-    }
+    const respawn =
+        new Date()
 
+    respawn.setHours(
+        respawn.getHours() + 2
+    )
+
+    target.respawnAt =
+        respawn
+
+    await target.save()
+
+    result += `
+
+🏆 تم القضاء على كوراما
+
+⏳ سيعود بعد ساعتين`
+}
     return sock.sendMessage(
         msg.key.remoteJid,
         {
@@ -2179,10 +2195,10 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
     }
 
     const target =
-        await Beast.findOne({
-            name: 'الجوبي',
-            hp: { $gt: 0 }
-        })
+    await Beast.findOne({
+        name: 'الجوبي',
+        hp: { $gt: 0 }
+    })
 
     if (!target) {
         return sock.sendMessage(
@@ -2244,10 +2260,27 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
     if (target.hp <= 0) {
 
-        result += `
+    target.lastKilledAt =
+        new Date()
 
-🏆 تم القضاء على الجوبي`
-    }
+    const respawn =
+        new Date()
+
+    respawn.setHours(
+        respawn.getHours() + 2
+    )
+
+    target.respawnAt =
+        respawn
+
+    await target.save()
+
+    result += `
+
+🏆 تم القضاء على الجوبي
+
+⏳ سيعود بعد ساعتين`
+}
 
     return sock.sendMessage(
         msg.key.remoteJid,
