@@ -1801,35 +1801,33 @@ cooldowns.set(key, now)
 
 if (text === '.اصلاح_المخزون') {
 
-    if (!isOwner(msg)) return
-
     const players = await Player.find({})
 
     let fixed = 0
 
     for (const player of players) {
 
-        const levelBonus =
-            Math.floor(player.level / 10) * 10
-
         const expected =
-            30 + levelBonus
+            30 +
+            (Math.floor(player.level / 10) * 5) +
+            10
 
-        if (player.maxCharacters < expected) {
+        player.maxCharacters = expected
 
-            player.maxCharacters = expected
+        await player.save()
 
-            await player.save()
-
-            fixed++
-        }
+        fixed++
     }
 
     return sock.sendMessage(
         msg.key.remoteJid,
         {
             text:
-`✅ تم إصلاح ${fixed} لاعب`
+`✅ تم إصلاح ${fixed} لاعب
+
+📦 تم إعادة حساب المخزون حسب:
+• المستوى
+• إنهاء البرج مرتين`
         }
     )
 }
