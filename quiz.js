@@ -229,10 +229,11 @@ async function startQuestion(
         quizActive = false
 
 roundsCount = 0
-usedQuestions = []
-usedImages = []
-usedRepeats = []
-scoreboard = {}
+
+usedQuestions.length = 0
+usedImages.length = 0
+usedRepeats.length = 0
+
 lastMode = -1
 
         await sock.sendMessage(
@@ -376,14 +377,19 @@ function checkAnswer(
 
     let matchedCount = 0
 
-    for (const correct of uniqueAnswers) {
+for (const correct of uniqueAnswers) {
 
-        if (
-            fullText.includes(correct)
-        ) {
-            matchedCount++
-        }
+    const regex =
+        new RegExp(
+            `(^|\\s)${correct}(\\s|$)`
+        )
+
+    if (
+        regex.test(fullText)
+    ) {
+        matchedCount++
     }
+}
 
     const required =
         currentQuestion.required ||
