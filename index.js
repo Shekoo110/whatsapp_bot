@@ -1799,6 +1799,41 @@ cooldowns.set(key, now)
         // .صوره
         // =========================
 
+if (text === '.اصلاح_المخزون') {
+
+    if (!isOwner(msg)) return
+
+    const players = await Player.find({})
+
+    let fixed = 0
+
+    for (const player of players) {
+
+        const levelBonus =
+            Math.floor(player.level / 10) * 10
+
+        const expected =
+            30 + levelBonus
+
+        if (player.maxCharacters < expected) {
+
+            player.maxCharacters = expected
+
+            await player.save()
+
+            fixed++
+        }
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم إصلاح ${fixed} لاعب`
+        }
+    )
+}
+    
 
 if (text === '.تخمين') {
 
