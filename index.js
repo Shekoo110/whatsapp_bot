@@ -3316,6 +3316,9 @@ if (text === '.بدا_مسابقة') {
 
     quizData.quizActive = true
 
+    quizData.roundsCount = 0
+quizData.currentQuestion = null
+
     // 🔥 تصفير النقاط بطريقة آمنة
     for (const key in quizData.scoreboard) {
         delete quizData.scoreboard[key]
@@ -3323,7 +3326,10 @@ if (text === '.بدا_مسابقة') {
 
     // 🧹 تنظيف بيانات اللعب
     quizData.usedQuestions.length = 0
-    quizData.playerProgress = {}
+
+for (const key in quizData.playerProgress) {
+    delete quizData.playerProgress[key]
+}
 
     // ⚠️ مهم جدًا (لو موجود في الملف)
     if (typeof questionSolved !== 'undefined') {
