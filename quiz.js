@@ -377,13 +377,20 @@ function checkAnswer(
 
     if (currentQuestion.type === 'repeat') {
 
-    const requiredText =
-        uniqueAnswers.join(' ')
+    const words =
+        normalize(fullText)
+            .split(' ')
+            .filter(Boolean)
 
-    if (
-        normalize(fullText) ===
-        normalize(requiredText)
-    ) {
+    const allFound =
+        uniqueAnswers.every(
+            answer =>
+                words.includes(
+                    normalize(answer)
+                )
+        )
+
+    if (allFound) {
 
         if (!scoreboard[userId]) {
             scoreboard[userId] = 0
