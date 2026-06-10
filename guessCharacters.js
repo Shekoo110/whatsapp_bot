@@ -187,7 +187,7 @@ module.exports = [
 { name: "جان", aliases: ["جان"] },
 { name: "كوني", aliases: ["كوني"] },
 { name: "ساشا", aliases: ["ساشا"] },
-{ name: "فلوك", aliases: ["فلوك"] }
+{ name: "فلوك", aliases: ["فلوك"] },
 
 /* =======================
    DRAGON BALL
