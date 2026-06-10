@@ -81,6 +81,7 @@ const importGamesWaifus =
 const mongoose = require('mongoose')
 const lastRolls = new Map()
 const PvP = require('./models/PvP')
+const Player = require('./models/Player')
 const Beast =
 require('./database/Beast')
 const beasts =
