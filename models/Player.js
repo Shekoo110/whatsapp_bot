@@ -207,13 +207,7 @@ price: { type: Number, default: 0 }
         }
     },
 
-    // =========================
-    // MISC
-    // =========================
-    maxCharacters: { type: Number, default: 30 },
-    title: { type: String, default: null },
-
-    // =========================
+// =========================
 // BEAST SYSTEM
 // =========================
 
@@ -222,43 +216,34 @@ eggTickets: {
     default: 0
 },
 
+// عدد البيوض التي يملكها اللاعب
 beastEggs: {
+    type: Number,
+    default: 0
+},
+
+// الوحوش المملوكة
+ownedBeasts: {
     type: [String],
     default: []
 },
 
-pets: {
-    type: [
-        {
-            name: String,
-            rarity: String,
-            level: {
-                type: Number,
-                default: 1
-            },
-
-            attackBonus: {
-                type: Number,
-                default: 0
-            },
-
-            defenseBonus: {
-                type: Number,
-                default: 0
-            },
-
-            bossDamageBonus: {
-                type: Number,
-                default: 0
-            }
-        }
-    ],
-    default: []
+// الوحش المجهز حالياً
+equippedBeast: {
+    type: String,
+    default: null
 },
 
-equippedPet: {
-    type: Object,
-    default: null
+// عدد البيوض المفتوحة
+beastEggsOpened: {
+    type: Number,
+    default: 0
+},
+
+// عدد مرات المشاركة بقتل الوحوش العالمية
+beastKills: {
+    type: Number,
+    default: 0
 },
     
 
