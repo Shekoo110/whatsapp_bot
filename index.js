@@ -83,6 +83,29 @@ const lastRolls = new Map()
 const PvP = require('./models/PvP')
 const Beast =
 require('./database/Beast')
+const Player =
+require('./database/Player')
+
+const beasts =
+require('./systems/beasts')
+
+const {
+    playerAbilities
+} = require(
+    './systems/playerAbilities'
+)
+
+const {
+    getKuramaAbility,
+    getJuubiAbility
+} = require(
+    './systems/beastAbilities'
+)
+
+const beastRewards =
+require(
+    './systems/beastRewards'
+)
 const bossAbilities = require('./bossAbilities')
 const { createCanvas } = require("canvas")
 const {
@@ -1686,6 +1709,49 @@ setInterval(async () => {
     }
 
 }, 60000)
+
+
+    function getStrongestCharacter(
+    player
+) {
+
+    if (
+        !player.characters ||
+        !player.characters.length
+    ) {
+        return null
+    }
+
+    return player.characters.reduce(
+        (a, b) =>
+            a.power > b.power
+                ? a
+                : b
+    )
+}
+
+function getRandomPlayerAbility() {
+
+    const total =
+        playerAbilities.reduce(
+            (sum, a) =>
+                sum + a.chance,
+            0
+        )
+
+    let roll =
+        Math.random() * total
+
+    for (const ability of playerAbilities) {
+
+        roll -= ability.chance
+
+        if (roll <= 0)
+            return ability
+    }
+
+    return playerAbilities[0]
+}
 
     // =========================
 // الرسائل
