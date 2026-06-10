@@ -1950,22 +1950,6 @@ if (text === '.اقضي') {
     }
 
     if (
-        !player.equippedBeast ||
-        player.equippedBeast !== 'kurama'
-    ) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-`🦊 يجب تجهيز كوراما أولاً
-
-استخدم:
-.تجهيز كوراما`
-            }
-        )
-    }
-
-    if (
         !player.characters ||
         !player.characters.length
     ) {
@@ -1979,6 +1963,7 @@ if (text === '.اقضي') {
 
     const target =
         await Beast.findOne({
+            name: 'كوراما',
             hp: { $gt: 0 }
         })
 
@@ -1987,7 +1972,7 @@ if (text === '.اقضي') {
             msg.key.remoteJid,
             {
                 text:
-'❌ لا يوجد وحش حي حالياً'
+'❌ كوراما غير متاح حالياً'
             }
         )
     }
@@ -2010,14 +1995,21 @@ if (text === '.اقضي') {
             target.hp - damage
         )
 
-    player.beastKills =
-        (player.beastKills || 0) + 1
+    target.rankings =
+        target.rankings || {}
+
+    const oldDamage =
+        target.rankings.get(userId) || 0
+
+    target.rankings.set(
+        userId,
+        oldDamage + damage
+    )
 
     await target.save()
-    await player.save()
 
     let result =
-`🦊 كوراما هاجم
+`🦊 هجوم على كوراما
 
 🔥 كرة البيجو العملاقة
 
@@ -2028,28 +2020,16 @@ ${strongest.name}
 ${damage.toLocaleString()}
 
 👹 الوحش:
-${target.name}
+كوراما
 
 ❤️ المتبقي:
 ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
     if (target.hp <= 0) {
 
-        player.money =
-            (player.money || 0) + 50000
-
-        player.xp =
-            (player.xp || 0) + 1000
-
-        await player.save()
-
         result += `
 
-🏆 تم القضاء على الوحش
-
-💰 +50000 مال
-
-⭐ +1000 XP`
+🏆 تم القضاء على كوراما`
     }
 
     return sock.sendMessage(
@@ -2059,6 +2039,7 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
         }
     )
 }
+    
     if (text === '.اباده') {
 
     const player =
@@ -2069,19 +2050,6 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
             msg.key.remoteJid,
             {
                 text: '❌ ليس لديك حساب'
-            }
-        )
-    }
-
-    if (
-        !player.equippedBeast ||
-        player.equippedBeast !== 'juubi'
-    ) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-`🌌 يجب تجهيز الجوبي أولاً`
             }
         )
     }
@@ -2100,6 +2068,7 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
     const target =
         await Beast.findOne({
+            name: 'الجوبي',
             hp: { $gt: 0 }
         })
 
@@ -2108,7 +2077,7 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
             msg.key.remoteJid,
             {
                 text:
-'❌ لا يوجد وحش حي حالياً'
+'❌ الجوبي غير متاح حالياً'
             }
         )
     }
@@ -2131,14 +2100,21 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
             target.hp - damage
         )
 
-    player.beastKills =
-        (player.beastKills || 0) + 1
+    target.rankings =
+        target.rankings || {}
+
+    const oldDamage =
+        target.rankings.get(userId) || 0
+
+    target.rankings.set(
+        userId,
+        oldDamage + damage
+    )
 
     await target.save()
-    await player.save()
 
     let result =
-`🌌 الجوبي هاجم
+`🌌 هجوم على الجوبي
 
 ☠️ قنبلة العشرة ذيول
 
@@ -2149,30 +2125,16 @@ ${strongest.name}
 ${damage.toLocaleString()}
 
 👹 الوحش:
-${target.name}
+الجوبي
 
 ❤️ المتبقي:
 ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
     if (target.hp <= 0) {
 
-        player.money =
-            (player.money || 0)
-            + 200000
-
-        player.xp =
-            (player.xp || 0)
-            + 5000
-
-        await player.save()
-
         result += `
 
-🏆 تم إبادة الوحش
-
-💰 +200000 مال
-
-⭐ +5000 XP`
+🏆 تم القضاء على الجوبي`
     }
 
     return sock.sendMessage(
@@ -2182,6 +2144,8 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
         }
     )
 }
+    
+
     if (text === '.وحشي') {
 
     const player =
