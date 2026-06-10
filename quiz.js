@@ -375,6 +375,32 @@ function checkAnswer(
             )
         ]
 
+    if (currentQuestion.type === 'repeat') {
+
+    const requiredText =
+        uniqueAnswers.join(' ')
+
+    if (
+        normalize(fullText) ===
+        normalize(requiredText)
+    ) {
+
+        if (!scoreboard[userId]) {
+            scoreboard[userId] = 0
+        }
+
+        scoreboard[userId] += 1
+
+        questionSolved = true
+
+        delete playerProgress[userId]
+
+        return true
+    }
+
+    return false
+}
+
     let matchedCount = 0
 
 for (const correct of uniqueAnswers) {
