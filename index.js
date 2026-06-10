@@ -168,6 +168,10 @@ async function askGemini(prompt) {
     }
 }
 
+const BEAST_GROUPS = [
+    '120363400448225715@g.us',
+    '120363020823525909@g.us'
+]
 const guessCharacters =
     require('./guessCharacters')
 
@@ -1459,9 +1463,117 @@ async function startBot() {
         await useMultiFileAuthState('auth')
 
     const sock = makeWASocket({
-        auth: state,
-        printQRInTerminal: false
-    })
+    auth: state,
+    printQRInTerminal: false
+})
+
+const BEAST_GROUPS = [
+    '120363400448225715@g.us',
+    '120363020823525909@g.us'
+]
+
+let lastKuramaRespawn = 0
+let lastJuubiRespawn = 0
+
+setInterval(async () => {
+
+    try {
+
+        const kurama =
+            await Beast.findOne({
+                name: 'كوراما'
+            })
+
+        if (
+            kurama &&
+            kurama.hp === kurama.maxHp &&
+            kurama.lastKilledAt &&
+            kurama.lastKilledAt.getTime() >
+            lastKuramaRespawn
+        ) {
+
+            lastKuramaRespawn =
+                kurama.lastKilledAt.getTime()
+
+            for (const groupId of BEAST_GROUPS) {
+
+                await sock.sendMessage(
+                    groupId,
+                    {
+                        image: {
+                            url: kurama.image
+                        },
+
+                        caption:
+`🦊 استيقظ كوراما!
+
+🔥 الوحش العالمي عاد للحياة
+
+❤️ HP:
+${kurama.maxHp.toLocaleString()}
+
+⚔️ استخدم:
+
+.اقضي
+
+للهجوم عليه`
+                    }
+                )
+            }
+        }
+
+        const juubi =
+            await Beast.findOne({
+                name: 'الجوبي'
+            })
+
+        if (
+            juubi &&
+            juubi.hp === juubi.maxHp &&
+            juubi.lastKilledAt &&
+            juubi.lastKilledAt.getTime() >
+            lastJuubiRespawn
+        ) {
+
+            lastJuubiRespawn =
+                juubi.lastKilledAt.getTime()
+
+            for (const groupId of BEAST_GROUPS) {
+
+                await sock.sendMessage(
+                    groupId,
+                    {
+                        image: {
+                            url: juubi.image
+                        },
+
+                        caption:
+`🌌 استيقظ الجوبي!
+
+☠️ أقوى وحش عالمي عاد للحياة
+
+❤️ HP:
+${juubi.maxHp.toLocaleString()}
+
+⚔️ استخدم:
+
+.اباده
+
+للهجوم عليه`
+                    }
+                )
+            }
+        }
+
+    } catch (err) {
+
+        console.log(
+            'Beast Announce Error:',
+            err
+        )
+    }
+
+}, 60000)
 
     console.log("SOCKET CREATED")
 
