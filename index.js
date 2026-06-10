@@ -2346,15 +2346,15 @@ if (!target) {
 
         respawnText =
 
-"\n\n⏳ يعود في:\n${deadJuubi.respawnAt.toLocaleString()}"
-}
+`\n\n⏳ يعود في:
+${deadJuubi.respawnAt.toLocaleString()}`
 
     return sock.sendMessage(
         msg.key.remoteJid,
         {
             text:
 
-"❌ الجوبي غير متاح حالياً${respawnText}"
+`❌ الجوبي غير متاح حالياً${respawnText}`
 }
 )
 }
