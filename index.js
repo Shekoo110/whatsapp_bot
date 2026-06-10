@@ -87,18 +87,11 @@ require('./database/Beast')
 const beasts =
 require('./systems/beasts')
 
-const {
-    playerAbilities
-} = require(
-    './systems/playerAbilities'
-)
-
+const { playerAbilities } = require('./systems/playerAbilities')
 const {
     getKuramaAbility,
     getJuubiAbility
-} = require(
-    './systems/beastAbilities'
-)
+} = require('./systems/beastAbilities')
 
 const beastRewards =
 require(
@@ -2073,6 +2066,38 @@ if (
         }
     )
 }
+const cooldownKey =
+    `${userId}_kurama`
+
+const lastUse =
+    cooldowns.get(cooldownKey)
+
+if (
+    lastUse &&
+    Date.now() - lastUse < 30000
+) {
+
+    const remaining =
+        Math.ceil(
+            (30000 -
+            (Date.now() - lastUse))
+            / 1000
+        )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`⏳ انتظر ${remaining} ثانية قبل استخدام .اقضي مرة أخرى`
+        }
+    )
+}
+
+cooldowns.set(
+    cooldownKey,
+    Date.now()
+)
+                
 
 const target =
     await Beast.findOne({
@@ -2114,11 +2139,39 @@ const strongest =
     )[0]
 
 let damage =
-    Math.floor(
-        strongest.power * 2
-    )
+    Math.floor(strongest.power * 2)
 
-damage += 6000
+// قدرة لاعب عشوائية
+const ability =
+    playerAbilities[
+        Math.floor(Math.random() * playerAbilities.length)
+    ]
+
+let abilityText = ''
+
+if (ability.type === 'damage') {
+    damage += ability.multiplier
+        ? Math.floor(damage * (ability.multiplier - 1))
+        : 0
+
+    abilityText = `⚡ قدرة اللاعب: ${ability.name}`
+}
+
+if (ability.type === 'lifesteal') {
+    const heal = ability.value || 0
+    player.hp = (player.hp || 0) + heal
+    abilityText = `🩸 ${ability.name} (+${heal})`
+}
+
+if (ability.type === 'buffDamage') {
+    damage += Math.floor(damage * (ability.value / 100))
+    abilityText = `💢 ${ability.name}`
+}
+
+if (ability.type === 'extraDamage') {
+    damage += ability.value
+    abilityText = `☄️ ${ability.name}`
+}
 
 target.hp =
     Math.max(
@@ -2141,6 +2194,8 @@ target.rankings.set(
 let result =
 
 `🦊 هجوم على كوراما
+
+${abilityText}
 
 🔥 كرة البيجو العملاقة
 
@@ -2321,6 +2376,38 @@ if (
     )
 }
 
+        const cooldownKey =
+    `${userId}_juubi`
+
+const lastUse =
+    cooldowns.get(cooldownKey)
+
+if (
+    lastUse &&
+    Date.now() - lastUse < 30000
+) {
+
+    const remaining =
+        Math.ceil(
+            (30000 -
+            (Date.now() - lastUse))
+            / 1000
+        )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`⏳ انتظر ${remaining} ثانية قبل استخدام .اباده مرة أخرى`
+        }
+    )
+}
+
+cooldowns.set(
+    cooldownKey,
+    Date.now()
+)
+
 const target =
     await Beast.findOne({
         name: 'الجوبي',
@@ -2361,11 +2448,38 @@ const strongest =
     )[0]
 
 let damage =
-    Math.floor(
-        strongest.power * 5
-    )
+    Math.floor(strongest.power * 5)
 
-damage += 25000
+const ability =
+    playerAbilities[
+        Math.floor(Math.random() * playerAbilities.length)
+    ]
+
+let abilityText = ''
+
+if (ability.type === 'damage') {
+    damage += ability.multiplier
+        ? Math.floor(damage * (ability.multiplier - 1))
+        : 0
+
+    abilityText = `⚡ قدرة اللاعب: ${ability.name}`
+}
+
+if (ability.type === 'lifesteal') {
+    const heal = ability.value || 0
+    player.hp = (player.hp || 0) + heal
+    abilityText = `🩸 ${ability.name} (+${heal})`
+}
+
+if (ability.type === 'buffDamage') {
+    damage += Math.floor(damage * (ability.value / 100))
+    abilityText = `💢 ${ability.name}`
+}
+
+if (ability.type === 'extraDamage') {
+    damage += ability.value
+    abilityText = `☄️ ${ability.name}`
+}
 
 target.hp =
     Math.max(
