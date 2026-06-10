@@ -313,7 +313,7 @@ if (!global.shopStarted) {
 const {
     giveReward
 } = require('./eventRewards')
-const Player = require('./models/Player')
+
 const abilityIcons = {
     attack: "⚔️",
     defense: "🛡️",
@@ -2645,7 +2645,9 @@ if (
         {
             text:
 
-"❌ تملك ${beast.name} بالفعل"
+text:
+
+`❌ تملك ${beast.name} بالفعل`
 }
 )
 }
