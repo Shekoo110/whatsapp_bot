@@ -214,6 +214,55 @@ price: { type: Number, default: 0 }
     title: { type: String, default: null },
 
     // =========================
+// BEAST SYSTEM
+// =========================
+
+eggTickets: {
+    type: Number,
+    default: 0
+},
+
+beastEggs: {
+    type: [String],
+    default: []
+},
+
+pets: {
+    type: [
+        {
+            name: String,
+            rarity: String,
+            level: {
+                type: Number,
+                default: 1
+            },
+
+            attackBonus: {
+                type: Number,
+                default: 0
+            },
+
+            defenseBonus: {
+                type: Number,
+                default: 0
+            },
+
+            bossDamageBonus: {
+                type: Number,
+                default: 0
+            }
+        }
+    ],
+    default: []
+},
+
+equippedPet: {
+    type: Object,
+    default: null
+},
+    
+
+    // =========================
     // BOXES
     // =========================
     boxes: {
