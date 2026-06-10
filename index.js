@@ -88,6 +88,41 @@ const bosses = require('./bosses')
 const xo =
     require('./xo')
 const characters = require('./characters.json')
+const { GoogleGenAI } =
+require("@google/genai")
+
+const ai =
+new GoogleGenAI({
+    apiKey:
+    process.env.GEMINI_API_KEY
+})
+
+async function askGemini(prompt) {
+
+    try {
+
+        const response =
+            await ai.models.generateContent({
+                model:
+                "gemini-2.5-flash",
+                contents: prompt
+            })
+
+        return (
+            response.text || ""
+        ).trim()
+
+    } catch (err) {
+
+        console.log(
+            "Gemini Error:",
+            err
+        )
+
+        return "❌ خطأ"
+    }
+}
+
 const getRank = require('./utils/rank')
 const { getSkillDamage } = require('./utils/skills')
 const Boss = require('./models/Boss')
@@ -2044,6 +2079,36 @@ ${rewardText}`
         }
     )
 }
+if (text.startsWith('.ذكاء')) {
+
+    const question =
+        text.replace(
+            '.ذكاء',
+            ''
+        ).trim()
+
+    if (!question) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ اكتب سؤالاً'
+            }
+        )
+    }
+
+    const answer =
+        await askGemini(question)
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: answer
+        }
+    )
+}
+    
     if (text === '.فحصxp') {
 
     const me = await Player.findOne({ userId })
