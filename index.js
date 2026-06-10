@@ -2644,12 +2644,9 @@ if (
         msg.key.remoteJid,
         {
             text:
-
-text:
-
 `❌ تملك ${beast.name} بالفعل`
-}
-)
+        }
+    )
 }
 
 if (
