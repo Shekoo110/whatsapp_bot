@@ -76,6 +76,8 @@ const importGamesWaifus =
 const mongoose = require('mongoose')
 const lastRolls = new Map()
 const PvP = require('./models/PvP')
+const Beast =
+require('./database/Beast')
 const bossAbilities = require('./bossAbilities')
 const { createCanvas } = require("canvas")
 const {
@@ -797,10 +799,47 @@ function getRandomCharacterByBox(boxType) {
 const importWaifus =
 require('./importWaifus')
 
+async function setupBeasts() {
+
+    const kurama =
+        await Beast.findOne({
+            name: 'كوراما'
+        })
+
+    if (!kurama) {
+
+        await Beast.create({
+            name: 'كوراما',
+            hp: 3000000,
+            maxHp: 3000000
+        })
+    }
+
+    const juubi =
+        await Beast.findOne({
+            name: 'الجوبي'
+        })
+
+    if (!juubi) {
+
+        await Beast.create({
+            name: 'الجوبي',
+            hp: 3000000,
+            maxHp: 3000000
+        })
+    }
+}
+
 mongoose.connect(process.env.MONGO_URI)
 .then(async () => {
 
     console.log('✅ MongoDB Connected')
+
+    await setupBeasts()
+
+    console.log(
+        '✅ Beasts Loaded'
+    )
 
     currentBoss =
         await Boss.findOne({})
@@ -1720,6 +1759,7 @@ await sock.sendMessage(
 return
 
 }
+
     // =========================
 // 🧠 QUIZ SYSTEM
 // =========================
@@ -1799,6 +1839,38 @@ cooldowns.set(key, now)
         // .صوره
         // =========================
 
+if (text === '.الوحوش') {
+
+    const beasts =
+        await Beast.find()
+
+    let msgText =
+`👹 الوحوش الحالية
+
+`
+
+    for (const beast of beasts) {
+
+        msgText +=
+`🔥 ${beast.name}
+
+❤️ HP:
+${beast.hp.toLocaleString()}/${beast.maxHp.toLocaleString()}
+
+━━━━━━━━━━
+
+`
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: msgText
+        }
+    )
+}
+
+    
 if (text === '.اصلاح_المخزون') {
 
     const players = await Player.find({})
