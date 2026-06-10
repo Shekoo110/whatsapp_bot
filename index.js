@@ -2047,96 +2047,100 @@ cooldowns.set(key, now)
         // .صوره
         // =========================
 
-if (text === '.اقضي') {
 
-    const player =
-        await Player.findOne({ userId })
+            if (text === '.اقضي') {
 
-    if (!player) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ ليس لديك حساب'
-            }
-        )
-    }
+const player =
+    await Player.findOne({ userId })
 
-    if (
-        !player.characters ||
-        !player.characters.length
-    ) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا تملك شخصيات'
-            }
-        )
-    }
+if (!player) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ ليس لديك حساب'
+        }
+    )
+}
 
-    const target =
+if (
+    !player.characters ||
+    !player.characters.length
+) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ لا تملك شخصيات'
+        }
+    )
+}
+
+const target =
+    await Beast.findOne({
+        name: 'كوراما',
+        hp: { $gt: 0 }
+    })
+
+if (!target) {
+
+    const deadKurama =
         await Beast.findOne({
-            name: 'كوراما',
-            hp: { $gt: 0 }
+            name: 'كوراما'
         })
 
-    if (!target) {
+    let respawnText = ''
 
-        const deadKurama =
-            await Beast.findOne({
-                name: 'كوراما'
-            })
+    if (
+        deadKurama &&
+        deadKurama.respawnAt
+    ) {
 
-        let respawnText = ''
+        respawnText =
 
-        if (
-            deadKurama &&
-            deadKurama.respawnAt
-        ) {
+"\n\n⏳ العودة: ${deadKurama.respawnAt.toLocaleString()}"
+}
 
-            respawnText =
-`\n\n⏳ العودة:
-${deadKurama.respawnAt.toLocaleString()}`
-        }
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
 
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-`❌ كوراما غير متاح حالياً${respawnText}`
-            }
-        )
-    }
+"❌ كوراما غير متاح حالياً${respawnText}"
+}
+)
+}
 
-    const strongest =
-        player.characters.sort(
-            (a, b) => b.power - a.power
-        )[0]
+const strongest =
+    player.characters.sort(
+        (a, b) => b.power - a.power
+    )[0]
 
-    let damage =
-        Math.floor(
-            strongest.power * 2
-        )
-
-    damage += 6000
-
-    target.hp =
-        Math.max(
-            0,
-            target.hp - damage
-        )
-
-    target.rankings =
-        target.rankings || {}
-
-    const oldDamage =
-        target.rankings.get(userId) || 0
-
-    target.rankings.set(
-        userId,
-        oldDamage + damage
+let damage =
+    Math.floor(
+        strongest.power * 2
     )
 
-    let result =
+damage += 6000
+
+target.hp =
+    Math.max(
+        0,
+        target.hp - damage
+    )
+
+if (!target.rankings) {
+    target.rankings = new Map()
+}
+
+const oldDamage =
+    target.rankings.get(userId) || 0
+
+target.rankings.set(
+    userId,
+    oldDamage + damage
+)
+
+let result =
+
 `🦊 هجوم على كوراما
 
 🔥 كرة البيجو العملاقة
@@ -2153,132 +2157,239 @@ ${damage.toLocaleString()}
 ❤️ المتبقي:
 ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
-    if (target.hp <= 0) {
+if (target.hp <= 0) {
 
-        target.hp = 0
+    target.hp = 0
 
-        target.lastKilledAt =
-            new Date()
+    target.lastKilledAt =
+        new Date()
 
-        const respawn =
-            new Date()
+    const respawn =
+        new Date()
 
-        respawn.setHours(
-            respawn.getHours() + 2
+    respawn.setHours(
+        respawn.getHours() + 2
+    )
+
+    target.respawnAt =
+        respawn
+
+    const ranking =
+        Array.from(
+            target.rankings.entries()
+        )
+        .sort(
+            (a, b) =>
+                b[1] - a[1]
         )
 
-        target.respawnAt =
-            respawn
+    let rewardMsg =
 
-        result += `
-
+`\n\n━━━━━━━━━━━━━━
 🏆 تم القضاء على كوراما
+━━━━━━━━━━━━━━
+
+🥇 أفضل المقاتلين
+
+`
+
+    const mentions = []
+
+    for (
+        let i = 0;
+        i < ranking.length;
+        i++
+    ) {
+
+        const [
+            playerId,
+            totalDamage
+        ] = ranking[i]
+
+        const p =
+            await Player.findOne({
+                userId: playerId
+            })
+
+        if (!p) continue
+
+        const reward =
+            target.eggCarrier
+                ? beastRewards.getEggCarrierReward(i + 1)
+                : beastRewards.getNormalReward(i + 1)
+
+        p.money =
+            (p.money || 0)
+            + (reward.money || 0)
+
+        p.xp =
+            (p.xp || 0)
+            + (reward.xp || 0)
+
+        p.eggTickets =
+            (p.eggTickets || 0)
+            + (reward.tickets || 0)
+
+        p.beastEggs =
+            (p.beastEggs || 0)
+            + (reward.egg || 0)
+
+        await p.save()
+
+        mentions.push(playerId)
+
+        if (i < 3) {
+
+            const medal =
+                i === 0
+                ? '🥇'
+                : i === 1
+                ? '🥈'
+                : '🥉'
+
+            rewardMsg +=
+
+`${medal} @${playerId.split('@')[0]}
+
+💥 الضرر:
+${totalDamage.toLocaleString()}
+
+💰 ${reward.money || 0}
+⭐ ${reward.xp || 0}
+🎟️ ${reward.tickets || 0}
+🥚 ${reward.egg || 0}
+
+`
+}
+}
+
+    rewardMsg +=
+
+`━━━━━━━━━━━━━━
 
 ⏳ سيعود بعد ساعتين`
-    }
 
-    await target.save()
+target.rankings = new Map()
 
-    return sock.sendMessage(
+await target.save()
+
+    await sock.sendMessage(
         msg.key.remoteJid,
         {
-            text: result
+            text: rewardMsg,
+            mentions
         }
     )
+
+    result += rewardMsg
+}
+
+await target.save()
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text: result
+    }
+)
+
 }
 
     
     if (text === '.اباده') {
 
-    const player =
-        await Player.findOne({ userId })
+const player =
+    await Player.findOne({ userId })
 
-    if (!player) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ ليس لديك حساب'
-            }
-        )
-    }
+if (!player) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ ليس لديك حساب'
+        }
+    )
+}
 
-    if (
-        !player.characters ||
-        !player.characters.length
-    ) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا تملك شخصيات'
-            }
-        )
-    }
+if (
+    !player.characters ||
+    !player.characters.length
+) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ لا تملك شخصيات'
+        }
+    )
+}
 
-    const target =
+const target =
+    await Beast.findOne({
+        name: 'الجوبي',
+        hp: { $gt: 0 }
+    })
+
+if (!target) {
+
+    let respawnText = ''
+
+    const deadJuubi =
         await Beast.findOne({
-            name: 'الجوبي',
-            hp: { $gt: 0 }
+            name: 'الجوبي'
         })
 
-    if (!target) {
+    if (
+        deadJuubi &&
+        deadJuubi.respawnAt
+    ) {
 
-        let respawnText = ''
+        respawnText =
 
-        const deadJuubi =
-            await Beast.findOne({
-                name: 'الجوبي'
-            })
-
-        if (
-            deadJuubi &&
-            deadJuubi.respawnAt
-        ) {
-
-            respawnText =
 `\n\n⏳ يعود في:
 
 ${deadJuubi.respawnAt.toLocaleString()}`
-        }
+}
 
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-`❌ الجوبي غير متاح حالياً${respawnText}`
-            }
-        )
-    }
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
 
-    const strongest =
-        player.characters.sort(
-            (a, b) => b.power - a.power
-        )[0]
+"❌ الجوبي غير متاح حالياً${respawnText}"
+}
+)
+}
 
-    let damage =
-        Math.floor(
-            strongest.power * 5
-        )
+const strongest =
+    player.characters.sort(
+        (a, b) => b.power - a.power
+    )[0]
 
-    damage += 25000
-
-    target.hp =
-        Math.max(
-            0,
-            target.hp - damage
-        )
-
-    target.rankings =
-        target.rankings || {}
-
-    const oldDamage =
-        target.rankings.get(userId) || 0
-
-    target.rankings.set(
-        userId,
-        oldDamage + damage
+let damage =
+    Math.floor(
+        strongest.power * 5
     )
 
-    let result =
+damage += 25000
+
+target.hp =
+    Math.max(
+        0,
+        target.hp - damage
+    )
+
+if (!target.rankings) {
+target.rankings = new Map()
+}
+
+const oldDamage =
+target.rankings.get(userId) || 0
+
+target.rankings.set(
+userId,
+oldDamage + damage
+)
+
+let result =
 `🌌 هجوم على الجوبي
 
 ☠️ قنبلة العشرة ذيول
@@ -2295,41 +2406,280 @@ ${damage.toLocaleString()}
 ❤️ المتبقي:
 ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
-    if (target.hp <= 0) {
+if (target.hp <= 0) {
 
-        target.hp = 0
+target.hp = 0
 
-        target.lastKilledAt =
-            new Date()
+target.lastKilledAt =
+    new Date()
 
-        const respawn =
-            new Date()
+const respawn =
+    new Date()
 
-        respawn.setHours(
-            respawn.getHours() + 2
-        )
+respawn.setHours(
+    respawn.getHours() + 2
+)
 
-        target.respawnAt =
-            respawn
+target.respawnAt =
+    respawn
 
-        result += `
-
-🏆 تم القضاء على الجوبي
-
-⏳ سيعود بعد ساعتين`
-
-    }
-
-    await target.save()
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text: result
-        }
+const ranking =
+    Array.from(
+        target.rankings.entries()
+    ).sort(
+        (a, b) => b[1] - a[1]
     )
+
+let rewardMsg =
+
+`\n\n━━━━━━━━━━━━━━
+🌌 تم إبادة الجوبي
+━━━━━━━━━━━━━━
+
+👑 أساطير المعركة
+
+`
+
+const mentions = []
+
+for (
+    let i = 0;
+    i < ranking.length;
+    i++
+) {
+
+    const [
+        playerId,
+        totalDamage
+    ] = ranking[i]
+
+    const p =
+        await Player.findOne({
+            userId: playerId
+        })
+
+    if (!p) continue
+
+    const reward =
+        target.eggCarrier
+            ? beastRewards.getEggCarrierReward(i + 1)
+            : beastRewards.getNormalReward(i + 1)
+
+    p.money =
+        (p.money || 0)
+        + (reward.money || 0)
+
+    p.xp =
+        (p.xp || 0)
+        + (reward.xp || 0)
+
+    p.eggTickets =
+        (p.eggTickets || 0)
+        + (reward.tickets || 0)
+
+    p.beastEggs =
+        (p.beastEggs || 0)
+        + (reward.egg || 0)
+
+    await p.save()
+
+    mentions.push(playerId)
+
+    if (i < 3) {
+
+        const medal =
+            i === 0
+            ? '🥇'
+            : i === 1
+            ? '🥈'
+            : '🥉'
+
+        rewardMsg +=
+
+`${medal} @${playerId.split('@')[0]}
+
+💥 الضرر:
+${totalDamage.toLocaleString()}
+
+💰 ${reward.money || 0}
+⭐ ${reward.xp || 0}
+🎟️ ${reward.tickets || 0}
+🥚 ${reward.egg || 0}
+
+`
 }
-    
+}
+
+rewardMsg +=
+
+`━━━━━━━━━━━━━━
+
+⏳ سيعود بعد ساعتين
+
+☠️ انتهت المعركة الكبرى`
+
+target.rankings =
+    new Map()
+
+await target.save()
+
+if (!target.rankings) {
+target.rankings = new Map()
+}
+
+const oldDamage =
+target.rankings.get(userId) || 0
+
+target.rankings.set(
+userId,
+oldDamage + damage
+)
+
+let result =
+`🌌 هجوم على الجوبي
+
+☠️ قنبلة العشرة ذيول
+
+⚔️ الشخصية:
+${strongest.name}
+
+💥 الضرر:
+${damage.toLocaleString()}
+
+👹 الوحش:
+الجوبي
+
+❤️ المتبقي:
+${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
+
+if (target.hp <= 0) {
+
+target.hp = 0
+
+target.lastKilledAt =
+    new Date()
+
+const respawn =
+    new Date()
+
+respawn.setHours(
+    respawn.getHours() + 2
+)
+
+target.respawnAt =
+    respawn
+
+const ranking =
+    Array.from(
+        target.rankings.entries()
+    ).sort(
+        (a, b) => b[1] - a[1]
+    )
+
+let rewardMsg =
+
+`\n\n━━━━━━━━━━━━━━
+🌌 تم إبادة الجوبي
+━━━━━━━━━━━━━━
+
+👑 أساطير المعركة
+
+`
+
+const mentions = []
+
+for (
+    let i = 0;
+    i < ranking.length;
+    i++
+) {
+
+    const [
+        playerId,
+        totalDamage
+    ] = ranking[i]
+
+    const p =
+        await Player.findOne({
+            userId: playerId
+        })
+
+    if (!p) continue
+
+    const reward =
+        target.eggCarrier
+            ? beastRewards.getEggCarrierReward(i + 1)
+            : beastRewards.getNormalReward(i + 1)
+
+    p.money =
+        (p.money || 0)
+        + (reward.money || 0)
+
+    p.xp =
+        (p.xp || 0)
+        + (reward.xp || 0)
+
+    p.eggTickets =
+        (p.eggTickets || 0)
+        + (reward.tickets || 0)
+
+    p.beastEggs =
+        (p.beastEggs || 0)
+        + (reward.egg || 0)
+
+    await p.save()
+
+    mentions.push(playerId)
+
+    if (i < 3) {
+
+        const medal =
+            i === 0
+            ? '🥇'
+            : i === 1
+            ? '🥈'
+            : '🥉'
+
+        rewardMsg +=
+
+`${medal} @${playerId.split('@')[0]}
+
+💥 الضرر:
+${totalDamage.toLocaleString()}
+
+💰 ${reward.money || 0}
+⭐ ${reward.xp || 0}
+🎟️ ${reward.tickets || 0}
+🥚 ${reward.egg || 0}
+
+`
+}
+}
+
+rewardMsg +=
+
+`━━━━━━━━━━━━━━
+
+⏳ سيعود بعد ساعتين
+
+☠️ انتهت المعركة الكبرى`
+
+target.rankings =
+    new Map()
+
+await target.save()
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text: rewardMsg,
+        mentions
+    }
+)
+
+result += rewardMsg
+
+}
     
 
     if (text === '.وحشي') {
