@@ -2106,7 +2106,7 @@ ${deadKurama.respawnAt.toLocaleString()}`
         {
             text:
 
-`❌ كوراما غير متاح حالياً${respawnText}`"
+`❌ كوراما غير متاح حالياً${respawnText}`
 }
 )
 }
