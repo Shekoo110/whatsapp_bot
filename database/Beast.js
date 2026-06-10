@@ -2,7 +2,16 @@ const mongoose = require('mongoose')
 
 const BeastSchema = new mongoose.Schema({
 
-    name: String,
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+
+    image: {
+        type: String,
+        default: ''
+    },
 
     hp: {
         type: Number,
@@ -35,18 +44,20 @@ const BeastSchema = new mongoose.Schema({
         default: null
     },
 
-    // القدرة الحالية المختارة للوحش
+    // القدرة الحالية للوحش
     currentAbility: {
         type: Object,
         default: null
     },
 
-    // عدد مرات قتله
+    // عدد مرات القتل
     kills: {
         type: Number,
         default: 0
     }
 
+}, {
+    timestamps: true
 })
 
 module.exports =
