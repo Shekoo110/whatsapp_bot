@@ -112,15 +112,18 @@ function normalizeName(name) {
 
 async function askGemini(prompt) {
 
-    
     try {
 
         const response =
             await ai.models.generateContent({
-                model:
-                "gemini-2.5-flash",
+                model: "gemini-2.5-flash",
                 contents: prompt
             })
+
+        console.log(
+            "Gemini Response:",
+            response.text
+        )
 
         return (
             response.text || ""
@@ -136,6 +139,7 @@ async function askGemini(prompt) {
         return "❌ خطأ"
     }
 }
+
 const guessCharacters =
     require('./guessCharacters')
 
