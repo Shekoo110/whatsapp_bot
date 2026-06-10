@@ -33,6 +33,18 @@ const BeastSchema = new mongoose.Schema({
     lastKilledAt: {
         type: Date,
         default: null
+    },
+
+    // القدرة الحالية المختارة للوحش
+    currentAbility: {
+        type: Object,
+        default: null
+    },
+
+    // عدد مرات قتله
+    kills: {
+        type: Number,
+        default: 0
     }
 
 })
