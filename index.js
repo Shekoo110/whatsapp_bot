@@ -2090,16 +2090,13 @@ if (!target) {
     let respawnText = ''
 
     if (
-        deadKurama &&
-        deadKurama.respawnAt
-    ) {
-
-        respawnText =
-
-respawnText =
-
+    deadKurama &&
+    deadKurama.respawnAt
+) {
+    respawnText =
 `\n\n⏳ العودة:
 ${deadKurama.respawnAt.toLocaleString()}`
+}
 
     return sock.sendMessage(
         msg.key.remoteJid,
@@ -2195,13 +2192,13 @@ let rewardMsg =
 
 `
 
-    const mentions = []
+const mentions = []
 
-    for (
-        let i = 0;
-        i < ranking.length;
-        i++
-    ) {
+for (
+    let i = 0;
+    i < ranking.length;
+    i++
+) {
 
         const [
             playerId,
@@ -2340,14 +2337,13 @@ if (!target) {
         })
 
     if (
-        deadJuubi &&
-        deadJuubi.respawnAt
-    ) {
-
-        respawnText =
-
+    deadJuubi &&
+    deadJuubi.respawnAt
+) {
+    respawnText =
 `\n\n⏳ يعود في:
 ${deadJuubi.respawnAt.toLocaleString()}`
+}
 
     return sock.sendMessage(
         msg.key.remoteJid,
@@ -2425,11 +2421,11 @@ if (target.hp <= 0) {
         respawn
 
     const ranking =
-        Array.from(
-            target.rankings.entries()
-        ).sort(
-            (a, b) => b[1] - a[1]
-        )
+    Array.from(
+        target.rankings.entries()
+    ).sort(
+        (a, b) => b[1] - a[1]
+    )
 
     let rewardMsg =
 
@@ -2441,13 +2437,13 @@ if (target.hp <= 0) {
 
 `
 
-    const mentions = []
+const mentions = []
 
-    for (
-        let i = 0;
-        i < ranking.length;
-        i++
-    ) {
+for (
+    let i = 0;
+    i < ranking.length;
+    i++
+) {
 
         const [
             playerId,
