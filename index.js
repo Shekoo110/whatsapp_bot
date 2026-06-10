@@ -2096,15 +2096,17 @@ if (!target) {
 
         respawnText =
 
-"\n\n⏳ العودة: ${deadKurama.respawnAt.toLocaleString()}"
-}
+respawnText =
+
+`\n\n⏳ العودة:
+${deadKurama.respawnAt.toLocaleString()}`
 
     return sock.sendMessage(
         msg.key.remoteJid,
         {
             text:
 
-"❌ كوراما غير متاح حالياً${respawnText}"
+`❌ كوراما غير متاح حالياً${respawnText}`"
 }
 )
 }
@@ -2175,15 +2177,15 @@ if (target.hp <= 0) {
         respawn
 
     const ranking =
-        Array.from(
-            target.rankings.entries()
-        )
-        .sort(
-            (a, b) =>
-                b[1] - a[1]
-        )
+    Array.from(
+        target.rankings.entries()
+    )
+    .sort(
+        (a, b) =>
+            b[1] - a[1]
+    )
 
-    let rewardMsg =
+let rewardMsg =
 
 `\n\n━━━━━━━━━━━━━━
 🏆 تم القضاء على كوراما
@@ -2354,7 +2356,7 @@ ${deadJuubi.respawnAt.toLocaleString()}`
         {
             text:
 
-"❌ الجوبي غير متاح حالياً${respawnText}"
+`❌ الجوبي غير متاح حالياً${respawnText}`
 }
 )
 }
