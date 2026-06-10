@@ -2074,17 +2074,35 @@ if (text === '.اقضي') {
     }
 
     const target =
-    await Beast.findOne({
-        name: 'كوراما',
-        hp: { $gt: 0 }
-    })
+        await Beast.findOne({
+            name: 'كوراما',
+            hp: { $gt: 0 }
+        })
 
     if (!target) {
+
+        const deadKurama =
+            await Beast.findOne({
+                name: 'كوراما'
+            })
+
+        let respawnText = ''
+
+        if (
+            deadKurama &&
+            deadKurama.respawnAt
+        ) {
+
+            respawnText =
+`\n\n⏳ العودة:
+${deadKurama.respawnAt.toLocaleString()}`
+        }
+
         return sock.sendMessage(
             msg.key.remoteJid,
             {
                 text:
-'❌ كوراما غير متاح حالياً'
+`❌ كوراما غير متاح حالياً${respawnText}`
             }
         )
     }
@@ -2118,8 +2136,6 @@ if (text === '.اقضي') {
         oldDamage + damage
     )
 
-    await target.save()
-
     let result =
 `🦊 هجوم على كوراما
 
@@ -2139,27 +2155,30 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
     if (target.hp <= 0) {
 
-    target.lastKilledAt =
-        new Date()
+        target.hp = 0
 
-    const respawn =
-        new Date()
+        target.lastKilledAt =
+            new Date()
 
-    respawn.setHours(
-        respawn.getHours() + 2
-    )
+        const respawn =
+            new Date()
 
-    target.respawnAt =
-        respawn
+        respawn.setHours(
+            respawn.getHours() + 2
+        )
 
-    await target.save()
+        target.respawnAt =
+            respawn
 
-    result += `
+        result += `
 
 🏆 تم القضاء على كوراما
 
 ⏳ سيعود بعد ساعتين`
-}
+    }
+
+    await target.save()
+
     return sock.sendMessage(
         msg.key.remoteJid,
         {
@@ -2167,6 +2186,7 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
         }
     )
 }
+
     
     if (text === '.اباده') {
 
@@ -2195,17 +2215,36 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
     }
 
     const target =
-    await Beast.findOne({
-        name: 'الجوبي',
-        hp: { $gt: 0 }
-    })
+        await Beast.findOne({
+            name: 'الجوبي',
+            hp: { $gt: 0 }
+        })
 
     if (!target) {
+
+        let respawnText = ''
+
+        const deadJuubi =
+            await Beast.findOne({
+                name: 'الجوبي'
+            })
+
+        if (
+            deadJuubi &&
+            deadJuubi.respawnAt
+        ) {
+
+            respawnText =
+`\n\n⏳ يعود في:
+
+${deadJuubi.respawnAt.toLocaleString()}`
+        }
+
         return sock.sendMessage(
             msg.key.remoteJid,
             {
                 text:
-'❌ الجوبي غير متاح حالياً'
+`❌ الجوبي غير متاح حالياً${respawnText}`
             }
         )
     }
@@ -2239,8 +2278,6 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
         oldDamage + damage
     )
 
-    await target.save()
-
     let result =
 `🌌 هجوم على الجوبي
 
@@ -2260,27 +2297,30 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
     if (target.hp <= 0) {
 
-    target.lastKilledAt =
-        new Date()
+        target.hp = 0
 
-    const respawn =
-        new Date()
+        target.lastKilledAt =
+            new Date()
 
-    respawn.setHours(
-        respawn.getHours() + 2
-    )
+        const respawn =
+            new Date()
 
-    target.respawnAt =
-        respawn
+        respawn.setHours(
+            respawn.getHours() + 2
+        )
 
-    await target.save()
+        target.respawnAt =
+            respawn
 
-    result += `
+        result += `
 
 🏆 تم القضاء على الجوبي
 
 ⏳ سيعود بعد ساعتين`
-}
+
+    }
+
+    await target.save()
 
     return sock.sendMessage(
         msg.key.remoteJid,
@@ -2289,6 +2329,7 @@ ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
         }
     )
 }
+    
     
 
     if (text === '.وحشي') {
