@@ -60,6 +60,11 @@ const eventManager =
     require('./eventManager')
 const pendingSwaps = new Map()
 const Waifu = require('./models/Waifu')
+const {
+    checkRespawn
+} = require(
+    './systems/beastManager'
+)
 const { calculateDamageAdvanced } = require('./utils/pvp')
 const express = require("express")
 const restoreAniListImages =
@@ -840,6 +845,16 @@ mongoose.connect(process.env.MONGO_URI)
     console.log(
         '✅ Beasts Loaded'
     )
+    await checkRespawn()
+
+setInterval(
+    checkRespawn,
+    60000
+)
+
+console.log(
+    '✅ Beast Respawn System Started'
+)
 
     currentBoss =
         await Boss.findOne({})
