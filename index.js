@@ -2592,24 +2592,24 @@ ${beastAbility.name}
 
 تم القضاء عليه
 
-⏳ سيعود بعد 10 دقائق`
-}
+⏳ سيعود بعد 10 دقائق
 
-❤️ ${p.hp}/${p.maxHp}
+❤️ 0/${p.maxHp}
 
 `
-        } else {
 
-            raidText +=
+} else {
+
+    raidText +=
 
 `⚔️ @${participantId.split('@')[0]}
 
 💥 -${beastDamage.toLocaleString()}
 
-❤️ ${p.hp.toLocaleString()}/${p.maxHp.toLocaleString()}
+❤️ ${p.hp}/${p.maxHp}
 
 `
-        }
+}
 
         await p.save()
     }
