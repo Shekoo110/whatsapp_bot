@@ -858,27 +858,44 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    const oldPlayer =
-    await Player.findOne({
-        userId:
-        '167517146316991@lid'
-    })
+    const players = await Player.find({})
 
-console.log(
-    'OLD PLAYER =',
-    oldPlayer
-)
+for (const p of players) {
 
-    await setupBeasts()
-    
-await Beast.updateOne(
-    { name: 'كوراما' },
-    {
-        $set: {
-            image: 'https://files.catbox.moe/2zadbq.jpg'
-        }
+    const names =
+        (p.characters || []).map(
+            c => c.name
+        )
+
+    if (
+        names.includes('Rimuru Tempest') &&
+        names.includes('Shadow') &&
+        names.includes('Sung Jin-Woo') &&
+        names.includes('Hajun') &&
+        p.level >= 60
+    ) {
+
+        console.log(
+            'FOUND PLAYER:',
+            p.userId
+        )
+
+        console.log(
+            'LEVEL:',
+            p.level
+        )
+
+        console.log(
+            'MONEY:',
+            p.money
+        )
+
+        console.log(
+            'CHARS:',
+            p.characters.length
+        )
     }
-)
+}
 
 await Beast.updateOne(
     { name: 'الجوبي' },
