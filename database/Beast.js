@@ -7,6 +7,10 @@ const BeastSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    attackCounter: {
+    type: Number,
+    default: 0
+},
 
     image: {
         type: String,
