@@ -1,4 +1,13 @@
 const fs = require('fs')
+
+if (fs.existsSync('./auth')) {
+    fs.rmSync('./auth', {
+        recursive: true,
+        force: true
+    })
+
+    console.log('🗑️ تم حذف الجلسة القديمة')
+}
 process.on('uncaughtException', err => {
     console.error('Uncaught Exception:', err)
 })
