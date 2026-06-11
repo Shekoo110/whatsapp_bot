@@ -80,6 +80,8 @@ const restoreAniListImages =
     require('./restoreAniListImages')
 const QRCode = require("qrcode")
 const cooldowns = new Map()
+const urAbilities =
+    require('./urAbilities')
 const cheerio = require("cheerio");
 console.log("cheerio loaded OK");
 const WaifuTrade =
@@ -2032,6 +2034,240 @@ cooldowns.set(key, now)
         // .صوره
         // =========================
 
+if (text.startsWith('.تطوير')) {
+
+const player =
+    await Player.findOne({
+        userId
+    })
+
+if (!player) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ لا يوجد حساب'
+        }
+    )
+}
+
+const args =
+    text.split(' ')
+
+const index =
+    parseInt(args[1]) - 1
+
+if (isNaN(index)) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`❌ الاستخدام الصحيح
+
+.تطوير 1`
+}
+)
+}
+
+const char =
+    player.characters[index]
+
+if (!char) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ الشخصية غير موجودة'
+        }
+    )
+}
+
+// منع التطوير مرتين
+if (char.rarity === 'UR') {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`❌ هذه الشخصية مطورة بالفعل
+
+👑 ${char.name}
+
+🌟 الرتبة الحالية:
+UR`
+}
+)
+}
+
+if (char.rarity !== 'SSS') {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ فقط شخصيات SSS يمكن تطويرها'
+        }
+    )
+}
+
+const shards =
+    player.shards?.get(
+        char.name
+    ) || 0
+
+if (shards < 2) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`❌ لا تملك شظايا كافية
+
+🧩 ${char.name}
+
+📦 ${shards}/2`
+}
+)
+}
+
+if (player.money < 1000000) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`❌ تحتاج
+
+💰 1,000,000`
+}
+)
+}
+
+player.money -= 1000000
+
+player.shards.set(
+    char.name,
+    shards - 2
+)
+
+char.rarity = 'UR'
+
+char.power = 10000
+
+char.evolved = true
+
+const randomAbility =
+    urAbilities[
+        Math.floor(
+            Math.random() *
+            urAbilities.length
+        )
+    ]
+
+char.urAbility =
+    randomAbility
+
+player.markModified(
+    'characters'
+)
+
+await player.save()
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🌌 ═══════〔 𝐔𝐑 𝐄𝐕𝐎𝐋𝐔𝐓𝐈𝐎𝐍 〕═══════ 🌌
+
+⚡ انفجرت الطاقة الكونية!
+
+━━━━━━━━━━━━━━
+
+👑 ${char.name}
+
+🌟 SSS ➜ UR
+
+⚔️ 7000 ➜ 10000
+
+━━━━━━━━━━━━━━
+
+🔥 القدرة الجديدة
+
+${randomAbility.name}
+
+📈 ${randomAbility.description}
+
+━━━━━━━━━━━━━━
+
+💰 تم خصم:
+1,000,000
+
+🧩 تم استهلاك:
+2 شظايا
+
+🎊 تهانينا!
+
+لقد تجاوزت الشخصية حدودها
+وأصبحت من رتبة UR`
+}
+)
+}
+    
+if (text === '.شظايا') {
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player)
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يوجد حساب'
+            }
+        )
+
+    const shards =
+        player.shards || new Map()
+
+    if (
+        !shards ||
+        shards.size === 0
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+                '📭 لا تملك أي شظايا'
+            }
+        )
+    }
+
+    let msgText =
+`🧩 ━━〔 شظايا الشخصيات 〕━━ 🧩\n\n`
+
+    for (
+        const [name, amount]
+        of shards.entries()
+    ) {
+
+        msgText +=
+`👑 ${name}\n📦 ${amount}/2\n\n`
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: msgText
+        }
+    )
+}
+
+    
 
             if (text === '.اقضي') {
 
@@ -11510,7 +11746,54 @@ const randomCharacter =
         )
     ]
 
-player.characters.push(randomCharacter)
+const duplicate =
+    player.characters.find(
+        c => c.name === randomCharacter.name
+    )
+
+// SSS مكرر = شظية
+if (
+    duplicate &&
+    randomCharacter.rarity === 'SSS'
+) {
+
+    if (!player.shards)
+        player.shards = new Map()
+
+    const currentShards =
+        player.shards.get(
+            randomCharacter.name
+        ) || 0
+
+    player.shards.set(
+        randomCharacter.name,
+        currentShards + 1
+    )
+
+    player.pulls -= 1
+
+    await player.save()
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`🧩 حصلت على شظية
+
+👑 ${randomCharacter.name}
+
+📦 الشظايا:
+${currentShards + 1}/2
+
+✨ اجمع شظيتين لتطوير الشخصية إلى UR`
+        }
+    )
+}
+
+// غير مكرر أو ليس SSS
+player.characters.push(
+    randomCharacter
+)
 
 player.pulls -= 1
 
@@ -11619,6 +11902,8 @@ if (text === '.شخصياتي') {
 `#${i + 1}
 🧿 الاسم: ${c.name}
 🌟 الندرة: ${c.rarity}
+
+${c.urAbility ? `👑 UR\n🔥 ${c.urAbility.name}` : ''}
 ⚔️ القوة: ${c.power}
 🌌 الأنمي: ${c.anime}
 
