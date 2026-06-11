@@ -12789,7 +12789,7 @@ player.characters.forEach((c, i) => {
 })
 
 txt +=
-`📦 إجمالي الشخصيات: ${player.characters.length}`
+`📦 إجمالي الشخصيات: ${player.characters.length}/${player.maxCharacters}`
 
         return safeSend(
             msg.key.remoteJid,
@@ -12854,6 +12854,14 @@ ${player.pulls || 0}
 🎫 تذاكر المتجر:
 
 ${player.towerTickets || 0}
+
+🥚 تذاكر البيض:
+
+${player.eggTickets || 0}
+
+📦 البيوض:
+
+${player.beastEggs || 0}
 
 ━━━━━━━━━━━━━━━━━━
 
