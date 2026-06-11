@@ -2034,14 +2034,101 @@ cooldowns.set(key, now)
         // .صوره
         // =========================
 
-
-
-if (text.startsWith('.حول ')) {
+if (text.startsWith('.ترتيب ')) {
 
     const player =
         await Player.findOne({
             userId
         })
+
+    if (!player) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    const args =
+        text.split(' ')
+
+    const from =
+        parseInt(args[1]) - 1
+
+    const to =
+        parseInt(args[2]) - 1
+
+    if (
+        isNaN(from) ||
+        isNaN(to)
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ الاستخدام
+
+.ترتيب 5 1`
+            }
+        )
+    }
+
+    if (
+        !player.characters[from] ||
+        to < 0 ||
+        to >= player.characters.length
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ رقم غير صحيح'
+            }
+        )
+    }
+
+    const char =
+        player.characters.splice(
+            from,
+            1
+        )[0]
+
+    player.characters.splice(
+        to,
+        0,
+        char
+    )
+
+    player.markModified(
+        'characters'
+    )
+
+    await player.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم ترتيب الشخصيات
+
+👑 ${char.name}
+
+📍 أصبح في المركز ${to + 1}`
+        }
+    )
+}
+
+if (text.startsWith('.حول ')) {
+
+    const player =
+    await Player.findOne({
+        userId
+    })
+
+if (!player.shards) {
+    player.shards = new Map()
+}
 
     if (!player) {
         return safeSend(
@@ -2149,9 +2236,13 @@ ${currentShards + 1}`
     if (text === '.حول الكل') {
 
     const player =
-        await Player.findOne({
-            userId
-        })
+    await Player.findOne({
+        userId
+    })
+
+if (!player.shards) {
+    player.shards = new Map()
+}
 
     if (!player) {
         return safeSend(
@@ -12609,48 +12700,127 @@ if (text === '.شخصياتي') {
 
     try {
 
-        let player = await Player.findOne({ userId })
+        let player =
+            await Player.findOne({
+                userId
+            })
 
         if (!player) {
-            player = await Player.create({
-                userId,
-                characters: []
-            })
+
+            player =
+                await Player.create({
+                    userId,
+                    characters: []
+                })
         }
 
-        if (!player.characters || player.characters.length === 0) {
-            return safeSend(msg.key.remoteJid, {
-                text: '📭 لا توجد شخصيات لديك'
-            })
+        if (
+            !player.characters ||
+            player.characters.length === 0
+        ) {
+
+            return safeSend(
+                msg.key.remoteJid,
+                {
+                    text:
+                    '📭 لا توجد شخصيات لديك'
+                }
+            )
         }
+
+        const ranks = [
+            "SSS",
+            "SSS+",
+            "SSS++",
+            "UR I",
+            "UR II",
+            "UR III",
+            "EX"
+        ]
 
         let txt =
-`👤 ━━〔 𝐘𝐎𝐔𝐑 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑𝐒 〕━━ 👤\n\n`
+`👤 ━━〔 𝐘𝐎𝐔𝐑 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑𝐒 〕━━ 👤
 
-        player.characters.forEach((c, i) => {
+`
 
-            txt +=
+        player.characters.forEach(
+            (c, i) => {
+
+                const level =
+                    c.evolutionLevel || 0
+
+                const rank =
+                    ranks[
+                        Math.min(
+                            level,
+                            ranks.length - 1
+                        )
+                    ]
+
+                txt +=
 `#${i + 1}
-🧿 الاسم: ${c.name}
-🌟 الندرة: ${c.rarity}
 
-${c.urAbility ? `👑 UR\n🔥 ${c.urAbility.name}` : ''}
-⚔️ القوة: ${c.power}
-🌌 الأنمي: ${c.anime}
+🧿 الاسم:
+${c.name}
 
-━━━━━━━━━━━━━━━\n`
-        })
+🌟 الرتبة:
+${rank}
 
-        return safeSend(msg.key.remoteJid, {
-            text: txt
-        })
+⚔️ القوة:
+${c.power}
+
+🌌 الأنمي:
+${c.anime}
+`
+
+                if (
+                    c.urAbilities &&
+                    c.urAbilities.length
+                ) {
+
+                    txt +=
+`\n🔥 القدرات:\n`
+
+                    c.urAbilities.forEach(
+                        (ab, idx) => {
+
+                            txt +=
+`${idx + 1}- ${ab.name}
+📈 ${ab.description}
+
+`
+                        }
+                    )
+                }
+
+                txt +=
+`━━━━━━━━━━━━━━━
+
+`
+            }
+        )
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: txt
+            }
+        )
 
     } catch (err) {
-        console.log('my characters error:', err)
 
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ حدث خطأ في عرض الشخصيات'
-        })
+        console.log(
+            'my characters error:',
+            err
+        )
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ حدث خطأ في عرض الشخصيات'
+            }
+        )
     }
 }
         
