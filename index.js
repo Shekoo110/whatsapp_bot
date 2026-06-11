@@ -2109,6 +2109,9 @@ if (char.rarity !== 'SSS') {
         }
     )
 }
+    if (!player.shards) {
+    player.shards = new Map()
+}
 
 const shards =
     player.shards?.get(
@@ -12226,49 +12229,6 @@ const randomCharacter =
         )
     ]
 
-const duplicate =
-    player.characters.find(
-        c => c.name === randomCharacter.name
-    )
-
-// SSS مكرر = شظية
-if (
-    duplicate &&
-    randomCharacter.rarity === 'SSS'
-) {
-
-    if (!player.shards)
-        player.shards = new Map()
-
-    const currentShards =
-        player.shards.get(
-            randomCharacter.name
-        ) || 0
-
-    player.shards.set(
-        randomCharacter.name,
-        currentShards + 1
-    )
-
-    player.pulls -= 1
-
-    await player.save()
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-`🧩 حصلت على شظية
-
-👑 ${randomCharacter.name}
-
-📦 الشظايا:
-${currentShards + 1}/2
-
-✨ اجمع شظيتين لتطوير الشخصية إلى UR`
-        }
-    )
-}
 
 // غير مكرر أو ليس SSS
 player.characters.push(
