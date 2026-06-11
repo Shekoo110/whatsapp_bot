@@ -2304,6 +2304,48 @@ if (!player) {
     )
 }
 
+// ⬇️ أضفه هنا
+if (
+    player.bossDead &&
+    player.bossRespawn
+) {
+
+    if (
+        Date.now() <
+        new Date(
+            player.bossRespawn
+        ).getTime()
+    ) {
+
+        const remaining =
+            Math.ceil(
+                (
+                    new Date(
+                        player.bossRespawn
+                    ).getTime()
+                    - Date.now()
+                ) / 60000
+            )
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`☠️ أنت ميت حالياً
+
+⏳ المتبقي:
+${remaining} دقيقة`
+            }
+        )
+    }
+
+    player.bossDead = false
+    player.hp = player.maxHp
+
+    await player.save()
+}
+// ⬆️ إلى هنا
+
 if (
     !player.characters ||
     !player.characters.length
@@ -2439,6 +2481,8 @@ target.rankings.set(
     userId,
     oldDamage + damage
 )
+                target.attackCounter =
+    (target.attackCounter || 0) + 1
 
 let result =
 
@@ -2459,8 +2503,131 @@ ${damage.toLocaleString()}
 
 ❤️ المتبقي:
 ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
+if (target.attackCounter >= 3) {
 
-if (target.hp <= 0) {
+    target.attackCounter = 0
+
+    const beastAbility =
+        getKuramaAbility()
+
+    let raidText =
+`🦊 كوراما غضب!
+
+🔥 القدرة:
+${beastAbility.name}
+
+`
+
+    const mentions = []
+
+    for (
+        const [participantId]
+        of target.rankings.entries()
+    ) {
+
+        const p =
+            await Player.findOne({
+                userId: participantId
+            })
+
+        if (!p) continue
+
+        mentions.push(
+            participantId
+        )
+
+        let beastDamage = 0
+
+        if (
+            beastAbility.type === 'damage'
+        ) {
+
+            beastDamage =
+                beastAbility.value
+
+        } else if (
+            beastAbility.type === 'extraDamage'
+        ) {
+
+            beastDamage =
+                beastAbility.value
+
+        } else {
+
+            beastDamage = 3000
+        }
+
+        beastDamage -= Math.floor(
+            beastDamage *
+            ((p.defense || 0) / 100)
+        )
+
+        beastDamage =
+            Math.max(
+                1,
+                beastDamage
+            )
+
+        p.hp =
+            Math.max(
+                0,
+                p.hp - beastDamage
+            )
+
+        if (p.hp <= 0) {
+
+    p.hp = 0
+
+    p.bossDead = true
+
+    p.bossRespawn =
+        new Date(
+            Date.now() +
+            10 * 60 * 1000
+        )
+
+    raidText +=
+
+`☠️ @${participantId.split('@')[0]}
+
+تم القضاء عليه
+
+⏳ سيعود بعد 10 دقائق`
+}
+
+❤️ ${p.hp}/${p.maxHp}
+
+`
+        } else {
+
+            raidText +=
+
+`⚔️ @${participantId.split('@')[0]}
+
+💥 -${beastDamage.toLocaleString()}
+
+❤️ ${p.hp.toLocaleString()}/${p.maxHp.toLocaleString()}
+
+`
+        }
+
+        await p.save()
+    }
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: target.image
+            },
+            caption: raidText,
+            mentions
+        }
+    )
+}
+
+                
+                if (target.hp <= 0) {
 
     target.hp = 0
 
@@ -2614,6 +2781,46 @@ if (!player) {
 }
 
 if (
+    player.bossDead &&
+    player.bossRespawn
+) {
+
+    if (
+        Date.now() <
+        new Date(
+            player.bossRespawn
+        ).getTime()
+    ) {
+
+        const remaining =
+            Math.ceil(
+                (
+                    new Date(
+                        player.bossRespawn
+                    ).getTime()
+                    - Date.now()
+                ) / 60000
+            )
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`☠️ أنت ميت حالياً
+
+⏳ المتبقي:
+${remaining} دقيقة`
+            }
+        )
+    }
+
+    player.bossDead = false
+    player.hp = player.maxHp
+
+    await player.save()
+}
+
+if (
     !player.characters ||
     !player.characters.length
 ) {
@@ -2747,6 +2954,8 @@ target.rankings.set(
     userId,
     oldDamage + damage
 )
+target.attackCounter =
+    (target.attackCounter || 0) + 1
 
 let result =
 
@@ -2766,7 +2975,107 @@ ${damage.toLocaleString()}
 ❤️ المتبقي:
 ${target.hp.toLocaleString()}/${target.maxHp.toLocaleString()}`
 
-if (target.hp <= 0) {
+if (target.attackCounter >= 3) {
+
+    target.attackCounter = 0
+
+    const beastAbility =
+        getJuubiAbility()
+
+    let raidText =
+
+`🌌 الجوبي أطلق قدرة جماعية!
+
+☠️ ${beastAbility.name}
+
+`
+
+    const mentions = []
+
+    for (
+        const [participantId]
+        of target.rankings.entries()
+    ) {
+
+        const p =
+            await Player.findOne({
+                userId: participantId
+            })
+
+        if (!p) continue
+
+        mentions.push(participantId)
+
+        let beastDamage =
+            beastAbility.value || 5000
+
+        beastDamage -= Math.floor(
+            beastDamage *
+            ((p.defense || 0) / 100)
+        )
+
+        beastDamage =
+            Math.max(
+                1,
+                beastDamage
+            )
+
+        p.hp =
+            Math.max(
+                0,
+                p.hp - beastDamage
+            )
+
+        if (p.hp <= 0) {
+
+            p.hp = 0
+
+            p.bossDead = true
+
+            p.bossRespawn =
+                new Date(
+                    Date.now() +
+                    10 * 60 * 1000
+                )
+
+            raidText +=
+
+`☠️ @${participantId.split('@')[0]}
+
+تم القضاء عليه
+
+⏳ سيعود بعد 10 دقائق
+
+`
+        } else {
+
+            raidText +=
+
+`⚔️ @${participantId.split('@')[0]}
+
+💥 -${beastDamage.toLocaleString()}
+
+❤️ ${p.hp.toLocaleString()}/${p.maxHp.toLocaleString()}
+
+`
+        }
+
+        await p.save()
+    }
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: target.image
+            },
+            caption: raidText,
+            mentions
+        }
+    )
+}
+        
+        if (target.hp <= 0) {
 
     target.hp = 0
 
