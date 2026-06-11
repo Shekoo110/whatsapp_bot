@@ -10352,6 +10352,113 @@ const strongest = me.characters.sort(
 
 let damage = strongest.power
 
+if (
+    strongest.rarity === 'UR' &&
+    strongest.urAbility
+) {
+
+    const ability =
+        strongest.urAbility
+
+    // ضرر إضافي
+    if (
+        ability.type === 'bossDamage'
+    ) {
+
+        damage = Math.floor(
+            damage *
+            (1 + ability.value / 100)
+        )
+    }
+
+    if (
+        ability.type === 'attack'
+    ) {
+
+        damage = Math.floor(
+            damage *
+            (1 + ability.value / 100)
+        )
+    }
+
+    // ضربة حرجة
+    if (
+        ability.type === 'critRate'
+    ) {
+
+        if (
+            Math.random() * 100 <=
+            ability.value
+        ) {
+
+            damage *= 2
+        }
+    }
+
+    // ضرر حرج إضافي
+    if (
+        ability.type === 'critDamage'
+    ) {
+
+        if (
+            Math.random() * 100 <= 20
+        ) {
+
+            damage = Math.floor(
+                damage *
+                (
+                    1 +
+                    ability.value / 100
+                )
+            )
+        }
+    }
+
+    // امتصاص حياة
+    if (
+        ability.type === 'lifesteal'
+    ) {
+
+        const heal =
+            Math.floor(
+                damage *
+                ability.value / 100
+            )
+
+        me.hp = Math.min(
+            me.maxHp || 10000,
+            (me.hp || 10000) + heal
+        )
+    }
+
+    // مراوغة
+    if (
+        ability.type === 'dodge'
+    ) {
+
+        me.urDodge =
+            ability.value
+    }
+
+    // عكس ضرر
+    if (
+        ability.type === 'reflect'
+    ) {
+
+        me.urReflect =
+            ability.value
+    }
+
+    // درع
+    if (
+        ability.type === 'shield'
+    ) {
+
+        me.urShield =
+            ability.value
+    }
+}
+
 // بونص الهجوم
 damage = Math.floor(
     damage * (1 + (me.attackBonus || 0) / 100)
@@ -11317,12 +11424,55 @@ ${mentionText}`,
     const bossDamage =
         currentBoss.attack || 3000
 
+                // درع UR
+if (me.urShield) {
+
+    bossDamage =
+        Math.floor(
+            bossDamage *
+            (
+                1 -
+                me.urShield / 100
+            )
+        )
+}
+
+// مراوغة UR
+if (
+    me.urDodge &&
+    Math.random() * 100 <=
+    me.urDodge
+) {
+
+    bossDamage = 0
+}
+
     me.bossHp =
         Math.max(
             0,
             (me.bossHp || me.bossMaxHp) -
             bossDamage
         )
+
+                // عكس ضرر UR
+if (
+    me.urReflect &&
+    bossDamage > 0
+) {
+
+    const reflected =
+        Math.floor(
+            bossDamage *
+            me.urReflect / 100
+        )
+
+    currentBoss.hp =
+        Math.max(
+            0,
+            currentBoss.hp -
+            reflected
+        )
+}
 
     if (me.bossHp <= 0) {
 
