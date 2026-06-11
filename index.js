@@ -858,30 +858,17 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    console.log('🔍 البحث عن الحساب القديم')
-
-const oldPlayer =
-    await Player.findOne({
-        userId:
-        '966574705178@s.whatsapp.net'
-    })
+    const players = await Player.find(
+    {},
+    { userId: 1 }
+).limit(100)
 
 console.log(
-    'RESULT:',
-    oldPlayer ? 'FOUND' : 'NOT FOUND'
-)
-
-if (oldPlayer) {
-
-    oldPlayer.userId =
-        '966532726708@s.whatsapp.net'
-
-    await oldPlayer.save()
-
-    console.log(
-        '✅ تم نقل الحساب'
+    'PLAYERS:',
+    players.map(
+        p => p.userId
     )
-}
+)
 
     await setupBeasts()
     
