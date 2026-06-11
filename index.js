@@ -12717,7 +12717,6 @@ return sock.sendMessage(msg.key.remoteJid, {
         // .شخصياتي
         // =========================
 
-
 if (text === '.شخصياتي') {
 
     try {
@@ -12750,7 +12749,7 @@ if (text === '.شخصياتي') {
             )
         }
 
-        const ranks = [
+        const evolutionRanks = [
             "SSS",
             "SSS+",
             "SSS++",
@@ -12761,66 +12760,42 @@ if (text === '.شخصياتي') {
         ]
 
         let txt =
-`👤 ━━〔 𝐘𝐎𝐔𝐑 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑𝐒 〕━━ 👤
+`👤 شخصياتك
 
 `
 
         player.characters.forEach(
             (c, i) => {
 
-                const level =
-                    c.evolutionLevel || 0
+                let rank =
+                    c.rarity || "عادي"
 
-                const rank =
-                    ranks[
-                        Math.min(
-                            level,
-                            ranks.length - 1
-                        )
-                    ]
-
-                txt +=
-`#${i + 1}
-
-🧿 الاسم:
-${c.name}
-
-🌟 الرتبة:
-${rank}
-
-⚔️ القوة:
-${c.power}
-
-🌌 الأنمي:
-${c.anime}
-`
-
+                // فقط شخصيات SSS المطورة تتغير رتبتها
                 if (
-                    c.urAbilities &&
-                    c.urAbilities.length
+                    c.rarity === 'SSS' &&
+                    c.evolutionLevel !== undefined &&
+                    c.evolutionLevel > 0
                 ) {
 
-                    txt +=
-`\n🔥 القدرات:\n`
-
-                    c.urAbilities.forEach(
-                        (ab, idx) => {
-
-                            txt +=
-`${idx + 1}- ${ab.name}
-📈 ${ab.description}
-
-`
-                        }
-                    )
+                    rank =
+                        evolutionRanks[
+                            Math.min(
+                                c.evolutionLevel,
+                                evolutionRanks.length - 1
+                            )
+                        ]
                 }
 
                 txt +=
-`━━━━━━━━━━━━━━━
+`${i + 1}. ${c.name}
+⚔️ ${c.power} | 🌟 ${rank}
 
 `
             }
         )
+
+        txt +=
+`📦 إجمالي الشخصيات: ${player.characters.length}`
 
         return safeSend(
             msg.key.remoteJid,
@@ -12845,6 +12820,10 @@ ${c.anime}
         )
     }
 }
+
+
+                    
+
         
 // =========================
 // .رصيدي
