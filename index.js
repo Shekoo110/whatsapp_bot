@@ -2286,25 +2286,44 @@ if (!char) {
         }
     )
 }
+    if (char.evolutionLevel === undefined)
+    char.evolutionLevel = 0
 
-// منع التطوير مرتين
-if (char.rarity === 'UR') {
-    return safeSend(
-        msg.key.remoteJid,
-        {
-            text:
+if (!char.urAbilities)
+    char.urAbilities = []
 
-`❌ هذه الشخصية مطورة بالفعل
+    
+const ranks = [
+    "SSS",
+    "SSS+",
+    "SSS++",
+    "UR I",
+    "UR II",
+    "UR III",
+    "EX"
+]
 
-👑 ${char.name}
+const powers = [
+    7000,
+    10000,
+    13000,
+    16000,
+    19000,
+    22000,
+    22000
+]
 
-🌟 الرتبة الحالية:
-UR`
-}
-)
-}
+const costs = [
+    1000000,
+    1500000,
+    2000000,
+    2500000,
+    3000000,
+    3500000
+]
 
 if (char.rarity !== 'SSS') {
+
     return safeSend(
         msg.key.remoteJid,
         {
@@ -2313,16 +2332,34 @@ if (char.rarity !== 'SSS') {
         }
     )
 }
-    if (!player.shards) {
+
+if (!player.shards) {
     player.shards = new Map()
 }
 
+const currentLevel =
+    char.evolutionLevel || 0
+
+if (currentLevel >= 6) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`👑 ${char.name}
+
+🌌 وصلت الشخصية إلى رتبة EX بالفعل`
+        }
+    )
+}
+
 const shards =
-    player.shards?.get(
+    player.shards.get(
         char.name
     ) || 0
 
 if (shards < 2) {
+
     return safeSend(
         msg.key.remoteJid,
         {
@@ -2333,11 +2370,15 @@ if (shards < 2) {
 🧩 ${char.name}
 
 📦 ${shards}/2`
-}
-)
+        }
+    )
 }
 
-if (player.money < 1000000) {
+const cost =
+    costs[currentLevel]
+
+if (player.money < cost) {
+
     return safeSend(
         msg.key.remoteJid,
         {
@@ -2345,56 +2386,76 @@ if (player.money < 1000000) {
 
 `❌ تحتاج
 
-💰 1,000,000`
-}
-)
+💰 ${cost.toLocaleString()}`
+        }
+    )
 }
 
-player.money -= 1000000
+player.money -= cost
 
 player.shards.set(
     char.name,
     shards - 2
 )
 
-char.evolutionLevel =
-    (char.evolutionLevel || 0) + 1
+const oldLevel =
+    currentLevel
 
-char.power = 10000
+char.evolutionLevel++
 
-char.evolved = true
+const newLevel =
+    char.evolutionLevel
 
-const totalChance =
-    urAbilities.reduce(
-        (sum, ability) =>
-            sum + ability.chance,
-        0
+char.power =
+    powers[newLevel]
+
+const availableAbilities =
+    urAbilities.filter(
+        a =>
+        !char.urAbilities.some(
+            owned =>
+            owned.name === a.name
+        )
     )
-
-let roll =
-    Math.random() *
-    totalChance
 
 let randomAbility = null
 
-for (
-    const ability
-    of urAbilities
-) {
+if (availableAbilities.length) {
 
-    roll -= ability.chance
+    const totalChance =
+        availableAbilities.reduce(
+            (sum, ability) =>
+                sum + ability.chance,
+            0
+        )
 
-    if (roll <= 0) {
+    let roll =
+        Math.random() *
+        totalChance
 
-        randomAbility =
-            ability
+    for (
+        const ability
+        of availableAbilities
+    ) {
 
-        break
+        roll -= ability.chance
+
+        if (roll <= 0) {
+
+            randomAbility =
+                ability
+
+            break
+        }
+    }
+
+    if (randomAbility) {
+
+        char.urAbilities.push(
+            randomAbility
+        )
     }
 }
-
-char.urAbility =
-    randomAbility
 
 player.markModified(
     'characters'
@@ -2402,46 +2463,71 @@ player.markModified(
 
 await player.save()
 
+const oldRank =
+    ranks[oldLevel]
+
+const newRank =
+    ranks[newLevel]
+
+if (newLevel === 6) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🌌 ═══════〔 EX AWAKENING 〕═══════ 🌌
+
+☄️ تمزقت الأبعاد
+
+👑 ${char.name}
+
+🌟 ${oldRank} ➜ EX
+
+⚔️ القوة:
+22000
+
+💰 تم خصم:
+${cost.toLocaleString()}
+
+🧩 تم استهلاك:
+2 شظايا
+
+🏆 وصلت الشخصية إلى أعلى رتبة ممكنة`
+        }
+    )
+}
+
 return safeSend(
     msg.key.remoteJid,
     {
         text:
 
-`🌌 ═══════〔 𝐔𝐑 𝐄𝐕𝐎𝐋𝐔𝐓𝐈𝐎𝐍 〕═══════ 🌌
-
-⚡ انفجرت الطاقة الكونية!
-
-━━━━━━━━━━━━━━
+`🌌 ═══════〔 EVOLUTION 〕═══════ 🌌
 
 👑 ${char.name}
 
-🌟 SSS ➜ UR
+🌟 ${oldRank}
+⬇️
+🌟 ${newRank}
 
-⚔️ 7000 ➜ 10000
+⚔️ القوة:
+${char.power}
 
-━━━━━━━━━━━━━━
-
-🔥 القدرة الجديدة
+${randomAbility ? `🔥 القدرة الجديدة
 
 ${randomAbility.name}
 
-📈 ${randomAbility.description}
-
-━━━━━━━━━━━━━━
+📈 ${randomAbility.description}` : ''}
 
 💰 تم خصم:
-1,000,000
+${cost.toLocaleString()}
 
 🧩 تم استهلاك:
-2 شظايا
-
-🎊 تهانينا!
-
-لقد تجاوزت الشخصية حدودها
-وأصبحت من رتبة UR`
-}
+2 شظايا`
+    }
 )
-}
+    
     
 if (text === '.شظايا') {
 
