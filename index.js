@@ -2742,6 +2742,14 @@ if (
         }
     )
 }
+
+           if (!player.bossHp || player.bossMaxHp !== 60000) {
+
+    player.bossHp = 60000
+    player.bossMaxHp = 60000
+
+    await player.save()
+}     
 const cooldownKey =
     `${userId}_kurama`
 
@@ -2953,16 +2961,15 @@ ${beastAbility.name}
                 beastDamage
             )
 
-        p.hp =
-            Math.max(
-                0,
-                p.hp - beastDamage
-            )
+        p.bossHp =
+    Math.max(
+        0,
+        (p.bossHp || 60000) - beastDamage
+    )
 
-        if (p.hp <= 0) {
+        if (p.bossHp <= 0) {
 
-    p.hp = 0
-
+    p.bossHp = 0
     p.bossDead = true
 
     p.bossRespawn =
@@ -2979,7 +2986,7 @@ ${beastAbility.name}
 
 ⏳ سيعود بعد 10 دقائق
 
-❤️ 0/${p.maxHp}
+❤️ 0/${p.bossMaxHp.toLocaleString()}
 
 `
 
@@ -2991,7 +2998,7 @@ ${beastAbility.name}
 
 💥 -${beastDamage.toLocaleString()}
 
-❤️ ${p.hp}/${p.maxHp}
+❤️ ${p.bossHp.toLocaleString()}/${p.bossMaxHp.toLocaleString()}
 
 `
 }
@@ -3200,9 +3207,10 @@ ${remaining} دقيقة`
     }
 
     player.bossDead = false
-    player.hp = player.maxHp
+player.bossHp = 60000
+player.bossMaxHp = 60000
 
-    await player.save()
+await player.save()
 }
 
 if (
@@ -3215,6 +3223,14 @@ if (
             text: '❌ لا تملك شخصيات'
         }
     )
+}
+        if (!player.bossHp || !player.bossMaxHp) {
+
+    player.bossHp = 60000
+    player.bossMaxHp = 60000
+    player.bossDead = false
+
+    await player.save()
 }
 
         const cooldownKey =
@@ -3405,15 +3421,15 @@ if (target.attackCounter >= 3) {
                 beastDamage
             )
 
-        p.hp =
-            Math.max(
-                0,
-                p.hp - beastDamage
-            )
+        p.bossHp =
+    Math.max(
+        0,
+        (p.bossHp || 60000) - beastDamage
+    )
 
-        if (p.hp <= 0) {
+        if (p.bossHp <= 0) {
 
-            p.hp = 0
+            p.bossHp = 0
 
             p.bossDead = true
 
@@ -3431,6 +3447,8 @@ if (target.attackCounter >= 3) {
 
 ⏳ سيعود بعد 10 دقائق
 
+❤️ 0/${p.bossMaxHp.toLocaleString()}
+
 `
         } else {
 
@@ -3440,7 +3458,7 @@ if (target.attackCounter >= 3) {
 
 💥 -${beastDamage.toLocaleString()}
 
-❤️ ${p.hp.toLocaleString()}/${p.maxHp.toLocaleString()}
+❤️ ${p.bossHp.toLocaleString()}/${p.bossMaxHp.toLocaleString()}
 
 `
         }
