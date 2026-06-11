@@ -2618,7 +2618,7 @@ ${cost.toLocaleString()}
 2 شظايا`
     }
 )
-    
+}
     
 if (text === '.شظايا') {
 
