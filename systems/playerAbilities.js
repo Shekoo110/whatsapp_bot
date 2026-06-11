@@ -222,7 +222,7 @@ const playerAbilities = [
     },
 
     {
-        name: '☀️ قوة الخالق',
+        name: '🫈 قوة العمالقة',
         rarity: 'كوني',
         chance: 1,
         type: 'damage',
