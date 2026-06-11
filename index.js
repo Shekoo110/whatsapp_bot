@@ -12760,41 +12760,35 @@ if (text === '.شخصياتي') {
         ]
 
         let txt =
-`👤 شخصياتك
+`👤 ━━〔 شخصياتك 〕━━ 👤
 
 `
 
-        player.characters.forEach(
-            (c, i) => {
+player.characters.forEach((c, i) => {
 
-                let rank =
-                    c.rarity || "عادي"
+    const rank =
+        c.evolutionLevel > 0
+            ? [
+                "SSS",
+                "SSS+",
+                "SSS++",
+                "UR I",
+                "UR II",
+                "UR III",
+                "EX"
+            ][c.evolutionLevel]
+            : c.rarity
 
-                // فقط شخصيات SSS المطورة تتغير رتبتها
-                if (
-                    c.rarity === 'SSS' &&
-                    c.evolutionLevel !== undefined &&
-                    c.evolutionLevel > 0
-                ) {
+    txt +=
+`〔${i + 1}〕 ${c.name}
+⚔️ ${c.power} │ 🌟 ${rank}
 
-                    rank =
-                        evolutionRanks[
-                            Math.min(
-                                c.evolutionLevel,
-                                evolutionRanks.length - 1
-                            )
-                        ]
-                }
-
-                txt +=
-`${i + 1}. ${c.name}
-⚔️ ${c.power} | 🌟 ${rank}
+━━━━━━━━━━━━━━━
 
 `
-            }
-        )
+})
 
-        txt +=
+txt +=
 `📦 إجمالي الشخصيات: ${player.characters.length}`
 
         return safeSend(
