@@ -867,7 +867,29 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    
+    const player =
+    await Player.findOne({
+        userId: '109509284466914@lid'
+    })
+
+if (!player) {
+    console.log('اللاعب غير موجود')
+    return
+}
+
+player.characters.push({
+    name: "Kaido",
+    form: "التنين الكامل",
+    anime: "One Piece",
+    power: 7000,
+    rarity: "SSS",
+    ability: "التنين الأزرق",
+    image: "https://files.catbox.moe/2bb9e1.jpg"
+})
+
+await player.save()
+
+console.log('✅ تمت إضافة Kaido للاعب')
 
 await Beast.updateOne(
     { name: 'الجوبي' },
