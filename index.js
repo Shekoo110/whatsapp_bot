@@ -858,11 +858,18 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    const oldPlayer =
+    console.log('🔍 البحث عن الحساب القديم')
+
+const oldPlayer =
     await Player.findOne({
         userId:
         '966574705178@s.whatsapp.net'
     })
+
+console.log(
+    'RESULT:',
+    oldPlayer ? 'FOUND' : 'NOT FOUND'
+)
 
 if (oldPlayer) {
 
