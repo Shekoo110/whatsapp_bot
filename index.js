@@ -858,6 +858,24 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
+    const oldPlayer =
+    await Player.findOne({
+        userId:
+        '966574705178@s.whatsapp.net'
+    })
+
+if (oldPlayer) {
+
+    oldPlayer.userId =
+        '966532726708@s.whatsapp.net'
+
+    await oldPlayer.save()
+
+    console.log(
+        '✅ تم نقل الحساب'
+    )
+}
+
     await setupBeasts()
     
 await Beast.updateOne(
