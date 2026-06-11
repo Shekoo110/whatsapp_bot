@@ -19,6 +19,11 @@ const PlayerSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    shards: {
+    type: Map,
+    of: Number,
+    default: {}
+},
     
     maxCharacters: {
     type: Number,
