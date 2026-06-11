@@ -12616,11 +12616,13 @@ const filteredCharacters =
 
 if (!filteredCharacters.length) {
 
-    return sock.sendMessage(msg.key.remoteJid, {
-        text:
-
-"❌ لا توجد شخصيات بهذا التصنيف: ${rarity}"
-})
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ لا توجد شخصيات بهذا التصنيف: ${rarity}`
+        }
+    )
 }
 
 const randomCharacter =
