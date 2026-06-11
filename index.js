@@ -858,23 +858,7 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    const oldPlayer =
-    await Player.findOne({
-        userId:
-        '966532726708@s.whatsapp.net'
-    })
-
-if (oldPlayer) {
-
-    oldPlayer.userId =
-        '89602194993244@lid'
-
-    await oldPlayer.save()
-
-    console.log(
-        '✅ تم تحويل الحساب إلى LID'
-    )
-}
+    
 
 await Beast.updateOne(
     { name: 'الجوبي' },
