@@ -3022,6 +3022,7 @@ ${beastAbility.name}
                 if (target.hp <= 0) {
 
     target.hp = 0
+                    target.attackCounter = 0
 
     target.lastKilledAt =
         new Date()
@@ -3481,7 +3482,8 @@ if (target.attackCounter >= 3) {
         if (target.hp <= 0) {
 
     target.hp = 0
-
+            
+target.attackCounter = 0
     target.lastKilledAt =
         new Date()
 
