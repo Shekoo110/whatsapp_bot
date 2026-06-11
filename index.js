@@ -2497,9 +2497,39 @@ char.evolutionLevel++
 const newLevel =
     char.evolutionLevel
 
-char.power =
-    powers[newLevel]
+if (!char.evolutionType) {
 
+    if (char.power >= 6600) {
+
+        char.evolutionType = 'fixed'
+
+    } else if (char.power >= 5400) {
+
+        char.evolutionType = 'medium'
+
+    } else {
+
+        char.evolutionType = 'low'
+
+    }
+
+}
+
+if (char.evolutionType === 'fixed') {
+
+    char.power = powers[newLevel]
+
+} else if (
+    char.evolutionType === 'medium'
+) {
+
+    char.power += 2500
+
+} else {
+
+    char.power += 2000
+
+}
 const availableAbilities =
     urAbilities.filter(
         a =>
