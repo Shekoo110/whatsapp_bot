@@ -858,43 +858,22 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    const players = await Player.find({})
+    const oldPlayer =
+    await Player.findOne({
+        userId:
+        '966532726708@s.whatsapp.net'
+    })
 
-for (const p of players) {
+if (oldPlayer) {
 
-    const names =
-        (p.characters || []).map(
-            c => c.name
-        )
+    oldPlayer.userId =
+        '89602194993244@lid'
 
-    if (
-        names.includes('Rimuru Tempest') &&
-        names.includes('Shadow') &&
-        names.includes('Sung Jin-Woo') &&
-        names.includes('Hajun') &&
-        p.level >= 60
-    ) {
+    await oldPlayer.save()
 
-        console.log(
-            'FOUND PLAYER:',
-            p.userId
-        )
-
-        console.log(
-            'LEVEL:',
-            p.level
-        )
-
-        console.log(
-            'MONEY:',
-            p.money
-        )
-
-        console.log(
-            'CHARS:',
-            p.characters.length
-        )
-    }
+    console.log(
+        '✅ تم تحويل الحساب إلى LID'
+    )
 }
 
 await Beast.updateOne(
