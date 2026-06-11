@@ -858,28 +858,16 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    await Player.deleteOne({
-    userId:
-    '89602194993244@lid'
-})
-
-const oldPlayer =
+    const oldPlayer =
     await Player.findOne({
         userId:
         '167517146316991@lid'
     })
 
-if (oldPlayer) {
-
-    oldPlayer.userId =
-        '89602194993244@lid'
-
-    await oldPlayer.save()
-
-    console.log(
-        '✅ تم نقل الحساب بنجاح'
-    )
-}
+console.log(
+    'OLD PLAYER =',
+    oldPlayer
+)
 
     await setupBeasts()
     
