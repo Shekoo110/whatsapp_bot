@@ -860,48 +860,22 @@ mongoose.connect(process.env.MONGO_URI)
 
     const players = await Player.find({})
 
-for (const p of players) {
+const oldPlayer =
+    await Player.findOne({
+        userId:
+        '167517146316991@lid'
+    })
 
-    const names =
-        (p.characters || []).map(
-            c => c.name
-        )
+if (oldPlayer) {
 
-    if (
+    oldPlayer.userId =
+        '966532726708@s.whatsapp.net'
 
-        names.includes('Rimuru Tempest') &&
-        names.includes('Shadow') &&
-        names.includes('Sung Jin-Woo') &&
-        names.includes('Hajun') &&
-        names.includes('Acnologia') &&
-        names.includes('Saitama') &&
-        names.includes('Kaguya') &&
-        names.includes('Gilgamesh') &&
-        names.includes('Rocks D. Xebec') &&
-        names.includes('Tokinada')
+    await oldPlayer.save()
 
-    ) {
-
-        console.log(
-            'FOUND PLAYER:',
-            p.userId
-        )
-
-        console.log(
-            'LEVEL:',
-            p.level
-        )
-
-        console.log(
-            'MONEY:',
-            p.money
-        )
-
-        console.log(
-            'CHARS:',
-            p.characters.length
-        )
-    }
+    console.log(
+        '✅ تم نقل الحساب بنجاح'
+    )
 }
 
     await setupBeasts()
