@@ -2156,13 +2156,34 @@ char.power = 10000
 
 char.evolved = true
 
-const randomAbility =
-    urAbilities[
-        Math.floor(
-            Math.random() *
-            urAbilities.length
-        )
-    ]
+const totalChance =
+    urAbilities.reduce(
+        (sum, ability) =>
+            sum + ability.chance,
+        0
+    )
+
+let roll =
+    Math.random() *
+    totalChance
+
+let randomAbility = null
+
+for (
+    const ability
+    of urAbilities
+) {
+
+    roll -= ability.chance
+
+    if (roll <= 0) {
+
+        randomAbility =
+            ability
+
+        break
+    }
+}
 
 char.urAbility =
     randomAbility
