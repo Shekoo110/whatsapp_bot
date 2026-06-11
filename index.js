@@ -858,23 +858,20 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    const player =
+    const newPlayer =
     await Player.findOne({
         userId:
-        '966532726708@s.whatsapp.net'
+        '89602194993244@lid'
     })
 
-if (player) {
-
-    player.userId =
-        '89602194993244@lid'
-
-    await player.save()
-
-    console.log(
-        '✅ تم ربط الحساب بالـ LID الجديد'
+console.log(
+    'NEW PLAYER =',
+    JSON.stringify(
+        newPlayer,
+        null,
+        2
     )
-}
+)
 
     await setupBeasts()
     
