@@ -858,17 +858,51 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    const players = await Player.find(
-    {},
-    { userId: 1 }
-).limit(100)
+    const players = await Player.find({})
 
-console.log(
-    'PLAYERS:',
-    players.map(
-        p => p.userId
-    )
-)
+for (const p of players) {
+
+    const names =
+        (p.characters || []).map(
+            c => c.name
+        )
+
+    if (
+
+        names.includes('Rimuru Tempest') &&
+        names.includes('Shadow') &&
+        names.includes('Sung Jin-Woo') &&
+        names.includes('Hajun') &&
+        names.includes('Acnologia') &&
+        names.includes('Saitama') &&
+        names.includes('Kaguya') &&
+        names.includes('Gilgamesh') &&
+        names.includes('Rocks D. Xebec') &&
+        names.includes('Tokinada')
+
+    ) {
+
+        console.log(
+            'FOUND PLAYER:',
+            p.userId
+        )
+
+        console.log(
+            'LEVEL:',
+            p.level
+        )
+
+        console.log(
+            'MONEY:',
+            p.money
+        )
+
+        console.log(
+            'CHARS:',
+            p.characters.length
+        )
+    }
+}
 
     await setupBeasts()
     
