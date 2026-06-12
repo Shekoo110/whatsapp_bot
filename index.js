@@ -2119,6 +2119,116 @@ if (text.startsWith('.ترتيب ')) {
     )
 }
 
+    if (text === '.حول الكل') {
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    if (!player.shards) {
+        player.shards = new Map()
+    }
+
+    let converted = []
+    let totalShards = 0
+
+    const keep = []
+    const count = {}
+
+    for (const char of player.characters) {
+
+        if (char.rarity !== 'SSS') {
+            keep.push(char)
+            continue
+        }
+
+        if (
+            (char.evolutionLevel || 0) > 0
+        ) {
+            keep.push(char)
+            continue
+        }
+
+        count[char.name] =
+            (count[char.name] || 0) + 1
+
+        if (count[char.name] === 1) {
+
+            keep.push(char)
+
+        } else {
+
+            const current =
+                player.shards.get(
+                    char.name
+                ) || 0
+
+            player.shards.set(
+                char.name,
+                current + 1
+            )
+
+            converted.push(
+                `👑 ${char.name} +1`
+            )
+
+            totalShards++
+        }
+    }
+
+    if (!totalShards) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ لا توجد شخصيات مكررة قابلة للتحويل`
+            }
+        )
+    }
+
+    player.characters = keep
+
+    player.markModified(
+        'characters'
+    )
+
+    await player.save()
+
+    return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+`💎 ═══════〔 تحويل المكررات 〕═══════ 💎
+
+${converted.join('\n')}
+
+━━━━━━━━━━━━━━━
+
+🔄 عدد الشخصيات المحولة:
+${totalShards}
+
+🧩 إجمالي الشظايا:
+${totalShards}
+
+📦 السعة المستخدمة:
+${player.characters.length}/${player.maxCharacters || 30}
+
+🏆 تم تنظيف جميع النسخ المكررة بنجاح`
+    }
+)
+    }
+
 if (text.startsWith('.حول ')) {
 
     const player =
@@ -2233,101 +2343,7 @@ ${currentShards + 1}`
     )
 }
 
-    if (text === '.حول الكل') {
-
-    const player =
-    await Player.findOne({
-        userId
-    })
-
-if (!player.shards) {
-    player.shards = new Map()
-}
-
-    if (!player) {
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا يوجد حساب'
-            }
-        )
-    }
-
-    let converted = []
-    let totalShards = 0
-
-    const keep = []
-    const count = {}
-
-    for (const char of player.characters) {
-
-        if (char.rarity !== 'SSS') {
-
-            keep.push(char)
-            continue
-        }
-
-        count[char.name] =
-            (count[char.name] || 0) + 1
-
-        if (count[char.name] === 1) {
-
-            keep.push(char)
-
-        } else {
-
-            const current =
-                player.shards.get(
-                    char.name
-                ) || 0
-
-            player.shards.set(
-                char.name,
-                current + 1
-            )
-
-            converted.push(
-                `👑 ${char.name} +1`
-            )
-
-            totalShards++
-        }
-    }
-
-    if (!totalShards) {
-
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
-                '❌ لا توجد شخصيات SSS مكررة'
-            }
-        )
-    }
-
-    player.characters = keep
-
-    player.markModified(
-        'characters'
-    )
-
-    await player.save()
-
-    return safeSend(
-        msg.key.remoteJid,
-        {
-            text:
-`💎 تحويل المكررات
-
-${converted.join('\n')}
-
-━━━━━━━━━━━━━━
-
-🧩 إجمالي الشظايا:
-${totalShards}`
-        }
-    )
-}
+    
     
 if (text.startsWith('.تطوير')) {
 
@@ -2377,6 +2393,32 @@ if (!char) {
         }
     )
 }
+const alreadyEvolved =
+    player.characters.find(
+        c =>
+            c.name === char.name &&
+            (c.evolutionLevel || 0) > 0 &&
+            c !== char
+    )
+
+if (alreadyEvolved) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ ${char.name}
+
+يوجد لديك نسخة أخرى مطورة من هذه الشخصية بالفعل
+
+👑 لا يمكن تطوير أكثر من نسخة واحدة من نفس الشخصية
+
+💎 استخدم المكررات للشظايا عبر:
+.حول رقم_الشخصية`
+        }
+    )
+}
+    
     if (char.evolutionLevel === undefined)
     char.evolutionLevel = 0
 
@@ -12665,9 +12707,13 @@ const randomCharacter =
 
 
 // غير مكرر أو ليس SSS
-player.characters.push(
-    randomCharacter
-)
+player.characters.push({
+    ...randomCharacter,
+    originalPower:
+        randomCharacter.power,
+    evolutionLevel: 0,
+    urAbilities: []
+})
 
 player.pulls -= 1
 
