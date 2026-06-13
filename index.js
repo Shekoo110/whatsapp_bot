@@ -1314,6 +1314,18 @@ async function startBrawl(
         player2.pvpTeam.map(
             i => player2.characters[i]
         )
+    if (
+    team1.length !== 3 ||
+    team2.length !== 3
+) {
+    return sock.sendMessage(
+        jid,
+        {
+            text:
+            '❌ أحد اللاعبين لا يملك تشكيلة كاملة'
+        }
+    )
+}
 
     let wins1 = 0
     let wins2 = 0
@@ -1336,16 +1348,22 @@ async function startBrawl(
     ) {
 
         const char1 =
-            team1[round]
+    team1[round]
 
-        const char2 =
-            team2[round]
+const char2 =
+    team2[round]
+
+if (!char1 || !char2) {
+    continue
+}
 
         let dmg1 =
-            char1.power || 0
+    char1.power || 0
 
-        let dmg2 =
-            char2.power || 0
+let dmg2 =
+    char2.power || 0
+
+let roundLog = ''
 
         // =========================
 // PLAYER 1 ABILITIES
@@ -1354,66 +1372,107 @@ async function startBrawl(
 for (const ability of char1.urAbilities || []) {
 
     if (
-        ability.type === 'attack' ||
-        ability.type === 'bossDamage'
-    ) {
+    ability.type === 'attack' ||
+    ability.type === 'bossDamage'
+) {
 
-        dmg1 = Math.floor(
-            dmg1 *
-            (1 + ability.value / 100)
-        )
-    }
+    dmg1 = Math.floor(
+        dmg1 *
+        (1 + ability.value / 100)
+    )
 
-    if (
-        ability.type === 'critRate' &&
-        Math.random() * 100 <=
-        ability.value
-    ) {
+    roundLog += `
 
-        dmg1 *= 2
-    }
+🔥 ${ability.name}
+
+⚔️ +${ability.value}% قوة`
+}
 
     if (
-        ability.type === 'lifesteal'
-    ) {
+    ability.type === 'critRate' &&
+    Math.random() * 100 <=
+    ability.value
+) {
 
-        dmg1 += Math.floor(
+    dmg1 *= 2
+
+    roundLog += `
+
+🎯 ${ability.name}
+
+💥 ضربة حرجة ×2`
+}
+
+    if (
+    ability.type === 'lifesteal'
+) {
+
+    const bonus =
+        Math.floor(
             dmg1 *
             ability.value / 200
         )
-    }
 
+    dmg1 += bonus
+
+    roundLog += `
+
+💀 ${ability.name}
+
+🩸 امتص ${bonus} قوة إضافية`
+}
     if (
-        ability.type === 'shield'
-    ) {
+    ability.type === 'shield'
+) {
 
-        dmg2 = Math.floor(
-            dmg2 *
-            (
-                1 -
-                ability.value / 100
-            )
+    dmg2 = Math.floor(
+        dmg2 *
+        (
+            1 -
+            ability.value / 100
         )
-    }
+    )
+
+    roundLog += `
+
+🛡️ ${ability.name}
+
+📉 خفض ضرر الخصم ${ability.value}%`
+}
 
     if (
-        ability.type === 'reflect'
-    ) {
+    ability.type === 'reflect'
+) {
 
-        dmg1 += Math.floor(
+    const reflected =
+        Math.floor(
             dmg2 *
             ability.value / 100
         )
-    }
+
+    dmg1 += reflected
+
+    roundLog += `
+
+🪞 ${ability.name}
+
+💥 عكس ${reflected} ضرر`
+}
 
     if (
-        ability.type === 'dodge' &&
-        Math.random() * 100 <=
-        ability.value
-    ) {
+    ability.type === 'dodge' &&
+    Math.random() * 100 <=
+    ability.value
+) {
 
-        dmg2 = 0
-    }
+    dmg2 = 0
+
+    roundLog += `
+
+👻 ${ability.name}
+
+💨 تفادى الهجمة بالكامل`
+}
 }
 
 // =========================
@@ -1423,66 +1482,108 @@ for (const ability of char1.urAbilities || []) {
 for (const ability of char2.urAbilities || []) {
 
     if (
-        ability.type === 'attack' ||
-        ability.type === 'bossDamage'
-    ) {
+    ability.type === 'attack' ||
+    ability.type === 'bossDamage'
+) {
 
-        dmg2 = Math.floor(
-            dmg2 *
-            (1 + ability.value / 100)
-        )
-    }
+    dmg2 = Math.floor(
+        dmg2 *
+        (1 + ability.value / 100)
+    )
 
-    if (
-        ability.type === 'critRate' &&
-        Math.random() * 100 <=
-        ability.value
-    ) {
+    roundLog += `
 
-        dmg2 *= 2
-    }
+🔥 ${ability.name}
+
+⚔️ +${ability.value}% قوة`
+}
 
     if (
-        ability.type === 'lifesteal'
-    ) {
+    ability.type === 'critRate' &&
+    Math.random() * 100 <=
+    ability.value
+) {
 
-        dmg2 += Math.floor(
+    dmg2 *= 2
+
+    roundLog += `
+
+🎯 ${ability.name}
+
+💥 ضربة حرجة ×2`
+}
+
+    if (
+    ability.type === 'lifesteal'
+) {
+
+    const bonus =
+        Math.floor(
             dmg2 *
             ability.value / 200
         )
-    }
+
+    dmg2 += bonus
+
+    roundLog += `
+
+💀 ${ability.name}
+
+🩸 امتص ${bonus} قوة إضافية`
+}
 
     if (
-        ability.type === 'shield'
-    ) {
+    ability.type === 'shield'
+) {
 
-        dmg1 = Math.floor(
-            dmg1 *
-            (
-                1 -
-                ability.value / 100
-            )
+    dmg1 = Math.floor(
+        dmg1 *
+        (
+            1 -
+            ability.value / 100
         )
-    }
+    )
+
+    roundLog += `
+
+🛡️ ${ability.name}
+
+📉 خفض ضرر الخصم ${ability.value}%`
+}
 
     if (
-        ability.type === 'reflect'
-    ) {
+    ability.type === 'reflect'
+) {
 
-        dmg2 += Math.floor(
+    const reflected =
+        Math.floor(
             dmg1 *
             ability.value / 100
         )
-    }
+
+    dmg2 += reflected
+
+    roundLog += `
+
+🪞 ${ability.name}
+
+💥 عكس ${reflected} ضرر`
+}
 
     if (
-        ability.type === 'dodge' &&
-        Math.random() * 100 <=
-        ability.value
-    ) {
+    ability.type === 'dodge' &&
+    Math.random() * 100 <=
+    ability.value
+) {
 
-        dmg1 = 0
-    }
+    dmg2 = 0
+
+    roundLog += `
+
+👻 ${ability.name}
+
+💨 تفادى الهجمة بالكامل`
+}
 }
 
         if (dmg1 > dmg2) {
@@ -1502,6 +1603,8 @@ for (const ability of char2.urAbilities || []) {
 
 🏆 الفائز:
 ${char1.name}
+
+${roundLog}
 
 ━━━━━━━━━━━━━━━
 
@@ -1525,6 +1628,8 @@ ${char1.name}
 🏆 الفائز:
 ${char2.name}
 
+${roundLog}
+
 ━━━━━━━━━━━━━━━
 
 `
@@ -1535,6 +1640,16 @@ ${char2.name}
 `🥊 الجولة ${round + 1}
 
 ⚖️ تعادل
+
+👑 ${char1.name}
+⚔️ ${dmg1}
+
+🆚
+
+👑 ${char2.name}
+⚔️ ${dmg2}
+
+${roundLog}
 
 ━━━━━━━━━━━━━━━
 
