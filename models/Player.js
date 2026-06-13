@@ -316,7 +316,7 @@ brawlWins: {
 brawlLosses: {
     type: Number,
     default: 0
-}
+},
     
 
     // =========================
