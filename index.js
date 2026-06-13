@@ -2913,8 +2913,8 @@ if (age > 5 * 60 * 1000) {
     // التحقق من التشكيلة
 
     if (
-        !player.brawlTeam ||
-        player.brawlTeam.length !== 3
+        !player.pvpTeam ||
+        player.pvpTeam.length !== 3
     ) {
         return safeSend(
             msg.key.remoteJid,
@@ -2926,8 +2926,8 @@ if (age > 5 * 60 * 1000) {
     }
 
     if (
-        !challenger.brawlTeam ||
-        challenger.brawlTeam.length !== 3
+        !challenger.pvpTeam ||
+        challenger.pvpTeam.length !== 3
     ) {
         return safeSend(
             msg.key.remoteJid,
@@ -2937,7 +2937,6 @@ if (age > 5 * 60 * 1000) {
             }
         )
     }
-
     // المضاربات المتبقية
 
     if ((player.brawlFights || 0) <= 0) {
