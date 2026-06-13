@@ -1296,6 +1296,331 @@ async function generateCharacterShop() {
     }
 }
 
+
+
+async function startBrawl(
+    sock,
+    jid,
+    player1,
+    player2
+) {
+
+    const team1 =
+        player1.pvpTeam.map(
+            i => player1.characters[i]
+        )
+
+    const team2 =
+        player2.pvpTeam.map(
+            i => player2.characters[i]
+        )
+
+    let wins1 = 0
+    let wins2 = 0
+
+    let result =
+`🥊 ═══════〔 بداية المضاربة 〕═══════ 🥊
+
+@${player1.userId.split('@')[0]}
+🆚
+@${player2.userId.split('@')[0]}
+
+━━━━━━━━━━━━━━━
+
+`
+
+    for (
+        let round = 0;
+        round < 3;
+        round++
+    ) {
+
+        const char1 =
+            team1[round]
+
+        const char2 =
+            team2[round]
+
+        let dmg1 =
+            char1.power || 0
+
+        let dmg2 =
+            char2.power || 0
+
+        // =========================
+// PLAYER 1 ABILITIES
+// =========================
+
+for (const ability of char1.urAbilities || []) {
+
+    if (
+        ability.type === 'attack' ||
+        ability.type === 'bossDamage'
+    ) {
+
+        dmg1 = Math.floor(
+            dmg1 *
+            (1 + ability.value / 100)
+        )
+    }
+
+    if (
+        ability.type === 'critRate' &&
+        Math.random() * 100 <=
+        ability.value
+    ) {
+
+        dmg1 *= 2
+    }
+
+    if (
+        ability.type === 'lifesteal'
+    ) {
+
+        dmg1 += Math.floor(
+            dmg1 *
+            ability.value / 200
+        )
+    }
+
+    if (
+        ability.type === 'shield'
+    ) {
+
+        dmg2 = Math.floor(
+            dmg2 *
+            (
+                1 -
+                ability.value / 100
+            )
+        )
+    }
+
+    if (
+        ability.type === 'reflect'
+    ) {
+
+        dmg1 += Math.floor(
+            dmg2 *
+            ability.value / 100
+        )
+    }
+
+    if (
+        ability.type === 'dodge' &&
+        Math.random() * 100 <=
+        ability.value
+    ) {
+
+        dmg2 = 0
+    }
+}
+
+// =========================
+// PLAYER 2 ABILITIES
+// =========================
+
+for (const ability of char2.urAbilities || []) {
+
+    if (
+        ability.type === 'attack' ||
+        ability.type === 'bossDamage'
+    ) {
+
+        dmg2 = Math.floor(
+            dmg2 *
+            (1 + ability.value / 100)
+        )
+    }
+
+    if (
+        ability.type === 'critRate' &&
+        Math.random() * 100 <=
+        ability.value
+    ) {
+
+        dmg2 *= 2
+    }
+
+    if (
+        ability.type === 'lifesteal'
+    ) {
+
+        dmg2 += Math.floor(
+            dmg2 *
+            ability.value / 200
+        )
+    }
+
+    if (
+        ability.type === 'shield'
+    ) {
+
+        dmg1 = Math.floor(
+            dmg1 *
+            (
+                1 -
+                ability.value / 100
+            )
+        )
+    }
+
+    if (
+        ability.type === 'reflect'
+    ) {
+
+        dmg2 += Math.floor(
+            dmg1 *
+            ability.value / 100
+        )
+    }
+
+    if (
+        ability.type === 'dodge' &&
+        Math.random() * 100 <=
+        ability.value
+    ) {
+
+        dmg1 = 0
+    }
+}
+
+        if (dmg1 > dmg2) {
+
+            wins1++
+
+            result +=
+`🥊 الجولة ${round + 1}
+
+👑 ${char1.name}
+⚔️ ${dmg1}
+
+🆚
+
+👑 ${char2.name}
+⚔️ ${dmg2}
+
+🏆 الفائز:
+${char1.name}
+
+━━━━━━━━━━━━━━━
+
+`
+
+        } else if (dmg2 > dmg1) {
+
+            wins2++
+
+            result +=
+`🥊 الجولة ${round + 1}
+
+👑 ${char1.name}
+⚔️ ${dmg1}
+
+🆚
+
+👑 ${char2.name}
+⚔️ ${dmg2}
+
+🏆 الفائز:
+${char2.name}
+
+━━━━━━━━━━━━━━━
+
+`
+
+        } else {
+
+            result +=
+`🥊 الجولة ${round + 1}
+
+⚖️ تعادل
+
+━━━━━━━━━━━━━━━
+
+`
+        }
+    }
+
+    let winner = null
+
+    if (wins1 > wins2) {
+
+    winner = player1
+
+    player1.brawlWins++
+    player2.brawlLosses++
+
+    player1.money =
+        (player1.money || 0) + 50000
+
+    player1.xp =
+        (player1.xp || 0) + 100
+
+} else if (wins2 > wins1) {
+
+    winner = player2
+
+    player2.brawlWins++
+    player1.brawlLosses++
+
+    player2.money =
+        (player2.money || 0) + 50000
+
+    player2.xp =
+        (player2.xp || 0) + 100
+}
+
+    player1.brawlFights =
+        Math.max(
+            0,
+            (player1.brawlFights || 0) - 1
+        )
+
+    player2.brawlFights =
+        Math.max(
+            0,
+            (player2.brawlFights || 0) - 1
+        )
+
+    await player1.save()
+    await player2.save()
+
+    result +=
+
+winner ?
+
+`👑 الفائز النهائي
+
+@${winner.userId.split('@')[0]}
+
+🏆 النتيجة:
+${wins1} - ${wins2}
+
+💰 المكافأة:
+50,000 مال
+
+⭐ الخبرة:
+100 XP`
+
+:
+
+`⚖️ انتهت المضاربة بالتعادل
+
+🚫 لا توجد مكافآت`
+
+    return sock.sendMessage(
+        jid,
+        {
+            text: result,
+            mentions: [
+                player1.userId,
+                player2.userId
+            ]
+        }
+    )
+}
+
 async function spawnBoss(sock, groupId) {
 
     console.log('🔥 SPAWN BOSS CALLED')
@@ -2030,9 +2355,567 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-        // =========================
-        // .صوره
-        // =========================
+
+if (text.startsWith('.تشكيلة')) {
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    const args =
+        text.split(' ')
+
+    if (args.length < 4) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`❌ الاستخدام الصحيح
+
+.تشكيلة 1 2 3`
+            }
+        )
+    }
+
+    const indexes = [
+        parseInt(args[1]) - 1,
+        parseInt(args[2]) - 1,
+        parseInt(args[3]) - 1
+    ]
+
+    if (
+        indexes.some(
+            i => isNaN(i)
+        )
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ أرقام غير صحيحة'
+            }
+        )
+    }
+
+    if (
+        new Set(indexes).size !== 3
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يمكن تكرار نفس الشخصية'
+            }
+        )
+    }
+
+    const selected = []
+
+    for (const i of indexes) {
+
+        const char =
+            player.characters[i]
+
+        if (!char) {
+
+            return safeSend(
+                msg.key.remoteJid,
+                {
+                    text:
+`❌ الشخصية رقم ${i + 1} غير موجودة`
+                }
+            )
+        }
+
+        selected.push(i)
+    }
+
+    player.pvpTeam = selected
+
+    await player.save()
+
+    const names =
+        selected.map(
+            i =>
+                `👑 ${player.characters[i].name}`
+        )
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🥊 ═══════〔 تم حفظ التشكيلة 〕═══════ 🥊
+
+${names.join('\n')}
+
+🔥 أصبحت جاهزاً للمضاربات`
+        }
+    )
+}
+
+    if (text === '.تشكيلتي') {
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (
+        !player ||
+        !player.pvpTeam ||
+        !player.pvpTeam.length
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لم تقم بتحديد تشكيلة بعد'
+            }
+        )
+    }
+
+    let result =
+`🥊 ═══════〔 تشكيلتك 〕═══════ 🥊
+
+`
+
+    player.pvpTeam.forEach(
+        (index, i) => {
+
+            const char =
+                player.characters[index]
+
+            if (!char) return
+
+            result +=
+`〔${i + 1}〕 ${char.name}
+⚔️ ${char.power}
+🌟 ${char.rarity}
+
+━━━━━━━━━━━━━━━
+
+`
+        }
+    )
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: result
+        }
+    )
+}
+
+    if (text.startsWith('.مضاربة')) {
+
+    const mentioned =
+        msg.message?.extendedTextMessage
+        ?.contextInfo?.mentionedJid?.[0]
+
+    if (!mentioned) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ قم بعمل منشن للشخص'
+            }
+        )
+    }
+
+    if (mentioned === userId) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يمكنك مضاربة نفسك'
+            }
+        )
+    }
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    if (
+        !player.pvpTeam ||
+        player.pvpTeam.length !== 3
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ يجب تحديد تشكيلة أولاً
+
+.تشكيلة 1 2 3`
+            }
+        )
+    }
+
+    // تجديد المحاولات كل ساعة
+
+    const hour =
+        60 * 60 * 1000
+
+    const currentPeriod =
+        Math.floor(
+            Date.now() / hour
+        )
+
+    if (
+        player.lastBrawlReset !==
+        currentPeriod
+    ) {
+
+        player.brawlFights = 5
+        player.lastBrawlReset =
+            currentPeriod
+
+        await player.save()
+    }
+
+    if (
+        player.brawlFights <= 0
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ انتهت محاولات المضاربة لهذا الساعة'
+            }
+        )
+    }
+
+    const target =
+        await Player.findOne({
+            userId: mentioned
+        })
+
+    if (!target) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ الخصم لا يملك حساباً'
+            }
+        )
+    }
+
+    if (
+        !target.pvpTeam ||
+        target.pvpTeam.length !== 3
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ الخصم لم يحدد تشكيلة'
+            }
+        )
+    }
+
+    target.pendingBrawl = {
+        challenger: userId,
+        createdAt: Date.now()
+    }
+
+    await target.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🥊 تم إرسال طلب مضاربة
+
+🎯 إلى:
+@${mentioned.split('@')[0]}
+
+⌛ بانتظار القبول
+
+استخدم:
+
+.قبول مضاربة
+أو
+.رفض مضاربة`,
+
+            mentions: [mentioned]
+        }
+    )
+}
+    if (text === '.رفض مضاربة') {
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (
+        !player ||
+        !player.pendingBrawl
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يوجد طلب مضاربة'
+            }
+        )
+    }
+
+    player.pendingBrawl = null
+
+    await player.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ تم رفض المضاربة'
+        }
+    )
+}
+    
+if (text === '.قبول مضاربة') {
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (
+        !player ||
+        !player.pendingBrawl
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يوجد طلب مضاربة'
+            }
+        )
+    }
+
+    const challenger =
+        await Player.findOne({
+            userId:
+            player.pendingBrawl.challenger
+        })
+
+    if (!challenger) {
+
+        player.pendingBrawl = null
+
+        await player.save()
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ صاحب التحدي غير موجود'
+            }
+        )
+    }
+
+    player.pendingBrawl = null
+
+    await player.save()
+
+    await startBrawl(
+        sock,
+        msg.key.remoteJid,
+        challenger,
+        player
+    )
+}
+            
+
+    if (text.startsWith('.مضاربة')) {
+
+    const mentioned =
+        msg.message?.extendedTextMessage
+        ?.contextInfo?.mentionedJid?.[0]
+
+    if (!mentioned) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ قم بعمل منشن للشخص'
+            }
+        )
+    }
+
+    if (mentioned === userId) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يمكنك مضاربة نفسك'
+            }
+        )
+    }
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    if (
+        !player.pvpTeam ||
+        player.pvpTeam.length !== 3
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`❌ يجب اختيار تشكيلة أولاً
+
+.تشكيلة 1 2 3`
+            }
+        )
+    }
+
+    const hour =
+        60 * 60 * 1000
+
+    const currentPeriod =
+        Math.floor(
+            Date.now() / hour
+        )
+
+    if (
+        player.lastBrawlReset !==
+        currentPeriod
+    ) {
+
+        player.brawlFights = 5
+
+        player.lastBrawlReset =
+            currentPeriod
+
+        await player.save()
+    }
+
+    if (
+        player.brawlFights <= 0
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ انتهت المضاربات
+
+⏳ تتجدد 5 مضاربات كل ساعة`
+            }
+        )
+    }
+
+    const target =
+        await Player.findOne({
+            userId: mentioned
+        })
+
+    if (!target) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ الخصم لا يملك حساباً'
+            }
+        )
+    }
+
+    if (
+        !target.pvpTeam ||
+        target.pvpTeam.length !== 3
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ الخصم لم يحدد تشكيلة'
+            }
+        )
+    }
+
+    if (
+        target.pendingBrawl
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لدى هذا اللاعب طلب مضاربة آخر'
+            }
+        )
+    }
+
+    target.pendingBrawl = {
+
+        challenger: userId,
+
+        createdAt:
+            Date.now()
+    }
+
+    await target.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🥊 ═══════〔 طلب مضاربة 〕═══════ 🥊
+
+🎯 المرسل:
+@${userId.split('@')[0]}
+
+⚔️ يريد مضاربتك
+
+✅ .قبول مضاربة
+❌ .رفض مضاربة`,
+
+            mentions: [
+                userId
+            ]
+        }
+    )
+}
+    
 
 if (text.startsWith('.ترتيب ')) {
 
