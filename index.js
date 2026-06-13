@@ -1740,6 +1740,7 @@ ${wins1} - ${wins2}
 )
 
 return
+}
 
 async function spawnBoss(sock, groupId) {
 
