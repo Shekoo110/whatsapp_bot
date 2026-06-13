@@ -2487,7 +2487,7 @@ ${names.join('\n')}
     }
 
     let result =
-`🥊 ═══════〔 تشكيلتك 〕═══════ 🥊
+`🥊 ═══════〔 تشكيلتك القتالية 〕═══════ 🥊
 
 `
 
@@ -2499,10 +2499,48 @@ ${names.join('\n')}
 
             if (!char) return
 
+            const evoRanks = [
+                "SSS",
+                "SSS+",
+                "SSS++",
+                "UR I",
+                "UR II",
+                "UR III",
+                "EX"
+            ]
+
+            let rank =
+                char.rarity
+
+            if (
+                char.evolutionLevel > 0
+            ) {
+                rank =
+                    evoRanks[
+                        char.evolutionLevel
+                    ]
+            }
+
+            let abilities = ''
+
+            if (
+                char.urAbilities &&
+                char.urAbilities.length
+            ) {
+
+                abilities =
+                    '\n🔥 القدرات:\n' +
+                    char.urAbilities
+                    .map(a => `• ${a.name}`)
+                    .join('\n')
+            }
+
             result +=
 `〔${i + 1}〕 ${char.name}
-⚔️ ${char.power}
-🌟 ${char.rarity}
+
+🌟 ${rank}
+⚔️ القوة: ${char.power}
+${abilities}
 
 ━━━━━━━━━━━━━━━
 
@@ -2717,6 +2755,24 @@ if (text === '.قبول مضاربة') {
             }
         )
     }
+    const age =
+    Date.now() -
+    player.pendingBrawl.createdAt
+
+if (age > 5 * 60 * 1000) {
+
+    player.pendingBrawl = null
+
+    await player.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ انتهت صلاحية طلب المضاربة'
+        }
+    )
+}
 
     const challenger =
         await Player.findOne({
@@ -2734,14 +2790,68 @@ if (text === '.قبول مضاربة') {
             msg.key.remoteJid,
             {
                 text:
-                '❌ صاحب التحدي غير موجود'
+                '❌ صاحب المضاربة غير موجود'
             }
         )
     }
 
+    // التحقق من التشكيلة
+
+    if (
+        !player.brawlTeam ||
+        player.brawlTeam.length !== 3
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ قم بتحديد تشكيلتك أولاً\n\n.تشكيلة 1 2 3'
+            }
+        )
+    }
+
+    if (
+        !challenger.brawlTeam ||
+        challenger.brawlTeam.length !== 3
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ الخصم لا يملك تشكيلة مكتملة'
+            }
+        )
+    }
+
+    // المضاربات المتبقية
+
+    if ((player.brawlFights || 0) <= 0) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ انتهت مضارباتك لهذه الساعة'
+            }
+        )
+    }
+
+    if ((challenger.brawlFights || 0) <= 0) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ الخصم لا يملك مضاربات متبقية'
+            }
+        )
+    }
+
+    player.brawlFights -= 1
+    challenger.brawlFights -= 1
+
     player.pendingBrawl = null
 
     await player.save()
+    await challenger.save()
 
     await startBrawl(
         sock,
@@ -2792,6 +2902,16 @@ if (text === '.قبول مضاربة') {
             }
         )
     }
+        if (player.pendingBrawl) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ لديك طلب مضاربة معلق'
+        }
+    )
+}
 
     if (
         !player.pvpTeam ||
