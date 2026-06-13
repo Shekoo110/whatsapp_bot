@@ -1330,16 +1330,25 @@ async function startBrawl(
     let wins1 = 0
     let wins2 = 0
 
-    let result =
+    await sock.sendMessage(
+    jid,
+    {
+        text:
 `🥊 ═══════〔 بداية المضاربة 〕═══════ 🥊
 
 @${player1.userId.split('@')[0]}
 🆚
-@${player2.userId.split('@')[0]}
+@${player2.userId.split('@')[0]}`,
+        mentions: [
+            player1.userId,
+            player2.userId
+        ]
+    }
+)
 
-━━━━━━━━━━━━━━━
-
-`
+await new Promise(
+    r => setTimeout(r, 2000)
+)
 
     for (
         let round = 0;
@@ -1588,9 +1597,12 @@ for (const ability of char2.urAbilities || []) {
 
         if (dmg1 > dmg2) {
 
-            wins1++
+    wins1++
 
-            result +=
+    await sock.sendMessage(
+        jid,
+        {
+            text:
 `🥊 الجولة ${round + 1}
 
 👑 ${char1.name}
@@ -1606,15 +1618,25 @@ ${char1.name}
 
 ${roundLog}
 
-━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━`
+        }
+    )
 
-`
+    await new Promise(
+        r => setTimeout(r, 2500)
+    )
+}
+
+        
 
         } else if (dmg2 > dmg1) {
 
-            wins2++
+    wins2++
 
-            result +=
+    await sock.sendMessage(
+        jid,
+        {
+            text:
 `🥊 الجولة ${round + 1}
 
 👑 ${char1.name}
@@ -1630,32 +1652,15 @@ ${char2.name}
 
 ${roundLog}
 
-━━━━━━━━━━━━━━━
-
-`
-
-        } else {
-
-            result +=
-`🥊 الجولة ${round + 1}
-
-⚖️ تعادل
-
-👑 ${char1.name}
-⚔️ ${dmg1}
-
-🆚
-
-👑 ${char2.name}
-⚔️ ${dmg2}
-
-${roundLog}
-
-━━━━━━━━━━━━━━━
-
-`
+━━━━━━━━━━━━━━━`
         }
-    }
+    )
+
+    await new Promise(
+        r => setTimeout(r, 2500)
+    )
+}
+        
 
     let winner = null
 
@@ -1720,21 +1725,43 @@ ${wins1} - ${wins2}
 
 :
 
+await sock.sendMessage(
+    jid,
+    {
+        text:
+
+winner ?
+
+`👑 الفائز النهائي
+
+@${winner.userId.split('@')[0]}
+
+🏆 النتيجة:
+${wins1} - ${wins2}
+
+💰 المكافأة:
+50,000 مال
+
+⭐ الخبرة:
+100 XP`
+
+:
+
 `⚖️ انتهت المضاربة بالتعادل
 
-🚫 لا توجد مكافآت`
+🏆 النتيجة:
+${wins1} - ${wins2}
 
-    return sock.sendMessage(
-        jid,
-        {
-            text: result,
-            mentions: [
-                player1.userId,
-                player2.userId
-            ]
-        }
-    )
-}
+🚫 لا توجد مكافآت`,
+
+        mentions:
+        winner
+        ? [winner.userId]
+        : []
+    }
+)
+
+return
 
 async function spawnBoss(sock, groupId) {
 
@@ -2470,7 +2497,64 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text === '.مضارباتي') {
 
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    const hour =
+        60 * 60 * 1000
+
+    const currentPeriod =
+        Math.floor(
+            Date.now() / hour
+        )
+
+    if (
+        player.lastBrawlReset !==
+        currentPeriod
+    ) {
+
+        player.brawlFights = 5
+
+        player.lastBrawlReset =
+            currentPeriod
+
+        await player.save()
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🥊 ═══════〔 المضاربات 〕═══════ 🥊
+
+⚔️ المتبقي:
+${player.brawlFights}/5
+
+🏆 الانتصارات:
+${player.brawlWins || 0}
+
+💀 الخسائر:
+${player.brawlLosses || 0}`
+        }
+    )
+}
+
+    
 if (text.startsWith('.تشكيلة')) {
 
     const player =
