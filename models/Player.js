@@ -259,6 +259,35 @@ beastKills: {
     type: Number,
     default: 0
 },
+
+    // =========================
+// PvP System
+// =========================
+
+pvpTeam: {
+    type: Array,
+    default: []
+},
+
+pvpWins: {
+    type: Number,
+    default: 0
+},
+
+pvpLosses: {
+    type: Number,
+    default: 0
+},
+
+pvpFights: {
+    type: Number,
+    default: 5
+},
+
+lastPvpReset: {
+    type: Number,
+    default: 0
+},
     
 
     // =========================
