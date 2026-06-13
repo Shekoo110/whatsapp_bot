@@ -1625,11 +1625,8 @@ ${roundLog}
     await new Promise(
         r => setTimeout(r, 2500)
     )
-}
 
-        
-
-        } else if (dmg2 > dmg1) {
+} else if (dmg2 > dmg1) {
 
     wins2++
 
