@@ -1657,7 +1657,7 @@ ${roundLog}
         r => setTimeout(r, 2500)
     )
 }
-        
+       } // ← هذا القوس يغلق for 
 
     let winner = null
 
@@ -1702,25 +1702,6 @@ ${roundLog}
 
     await player1.save()
     await player2.save()
-
-    result +=
-
-winner ?
-
-`👑 الفائز النهائي
-
-@${winner.userId.split('@')[0]}
-
-🏆 النتيجة:
-${wins1} - ${wins2}
-
-💰 المكافأة:
-50,000 مال
-
-⭐ الخبرة:
-100 XP`
-
-:
 
 await sock.sendMessage(
     jid,
