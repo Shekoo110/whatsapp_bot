@@ -288,6 +288,35 @@ lastPvpReset: {
     type: Number,
     default: 0
 },
+
+    // =========================
+// BRAWL SYSTEM (المضاربة)
+// =========================
+
+brawlFights: {
+    type: Number,
+    default: 5
+},
+
+lastBrawlReset: {
+    type: Number,
+    default: 0
+},
+
+pendingBrawl: {
+    type: Object,
+    default: null
+},
+
+brawlWins: {
+    type: Number,
+    default: 0
+},
+
+brawlLosses: {
+    type: Number,
+    default: 0
+}
     
 
     // =========================
