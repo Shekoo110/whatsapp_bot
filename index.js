@@ -54,6 +54,12 @@ const {
 )
 
 const {
+    downloadMediaMessage
+} = require(
+    '@whiskeysockets/baileys'
+)
+
+const {
     startQuestion,
     checkAnswer,
     quizData
