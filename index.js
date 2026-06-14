@@ -1877,7 +1877,7 @@ let bossInterval = null
 const GROUP_ID = "120363020823525909@g.us"
 
 async function startBot() {
-
+console.log('🚀 START BOT', Date.now())
     console.log("START BOT")
 
     if (!fs.existsSync('./auth')) {
@@ -1899,7 +1899,8 @@ const BEAST_GROUPS = [
 
 let lastKuramaRespawn = 0
 let lastJuubiRespawn = 0
-
+    
+if (false) {
 if (!beastInterval) {
 
     console.log('✅ Beast Interval Started')
@@ -2025,7 +2026,7 @@ ${juubi.maxHp.toLocaleString()}
 
     }, 60000)
 }
-
+}
     console.log("SOCKET CREATED")
 
     sock.ev.on('creds.update', saveCreds)
