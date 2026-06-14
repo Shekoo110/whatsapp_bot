@@ -2308,11 +2308,10 @@ sock.ev.on('connection.update', async (update) => {
         '❌ CONNECTION CLOSED'
     )
 
-    console.log(
-        'CLOSE REASON:',
-        update?.lastDisconnect?.error
-    )
-
+    console.dir(
+    update?.lastDisconnect,
+    { depth: 20 }
+)
     try {
 
         console.log(
@@ -2606,7 +2605,12 @@ cooldowns.set(key, now)
 
 
 if (text === '.س') {
-
+return safeSend(
+        msg.key.remoteJid,
+        {
+            text: '🔧 أمر الستيكر معطل مؤقتاً'
+        }
+    )
     try {
 
         const quoted =
