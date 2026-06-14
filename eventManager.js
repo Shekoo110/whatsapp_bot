@@ -85,26 +85,6 @@ ${data.currentEvent.command}
 }
 )
 
-data.timeout =
-    setTimeout(
-        () => {
-
-            data.eventRunning =
-                false
-
-            data.currentEvent =
-                null
-
-            data.participants =
-                []
-
-            data.timeout =
-                null
-
-        },
-        120000
-    )
-
 return true
 
 }
