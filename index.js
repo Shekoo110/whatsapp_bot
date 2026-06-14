@@ -1,43 +1,13 @@
 const fs = require('fs')
 
-process.on(
-    'uncaughtException',
-    err => {
-
-        console.error(
-            'UNCAUGHT:',
-            err
-        )
-    }
-)
-
-process.on(
-    'unhandledRejection',
-    err => {
-
-        console.error(
-            'UNHANDLED:',
-            err
-        )
-    }
-)
-
-
 process.on('uncaughtException', err => {
-    console.error('Uncaught Exception:', err)
+    console.error('UNCAUGHT EXCEPTION:')
+    console.error(err)
 })
 
 process.on('unhandledRejection', err => {
-    console.error('Unhandled Rejection:', err)
-})
-
-
-process.on('uncaughtException', (err) => {
-    console.error('❌ Crash Error:', err)
-})
-
-process.on('unhandledRejection', (err) => {
-    console.error('❌ Promise Error:', err)
+    console.error('UNHANDLED REJECTION:')
+    console.error(err)
 })
 
 const {
@@ -2332,25 +2302,22 @@ sock.ev.on('connection.update', async (update) => {
 
     console.log('انقطع الاتصال')
 
-    const shouldReconnect =
-        state.creds.registered
+const shouldReconnect =
+    state.creds.registered
 
-    if (shouldReconnect) {
+if (shouldReconnect) {
 
-        console.log(
-            '🔄 RECONNECTING IN 5s'
-        )
+    console.log(
+        '🚫 AUTO RECONNECT DISABLED'
+    )
 
-        setTimeout(() => {
-            startBot()
-        }, 5000)
+    return
 
-    } else {
+} else {
 
-        console.log(
-            'بانتظار إكمال الربط...'
-        )
-    }
+    console.log(
+        'بانتظار إكمال الربط...'
+    )
 }
     })
 
