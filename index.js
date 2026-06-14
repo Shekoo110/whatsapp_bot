@@ -1902,6 +1902,7 @@ ${
 
 let pairingRequested = false
 let currentBoss = null
+let beastInterval = null
 let bossInterval = null
 const GROUP_ID = "120363020823525909@g.us"
 
@@ -1931,39 +1932,40 @@ let lastJuubiRespawn = 0
 
 if (!beastInterval) {
 
+    console.log('✅ Beast Interval Started')
+
     beastInterval = setInterval(async () => {
 
-    try {
+        try {
 
-        const kurama =
-            await Beast.findOne({
+            const kurama = await Beast.findOne({
                 name: 'كوراما'
             })
 
-        if (
-            kurama &&
-            kurama.hp === kurama.maxHp &&
-            kurama.lastKilledAt &&
-            kurama.lastKilledAt.getTime() >
-            lastKuramaRespawn
-        ) {
+            if (
+                kurama &&
+                kurama.hp === kurama.maxHp &&
+                kurama.lastKilledAt &&
+                kurama.lastKilledAt.getTime() > lastKuramaRespawn
+            ) {
 
-            lastKuramaRespawn =
-                kurama.lastKilledAt.getTime()
+                lastKuramaRespawn =
+                    kurama.lastKilledAt.getTime()
 
-            for (const groupId of BEAST_GROUPS) {
+                for (const groupId of BEAST_GROUPS) {
 
-    if (!sock?.user)
-        continue
+                    try {
 
-    await sock.sendMessage(
-        groupId,
-        {
-            image: {
-                url: kurama.image
-            },
+                        if (!sock?.user)
+                            continue
 
-                        caption:
+                        await sock.sendMessage(
+                            groupId,
+                            {
+                                image: {
+                                    url: kurama.image
+                                },
+                                caption:
 `🦊 استيقظ كوراما!
 
 🔥 الوحش العالمي عاد للحياة
@@ -1976,42 +1978,48 @@ ${kurama.maxHp.toLocaleString()}
 .اقضي
 
 للهجوم عليه`
+                            }
+                        )
+
+                    } catch (err) {
+
+                        console.log(
+                            'Kurama Send Error:',
+                            err
+                        )
                     }
-                )
+                }
             }
-        }
 
-        const juubi =
-            await Beast.findOne({
-                name: 'الجوبي'
-            })
+            const juubi =
+                await Beast.findOne({
+                    name: 'الجوبي'
+                })
 
-        if (
-            juubi &&
-            juubi.hp === juubi.maxHp &&
-            juubi.lastKilledAt &&
-            juubi.lastKilledAt.getTime() >
-            lastJuubiRespawn
-        ) {
+            if (
+                juubi &&
+                juubi.hp === juubi.maxHp &&
+                juubi.lastKilledAt &&
+                juubi.lastKilledAt.getTime() > lastJuubiRespawn
+            ) {
 
-            lastJuubiRespawn =
-                juubi.lastKilledAt.getTime()
+                lastJuubiRespawn =
+                    juubi.lastKilledAt.getTime()
 
-            for (const groupId of BEAST_GROUPS) {
+                for (const groupId of BEAST_GROUPS) {
 
-    try {
+                    try {
 
-        if (!sock?.user)
-            continue
+                        if (!sock?.user)
+                            continue
 
-        await sock.sendMessage(
-            groupId,
-            {
-                image: {
-                    url: juubi.image
-                },
-
-                        caption:
+                        await sock.sendMessage(
+                            groupId,
+                            {
+                                image: {
+                                    url: juubi.image
+                                },
+                                caption:
 `🌌 استيقظ الجوبي!
 
 ☠️ أقوى وحش عالمي عاد للحياة
@@ -2024,21 +2032,28 @@ ${juubi.maxHp.toLocaleString()}
 .اباده
 
 للهجوم عليه`
+                            }
+                        )
+
+                    } catch (err) {
+
+                        console.log(
+                            'Juubi Send Error:',
+                            err
+                        )
                     }
-                )
+                }
             }
+
+        } catch (err) {
+
+            console.log(
+                'Beast Announce Error:',
+                err
+            )
         }
 
-    } catch (err) {
-
-        console.log(
-            'Beast Announce Error:',
-            err
-        )
-    }
-
-}, 60000)
-
+    }, 60000)
 }
 
     console.log("SOCKET CREATED")
