@@ -83,6 +83,9 @@ setInterval(
                     eventManager.finishEvent(
                         event.jid
                     )
+                if (!Array.isArray(winners)) {
+    continue
+                }
 
                 let result =
 
