@@ -46,6 +46,18 @@ const {
     default: makeWASocket,
     useMultiFileAuthState
 } = require('@whiskeysockets/baileys')
+const fs = require('fs-extra')
+
+const ffmpeg =
+    require('fluent-ffmpeg')
+
+const ffmpegPath =
+    require('ffmpeg-static')
+
+ffmpeg.setFfmpegPath(
+    ffmpegPath
+)
+
 const {
     Sticker,
     StickerTypes
@@ -2136,6 +2148,44 @@ ${juubi.maxHp.toLocaleString()}
 
     }, 60000)
 
+
+    async function videoToSticker(
+    input,
+    output
+) {
+
+    return new Promise(
+        (
+            resolve,
+            reject
+        ) => {
+
+            ffmpeg(input)
+
+            .outputOptions([
+                '-vcodec libwebp',
+                '-vf scale=512:512:force_original_aspect_ratio=decrease,fps=15',
+                '-loop 0',
+                '-preset default',
+                '-an',
+                '-vsync 0',
+                '-s 512:512'
+            ])
+
+            .save(output)
+
+            .on(
+                'end',
+                resolve
+            )
+
+            .on(
+                'error',
+                reject
+            )
+        }
+    )
+}
     
     // =========================
     // Shop (مرة واحدة فقط)
@@ -2487,12 +2537,14 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+
 if (text === '.س') {
 
     try {
 
         const quoted =
-            msg.message?.extendedTextMessage
+            msg.message
+            ?.extendedTextMessage
             ?.contextInfo
 
         if (
@@ -2508,46 +2560,111 @@ if (text === '.س') {
             )
         }
 
+        const quotedMsg =
+            quoted.quotedMessage
+
         const buffer =
             await downloadMediaMessage(
                 {
                     message:
-                    quoted.quotedMessage
+                    quotedMsg
                 },
                 'buffer',
                 {},
                 {
-                    logger: console,
+                    logger:
+                    console,
+
                     reuploadRequest:
                     sock.updateMediaMessage
                 }
             )
 
-        const sticker =
-            new Sticker(
-                buffer,
-                {
-                    pack:
+        // صورة
+        if (
+            quotedMsg.imageMessage
+        ) {
+
+            const sticker =
+                new Sticker(
+                    buffer,
+                    {
+                        pack:
 '❖ 𝑵𝒂𝒎𝒊𝒊 𝑺𝒘𝒂𝒏 ❖',
 
-                    author:
+                        author:
 '.',
 
-                    type:
-                    StickerTypes.FULL,
+                        type:
+                        StickerTypes.FULL,
 
-                    quality: 100
+                        quality:
+                        100
+                    }
+                )
+
+            const webp =
+                await sticker.toBuffer()
+
+            return sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    sticker:
+                    webp
+                }
+            )
+        }
+
+        // فيديو / GIF
+        if (
+            quotedMsg.videoMessage
+        ) {
+
+            const input =
+`./tmp_${Date.now()}.mp4`
+
+            const output =
+`./tmp_${Date.now()}.webp`
+
+            await fs.writeFile(
+                input,
+                buffer
+            )
+
+            await videoToSticker(
+                input,
+                output
+            )
+
+            const webp =
+                await fs.readFile(
+                    output
+                )
+
+            await sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    sticker:
+                    webp
                 }
             )
 
-        const stickerBuffer =
-            await sticker.toBuffer()
+            await fs.remove(
+                input
+            )
 
-        await sock.sendMessage(
+            await fs.remove(
+                output
+            )
+
+            return
+        }
+
+        return safeSend(
             msg.key.remoteJid,
             {
-                sticker:
-                stickerBuffer
+                text:
+'❌ الوسائط غير مدعومة'
             }
         )
 
@@ -2567,6 +2684,7 @@ if (text === '.س') {
         )
     }
 }
+                    
     
 if (text.startsWith('.دمج')) {
 
