@@ -3861,6 +3861,8 @@ if (char.rarity !== 'SSS') {
 if (!player.shards) {
     player.shards = new Map()
 }
+    const shardKey =
+    char.name.replaceAll('.', '_')
 
 const currentLevel =
     char.evolutionLevel || 0
@@ -3880,9 +3882,8 @@ if (currentLevel >= 6) {
 
 const shards =
     player.shards.get(
-        char.name
+        shardKey
     ) || 0
-
 if (shards < 2) {
 
     return safeSend(
@@ -3919,8 +3920,12 @@ if (player.money < cost) {
 player.money -= cost
 
 player.shards.set(
-    char.name,
+    shardKey,
     shards - 2
+)
+
+player.markModified(
+    'shards'
 )
 
 const oldLevel =
@@ -4121,14 +4126,20 @@ if (text === '.شظايا') {
 `🧩 ━━〔 شظايا الشخصيات 〕━━ 🧩\n\n`
 
     for (
-        const [name, amount]
-        of shards.entries()
-    ) {
+    const [name, amount]
+    of shards.entries()
+) {
 
-        msgText +=
-`👑 ${name}\n📦 ${amount}/2\n\n`
-    }
+    const displayName =
+        name.replaceAll('_', ' ')
 
+    msgText +=
+`👑 ${displayName}
+
+📦 ${amount}/2
+
+`
+}
     return sock.sendMessage(
         msg.key.remoteJid,
         {
