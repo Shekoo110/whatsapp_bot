@@ -2279,9 +2279,10 @@ sock.ev.on('connection.update', async (update) => {
     )
 
     console.dir(
-    update?.lastDisconnect,
-    { depth: 20 }
-)
+        update?.lastDisconnect,
+        { depth: 20 }
+    )
+
     try {
 
         console.log(
@@ -2302,24 +2303,25 @@ sock.ev.on('connection.update', async (update) => {
 
     console.log('انقطع الاتصال')
 
-const shouldReconnect =
-    state.creds.registered
+    const shouldReconnect =
+        state.creds.registered
 
-if (shouldReconnect) {
+    if (shouldReconnect) {
 
-    console.log(
-        '🚫 AUTO RECONNECT DISABLED'
-    )
+        console.log(
+            '🚫 AUTO RECONNECT DISABLED'
+        )
 
-    return
+        return
 
-} else {
+    } else {
 
-    console.log(
-        'بانتظار إكمال الربط...'
-    )
+        console.log(
+            'بانتظار إكمال الربط...'
+        )
+    }
 }
-    })
+})
 
 let lastBossHour = -1
 
