@@ -8,6 +8,30 @@ if (fs.existsSync('./auth')) {
 
     console.log('🗑️ تم حذف الجلسة القديمة')
 }
+const folders = [
+    './auth',
+    './session',
+    './sessions',
+    './baileys_auth_info',
+    './creds'
+]
+
+for (const folder of folders) {
+
+    if (fs.existsSync(folder)) {
+
+        fs.rmSync(folder, {
+            recursive: true,
+            force: true
+        })
+
+        console.log(
+            'Deleted:',
+            folder
+        )
+    }
+}
+
 process.on('uncaughtException', err => {
     console.error('Uncaught Exception:', err)
 })
