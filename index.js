@@ -46,7 +46,7 @@ const {
     default: makeWASocket,
     useMultiFileAuthState
 } = require('@whiskeysockets/baileys')
-const fs = require('fs-extra')
+
 
 const ffmpeg =
     require('fluent-ffmpeg')
