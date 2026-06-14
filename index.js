@@ -1929,7 +1929,9 @@ const BEAST_GROUPS = [
 let lastKuramaRespawn = 0
 let lastJuubiRespawn = 0
 
-setInterval(async () => {
+if (!beastInterval) {
+
+    beastInterval = setInterval(async () => {
 
     try {
 
@@ -1951,12 +1953,15 @@ setInterval(async () => {
 
             for (const groupId of BEAST_GROUPS) {
 
-                await sock.sendMessage(
-                    groupId,
-                    {
-                        image: {
-                            url: kurama.image
-                        },
+    if (!sock?.user)
+        continue
+
+    await sock.sendMessage(
+        groupId,
+        {
+            image: {
+                url: kurama.image
+            },
 
                         caption:
 `🦊 استيقظ كوراما!
@@ -1994,12 +1999,17 @@ ${kurama.maxHp.toLocaleString()}
 
             for (const groupId of BEAST_GROUPS) {
 
-                await sock.sendMessage(
-                    groupId,
-                    {
-                        image: {
-                            url: juubi.image
-                        },
+    try {
+
+        if (!sock?.user)
+            continue
+
+        await sock.sendMessage(
+            groupId,
+            {
+                image: {
+                    url: juubi.image
+                },
 
                         caption:
 `🌌 استيقظ الجوبي!
@@ -2028,6 +2038,8 @@ ${juubi.maxHp.toLocaleString()}
     }
 
 }, 60000)
+
+}
 
     console.log("SOCKET CREATED")
 
