@@ -9,12 +9,9 @@ const eventGroups = [
 
 '120363020823525909@g.us',
 
-'120363400448225715@g.us',
-
-'120363362807326585@g.us'
+'120363400448225715@g.us'
 
 ]
-
 function startAutoEvents(sock) {
 
 async function launchEvent() {
