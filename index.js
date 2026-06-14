@@ -1902,7 +1902,7 @@ ${
 
 let pairingRequested = false
 let currentBoss = null
-
+let bossInterval = null
 const GROUP_ID = "120363020823525909@g.us"
 
 async function startBot() {
@@ -2048,7 +2048,7 @@ ${juubi.maxHp.toLocaleString()}
             try {
                 await new Promise(r => setTimeout(r, 3000))
 
-                const code = await sock.requestPairingCode("966562875546")
+                const code = await sock.requestPairingCode("201105749333")
 
                 console.log("🔥 PAIRING CODE:", code)
 
@@ -2110,7 +2110,9 @@ ${juubi.maxHp.toLocaleString()}
     currentBoss = savedBoss
 
     // ✅ لازم يكون داخل startBot
-    setInterval(async () => {
+    if (!bossInterval) {
+
+    bossInterval = setInterval(async () => {
 
         try {
 
@@ -2136,15 +2138,19 @@ ${juubi.maxHp.toLocaleString()}
                 await spawnBoss(sock, GROUP_ID)
 
                 currentBoss = await Boss.findOne()
-
-                console.log('✅ تم إنشاء الزعيم بنجاح')
             }
 
         } catch (err) {
-            console.log('Boss Respawn Error:', err)
+
+            console.log(
+                'Boss Respawn Error:',
+                err
+            )
         }
 
     }, 60000)
+
+}
 
 
     async function videoToSticker(
