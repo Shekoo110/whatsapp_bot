@@ -46,7 +46,12 @@ const {
     default: makeWASocket,
     useMultiFileAuthState
 } = require('@whiskeysockets/baileys')
-
+const {
+    Sticker,
+    StickerTypes
+} = require(
+    'wa-sticker-formatter'
+)
 
 const {
     startQuestion,
@@ -2476,6 +2481,87 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text === '.س') {
+
+    try {
+
+        const quoted =
+            msg.message?.extendedTextMessage
+            ?.contextInfo
+
+        if (
+            !quoted ||
+            !quoted.quotedMessage
+        ) {
+            return safeSend(
+                msg.key.remoteJid,
+                {
+                    text:
+'❌ قم بالرد على صورة أو GIF أو فيديو'
+                }
+            )
+        }
+
+        const buffer =
+            await downloadMediaMessage(
+                {
+                    message:
+                    quoted.quotedMessage
+                },
+                'buffer',
+                {},
+                {
+                    logger: console,
+                    reuploadRequest:
+                    sock.updateMediaMessage
+                }
+            )
+
+        const sticker =
+            new Sticker(
+                buffer,
+                {
+                    pack:
+'❖ 𝑵𝒂𝒎𝒊𝒊 𝑺𝒘𝒂𝒏 ❖',
+
+                    author:
+'.',
+
+                    type:
+                    StickerTypes.FULL,
+
+                    quality: 100
+                }
+            )
+
+        const stickerBuffer =
+            await sticker.toBuffer()
+
+        await sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                sticker:
+                stickerBuffer
+            }
+        )
+
+    } catch (err) {
+
+        console.log(
+            'STICKER ERROR:',
+            err
+        )
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ فشل إنشاء الستيكر'
+            }
+        )
+    }
+}
+    
 if (text.startsWith('.دمج')) {
 
     const player =
