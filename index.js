@@ -2303,16 +2303,18 @@ sock.ev.on('connection.update', async (update) => {
 
     console.log('انقطع الاتصال')
 
-    const shouldReconnect =
-        state.creds.registered
-
     if (shouldReconnect) {
 
-        console.log(
-            '🚫 AUTO RECONNECT DISABLED'
-        )
+    console.log(
+        '🔄 RECONNECTING IN 5s'
+    )
 
-        return
+    setTimeout(() => {
+        startBot()
+    }, 5000)
+
+    return
+
 
     } else {
 
