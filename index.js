@@ -1,29 +1,7 @@
 const fs = require('fs')
 
 
-const folders = [
-    './auth',
-    './session',
-    './sessions',
-    './baileys_auth_info',
-    './creds'
-]
 
-for (const folder of folders) {
-
-    if (fs.existsSync(folder)) {
-
-        fs.rmSync(folder, {
-            recursive: true,
-            force: true
-        })
-
-        console.log(
-            'Deleted:',
-            folder
-        )
-    }
-}
 
 process.on('uncaughtException', err => {
     console.error('Uncaught Exception:', err)
@@ -32,21 +10,6 @@ process.on('uncaughtException', err => {
 process.on('unhandledRejection', err => {
     console.error('Unhandled Rejection:', err)
 })
-function hardResetAuth() {
-    const dirs = [
-        "./auth_info_baileys",
-        "./baileys_auth",
-        "./session"
-    ]
-
-    dirs.forEach(d => {
-        if (fs.existsSync(d)) {
-            fs.rmSync(d, { recursive: true, force: true })
-            console.log("🧹 deleted:", d)
-        }
-    })
-}
-
 
 
 process.on('uncaughtException', (err) => {
