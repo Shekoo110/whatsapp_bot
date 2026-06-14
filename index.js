@@ -2045,7 +2045,7 @@ ${juubi.maxHp.toLocaleString()}
             try {
                 await new Promise(r => setTimeout(r, 3000))
 
-                const code = await sock.requestPairingCode("201105749333")
+                const code = await sock.requestPairingCode("966562875546")
 
                 console.log("🔥 PAIRING CODE:", code)
 
