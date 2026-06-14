@@ -1,13 +1,6 @@
 const fs = require('fs')
 
-if (fs.existsSync('./auth')) {
-    fs.rmSync('./auth', {
-        recursive: true,
-        force: true
-    })
 
-    console.log('🗑️ تم حذف الجلسة القديمة')
-}
 const folders = [
     './auth',
     './session',
@@ -54,9 +47,7 @@ function hardResetAuth() {
     })
 }
 
-const RESET_AUTH = true
 
-if (RESET_AUTH) hardResetAuth()
 
 process.on('uncaughtException', (err) => {
     console.error('❌ Crash Error:', err)
