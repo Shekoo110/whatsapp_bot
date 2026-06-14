@@ -2476,6 +2476,177 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text.startsWith('.دمج')) {
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    const args =
+        text.split(' ')
+
+    if (args.length !== 6) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`❌ الاستخدام الصحيح
+
+.دمج 1 2 3 4 5`
+            }
+        )
+    }
+
+    const a =
+        parseInt(args[1]) - 1
+
+    const b =
+        parseInt(args[2]) - 1
+
+    const c =
+        parseInt(args[3]) - 1
+
+    const d =
+        parseInt(args[4]) - 1
+
+    const e =
+        parseInt(args[5]) - 1
+
+    const unique =
+        new Set([a, b, c, d, e])
+
+    if (unique.size !== 5) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا يمكن تكرار نفس الشخصية'
+            }
+        )
+    }
+
+    const selected = [
+        player.characters[a],
+        player.characters[b],
+        player.characters[c],
+        player.characters[d],
+        player.characters[e]
+    ]
+
+    for (const char of selected) {
+
+        if (!char) {
+            return safeSend(
+                msg.key.remoteJid,
+                {
+                    text:
+                    '❌ إحدى الشخصيات غير موجودة'
+                }
+            )
+        }
+
+        if (
+            char.rarity !== 'اسطوري'
+        ) {
+            return safeSend(
+                msg.key.remoteJid,
+                {
+                    text:
+                    '❌ يجب أن تكون جميع الشخصيات من رتبة اسطوري'
+                }
+            )
+        }
+    }
+
+    const sssPool =
+        characters.filter(
+            c =>
+            c.rarity === 'SSS'
+        )
+
+    if (!sssPool.length) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ لا توجد شخصيات SSS'
+            }
+        )
+    }
+
+    const reward =
+        JSON.parse(
+            JSON.stringify(
+                sssPool[
+                    Math.floor(
+                        Math.random() *
+                        sssPool.length
+                    )
+                ]
+            )
+        )
+
+    const indexes =
+        [a, b, c, d, e]
+        .sort((x, y) => y - x)
+
+    for (const i of indexes) {
+        player.characters.splice(
+            i,
+            1
+        )
+    }
+
+    player.characters.push(
+        reward
+    )
+
+    player.markModified(
+        'characters'
+    )
+
+    await player.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            image: {
+                url:
+                reward.image
+            },
+
+            caption:
+
+`✨ ═══════〔 الدمج 〕═══════ ✨
+
+🔥 تم دمج 5 شخصيات اسطورية
+
+🎁 حصلت على:
+
+👑 ${reward.name}
+
+🌟 ${reward.rarity}
+
+⚔️ القوة:
+${reward.power}
+
+🎉 مبروك!`
+        }
+    )
+}
+    
 if (text === '.مضارباتي') {
 
     const player =
