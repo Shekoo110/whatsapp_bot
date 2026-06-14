@@ -1,6 +1,26 @@
 const fs = require('fs')
 
+process.on(
+    'uncaughtException',
+    err => {
 
+        console.error(
+            'UNCAUGHT:',
+            err
+        )
+    }
+)
+
+process.on(
+    'unhandledRejection',
+    err => {
+
+        console.error(
+            'UNHANDLED:',
+            err
+        )
+    }
+)
 
 
 process.on('uncaughtException', err => {
@@ -2028,7 +2048,7 @@ ${juubi.maxHp.toLocaleString()}
             try {
                 await new Promise(r => setTimeout(r, 3000))
 
-                const code = await sock.requestPairingCode("201105749333")
+                const code = await sock.requestPairingCode("966562875546")
 
                 console.log("🔥 PAIRING CODE:", code)
 
@@ -2221,7 +2241,16 @@ sock.ev.on('connection.update', async (update) => {
 
     console.log('البوت اشتغل')
 
-    startAutoEvents(sock)
+    if (!global.eventsStarted) {
+
+        global.eventsStarted = true
+
+        startAutoEvents(sock)
+
+        console.log(
+            '✅ Auto Events Started'
+        )
+    }
 
     if (currentBoss) {
 
@@ -2237,6 +2266,7 @@ sock.ev.on('connection.update', async (update) => {
         )
     }
 }
+
 
 
     if (connection === 'close') {
