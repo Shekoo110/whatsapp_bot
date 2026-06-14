@@ -3680,13 +3680,17 @@ console.log(
         1
     )
 
-    const currentShards =
-        player.shards.get(
-            char.name
-        ) || 0
+    const shardKey =
+    char.name
+        .replaceAll('.', '_')
 
-    player.shards.set(
-    char.name,
+const currentShards =
+    player.shards.get(
+        shardKey
+    ) || 0
+
+player.shards.set(
+    shardKey,
     currentShards + 1
 )
 
