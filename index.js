@@ -3582,24 +3582,26 @@ ${player.characters.length}/${player.maxCharacters || 30}
 
 if (text.startsWith('.حول ')) {
 
+try {
+
     const player =
     await Player.findOne({
         userId
     })
 
+if (!player) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ لا يوجد حساب'
+        }
+    )
+}
+
 if (!player.shards) {
     player.shards = new Map()
 }
-
-    if (!player) {
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
-                '❌ لا يوجد حساب'
-            }
-        )
-    }
 
     const args =
         text.split(' ')
@@ -3642,6 +3644,20 @@ if (!player.shards) {
         )
     }
 
+    console.log(
+    'Character:',
+    char
+)
+
+console.log(
+    'Shards:',
+    player.shards
+)
+
+console.log(
+    'Character Name:',
+    char.name
+)
     const copies =
         player.characters.filter(
             c => c.name === char.name
@@ -3670,26 +3686,47 @@ if (!player.shards) {
         ) || 0
 
     player.shards.set(
-        char.name,
-        currentShards + 1
-    )
+    char.name,
+    currentShards + 1
+)
 
-    player.markModified(
-        'characters'
-    )
+player.markModified(
+    'shards'
+)
 
-    await player.save()
+player.markModified(
+    'characters'
+)
+
+await player.save()
 
     return safeSend(
-        msg.key.remoteJid,
-        {
-            text:
+    msg.key.remoteJid,
+    {
+        text:
 `💎 تم التحويل
 
 👑 ${char.name}
 
 🧩 الشظايا:
 ${currentShards + 1}`
+    }
+)
+
+} catch (err) {
+
+    console.log(
+        'CONVERT ERROR:',
+        err
+    )
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ حدث خطأ أثناء التحويل
+
+${err.message}`
         }
     )
 }
