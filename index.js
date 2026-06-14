@@ -2303,7 +2303,10 @@ sock.ev.on('connection.update', async (update) => {
 
     console.log('انقطع الاتصال')
 
-    if (shouldReconnect) {
+const shouldReconnect =
+    state.creds.registered
+
+if (shouldReconnect) {
 
     console.log(
         '🔄 RECONNECTING IN 5s'
@@ -2315,13 +2318,12 @@ sock.ev.on('connection.update', async (update) => {
 
     return
 
+} else {
 
-    } else {
-
-        console.log(
-            'بانتظار إكمال الربط...'
-        )
-    }
+    console.log(
+        'بانتظار إكمال الربط...'
+    )
+}
 }
 })
 
