@@ -12,9 +12,20 @@ const eventGroups = [
 '120363400448225715@g.us'
 
 ]
+let autoEventsStarted = false
+
 function startAutoEvents(sock) {
 
-async function launchEvent() {
+    if (autoEventsStarted) {
+        console.log(
+            '⚠️ Auto Events Already Started'
+        )
+        return
+    }
+
+    autoEventsStarted = true
+
+    async function launchEvent() {
 
     try {
 
