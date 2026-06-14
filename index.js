@@ -3730,7 +3730,7 @@ ${err.message}`
         }
     )
 }
-
+}
     
     
 if (text.startsWith('.تطوير')) {
