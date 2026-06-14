@@ -2272,8 +2272,30 @@ sock.ev.on('connection.update', async (update) => {
     if (connection === 'close') {
 
     console.log(
-        "CLOSE REASON:",
+        '❌ CONNECTION CLOSED'
+    )
+
+    console.log(
+        'CLOSE REASON:',
         update?.lastDisconnect?.error
+    )
+
+    try {
+
+        console.log(
+            'ERROR JSON:',
+            JSON.stringify(
+                update?.lastDisconnect?.error,
+                null,
+                2
+            )
+        )
+
+    } catch {}
+
+    console.log(
+        'registered =',
+        state.creds.registered
     )
 
     console.log('انقطع الاتصال')
@@ -2282,6 +2304,10 @@ sock.ev.on('connection.update', async (update) => {
         state.creds.registered
 
     if (shouldReconnect) {
+
+        console.log(
+            '🔄 RECONNECTING IN 5s'
+        )
 
         setTimeout(() => {
             startBot()
