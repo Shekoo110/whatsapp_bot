@@ -67,10 +67,12 @@ data.currentEvent =
     sharedEvent ||
     getRandomEvent()
 
-await sock.sendMessage(
-    jid,
-    {
-        text:
+try {
+
+    await sock.sendMessage(
+        jid,
+        {
+            text:
 
 `🎮 حدث جديد!
 
@@ -82,8 +84,41 @@ ${data.currentEvent.command}
 👥 المشاركون: 0/5
 
 ⏳ لديك دقيقتان`
+        }
+    )
+
+} catch (err) {
+
+    console.log(
+        'EVENT SEND ERROR:',
+        jid,
+        err
+    )
+
+    data.eventRunning = false
+
+    return false
 }
-)
+
+data.timeout =
+    setTimeout(
+        () => {
+
+            data.eventRunning =
+                false
+
+            data.currentEvent =
+                null
+
+            data.participants =
+                []
+
+            data.timeout =
+                null
+
+        },
+        120000
+    )
 
 return true
 
