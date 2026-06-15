@@ -100,13 +100,12 @@ require(
     './systems/beastRewards'
 )
 const bossAbilities = require('./bossAbilities')
-const { createCanvas } = require("canvas")
-const {
+
     generateCard
 } = require("./cardGenerator")
 const WaifuPlayer =
     require('./models/WaifuPlayer')
-console.log("Canvas OK")
+
 const bosses = require('./bosses')
 const xo =
     require('./xo')
