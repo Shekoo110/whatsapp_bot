@@ -83,7 +83,7 @@ const cooldowns = new Map()
 const urAbilities =
     require('./urAbilities')
 const cheerio = require("cheerio");
-let qrCodeData = null
+
 console.log("cheerio loaded OK");
 const WaifuTrade =
     require('./models/WaifuTrade')
