@@ -2078,43 +2078,51 @@ if (
 
         
 
-            if (!currentBoss) {
+            sock.ev.on('connection.update', async (update) => {
 
-                console.log("👑 لا يوجد زعيم محفوظ")
+    const { connection } = update
 
-                await spawnBoss(sock, GROUP_ID)
+    if (connection === "open") {
 
-                currentBoss = await Boss.findOne()
-            }
+        console.log("✅ BOT CONNECTED")
 
-            if (currentBoss) {
+        if (!currentBoss) {
 
-                currentBoss.finished = currentBoss.finished ?? false
-                currentBoss.killer = currentBoss.killer ?? null
+            console.log("👑 لا يوجد زعيم محفوظ")
 
-                if (currentBoss.finished && !currentBoss.respawnAt) {
+            await spawnBoss(sock, GROUP_ID)
 
-                    console.log('⚠️ زعيم ميت بدون وقت إعادة ظهور - سيتم حذفه')
+            currentBoss = await Boss.findOne()
+        }
 
-                    await Boss.deleteMany({})
+        if (currentBoss) {
 
-                    currentBoss = null
+            currentBoss.finished =
+                currentBoss.finished ?? false
 
-                    await spawnBoss(sock, GROUP_ID)
+            currentBoss.killer =
+                currentBoss.killer ?? null
 
-                    currentBoss = await Boss.findOne()
-                }
+            if (
+                currentBoss.finished &&
+                !currentBoss.respawnAt
+            ) {
 
-                else if (
-                    currentBoss.finished &&
-                    currentBoss.respawnAt &&
-                    currentBoss.respawnAt > Date.now()
-                ) {
-                    console.log('💀 الزعيم ميت وينتظر إعادة الظهور')
-                }
+                await Boss.deleteMany({})
+
+                currentBoss = null
+
+                await spawnBoss(
+                    sock,
+                    GROUP_ID
+                )
+
+                currentBoss =
+                    await Boss.findOne()
             }
         }
-    })
+    }
+})
 
     const savedBoss = await Boss.findOne()
 
