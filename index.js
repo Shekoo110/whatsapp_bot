@@ -1920,18 +1920,23 @@ console.log(
     printQRInTerminal: false
 })
 
-// حفظ الجلسة
 sock.ev.on('creds.update', async () => {
     console.log('🔥 CREDS UPDATE')
 
     await saveCreds()
 
     console.log(
-        'FILES:',
+        'FILES NOW:',
         fs.readdirSync('./auth')
     )
-})
 
+    setTimeout(() => {
+        console.log(
+            'FILES AFTER 10s:',
+            fs.readdirSync('./auth')
+        )
+    }, 10000)
+})
 console.log("REGISTERED =", state.creds.registered)
 const BEAST_GROUPS = [
     '120363400448225715@g.us',
@@ -2205,7 +2210,10 @@ if (qr) {
     if (connection === 'open') {
 qrCodeData = ""
     console.log("✅ BOT CONNECTED")
-
+console.log(
+    'AUTH FILES OPEN:',
+    fs.readdirSync('./auth')
+)
         if (!currentBoss) {
 
             console.log("👑 لا يوجد زعيم محفوظ")
