@@ -2698,23 +2698,31 @@ cooldowns.set(key, now)
 
 if (text === '.testimg') {
 
-    console.log('TEST START')
+    const axios = require('axios')
 
     try {
+
+        const img = await axios.get(
+            'https://picsum.photos/300',
+            {
+                responseType: 'arraybuffer'
+            }
+        )
 
         await sock.sendMessage(
             msg.key.remoteJid,
             {
-                text: 'اختبار'
+                image: Buffer.from(img.data),
+                caption: 'test'
             }
         )
 
-        console.log('TEXT OK')
+        console.log('IMAGE SENT')
 
     } catch (err) {
 
+        console.log('IMAGE ERROR')
         console.log(err)
-
     }
 }
 
