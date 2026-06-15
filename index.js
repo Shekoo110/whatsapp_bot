@@ -1910,12 +1910,24 @@ console.log(
     'ME:',
     state.creds.me
 )
-    const { version } = await fetchLatestBaileysVersion()
-console.log('BAILEYS VERSION:', version)
+    const { version } =
+    await fetchLatestBaileysVersion()
+
 const sock = makeWASocket({
     version,
     auth: state,
-    browser: ['Ubuntu', 'Chrome', '22.04']
+
+    printQRInTerminal: false,
+
+    browser: [
+        'Ubuntu',
+        'Chrome',
+        '22.04'
+    ],
+
+    markOnlineOnConnect: false,
+
+    syncFullHistory: false
 })
 
 sock.ev.on('creds.update', async () => {
@@ -2352,7 +2364,10 @@ qrCodeData = ""
     console.log(
         '❌ CONNECTION CLOSED'
     )
-
+console.log(
+    'LAST DISCONNECT:',
+    update.lastDisconnect?.error?.output?.statusCode
+)
     console.dir(
         update?.lastDisconnect,
         { depth: 20 }
