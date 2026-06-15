@@ -101,8 +101,7 @@ require(
 )
 const bossAbilities = require('./bossAbilities')
 
-    generateCard
-} = require("./cardGenerator")
+
 const WaifuPlayer =
     require('./models/WaifuPlayer')
 
