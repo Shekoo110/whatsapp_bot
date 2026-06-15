@@ -1895,9 +1895,25 @@ console.log('🚀 START BOT', Date.now())
     const { state, saveCreds } =
         await useMultiFileAuthState('auth')
     
-console.log(
-    'AUTH FILES:',
+console.log('AUTH EXISTS:',
     fs.existsSync('./auth')
+)
+
+if (fs.existsSync('./auth')) {
+    console.log(
+        'AUTH FILES:',
+        fs.readdirSync('./auth')
+    )
+}
+
+console.log(
+    'REGISTERED:',
+    state.creds.registered
+)
+
+console.log(
+    'ME:',
+    state.creds.me
 )
     const sock = makeWASocket({
     auth: state,
