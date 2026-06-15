@@ -7860,15 +7860,16 @@ return
 
         console.log('📸 SENDING:', imagePath)
 
-        await sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                image:
-                fs.readFileSync(imagePath)
-            }
-        )
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: {
+            url: imagePath
+        }
+    }
+)
 
-        console.log('📸 IMAGE SENT')
+console.log('📸 IMAGE SENT')
 
     } catch (err) {
 
