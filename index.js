@@ -1933,6 +1933,35 @@ const sock = makeWASocket({
     syncFullHistory: false
 })
 
+if (!state.creds.registered) {
+
+    setTimeout(async () => {
+
+        try {
+
+            const code =
+                await sock.requestPairingCode(
+                    "966562875546"
+                )
+
+            console.log(
+                "PAIRING CODE:",
+                code
+            )
+
+        } catch (e) {
+
+            console.log(
+                "PAIRING ERROR:",
+                e
+            )
+        }
+
+    }, 10000)
+}
+
+sock.ev.on('creds.update', async () => {
+
 sock.ev.on('creds.update', async () => {
     console.log('🔥 CREDS UPDATE')
 
