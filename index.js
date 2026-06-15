@@ -2703,38 +2703,28 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-if (text === '.testimg') {
-
-    console.log('TEST START')
-
-    const axios = require('axios')
+if (text === '.testbuf') {
 
     try {
 
-        console.log('DOWNLOADING IMAGE')
-
-        const img = await axios.get(
-            'https://picsum.photos/300',
-            {
-                responseType: 'arraybuffer'
-            }
+        const buffer = Buffer.from(
+            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO7ZtXQAAAAASUVORK5CYII=',
+            'base64'
         )
-
-        console.log('DOWNLOAD OK')
 
         await sock.sendMessage(
             msg.key.remoteJid,
             {
-                image: Buffer.from(img.data),
-                caption: 'test'
+                image: buffer,
+                caption: 'buffer test'
             }
         )
 
-        console.log('IMAGE SENT')
+        console.log('BUFFER SENT')
 
     } catch (err) {
 
-        console.log('IMAGE ERROR')
+        console.log('BUFFER ERROR')
         console.log(err)
     }
 }
