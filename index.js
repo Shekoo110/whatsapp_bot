@@ -2,13 +2,7 @@ const fs = require('fs')
 
 
 
-if (fs.existsSync('./auth')) {
-    fs.rmSync('./auth', {
-        recursive: true,
-        force: true
-    })
-    console.log('✅ تم حذف الجلسة بالكامل')
-}
+
 process.on('uncaughtException', err => {
     console.error('UNCAUGHT EXCEPTION:')
     console.error(err)
@@ -21,7 +15,8 @@ process.on('unhandledRejection', err => {
 
 const {
     default: makeWASocket,
-    useMultiFileAuthState
+    useMultiFileAuthState,
+    fetchLatestBaileysVersion
 } = require('@whiskeysockets/baileys')
 
 
@@ -1915,9 +1910,14 @@ console.log(
     'ME:',
     state.creds.me
 )
-    const sock = makeWASocket({
+    const { version } =
+    await fetchLatestBaileysVersion()
+
+const sock = makeWASocket({
+    version,
     auth: state,
-    printQRInTerminal: false
+    printQRInTerminal: false,
+    browser: ['Render Bot', 'Chrome', '1.0']
 })
 
 sock.ev.on('creds.update', async () => {
