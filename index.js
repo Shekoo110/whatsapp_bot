@@ -2575,7 +2575,23 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text === '.testimg') {
 
+    console.log('TEST START')
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: 'https://picsum.photos/300'
+            }
+        }
+    )
+
+    console.log('TEST END')
+}
+
+    
 if (text === '.س') {
 return safeSend(
         msg.key.remoteJid,
