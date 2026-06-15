@@ -2206,7 +2206,7 @@ qrCodeData = ""
             }
         }
     }
-})
+
 
     const savedBoss = await Boss.findOne()
 
