@@ -4,12 +4,12 @@ const fs = require('fs')
 
 
 process.on('uncaughtException', err => {
-    console.error('UNCAUGHT EXCEPTION:')
+    console.error('UNCAUGHT:')
     console.error(err)
 })
 
 process.on('unhandledRejection', err => {
-    console.error('UNHANDLED REJECTION:')
+    console.error('REJECTION:')
     console.error(err)
 })
 
@@ -2705,17 +2705,14 @@ if (text === '.testimg') {
         await sock.sendMessage(
             msg.key.remoteJid,
             {
-                image: {
-                    url: 'https://picsum.photos/300'
-                }
+                text: 'اختبار'
             }
         )
 
-        console.log('TEST END')
+        console.log('TEXT OK')
 
     } catch (err) {
 
-        console.log('IMAGE ERROR:')
         console.log(err)
 
     }
