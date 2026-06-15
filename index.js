@@ -7835,35 +7835,51 @@ return
     
         if (text === '.صوره') {
 
-            const folderPath = './images'
+    try {
 
-            const files =
+        console.log('📸 IMAGE COMMAND START')
+
+        const folderPath = './images'
+
+        const files =
             fs.readdirSync(folderPath)
 
-            if (files.length === 0) {
+        if (files.length === 0) {
 
-                return sock.sendMessage(
-                    msg.key.remoteJid,
-                    { text: 'لا توجد صور' }
-                )
-            }
+            return sock.sendMessage(
+                msg.key.remoteJid,
+                { text: 'لا توجد صور' }
+            )
+        }
 
-            const randomImage =
+        const randomImage =
             files[Math.floor(
                 Math.random() * files.length
             )]
 
-            const imagePath =
+        const imagePath =
             path.join(folderPath, randomImage)
 
-            await sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    image:
-                    fs.readFileSync(imagePath)
-                }
-            )
-        }
+        console.log('📸 SENDING:', imagePath)
+
+        await sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                image:
+                fs.readFileSync(imagePath)
+            }
+        )
+
+        console.log('📸 IMAGE SENT')
+
+    } catch (err) {
+
+        console.log(
+            '📸 IMAGE ERROR:',
+            err
+        )
+    }
+}
 
     if (text.startsWith('.زواج ')) {
 
