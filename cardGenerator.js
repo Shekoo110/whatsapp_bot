@@ -1,7 +1,6 @@
-const {
-    createCanvas,
-    loadImage
-} = require("canvas")
+// const {
+//     generateCard
+// } = require("./cardGenerator")
 
 const axios = require("axios")
 
