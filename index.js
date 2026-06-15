@@ -1,5 +1,14 @@
 const fs = require('fs')
 
+if (fs.existsSync('./auth')) {
+    fs.rmSync('./auth', {
+        recursive: true,
+        force: true
+    })
+
+    console.log('🗑️ AUTH DELETED')
+}
+
 process.on('uncaughtException', err => {
     console.error('UNCAUGHT EXCEPTION:')
     console.error(err)
@@ -1887,7 +1896,8 @@ console.log('🚀 START BOT', Date.now())
 
     const sock = makeWASocket({
     auth: state,
-    printQRInTerminal: false
+    printQRInTerminal: false,
+    browser: ['Ubuntu', 'Chrome', '22.04']
 })
 
 const BEAST_GROUPS = [
@@ -2035,7 +2045,8 @@ ${juubi.maxHp.toLocaleString()}
 
         console.log("CONNECTION UPDATE:", update)
 
-        if (
+        /*
+if (
     connection === 'connecting' &&
     !state.creds.registered &&
     !pairingRequested
@@ -2066,6 +2077,7 @@ ${juubi.maxHp.toLocaleString()}
         }
     }, 10000)
 }
+*/
 
         if (connection === "open") {
 
