@@ -29,7 +29,10 @@ const ffmpegPath =
 ffmpeg.setFfmpegPath(
     ffmpegPath
 )
-
+console.log(
+  'BAILEYS VERSION:',
+  require('@whiskeysockets/baileys/package.json').version
+)
 const {
     Sticker,
     StickerTypes
