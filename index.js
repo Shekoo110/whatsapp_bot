@@ -2703,29 +2703,28 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-if (text === '.testbuf') {
+if (text === '.pingimg') {
+
+    const axios = require('axios')
 
     try {
 
-        const buffer = Buffer.from(
-            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO7ZtXQAAAAASUVORK5CYII=',
-            'base64'
-        )
+        console.log('DOWNLOAD START')
 
-        await sock.sendMessage(
-            msg.key.remoteJid,
+        await axios.get(
+            'https://mmg.whatsapp.net',
             {
-                image: buffer,
-                caption: 'buffer test'
+                timeout: 10000
             }
         )
 
-        console.log('BUFFER SENT')
+        console.log('WHATSAPP CDN OK')
 
-    } catch (err) {
+    } catch (e) {
 
-        console.log('BUFFER ERROR')
-        console.log(err)
+        console.log('WHATSAPP CDN ERROR')
+
+        console.log(e)
     }
 }
 
