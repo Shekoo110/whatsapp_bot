@@ -122,7 +122,9 @@ setInterval(
 
 `
 }
-
+if (!sock?.user?.id) {
+    continue
+}
                 await sock.sendMessage(
                     event.jid,
                     {
