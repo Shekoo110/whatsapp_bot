@@ -1893,9 +1893,10 @@ console.log(
 )
     const sock = makeWASocket({
     auth: state,
-    printQRInTerminal: false,
-    browser: ['Chrome', 'Chrome', '1.0.0']
+    printQRInTerminal: false
 })
+
+console.log("REGISTERED =", state.creds.registered)
 
 const BEAST_GROUPS = [
     '120363400448225715@g.us',
