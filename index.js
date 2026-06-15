@@ -2783,48 +2783,47 @@ if (text === '.س') {
 
         // فيديو / GIF
         if (
-            quotedMsg.videoMessage
-        ) {
+    quotedMsg.videoMessage
+) {
 
-            const input =
+    const input =
 `./tmp_${Date.now()}.mp4`
 
-            const output =
+    const output =
 `./tmp_${Date.now()}.webp`
 
-            await fs.writeFile(
-                input,
-                buffer
-            )
+    await fs.promises.writeFile(
+        input,
+        buffer
+    )
 
-            await videoToSticker(
-                input,
-                output
-            )
+    await videoToSticker(
+        input,
+        output
+    )
 
-            const webp =
-                await fs.readFile(
-                    output
-                )
+    const webp =
+        await fs.promises.readFile(
+            output
+        )
 
-            await sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    sticker:
-                    webp
-                }
-            )
-
-            await fs.remove(
-                input
-            )
-
-            await fs.remove(
-                output
-            )
-
-            return
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            sticker: webp
         }
+    )
+
+    await fs.promises.unlink(
+        input
+    )
+
+    await fs.promises.unlink(
+        output
+    )
+
+    return
+}
 
         return safeSend(
             msg.key.remoteJid,
