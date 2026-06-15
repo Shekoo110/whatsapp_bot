@@ -2252,7 +2252,10 @@ sock.ev.on('connection.update', async (update) => {
 
     const connection = update.connection
     const qr = update.qr
-
+if (qr) {
+    qrCodeData = await QRCode.toDataURL(qr)
+    console.log('QR UPDATED')
+}
     console.log("registered =", state.creds.registered)
     console.log("connection =", connection)
 
