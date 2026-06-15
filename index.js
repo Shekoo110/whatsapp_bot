@@ -1910,14 +1910,12 @@ console.log(
     'ME:',
     state.creds.me
 )
-    const { version } =
-    await fetchLatestBaileysVersion()
+    const { version } = await fetchLatestBaileysVersion()
 
 const sock = makeWASocket({
     version,
     auth: state,
-    printQRInTerminal: false,
-    browser: ['Render Bot', 'Chrome', '1.0']
+    browser: ['Ubuntu', 'Chrome', '22.04']
 })
 
 sock.ev.on('creds.update', async () => {
@@ -2193,10 +2191,24 @@ sock.ev.on('connection.update', async (update) => {
 
     const connection = update.connection
     const qr = update.qr
-if (qr) {
-    qrCodeData = await QRCode.toDataURL(qr)
+
+    if (qr) {
+
+    console.log(
+        'NEW QR GENERATED',
+        Date.now()
+    )
+
+    qrCodeData =
+        await QRCode.toDataURL(qr)
+
     console.log('QR UPDATED')
 }
+
+console.log(
+    'IS NEW LOGIN:',
+    update.isNewLogin
+)
 
     console.log("registered =", state.creds.registered)
     console.log("connection =", connection)
