@@ -83,6 +83,7 @@ const cooldowns = new Map()
 const urAbilities =
     require('./urAbilities')
 const cheerio = require("cheerio");
+let qrCodeData = null
 console.log("cheerio loaded OK");
 const WaifuTrade =
     require('./models/WaifuTrade')
@@ -2039,11 +2040,7 @@ ${juubi.maxHp.toLocaleString()}
 
     sock.ev.on('creds.update', saveCreds)
 
-    sock.ev.on('connection.update', async (update) => {
 
-        const { connection } = update
-
-        console.log("CONNECTION UPDATE:", update)
 
         /*
 if (
@@ -2079,9 +2076,7 @@ if (
 }
 */
 
-        if (connection === "open") {
-
-            console.log("✅ BOT CONNECTED")
+        
 
             if (!currentBoss) {
 
@@ -2266,7 +2261,7 @@ if (qr) {
 
     // ✅ حالة الاتصال
     if (connection === 'open') {
-
+qrCodeData = ""
     console.log("✅ BOT CONNECTED")
 
     console.log('البوت اشتغل')
@@ -2300,7 +2295,7 @@ if (qr) {
 
 
     if (connection === 'close') {
-
+qrCodeData = ""
     console.log(
         '❌ CONNECTION CLOSED'
     )
