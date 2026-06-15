@@ -1920,8 +1920,19 @@ console.log(
     printQRInTerminal: false
 })
 
-console.log("REGISTERED =", state.creds.registered)
+// حفظ الجلسة
+sock.ev.on('creds.update', async () => {
+    console.log('🔥 CREDS UPDATE')
 
+    await saveCreds()
+
+    console.log(
+        'FILES:',
+        fs.readdirSync('./auth')
+    )
+})
+
+console.log("REGISTERED =", state.creds.registered)
 const BEAST_GROUPS = [
     '120363400448225715@g.us',
     '120363020823525909@g.us'
