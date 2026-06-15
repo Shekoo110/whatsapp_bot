@@ -27,6 +27,11 @@ function startAutoEvents(sock) {
 
     async function launchEvent() {
 
+    if (!sock?.user?.id) {
+        console.log('⚠️ WhatsApp not ready')
+        return
+    }
+
     try {
 
         const sharedEvent =
