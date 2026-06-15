@@ -1961,8 +1961,6 @@ if (!state.creds.registered) {
 }
 
 sock.ev.on('creds.update', async () => {
-
-sock.ev.on('creds.update', async () => {
     console.log('🔥 CREDS UPDATE')
 
     await saveCreds()
