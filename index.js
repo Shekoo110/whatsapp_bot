@@ -2192,10 +2192,11 @@ if (
                 resolve
             )
 
-            .on(
-                'error',
-                reject
-            )
+            .on('error', (err) => {
+    console.log('FFMPEG ERROR FULL:')
+    console.error(err)
+    reject(err)
+})
         }
     )
 }
@@ -2835,19 +2836,17 @@ if (text === '.س') {
 
     } catch (err) {
 
-        console.log(
-            'STICKER ERROR:',
-            err
-        )
+    console.log('STICKER ERROR FULL:')
+    console.error(err)
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
 '❌ فشل إنشاء الستيكر'
-            }
-        )
-    }
+        }
+    )
+}
 }
                     
     
