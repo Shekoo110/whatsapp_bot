@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@google/genai": "^1.10.0",
-    "@whiskeysockets/baileys": "latest",
+    "@whiskeysockets/baileys": "6.7.18",
     "axios": "^1.11.0",
     "cheerio": "^1.1.2",
     "express": "^5.2.1",
