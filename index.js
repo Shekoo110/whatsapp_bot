@@ -2036,23 +2036,36 @@ ${juubi.maxHp.toLocaleString()}
         console.log("CONNECTION UPDATE:", update)
 
         if (
-            !state.creds.registered &&
-            !pairingRequested
-        ) {
-            pairingRequested = true
+    connection === 'connecting' &&
+    !state.creds.registered &&
+    !pairingRequested
+) {
+    pairingRequested = true
 
-            try {
-                await new Promise(r => setTimeout(r, 3000))
+    setTimeout(async () => {
+        try {
 
-                const code = await sock.requestPairingCode("966562875546")
+            const code =
+                await sock.requestPairingCode(
+                    '966562875546'
+                )
 
-                console.log("🔥 PAIRING CODE:", code)
+            console.log(
+                'PAIRING:',
+                code
+            )
 
-            } catch (e) {
-                console.log("PAIRING ERROR:", e.message)
-                pairingRequested = false
-            }
+        } catch (e) {
+
+            console.log(
+                'PAIRING ERROR:',
+                e
+            )
+
+            pairingRequested = false
         }
+    }, 10000)
+}
 
         if (connection === "open") {
 
