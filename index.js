@@ -1,13 +1,5 @@
 const fs = require('fs')
 
-if (fs.existsSync('./auth')) {
-    fs.rmSync('./auth', {
-        recursive: true,
-        force: true
-    })
-
-    console.log('🗑️ AUTH DELETED')
-}
 
 process.on('uncaughtException', err => {
     console.error('UNCAUGHT EXCEPTION:')
@@ -2259,6 +2251,7 @@ if (qr) {
     qrCodeData = await QRCode.toDataURL(qr)
     console.log('QR UPDATED')
 }
+
     console.log("registered =", state.creds.registered)
     console.log("connection =", connection)
 
