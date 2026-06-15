@@ -29,6 +29,13 @@ const ffmpegPath =
 ffmpeg.setFfmpegPath(
     ffmpegPath
 )
+const pkg = require('./package.json')
+
+console.log(
+  'PACKAGE JSON BAILEYS:',
+  pkg.dependencies['@whiskeysockets/baileys']
+)
+
 console.log(
   'BAILEYS VERSION:',
   require('@whiskeysockets/baileys/package.json').version
