@@ -1948,7 +1948,7 @@ if (!state.creds.registered) {
 
             const code =
                 await sock.requestPairingCode(
-                    "966562875546"
+                    "201105749333"
                 )
 
             console.log(
@@ -2703,39 +2703,8 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-if (text === '.pingimg') {
-
-    const axios = require('axios')
-
-    try {
-
-        console.log('DOWNLOAD START')
-
-        await axios.get(
-            'https://mmg.whatsapp.net',
-            {
-                timeout: 10000
-            }
-        )
-
-        console.log('WHATSAPP CDN OK')
-
-    } catch (e) {
-
-        console.log('WHATSAPP CDN ERROR')
-
-        console.log(e)
-    }
-}
-
-    
 if (text === '.س') {
-return safeSend(
-        msg.key.remoteJid,
-        {
-            text: '🔧 أمر الستيكر معطل مؤقتاً'
-        }
-    )
+
     try {
 
         const quoted =
