@@ -2579,16 +2579,25 @@ if (text === '.testimg') {
 
     console.log('TEST START')
 
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            image: {
-                url: 'https://picsum.photos/300'
-            }
-        }
-    )
+    try {
 
-    console.log('TEST END')
+        await sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                image: {
+                    url: 'https://picsum.photos/300'
+                }
+            }
+        )
+
+        console.log('TEST END')
+
+    } catch (err) {
+
+        console.log('IMAGE ERROR:')
+        console.log(err)
+
+    }
 }
 
     
