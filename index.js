@@ -1886,11 +1886,15 @@ console.log('🚀 START BOT', Date.now())
 
     const { state, saveCreds } =
         await useMultiFileAuthState('auth')
-
+    
+console.log(
+    'AUTH FILES:',
+    fs.existsSync('./auth')
+)
     const sock = makeWASocket({
     auth: state,
     printQRInTerminal: false,
-    browser: ['Ubuntu', 'Chrome', '22.04']
+    browser: ['Chrome', 'Chrome', '1.0.0']
 })
 
 const BEAST_GROUPS = [
@@ -2070,105 +2074,6 @@ if (
 
         
 
-            sock.ev.on('connection.update', async (update) => {
-
-    const { connection } = update
-
-    if (connection === "open") {
-
-        console.log("✅ BOT CONNECTED")
-
-        if (!currentBoss) {
-
-            console.log("👑 لا يوجد زعيم محفوظ")
-
-            await spawnBoss(sock, GROUP_ID)
-
-            currentBoss = await Boss.findOne()
-        }
-
-        if (currentBoss) {
-
-            currentBoss.finished =
-                currentBoss.finished ?? false
-
-            currentBoss.killer =
-                currentBoss.killer ?? null
-
-            if (
-                currentBoss.finished &&
-                !currentBoss.respawnAt
-            ) {
-
-                await Boss.deleteMany({})
-
-                currentBoss = null
-
-                await spawnBoss(
-                    sock,
-                    GROUP_ID
-                )
-
-                currentBoss =
-                    await Boss.findOne()
-            }
-        }
-    }
-})
-
-    const savedBoss = await Boss.findOne()
-
-    console.log(
-        'Loaded Boss:',
-        JSON.stringify(savedBoss, null, 2)
-    )
-
-    currentBoss = savedBoss
-
-    // ✅ لازم يكون داخل startBot
-    if (!bossInterval) {
-
-    bossInterval = setInterval(async () => {
-
-        try {
-
-            console.log(
-                'Boss Check:',
-                currentBoss?.finished,
-                currentBoss?.respawnAt
-            )
-
-            if (
-                currentBoss &&
-                currentBoss.finished &&
-                currentBoss.respawnAt &&
-                currentBoss.respawnAt <= Date.now()
-            ) {
-
-                console.log('👑 إعادة إنشاء الزعيم')
-
-                await Boss.deleteMany({})
-
-                currentBoss = null
-
-                await spawnBoss(sock, GROUP_ID)
-
-                currentBoss = await Boss.findOne()
-            }
-
-        } catch (err) {
-
-            console.log(
-                'Boss Respawn Error:',
-                err
-            )
-        }
-
-    }, 60000)
-
-}
-
-
     async function videoToSticker(
     input,
     output
@@ -2264,6 +2169,97 @@ if (qr) {
     if (connection === 'open') {
 qrCodeData = ""
     console.log("✅ BOT CONNECTED")
+
+        if (!currentBoss) {
+
+            console.log("👑 لا يوجد زعيم محفوظ")
+
+            await spawnBoss(sock, GROUP_ID)
+
+            currentBoss = await Boss.findOne()
+        }
+
+        if (currentBoss) {
+
+            currentBoss.finished =
+                currentBoss.finished ?? false
+
+            currentBoss.killer =
+                currentBoss.killer ?? null
+
+            if (
+                currentBoss.finished &&
+                !currentBoss.respawnAt
+            ) {
+
+                await Boss.deleteMany({})
+
+                currentBoss = null
+
+                await spawnBoss(
+                    sock,
+                    GROUP_ID
+                )
+
+                currentBoss =
+                    await Boss.findOne()
+            }
+        }
+    }
+})
+
+    const savedBoss = await Boss.findOne()
+
+    console.log(
+        'Loaded Boss:',
+        JSON.stringify(savedBoss, null, 2)
+    )
+
+    currentBoss = savedBoss
+
+    // ✅ لازم يكون داخل startBot
+    if (!bossInterval) {
+
+    bossInterval = setInterval(async () => {
+
+        try {
+
+            console.log(
+                'Boss Check:',
+                currentBoss?.finished,
+                currentBoss?.respawnAt
+            )
+
+            if (
+                currentBoss &&
+                currentBoss.finished &&
+                currentBoss.respawnAt &&
+                currentBoss.respawnAt <= Date.now()
+            ) {
+
+                console.log('👑 إعادة إنشاء الزعيم')
+
+                await Boss.deleteMany({})
+
+                currentBoss = null
+
+                await spawnBoss(sock, GROUP_ID)
+
+                currentBoss = await Boss.findOne()
+            }
+
+        } catch (err) {
+
+            console.log(
+                'Boss Respawn Error:',
+                err
+            )
+        }
+
+    }, 60000)
+
+    }
+    
 
     console.log('البوت اشتغل')
 
