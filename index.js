@@ -1911,7 +1911,7 @@ console.log(
     state.creds.me
 )
     const { version } = await fetchLatestBaileysVersion()
-
+console.log('BAILEYS VERSION:', version)
 const sock = makeWASocket({
     version,
     auth: state,
@@ -2073,7 +2073,7 @@ ${juubi.maxHp.toLocaleString()}
 }
     console.log("SOCKET CREATED")
 
-    sock.ev.on('creds.update', saveCreds)
+    
 
 
 
