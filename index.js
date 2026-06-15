@@ -2524,7 +2524,7 @@ sock.ev.on('messages.upsert', async ({ messages }) => {
     const msg = messages[0]
     if (!msg?.message) return
 
-    console.log(JSON.stringify(msg, null, 2))
+  //  console.log(JSON.stringify(msg, null, 2))
     console.log("participant:", msg.key.participant)
     console.log("remoteJid:", msg.key.remoteJid)
 
@@ -2698,9 +2698,13 @@ cooldowns.set(key, now)
 
 if (text === '.testimg') {
 
+    console.log('TEST START')
+
     const axios = require('axios')
 
     try {
+
+        console.log('DOWNLOADING IMAGE')
 
         const img = await axios.get(
             'https://picsum.photos/300',
@@ -2708,6 +2712,8 @@ if (text === '.testimg') {
                 responseType: 'arraybuffer'
             }
         )
+
+        console.log('DOWNLOAD OK')
 
         await sock.sendMessage(
             msg.key.remoteJid,
