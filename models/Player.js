@@ -318,7 +318,28 @@ brawlLosses: {
     default: 0
 },
     
+// =========================
+// KINGDOM RAID SYSTEM
+// =========================
 
+kingdomRaid: {
+
+    stage: {
+        type: Number,
+        default: 0
+    },
+
+    usedCharacters: {
+        type: Array,
+        default: []
+    },
+
+    lastReset: {
+        type: String,
+        default: ''
+    }
+
+},
     // =========================
     // BOXES
     // =========================
