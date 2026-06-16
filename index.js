@@ -1,5 +1,15 @@
 const fs = require('fs')
 
+const allowedGroups = [
+
+'120363020823525909@g.us',
+
+'120363400448225715@g.us'
+
+]
+
+const disabledGroups = new Set()
+
 const kingdomStages = [
 
 {
@@ -2604,6 +2614,19 @@ msg.message.extendedTextMessage?.text
 
 if (!text) return
 
+    if (
+    disabledGroups.has(
+        msg.key.remoteJid
+    )
+) {
+
+    if (
+        text !== '.تشغيل'
+    ) {
+        return
+    }
+    }
+
 const userId =
 msg.key.participant ||
 msg.key.remoteJid
@@ -2766,6 +2789,46 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (
+    text === '.ايقاف' &&
+    allowedGroups.includes(
+        msg.key.remoteJid
+    )
+) {
+
+    disabledGroups.add(
+        msg.key.remoteJid
+    )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+'🔴 تم إيقاف البوت مؤقتاً في هذا القروب'
+        }
+    )
+}
+
+if (
+    text === '.تشغيل' &&
+    allowedGroups.includes(
+        msg.key.remoteJid
+    )
+) {
+
+    disabledGroups.delete(
+        msg.key.remoteJid
+    )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+'🟢 تم تشغيل البوت مجدداً في هذا القروب'
+        }
+    )
+}
+    
     if (text === '.اصلاح_الالقاب') {
 
     const players = await Player.find({})
