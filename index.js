@@ -2765,6 +2765,96 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+if (text === '.اصلاح_ex') {
+
+const player =
+    await Player.findOne({
+        userId
+    })
+
+if (!player) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ لا يوجد حساب'
+        }
+    )
+}
+
+let fixed = 0
+
+for (const char of player.characters) {
+
+    if (
+        char.evolutionLevel === 6
+    ) {
+
+        if (
+            char.power < 25000
+        ) {
+
+            char.power = 25000
+            fixed++
+        }
+
+        if (!char.urAbilities)
+            char.urAbilities = []
+
+        const availableAbilities =
+            urAbilities.filter(
+                a =>
+                !char.urAbilities.some(
+                    owned =>
+                    owned.name === a.name
+                )
+            )
+
+        if (
+            availableAbilities.length > 0 &&
+            char.urAbilities.length < 2
+        ) {
+
+            const exAbility =
+                availableAbilities[
+                    Math.floor(
+                        Math.random() *
+                        availableAbilities.length
+                    )
+                ]
+
+            char.urAbilities.push(
+                exAbility
+            )
+        }
+    }
+}
+
+player.markModified(
+    'characters'
+)
+
+await player.save()
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+`✅ تم إصلاح شخصيات EX
+
+⚔️ الشخصيات التي تم رفع قوتها:
+${fixed}
+
+👑 جميع شخصيات EX أصبحت بقوة 25000
+
+🔥 وتم منح قدرة إضافية للشخصيات الناقصة`
+}
+)
+}
+    
 if (text === '.المملكة') {
 
     const player =
