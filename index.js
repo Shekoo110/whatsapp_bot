@@ -2614,18 +2614,23 @@ msg.message.extendedTextMessage?.text
 
 if (!text) return
 
-    if (
+const userId =
+msg.key.participant ||
+msg.key.remoteJid
+
+if (
     disabledGroups.has(
         msg.key.remoteJid
     )
 ) {
 
     if (
-        text !== '.تشغيل'
+        text !== '.تشغيل' ||
+        userId.split('@')[0] !== ownerId
     ) {
         return
     }
-    }
+}
 
 const userId =
 msg.key.participant ||
@@ -2789,12 +2794,22 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-if (
-    text === '.ايقاف' &&
-    allowedGroups.includes(
-        msg.key.remoteJid
-    )
-) {
+if (text === '.ايقاف') {
+
+    if (
+        userId.split('@')[0] !==
+        ownerId
+    ) {
+        return
+    }
+
+    if (
+        !allowedGroups.includes(
+            msg.key.remoteJid
+        )
+    ) {
+        return
+    }
 
     disabledGroups.add(
         msg.key.remoteJid
@@ -2809,12 +2824,22 @@ if (
     )
 }
 
-if (
-    text === '.تشغيل' &&
-    allowedGroups.includes(
-        msg.key.remoteJid
-    )
-) {
+if (text === '.تشغيل') {
+
+    if (
+        userId.split('@')[0] !==
+        ownerId
+    ) {
+        return
+    }
+
+    if (
+        !allowedGroups.includes(
+            msg.key.remoteJid
+        )
+    ) {
+        return
+    }
 
     disabledGroups.delete(
         msg.key.remoteJid
