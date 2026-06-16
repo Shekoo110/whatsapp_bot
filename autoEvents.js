@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const eventManager =
 require('./eventManager')
 
@@ -6,29 +8,82 @@ giveReward
 } = require('./eventRewards')
 
 const eventGroups = [
-
 '120363020823525909@g.us',
-
 '120363400448225715@g.us'
-
 ]
+
+const EVENT_FILE =
+'./eventTimer.json'
+
 let autoEventsStarted = false
+
+function loadNextEventTime() {
+
+if (
+    !fs.existsSync(
+        EVENT_FILE
+    )
+) {
+    return null
+}
+
+try {
+
+    const data =
+        JSON.parse(
+            fs.readFileSync(
+                EVENT_FILE,
+                'utf8'
+            )
+        )
+
+    return data.nextEvent
+
+} catch {
+
+    return null
+}
+
+}
+
+function saveNextEventTime(
+time
+) {
+
+fs.writeFileSync(
+    EVENT_FILE,
+    JSON.stringify({
+        nextEvent: time
+    })
+)
+
+}
 
 function startAutoEvents(sock) {
 
-    if (autoEventsStarted) {
-        console.log(
-            '⚠️ Auto Events Already Started'
-        )
-        return
-    }
+if (autoEventsStarted) {
 
-    autoEventsStarted = true
+    console.log(
+        '⚠️ Auto Events Already Started'
+    )
 
-    async function launchEvent() {
-console.log('🚀 Launch Event Started')
+    return
+}
+
+autoEventsStarted = true
+
+async function launchEvent() {
+
+    console.log(
+        '🚀 Launch Event Started'
+    )
+
     if (!sock?.user?.id) {
-        console.log('⚠️ WhatsApp not ready')
+
+        console.log(
+            '⚠️ WhatsApp not ready'
+        )
+
         return
     }
 
@@ -37,17 +92,21 @@ console.log('🚀 Launch Event Started')
         const sharedEvent =
             eventManager.getRandomEvent()
 
-        for (const groupId of eventGroups) {
+        for (
+            const groupId
+            of eventGroups
+        ) {
 
-          console.log(
-    'Sending Event To:',
-    groupId
-)
+            console.log(
+                'Sending Event To:',
+                groupId
+            )
 
-console.log(
-    'Event:',
-    sharedEvent
-)
+            console.log(
+                'Event:',
+                sharedEvent
+            )
+
             await eventManager.startEvent(
                 sock,
                 groupId,
@@ -64,18 +123,82 @@ console.log(
     }
 }
 
-// أول حدث مباشرة
+const now =
+    Date.now()
 
-launchEvent()
+let nextEvent =
+    loadNextEventTime()
 
-// حدث جديد كل 20 دقيقة
+if (
+    !nextEvent ||
+    nextEvent <= now
+) {
 
-setInterval(
-    launchEvent,
-    20 * 60 * 1000
+    nextEvent =
+        now +
+        (
+            20 *
+            60 *
+            1000
+        )
+
+    saveNextEventTime(
+        nextEvent
+    )
+}
+
+const remaining =
+
+    Math.max(
+        0,
+        nextEvent - now
+    )
+
+console.log(
+    `⏳ Next Event In ${
+        Math.floor(
+            remaining / 1000
+        )
+    } Seconds`
 )
 
-// فحص الأحداث المنتهية
+setTimeout(
+    async function startCycle() {
+
+        await launchEvent()
+
+        saveNextEventTime(
+            Date.now() +
+            (
+                20 *
+                60 *
+                1000
+            )
+        )
+
+        setInterval(
+            async () => {
+
+                await launchEvent()
+
+                saveNextEventTime(
+                    Date.now() +
+                    (
+                        20 *
+                        60 *
+                        1000
+                    )
+                )
+
+            },
+            20 *
+            60 *
+            1000
+        )
+
+    },
+    remaining
+)
 
 setInterval(
     async () => {
@@ -85,7 +208,10 @@ setInterval(
             const expired =
                 eventManager.getExpiredEvents()
 
-            for (const event of expired) {
+            for (
+                const event
+                of expired
+            ) {
 
                 if (
                     !event.participants.length
@@ -105,8 +231,13 @@ setInterval(
                     eventManager.finishEvent(
                         event.jid
                     )
-                if (!Array.isArray(winners)) {
-    continue
+
+                if (
+                    !Array.isArray(
+                        winners
+                    )
+                ) {
+                    continue
                 }
 
                 let result =
@@ -119,10 +250,15 @@ setInterval(
 
 `
 
-                for (const id of winners) {
+                for (
+                    const id
+                    of winners
+                ) {
 
                     const reward =
-                        await giveReward(id)
+                        await giveReward(
+                            id
+                        )
 
                     result +=
 
@@ -131,14 +267,20 @@ setInterval(
 
 `
 }
-if (!sock?.user?.id) {
-    continue
-}
+
+                if (
+                    !sock?.user?.id
+                ) {
+                    continue
+                }
+
                 await sock.sendMessage(
                     event.jid,
                     {
-                        text: result,
-                        mentions: winners
+                        text:
+                            result,
+                        mentions:
+                            winners
                     }
                 )
             }
