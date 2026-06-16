@@ -2790,6 +2790,67 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+    if (text === '.مزامنة_sss') {
+
+    const players = await Player.find({})
+
+    let updated = 0
+
+    for (const player of players) {
+
+        let changed = false
+
+        for (const char of player.characters) {
+
+            if (char.rarity !== 'SSS')
+                continue
+
+            const original =
+                characters.find(
+                    c =>
+                    c.name === char.name
+                )
+
+            if (!original)
+                continue
+
+            // لا تعدل الشخصيات المطورة
+            if (
+                (char.evolutionLevel || 0) > 0
+            ) {
+                continue
+            }
+
+            char.power =
+                original.power
+
+            changed = true
+            updated++
+        }
+
+        if (changed) {
+
+            player.markModified(
+                'characters'
+            )
+
+            await player.save()
+        }
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`✅ تمت مزامنة شخصيات SSS
+
+⚔️ الشخصيات المحدثة:
+${updated}`
+        }
+    )
+}
+
 if (text === '.ايقاف') {
 
     if (
