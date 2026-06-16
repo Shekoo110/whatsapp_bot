@@ -2766,6 +2766,57 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+    if (text === '.اصلاح_الالقاب') {
+
+    const players = await Player.find({})
+
+    let fixed = 0
+
+    for (const player of players) {
+
+        if (!player.titles)
+            player.titles = []
+
+        const titlesToAdd = [
+            '🌌 حاكم الأكوان',
+            '👑 ملك الأبطال'
+        ]
+
+        for (const title of titlesToAdd) {
+
+            if (
+                !player.titles.includes(
+                    title
+                )
+            ) {
+
+                player.titles.push(
+                    title
+                )
+
+                fixed++
+            }
+        }
+
+        await player.save()
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم استرجاع الألقاب القديمة
+
+🏆 الألقاب المضافة:
+🌌 حاكم الأكوان
+👑 ملك الأبطال
+
+👥 عدد الإضافات:
+${fixed}`
+        }
+    )
+}
+
 if (text === '.اصلاح_ex') {
 
 const player =
@@ -11588,23 +11639,16 @@ if (needSave) await player.save()
             
     if (player.towerCompleted) {
 
-    if (
-        !player.title ||
-        player.title === 'undefined'
-    ) {
-
-        player.title =
-            '👑 ملك الأبطال'
-
-        await player.save()
-    }
-
     return sock.sendMessage(
         msg.key.remoteJid,
         {
             text: `👑 لقد أكملت برج الأبطال
 
-🏆 اللقب: ${player.title}
+🏆 الألقاب:
+
+${player.titles?.length
+? player.titles.join('\n')
+: 'لا يوجد'}
 
 🏰 الطابق: 30/30
 
@@ -11639,7 +11683,7 @@ ${floor.power}
 ${player.usedCharacters?.length || 0}/30
 
 🏆 اللقب النهائي:
-👑 ملك الأبطال
+⚜️ سيد العروش
 
 استعمل:
 .طابق ${player.towerFloor} رقم_الشخصية`
@@ -12342,8 +12386,11 @@ const characters = Array.isArray(player.characters)
 
 `👤 الملف الشخصي
 
-🎖️ اللقب:
-${player.title || 'لا يوجد'}
+🎖️ الألقاب:
+
+${player.titles?.length
+? player.titles.join('\n')
+: 'لا يوجد'}
 
 ⭐ المستوى:
 ${player.level || 1}
@@ -12792,35 +12839,44 @@ ${character.anime}`
 
 if (text === '.ريست_البرج_للجميع') {
 
-await Player.updateMany(
-    {},
-    {
-        $set: {
-            towerFloor: 1,
-            usedCharacters: [],
-            towerCompleted: false,
-            attackBonus: 0,
-            defenseBonus: 0,
-            hpBonus: 0,
-            speedBonus: 0
-        }
-    }
-)
+    await Player.updateMany(
+        {},
+        {
+            $set: {
+                towerFloor: 1,
+                usedCharacters: [],
+                towerCompleted: false,
 
-return sock.sendMessage(
-    msg.key.remoteJid,
-    {
-        text:
+                attackBonus: 0,
+                defenseBonus: 0,
+                hpBonus: 0,
+                speedBonus: 0
+            },
+
+            $unset: {
+                usedCharacter: "",
+                towerCharacters: "",
+                usedTowerCharacters: ""
+            }
+        }
+    )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
 
 `🔄 تم إعادة تعيين البرج لجميع اللاعبين
 
 ✅ الطابق عاد إلى 1
-✅ تم حذف مكافآت البرج
+✅ تم فتح جميع الشخصيات
 ✅ تم مسح الشخصيات المستخدمة
+✅ تم حذف أي بيانات برج قديمة
+✅ تم حذف مكافآت البرج
 ✅ تم الاحتفاظ بالألقاب
 ✅ تم الاحتفاظ بزيادة المخزون (+5)`
-}
-)
+        }
+    )
 }
     
 if (text.startsWith('.طابق')) {
@@ -12958,12 +13014,24 @@ ${floor.power}`
 
     if (floor.floor === 30) {
 
-        player.towerCompleted = true
-        player.title = '🌌 حاكم الأكوان'
+    player.towerCompleted = true
 
-        player.attackBonus += 10
-        player.maxCharacters += 5
+    if (!player.titles)
+        player.titles = []
+
+    if (
+        !player.titles.includes(
+            '⚜️ سيد العروش'
+        )
+    ) {
+        player.titles.push(
+            '⚜️ سيد العروش'
+        )
     }
+
+    player.attackBonus += 10
+    player.maxCharacters += 5
+}
 
     await player.save()
 
