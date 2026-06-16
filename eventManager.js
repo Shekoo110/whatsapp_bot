@@ -80,22 +80,19 @@ data.currentEvent
 try {
 
     await sock.sendMessage(
-        jid,
-        {
-            text:
+    jid,
+    {
+        text:
 
 `🎮 حدث جديد!
 
-🎯 ${data.currentEvent.name}
-
-📝 اكتب:
-${data.currentEvent.command}
+${data.currentEvent.description}
 
 👥 المشاركون: 0/5
 
 ⏳ لديك دقيقتان`
-        }
-    )
+    }
+)
 
 } catch (err) {
 
