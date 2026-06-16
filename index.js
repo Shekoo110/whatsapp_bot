@@ -2790,7 +2790,7 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-    if (text === '.اصلاح_sss_كامل') {
+if (text === '.استرجاع_sss') {
 
     const players = await Player.find({})
     let updated = 0
@@ -2801,20 +2801,21 @@ cooldowns.set(key, now)
 
         for (const char of player.characters) {
 
-            // 🔥 فقط SSS
+            // 🔥 فقط شخصيات SSS
             if (char.rarity !== 'SSS') continue
 
-            // 🔥 نجيب الأصل من الملف بطريقة آمنة
+            // 🛡️ لا نلمس المطورين إطلاقًا
+            if ((char.evolutionLevel || 0) > 0) continue
+
+            // 🔎 نجيب الأصل من الملف (SSS فقط)
             const original = characters.find(c =>
-                c.name.trim().toLowerCase() === char.name.trim().toLowerCase()
+                c.name.trim().toLowerCase() === char.name.trim().toLowerCase() &&
+                c.rarity === 'SSS'
             )
 
             if (!original) continue
 
-            // 🛡️ حماية المطورين
-            if ((char.evolutionLevel || 0) > 0) continue
-
-            // 🔧 إصلاح القوة لجميع SSS
+            // 🔧 استرجاع القوة فقط
             if (char.power !== original.power) {
                 char.power = original.power
                 changed = true
@@ -2829,7 +2830,7 @@ cooldowns.set(key, now)
     }
 
     return sock.sendMessage(msg.key.remoteJid, {
-        text: `✅ تم إصلاح جميع شخصيات SSS\n\n⚔️ عدد التعديلات: ${updated}`
+        text: `✅ تم استرجاع قوة شخصيات SSS بنجاح\n\n⚔️ عدد التعديلات: ${updated}`
     })
 }
 
