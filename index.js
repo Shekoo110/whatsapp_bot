@@ -4714,7 +4714,7 @@ if (availableAbilities.length) {
         break
     }
 }
-
+}
 if (randomAbility) {
 
     char.urAbilities.push(
