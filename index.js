@@ -4208,7 +4208,7 @@ const powers = [
     16000,
     19000,
     22000,
-    22000
+    25000
 ]
 
 const costs = [
@@ -4352,7 +4352,7 @@ const availableAbilities =
     )
 
 let randomAbility = null
-
+let exAbility = null
 if (availableAbilities.length) {
 
     const totalChance =
@@ -4367,25 +4367,51 @@ if (availableAbilities.length) {
         totalChance
 
     for (
-        const ability
-        of availableAbilities
-    ) {
+    const ability
+    of availableAbilities
+) {
 
-        roll -= ability.chance
+    roll -= ability.chance
 
-        if (roll <= 0) {
+    if (roll <= 0) {
 
-            randomAbility =
-                ability
+        randomAbility =
+            ability
 
-            break
-        }
+        break
     }
+}
 
-    if (randomAbility) {
+if (randomAbility) {
+
+    char.urAbilities.push(
+        randomAbility
+    )
+}
+
+if (newLevel === 6) {
+
+    const availableAbilities =
+        urAbilities.filter(
+            a =>
+            !char.urAbilities.some(
+                owned =>
+                owned.name === a.name
+            )
+        )
+
+    if (availableAbilities.length) {
+
+        exAbility =
+            availableAbilities[
+                Math.floor(
+                    Math.random() *
+                    availableAbilities.length
+                )
+            ]
 
         char.urAbilities.push(
-            randomAbility
+            exAbility
         )
     }
 }
@@ -4404,29 +4430,54 @@ const newRank =
 
 if (newLevel === 6) {
 
-    return safeSend(
+    return sock.sendMessage(
         msg.key.remoteJid,
         {
-            text:
+            image: {
+                url: char.image
+            },
 
-`🌌 ═══════〔 EX AWAKENING 〕═══════ 🌌
+            caption:
 
+`╔═══━━━✦❖✦━━━═══╗
+      🌌 𝗘𝗫 𝗔𝗪𝗔𝗞𝗘𝗡𝗜𝗡𝗚 🌌
+╚═══━━━✦❖✦━━━═══╝
+
+🌑 انكسرت القيود القديمة
 ☄️ تمزقت الأبعاد
+🌠 تحررت القوة الكامنة
 
 👑 ${char.name}
 
-🌟 ${oldRank} ➜ EX
+╭━━〔 🌟 التطور النهائي 🌟 〕━━╮
+┃ ${oldRank} ➜ EX
+╰━━━━━━━━━━━━━━━━━━━━━━╯
 
-⚔️ القوة:
-22000
+⚔️ القوة القتالية
+┗➤ ${char.power.toLocaleString()}
 
-💰 تم خصم:
-${cost.toLocaleString()}
+💰 التكلفة
+┗➤ ${cost.toLocaleString()}
 
-🧩 تم استهلاك:
-2 شظايا
+🧩 الشظايا المستهلكة
+┗➤ 2
 
-🏆 وصلت الشخصية إلى أعلى رتبة ممكنة`
+${exAbility ? `╭━━〔 🔥 قدرة جديدة 🔥 〕━━╮
+┃ ${exAbility.name}
+┃
+┃ 📈 ${exAbility.description}
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+` : ''}
+
+🏆 تم بلوغ أعلى رتبة ممكنة
+
+✨ أصبحت الشخصية الآن ضمن
+👑 نخبة شخصيات EX الأسطورية 👑
+
+╔═══━━━✦❖✦━━━═══╗
+      🌠 𝗟𝗘𝗚𝗘𝗡𝗗 𝗔𝗦𝗖𝗘𝗡𝗦𝗜𝗢𝗡 🌠
+╚═══━━━✦❖✦━━━═══╝`
         }
     )
 }
