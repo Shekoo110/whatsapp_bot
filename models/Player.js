@@ -63,6 +63,10 @@ money: { type: Number, default: 0 },
         type: String,
         default: "برونزي"
     },
+    titles: {
+    type: [String],
+    default: []
+},
 
     lastPvP: {
         type: Number,
