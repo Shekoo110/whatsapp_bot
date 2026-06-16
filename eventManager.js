@@ -67,6 +67,16 @@ data.currentEvent =
     sharedEvent ||
     getRandomEvent()
 
+console.log(
+'🚀 START EVENT:',
+jid
+)
+
+console.log(
+'EVENT DATA:',
+data.currentEvent
+)
+
 try {
 
     await sock.sendMessage(
@@ -90,10 +100,15 @@ ${data.currentEvent.command}
 } catch (err) {
 
     console.log(
-        'EVENT SEND ERROR:',
-        jid,
-        err
-    )
+'❌ EVENT SEND ERROR'
+)
+
+console.log(
+'GROUP:',
+jid
+)
+
+console.log(err)
 
     data.eventRunning = false
 
