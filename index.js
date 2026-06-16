@@ -2790,10 +2790,9 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-    if (text === '.مزامنة_sss') {
+    if (text === '.اصلاح_sss_كامل') {
 
     const players = await Player.find({})
-
     let updated = 0
 
     for (const player of players) {
@@ -2802,53 +2801,32 @@ cooldowns.set(key, now)
 
         for (const char of player.characters) {
 
-            if (char.rarity !== 'SSS')
-                continue
+            // 🔥 فقط SSS
+            if (char.rarity !== 'SSS') continue
 
-            const original =
-                characters.find(
-                    c =>
-                    c.name === char.name
-                )
+            const original = characters.find(c => c.name === char.name)
+            if (!original) continue
 
-            if (!original)
-                continue
+            // 🛡️ ممنوع لمس المطورين نهائيًا
+            if ((char.evolutionLevel || 0) > 0) continue
 
-            // لا تعدل الشخصيات المطورة
-            if (
-                (char.evolutionLevel || 0) > 0
-            ) {
-                continue
+            // 🔧 إصلاح كامل للقوة من الملف
+            if (char.power !== original.power) {
+                char.power = original.power
+                changed = true
+                updated++
             }
-
-            char.power =
-                original.power
-
-            changed = true
-            updated++
         }
 
         if (changed) {
-
-            player.markModified(
-                'characters'
-            )
-
+            player.markModified('characters')
             await player.save()
         }
     }
 
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-
-`✅ تمت مزامنة شخصيات SSS
-
-⚔️ الشخصيات المحدثة:
-${updated}`
-        }
-    )
+    return sock.sendMessage(msg.key.remoteJid, {
+        text: `✅ تم إصلاح جميع شخصيات SSS بنجاح\n\n⚔️ عدد التعديلات: ${updated}`
+    })
 }
 
 if (text === '.ايقاف') {
