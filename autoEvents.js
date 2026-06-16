@@ -26,7 +26,7 @@ function startAutoEvents(sock) {
     autoEventsStarted = true
 
     async function launchEvent() {
-
+console.log('🚀 Launch Event Started')
     if (!sock?.user?.id) {
         console.log('⚠️ WhatsApp not ready')
         return
@@ -39,6 +39,15 @@ function startAutoEvents(sock) {
 
         for (const groupId of eventGroups) {
 
+          console.log(
+    'Sending Event To:',
+    groupId
+)
+
+console.log(
+    'Event:',
+    sharedEvent
+)
             await eventManager.startEvent(
                 sock,
                 groupId,
