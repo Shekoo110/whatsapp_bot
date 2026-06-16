@@ -2804,13 +2804,17 @@ cooldowns.set(key, now)
             // 🔥 فقط SSS
             if (char.rarity !== 'SSS') continue
 
-            const original = characters.find(c => c.name === char.name)
+            // 🔥 نجيب الأصل من الملف بطريقة آمنة
+            const original = characters.find(c =>
+                c.name.trim().toLowerCase() === char.name.trim().toLowerCase()
+            )
+
             if (!original) continue
 
-            // 🛡️ ممنوع لمس المطورين نهائيًا
+            // 🛡️ حماية المطورين
             if ((char.evolutionLevel || 0) > 0) continue
 
-            // 🔧 إصلاح كامل للقوة من الملف
+            // 🔧 إصلاح القوة لجميع SSS
             if (char.power !== original.power) {
                 char.power = original.power
                 changed = true
@@ -2825,7 +2829,7 @@ cooldowns.set(key, now)
     }
 
     return sock.sendMessage(msg.key.remoteJid, {
-        text: `✅ تم إصلاح جميع شخصيات SSS بنجاح\n\n⚔️ عدد التعديلات: ${updated}`
+        text: `✅ تم إصلاح جميع شخصيات SSS\n\n⚔️ عدد التعديلات: ${updated}`
     })
 }
 
