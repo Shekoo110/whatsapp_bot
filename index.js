@@ -1,6 +1,68 @@
 const fs = require('fs')
 
+const kingdomStages = [
 
+{
+    name: "🏰 بوابة المملكة",
+    power: 4500,
+    reward: 100000
+},
+
+{
+    name: "⚔️ حرس العاصمة",
+    power: 5000,
+    reward: 120000
+},
+
+{
+    name: "🛡️ الفرسان الملكيون",
+    power: 5500,
+    reward: 140000
+},
+
+{
+    name: "👑 قاعة العرش",
+    power: 6000,
+    reward: 160000
+},
+
+{
+    name: "🏹 أبراج المراقبة",
+    power: 6500,
+    reward: 180000
+},
+
+{
+    name: "🔥 ساحة الحرب الكبرى",
+    power: 7000,
+    reward: 200000
+},
+
+{
+    name: "🌑 الحصن المظلم",
+    power: 7500,
+    reward: 240000
+},
+
+{
+    name: "⚜️ مقر النبلاء",
+    power: 8000,
+    reward: 260000
+},
+
+{
+    name: "🐉 التنين الحارس",
+    power: 8500,
+    reward: 280000
+},
+
+{
+    name: "👑 العرش الإمبراطوري",
+    power: 9000,
+    reward: 320000
+}
+
+]
 
 
 process.on('uncaughtException', err => {
@@ -2703,7 +2765,278 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+if (text === '.المملكة') {
 
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    const today =
+new Date().toLocaleDateString(
+    'en-CA',
+    {
+        timeZone:
+        'Asia/Riyadh'
+    }
+)
+
+    if (
+        !player.kingdomRaid ||
+        player.kingdomRaid.lastReset !== today
+    ) {
+
+        player.kingdomRaid = {
+            stage: 0,
+            usedCharacters: [],
+            lastReset: today
+        }
+
+        await player.save()
+    }
+
+    const currentStage =
+        player.kingdomRaid.stage
+
+    if (currentStage >= 10) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`👑 ═════〔 المملكة 〕═════ 👑
+
+🏆 تم احتلال المملكة بالكامل
+
+💰 جميع الجوائز تم استلامها
+
+⏳ يتجدد الغزو عند 12:00 ليلاً`
+            }
+        )
+    }
+
+    const stage =
+        kingdomStages[currentStage]
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`👑 ═════〔 غزو المملكة 〕═════ 👑
+
+📍 المرحلة الحالية:
+${currentStage + 1}/10
+
+${stage.name}
+
+⚔️ القوة المطلوبة:
+${stage.power}
+
+💰 مكافأة المرحلة:
+${stage.reward.toLocaleString()}
+
+🔒 الشخصيات المستنزفة:
+${player.kingdomRaid.usedCharacters.length}
+
+📝 للدخول:
+
+.غزو رقم_الشخصية`
+        }
+    )
+}
+
+    
+if (text.startsWith('.غزو ')) {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد حساب'
+            }
+        )
+    }
+
+    const today =
+new Date().toLocaleDateString(
+    'en-CA',
+    {
+        timeZone:
+        'Asia/Riyadh'
+    }
+)
+
+    if (
+        !player.kingdomRaid ||
+        player.kingdomRaid.lastReset !== today
+    ) {
+
+        player.kingdomRaid = {
+            stage: 0,
+            usedCharacters: [],
+            lastReset: today
+        }
+    }
+
+    const args =
+        text.split(' ')
+
+    const index =
+        parseInt(args[1]) - 1
+
+    if (isNaN(index)) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ مثال:\n.غزو 1'
+            }
+        )
+    }
+
+    const char =
+        player.characters[index]
+
+    if (!char) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ الشخصية غير موجودة'
+            }
+        )
+    }
+
+    if (
+        player.kingdomRaid.usedCharacters.includes(
+            char.name
+        )
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`🔒 ${char.name}
+
+تم استنزاف هذه الشخصية اليوم
+
+⏳ تعود عند إعادة تعيين الغزو`
+            }
+        )
+    }
+
+    const current =
+        player.kingdomRaid.stage
+
+    if (current >= 10) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'🏆 أكملت الغزو اليومي'
+            }
+        )
+    }
+
+    const stage =
+        kingdomStages[current]
+
+    if (char.power < stage.power) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`❌ فشل الاقتحام
+
+👑 ${char.name}
+
+⚔️ القوة:
+${char.power}
+
+🏰 المطلوب:
+${stage.power}
+
+💡 الشخصية لم تُستهلك`
+            }
+        )
+    }
+
+    player.money += stage.reward
+
+    player.kingdomRaid.usedCharacters.push(
+        char.name
+    )
+
+    player.kingdomRaid.stage++
+
+    player.markModified(
+        'kingdomRaid'
+    )
+
+    await player.save()
+
+    if (
+        player.kingdomRaid.stage >= 10
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`👑 تم فتح العرش الإمبراطوري
+
+🏆 اكتمل غزو المملكة
+
+💰 إجمالي الأرباح:
+2,000,000
+
+⏳ يتجدد عند 12:00 ليلاً`
+            }
+        )
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`${stage.name}
+
+⚔️ ${char.name}
+
+✅ نجح الاقتحام
+
+💰 +${stage.reward.toLocaleString()}
+
+🔒 تم استنزاف الشخصية
+
+📍 التقدم:
+${player.kingdomRaid.stage}/10`
+        }
+    )
+}
+    
 if (text === '.س') {
 
     try {
