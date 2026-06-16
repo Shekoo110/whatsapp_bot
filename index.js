@@ -11587,10 +11587,22 @@ if (player.speedBonus === undefined) {
 if (needSave) await player.save()
             
     if (player.towerCompleted) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: `👑 لقد أكملت برج الأبطال
+
+    if (
+        !player.title ||
+        player.title === 'undefined'
+    ) {
+
+        player.title =
+            '👑 ملك الأبطال'
+
+        await player.save()
+    }
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `👑 لقد أكملت برج الأبطال
 
 🏆 اللقب: ${player.title}
 
@@ -11600,9 +11612,9 @@ if (needSave) await player.save()
 🛡️ دفاع إضافي: ${player.defenseBonus || 0}%
 ❤️ صحة إضافية: ${player.hpBonus || 0}%
 ⚡ سرعة إضافية: ${player.speedBonus || 0}%`
-            }
-        )
-    }
+        }
+    )
+}
 
     const floor = towerFloors.find(
         f => f.floor === player.towerFloor
