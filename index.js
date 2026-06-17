@@ -2247,15 +2247,18 @@ if (
 
             ffmpeg(input)
 
-            .outputOptions([
-                '-vcodec libwebp',
-                '-vf scale=512:512:force_original_aspect_ratio=decrease,fps=15',
-                '-loop 0',
-                '-preset default',
-                '-an',
-                '-vsync 0',
-                '-s 512:512'
-            ])
+.duration(10)
+
+.outputOptions([
+    '-vcodec libwebp',
+    '-vf',
+    'scale=512:512:force_original_aspect_ratio=increase,crop=512:512,fps=15',
+    '-loop 0',
+    '-preset picture',
+    '-an',
+    '-vsync 0',
+    '-lossless 1'
+])
 
             .save(output)
 
@@ -3555,23 +3558,20 @@ if (text === '.س') {
         ) {
 
             const sticker =
-                new Sticker(
-                    buffer,
-                    {
-                        pack:
+    new Sticker(
+        buffer,
+        {
+            pack:
 '❖ 𝑵𝒂𝒎𝒊𝒊 𝑺𝒘𝒂𝒏 ❖',
 
-                        author:
-'.',
+            author: '.',
 
-                        type:
-                        StickerTypes.FULL,
+            type:
+            StickerTypes.CROPPED,
 
-                        quality:
-                        100
-                    }
-                )
-
+            quality: 100
+        }
+    )
             const webp =
                 await sticker.toBuffer()
 
