@@ -3437,8 +3437,7 @@ battleState.activeBattle.players
     '@' +
     p.userId.split('@')[0]
 
-    return
-`${p.team === 'red' ? '🔴' : '🔵'} ${mention}
+    return `${p.team === 'red' ? '🔴' : '🔵'} ${mention}
 
 ☠️ ${p.kills || 0}
 🏴 ${p.captures || 0}
