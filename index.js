@@ -2212,20 +2212,26 @@ ${juubi.maxHp.toLocaleString()}
             .duration(10)
 
             .outputOptions([
-                '-vcodec',
-                'libwebp',
+    '-vcodec',
+    'libwebp',
 
-                '-vf',
-                'fps=8,scale=512:512:force_original_aspect_ratio=increase,crop=512:512',
+    '-vf',
+    'fps=15,scale=512:512:force_original_aspect_ratio=increase,crop=512:512',
 
-                '-loop',
-                '0',
+    '-loop',
+    '0',
 
-                '-an',
+    '-an',
 
-                '-pix_fmt',
-                'yuva420p'
-            ])
+    '-pix_fmt',
+    'yuva420p',
+
+    '-q:v',
+    '35',
+
+    '-compression_level',
+    '6'
+])
 
             .toFormat('webp')
 
