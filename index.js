@@ -2194,45 +2194,7 @@ ${juubi.maxHp.toLocaleString()}
 }
     console.log("SOCKET CREATED")
 
-    
-
-
-
-        /*
-if (
-    connection === 'connecting' &&
-    !state.creds.registered &&
-    !pairingRequested
-) {
-    pairingRequested = true
-
-    setTimeout(async () => {
-        try {
-
-            const code =
-                await sock.requestPairingCode(
-                    '966562875546'
-                )
-
-            console.log(
-                'PAIRING:',
-                code
-            )
-
-        } catch (e) {
-
-            console.log(
-                'PAIRING ERROR:',
-                e
-            )
-
-            pairingRequested = false
-        }
-    }, 10000)
-}
-*/
-
-        
+       
 
  async function videoToSticker(
     input,
@@ -2295,10 +2257,13 @@ if (
                 )
 
                 reject(err)
-            })
-        }
-    )
+            }  
+        )  
+    }  
+)
+
 }
+
     
     // =========================
     // Shop (مرة واحدة فقط)
