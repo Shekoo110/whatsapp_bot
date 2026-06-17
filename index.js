@@ -2799,32 +2799,6 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
-
-if (text === '.فحص_غوكو') {
-
-const player =
-await Player.findOne({
-    userId:
-    '54219851755655@lid'
-})
-
-const goku =
-player.characters.find(
-c => c.name === 'Goku'
-)
-
-return safeSend(
-    msg.key.remoteJid,
-    {
-        text:
-JSON.stringify(
-    goku,
-    null,
-    2
-)
-    }
-)
-}
     
 if (text === '.حالة') {
 
@@ -4645,8 +4619,6 @@ return safeSend(
 }
 
 let fixed = 0
-let found = 0
-let abilitiesAdded = 0
 
 for (const char of player.characters) {
 
@@ -4656,8 +4628,6 @@ if (
     ) >= 6
 ) {
 
-    found++
-
     if (
         char.power < 25000
     ) {
@@ -4665,38 +4635,6 @@ if (
         char.power = 25000
 
         fixed++
-    }
-
-    if (!char.urAbilities)
-        char.urAbilities = []
-
-    const availableAbilities =
-        urAbilities.filter(
-            a =>
-            !char.urAbilities.some(
-                owned =>
-                owned.name === a.name
-            )
-        )
-
-    if (
-        availableAbilities.length > 0 &&
-        char.urAbilities.length < 2
-    ) {
-
-        const exAbility =
-            availableAbilities[
-                Math.floor(
-                    Math.random() *
-                    availableAbilities.length
-                )
-            ]
-
-        char.urAbilities.push(
-            exAbility
-        )
-
-        abilitiesAdded++
     }
 }
 
@@ -4713,18 +4651,12 @@ msg.key.remoteJid,
 {
 text:
 
-`✅ تم فحص شخصيات EX
+`✅ تم إصلاح شخصيات EX
 
-👑 شخصيات EX المكتشفة:
-${found}
-
-⚔️ الشخصيات التي تم رفع قوتها:
+⚔️ الشخصيات التي تم إصلاحها:
 ${fixed}
 
-🔥 القدرات المضافة:
-${abilitiesAdded}
-
-🏆 جميع شخصيات EX أصبحت بقوة 25000`
+👑 جميع شخصيات EX أصبحت بقوة 25000`
 }
 )
 }
@@ -5120,12 +5052,31 @@ const webp =
         output
     )
 
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            sticker: webp
-        }
-    )
+const sticker =
+new Sticker(
+    webp,
+    {
+        pack:
+'❖ 𝑵𝒂𝒎𝒊𝒊 𝑺𝒘𝒂𝒏 ❖',
+
+        author: '.',
+
+        type:
+        StickerTypes.CROPPED,
+
+        quality: 100
+    }
+)
+
+const finalWebp =
+    await sticker.toBuffer()
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        sticker: finalWebp
+    }
+)
 
     await fs.promises.unlink(input)
     await fs.promises.unlink(output)
