@@ -3222,8 +3222,6 @@ if (text.startsWith('.انضم')) {
 
     const battlePlayer = {
 
-    const battlePlayer = {
-
     userId,
 
     team,
@@ -3419,15 +3417,41 @@ battleState.activeBattle.players
 )
 )[0]
 
-        const neutralFlags =
-5 -
-redFlags -
-blueFlags
+// أضف هنا 👇👇👇
 
-await safeSend(
-battleState.activeBattle.roomId,
-{
-text:
+const mentions =
+battleState.activeBattle.players.map(
+    p => p.userId
+)
+
+const results =
+battleState.activeBattle.players
+.map(p => {
+
+    const mention =
+    '@' +
+    p.userId.split('@')[0]
+
+    return
+`${p.team === 'red' ? '🔴' : '🔵'} ${mention}
+
+☠️ ${p.kills || 0}
+🏴 ${p.captures || 0}
+💀 ${p.deaths || 0}`
+})
+.join('\n\n')
+
+// إلى هنا 👆👆👆
+
+const neutralFlags =
+    5 -
+    redFlags -
+    blueFlags
+
+await sock.sendMessage(
+    battleState.activeBattle.roomId,
+    {
+        text:
 
 `🏁 انتهت الحرب
 
@@ -3454,15 +3478,20 @@ mvp?.currentCharacter?.name ||
 'لا يوجد'
 }
 
-☠️ القتلات:
-${mvp?.kills || 0}
+☠️ ${mvp?.kills || 0} قتلات
 
-🏴 الأعلام:
-${mvp?.captures || 0}
+🏴 ${mvp?.captures || 0} استحواذ
 
-💀 الوفيات:
-${mvp?.deaths || 0}`
-}
+💀 ${mvp?.deaths || 0} وفاة
+
+━━━━━━━━━━━━━━━
+
+📊 النتائج
+
+${results}`,
+
+        mentions
+    }
 )
         const Player =
     require('./models/Player')
