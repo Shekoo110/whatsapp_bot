@@ -3547,7 +3547,7 @@ await safeSend(
     {
         text:
 
-"🏴 بدأت احتلال العلم ${flag}"
+`🏴 بدأت احتلال العلم ${flag}`
 }
 )
 
@@ -3623,9 +3623,6 @@ if (
 }
 
         await safeSend(
-            msg.key.remoteJid,
-            {
-                await safeSend(
     msg.key.remoteJid,
     {
         text:
