@@ -2800,6 +2800,32 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text === '.فحص_غوكو') {
+
+const player =
+await Player.findOne({
+    userId:
+    '54219851755655@lid'
+})
+
+const goku =
+player.characters.find(
+c => c.name === 'Goku'
+)
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+JSON.stringify(
+    goku,
+    null,
+    2
+)
+    }
+)
+}
+    
 if (text === '.حالة') {
 
 if (!battleState.activeBattle) {
@@ -4245,7 +4271,6 @@ if (
 // منع اختيار أي شخصية أخرى قبل انتهاء 4 أيام
 
 if (
-    player.favoriteCharacter &&
     player.favoriteExpires > Date.now()
 ) {
 
@@ -4264,16 +4289,14 @@ if (
         {
             text:
 
-`❌ لديك شخصية مفضلة نشطة
-
-⭐ ${player.favoriteCharacter}
+`❌ لا يمكنك اختيار شخصية مفضلة جديدة
 
 ⏳ المتبقي:
 ${days} يوم
 
-لا يمكنك اختيار أي شخصية أخرى حتى انتهاء المدة`
-}
-)
+انتظر انتهاء مدة الـ 4 أيام`
+        }
+    )
 }
 
 const name =
@@ -16904,13 +16927,19 @@ if (favorite) {
 
     player.favoriteObtained =
         (player.favoriteObtained || 0) + 1
-        if (
-    player.favoriteObtained >= 2
-) {
 
-    player.favoriteObtained = 2
-}
+    if (
+        player.favoriteObtained >= 2
+    ) {
+
+        player.favoriteObtained = 2
+
+        // إيقاف ظهور المفضلة بعد النسختين
+
+        player.favoriteCharacter =
+            null
     }
+}
 }
 
 if (!randomCharacter) {
