@@ -60,18 +60,34 @@ money: { type: Number, default: 0 },
     losses: { type: Number, default: 0 },
 
     rank: {
-        type: String,
-        default: "برونزي"
-    },
-    titles: {
+    type: String,
+    default: "برونزي"
+},
+
+titles: {
     type: [String],
     default: []
 },
 
-    lastPvP: {
-        type: Number,
-        default: 0
-    },
+favoriteCharacter: {
+    type: String,
+    default: null
+},
+
+favoriteExpires: {
+    type: Number,
+    default: 0
+},
+
+favoriteObtained: {
+    type: Number,
+    default: 0
+},
+
+lastPvP: {
+    type: Number,
+    default: 0
+},
 
     skillCooldown: { type: Number, default: 0 },
 ultimateCooldown: { type: Number, default: 0 },
