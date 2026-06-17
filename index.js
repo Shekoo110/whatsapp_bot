@@ -3585,8 +3585,7 @@ if (text === '.س') {
         }
 
         // فيديو / GIF
-        if (
-    if (quotedMsg.videoMessage) {
+if (quotedMsg.videoMessage) {
 
     console.log(
         'GIF PLAYBACK:',
@@ -3594,10 +3593,10 @@ if (text === '.س') {
     )
 
     const input =
-    `./tmp_${Date.now()}.mp4`
+        `./tmp_${Date.now()}.mp4`
 
     const output =
-`./tmp_${Date.now()}.webp`
+        `./tmp_${Date.now()}.webp`
 
     await fs.promises.writeFile(
         input,
@@ -3621,13 +3620,8 @@ if (text === '.س') {
         }
     )
 
-    await fs.promises.unlink(
-        input
-    )
-
-    await fs.promises.unlink(
-        output
-    )
+    await fs.promises.unlink(input)
+    await fs.promises.unlink(output)
 
     return
 }
