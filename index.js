@@ -3625,13 +3625,18 @@ if (
         await safeSend(
             msg.key.remoteJid,
             {
-                text:
+                await safeSend(
+    msg.key.remoteJid,
+    {
+        text:
 
 `🏴 ${flag}
 
 ${getFlagBar(
     flagData.progress
 )} ${flagData.progress}%`
+    }
+)
 
         if (
     flagData.progress === 0 &&
