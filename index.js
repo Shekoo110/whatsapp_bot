@@ -2216,7 +2216,7 @@ ${juubi.maxHp.toLocaleString()}
     'libwebp',
 
     '-vf',
-    'fps=15,scale=512:512:force_original_aspect_ratio=increase,crop=512:512',
+    'fps=20,scale=512:512:force_original_aspect_ratio=increase,crop=512:512',
 
     '-loop',
     '0',
@@ -3615,17 +3615,7 @@ console.log(
     'WEBP SIZE:',
     stat.size
 )
-    await sock.sendMessage(
-    msg.key.remoteJid,
-    {
-        document:
-            fs.readFileSync(output),
-        mimetype:
-            'image/webp',
-        fileName:
-            'test.webp'
-    }
-)
+    
 
 const webp =
     await fs.promises.readFile(
