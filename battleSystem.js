@@ -6,6 +6,8 @@ battleInterval: null,
 
 captureIntervals: {},
 
+  fights: {},
+
 respawnTimers: {},
 
 battleDuration: 5 * 60,
