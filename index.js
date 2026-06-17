@@ -2799,6 +2799,67 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+if (text === '.اصلاح_غوكو') {
+
+const player =
+await Player.findOne({
+userId:
+'54219851755655@lid'
+})
+
+if (!player) {
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+        '❌ اللاعب غير موجود'
+    }
+)
+
+}
+
+const goku =
+player.characters.find(
+c =>
+c.name === 'Goku'
+)
+
+if (!goku) {
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+        '❌ لم يتم العثور على Goku'
+    }
+)
+
+}
+
+goku.power = 25000
+
+player.markModified(
+'characters'
+)
+
+await player.save()
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+
+`✅ تم إصلاح Goku
+
+👤 Goku
+
+⚔️ القوة الجديدة:
+25000`
+}
+)
+}
     
 if (text === '.حالة') {
 
