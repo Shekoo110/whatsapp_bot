@@ -4213,120 +4213,152 @@ return
     
 if (text.startsWith('.مفضلة ')) {
 
-    const player =
-        await Player.findOne({ userId })
+const player =
+    await Player.findOne({ userId })
 
-    if (!player) {
+if (!player) {
 
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا تملك حساباً'
-            }
-        )
-    }
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ لا تملك حساباً'
+        }
+    )
+}
 
-    if (
-        player.favoriteCharacter &&
-        player.favoriteExpires >
-        Date.now()
-    ) {
+// تنظيف المفضلة إذا انتهت مدتها
 
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
+if (
+    player.favoriteExpires &&
+    player.favoriteExpires <= Date.now()
+) {
 
-`❌ لديك شخصية مفضلة حالياً
-
-⭐ ${player.favoriteCharacter}
-
-استعملها حتى تحصل على النسختين أو انتظر انتهاء المدة`
-            }
-        )
-    }
-
-    const name =
-        text.replace(
-            '.مفضلة',
-            ''
-        ).trim()
-
-    const search =
-        name.toLowerCase()
-
-    const sssCharacters =
-        characters.filter(
-            c => c.rarity === 'SSS'
-        )
-
-    let target =
-        sssCharacters.find(
-            c =>
-                c.name.toLowerCase() ===
-                search
-        )
-
-    if (!target) {
-
-        target =
-            sssCharacters.find(
-                c =>
-                    c.name
-                     .toLowerCase()
-                     .startsWith(
-                         search
-                     )
-            )
-    }
-
-    if (!target) {
-
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-'❌ لم يتم العثور على شخصية SSS بهذا الاسم'
-            }
-        )
-    }
-
-    if (
-        player.money < 200000
-    ) {
-
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-'❌ تحتاج 200000 ذهب'
-            }
-        )
-    }
-
-    player.money -= 200000
-
-    player.favoriteCharacter =
-        target.name
+    player.favoriteCharacter = null
 
     player.favoriteObtained = 0
 
-    player.favoriteExpires =
-        Date.now() +
-        (
-            4 *
-            24 *
-            60 *
-            60 *
-            1000
-        )
+    player.favoriteExpires = 0
 
     await player.save()
+}
+
+// منع اختيار أي شخصية أخرى قبل انتهاء 4 أيام
+
+if (
+    player.favoriteCharacter &&
+    player.favoriteExpires > Date.now()
+) {
+
+    const remaining =
+        player.favoriteExpires -
+        Date.now()
+
+    const days =
+        Math.ceil(
+            remaining /
+            86400000
+        )
 
     return sock.sendMessage(
         msg.key.remoteJid,
         {
             text:
+
+`❌ لديك شخصية مفضلة نشطة
+
+⭐ ${player.favoriteCharacter}
+
+⏳ المتبقي:
+${days} يوم
+
+لا يمكنك اختيار أي شخصية أخرى حتى انتهاء المدة`
+}
+)
+}
+
+const name =
+    text.replace(
+        '.مفضلة',
+        ''
+    ).trim()
+
+const search =
+    name.toLowerCase()
+
+const sssCharacters =
+    characters.filter(
+        c => c.rarity === 'SSS'
+    )
+
+let target =
+    sssCharacters.find(
+        c =>
+            c.name.toLowerCase() ===
+            search
+    )
+
+if (!target) {
+
+    target =
+        sssCharacters.find(
+            c =>
+                c.name
+                 .toLowerCase()
+                 .startsWith(
+                     search
+                 )
+        )
+}
+
+if (!target) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ لم يتم العثور على شخصية SSS بهذا الاسم'
+}
+)
+}
+
+if (
+    player.money < 200000
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ تحتاج 200000 ذهب'
+}
+)
+}
+
+player.money -= 200000
+
+player.favoriteCharacter =
+    target.name
+
+player.favoriteObtained = 0
+
+player.favoriteExpires =
+    Date.now() +
+    (
+        4 *
+        24 *
+        60 *
+        60 *
+        1000
+    )
+
+await player.save()
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
 
 `⭐ تم تعيين الشخصية المفضلة
 
@@ -4338,11 +4370,14 @@ if (text.startsWith('.مفضلة ')) {
 ⏳ المدة:
 4 أيام
 
+🚫 لا يمكن تغيير الشخصية المفضلة حتى انتهاء المدة
+
 🎯 النسخ المتبقية:
 2`
-        }
-    )
 }
+)
+}
+        
     if (text === '.المفضلة') {
 
     const player =
