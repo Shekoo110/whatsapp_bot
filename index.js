@@ -3586,11 +3586,15 @@ if (text === '.س') {
 
         // فيديو / GIF
         if (
-    quotedMsg.videoMessage
-) {
+    if (quotedMsg.videoMessage) {
+
+    console.log(
+        'GIF PLAYBACK:',
+        quotedMsg.videoMessage?.gifPlayback
+    )
 
     const input =
-`./tmp_${Date.now()}.mp4`
+    `./tmp_${Date.now()}.mp4`
 
     const output =
 `./tmp_${Date.now()}.webp`
