@@ -2234,7 +2234,7 @@ if (
 
         
 
-    async function videoToSticker(
+ async function videoToSticker(
     input,
     output
 ) {
@@ -2247,18 +2247,20 @@ if (
 
             ffmpeg(input)
 
-.duration(10)
+            .duration(10)
 
-.outputOptions([
-    '-vcodec libwebp',
-    '-vf',
-    'scale=512:512:force_original_aspect_ratio=increase,crop=512:512,fps=15',
-    '-loop 0',
-    '-preset picture',
-    '-an',
-    '-vsync 0',
-    '-lossless 1'
-])
+            .outputOptions([
+                '-vcodec', 'libwebp',
+                '-vf', 'scale=512:512:force_original_aspect_ratio=increase,crop=512:512,fps=15',
+                '-loop', '0',
+                '-preset', 'default',
+                '-an',
+                '-vsync', '0',
+                '-lossless', '0',
+                '-qscale', '80'
+            ])
+
+            .toFormat('webp')
 
             .save(output)
 
@@ -2268,10 +2270,10 @@ if (
             )
 
             .on('error', (err) => {
-    console.log('FFMPEG ERROR FULL:')
-    console.error(err)
-    reject(err)
-})
+                console.log('FFMPEG ERROR FULL:')
+                console.error(err)
+                reject(err)
+            })
         }
     )
 }
