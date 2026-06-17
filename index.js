@@ -2881,9 +2881,8 @@ if (
 return players
     .map(
         p =>
-
-"${p.team === 'red' ? '🔴' : '🔵'} ${p.currentCharacter.name}"
-)
+        `${p.team === 'red' ? '🔴' : '🔵'} ${p.currentCharacter.name}`
+    )
 .join('\n')
 }
 
@@ -3861,7 +3860,7 @@ return safeSend(
 🏴 ${flag}`
     }
 )
-
+}
 
     if (text === '.قاتل') {
 
