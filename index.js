@@ -2250,14 +2250,19 @@ if (
             .duration(10)
 
             .outputOptions([
-                '-vcodec', 'libwebp',
-                '-vf', 'scale=512:512:force_original_aspect_ratio=increase,crop=512:512,fps=15',
-                '-loop', '0',
-                '-preset', 'default',
+                '-vcodec',
+                'libwebp',
+
+                '-vf',
+                'fps=15,scale=512:512:force_original_aspect_ratio=increase,crop=512:512',
+
+                '-loop',
+                '0',
+
                 '-an',
-                '-vsync', '0',
-                '-lossless', '0',
-                '-qscale', '80'
+
+                '-pix_fmt',
+                'yuva420p'
             ])
 
             .toFormat('webp')
@@ -2266,14 +2271,29 @@ if (
 
             .on(
                 'end',
-                resolve
+                () => {
+                    console.log(
+                        '✅ WEBP CREATED'
+                    )
+                    resolve()
+                }
             )
 
-            .on('error', (err) => {
-                console.log('FFMPEG ERROR FULL:')
-                console.error(err)
-                reject(err)
-            })
+            .on(
+                'error',
+                (err) => {
+
+                    console.log(
+                        'FFMPEG ERROR FULL:'
+                    )
+
+                    console.error(
+                        err
+                    )
+
+                    reject(err)
+                }
+            )
         }
     )
 }
