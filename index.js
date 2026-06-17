@@ -2817,6 +2817,39 @@ return safeSend(
 const battle =
 battleState.activeBattle
 
+let remaining = 300
+
+if (
+    battle.startTime
+) {
+
+    remaining =
+        Math.max(
+            0,
+            300 -
+            Math.floor(
+                (
+                    Date.now() -
+                    battle.startTime
+                ) / 1000
+            )
+        )
+}
+
+const minutes =
+    Math.floor(
+        remaining / 60
+    )
+
+const seconds =
+    remaining % 60
+
+const timeText =
+`${minutes}:${
+    String(seconds)
+    .padStart(2, '0')
+}`
+
 function flagOwner(flag) {
 
 if (flag.owner === 'red')
@@ -2860,6 +2893,8 @@ msg.key.remoteJid,
 text:
 
 `⚔️ حالة الحرب
+
+⏱️ ${timeText}
 
 👥 اللاعبين:
 ${battle.players.length}/8
@@ -3363,6 +3398,45 @@ setTimeout(
 ${winner}`
             }
         )
+        const Player =
+    require('./models/Player')
+
+for (
+    const p of
+    battleState.activeBattle.players
+) {
+
+    const playerData =
+        await Player.findOne({
+            userId: p.userId
+        })
+
+    if (!playerData)
+        continue
+
+    const won =
+        (
+            winner === '🔴 الأحمر' &&
+            p.team === 'red'
+        ) ||
+        (
+            winner === '🔵 الأزرق' &&
+            p.team === 'blue'
+        )
+
+    if (won) {
+
+        playerData.money += 5000
+        playerData.xp += 1000
+
+    } else {
+
+        playerData.money += 2000
+        playerData.xp += 300
+    }
+
+    await playerData.save()
+}
 
         if (battleState.scoreInterval) {
 
@@ -3556,12 +3630,8 @@ if (
 `🏴 ${flag}
 
 ${getFlagBar(
-flagData.progress
-)}
-
-${flagData.progress}%`
-}
-)
+    flagData.progress
+)} ${flagData.progress}%`
 
         if (
     flagData.progress === 0 &&
@@ -3790,6 +3860,7 @@ return safeSend(
     }
 )
 
+
     if (text === '.قاتل') {
 
 if (
@@ -3860,11 +3931,17 @@ if (!enemy) {
 )
 }
 
-let dodgeChance = 15
+if (
+    !battleState.activeBattle.fights
+) {
+
+    battleState.activeBattle.fights = {}
+}
 
 if (
-    Math.random() * 100 <
-    dodgeChance
+    battleState.activeBattle.fights[
+        attacker.userId
+    ]
 ) {
 
     return safeSend(
@@ -3872,133 +3949,262 @@ if (
         {
             text:
 
-`💨 ${enemy.currentCharacter.name}
-
-تفادى الهجوم`
+'⚔️ أنت بالفعل داخل قتال'
 }
 )
 }
 
-let crit = false
+battleState.activeBattle.fights[
+    attacker.userId
+] = true
 
-let damage =
-    Math.floor(
-        attacker.currentCharacter.power *
-        (
-            0.9 +
-            Math.random() * 0.3
-        )
-    )
-
-if (
-    Math.random() * 100 < 20
-) {
-
-    crit = true
-
-    damage =
-        Math.floor(
-            damage * 1.8
-        )
-}
-
-enemy.currentHp -= damage
-
-if (
-    enemy.currentHp < 0
-) {
-
-    enemy.currentHp = 0
-}
+battleState.activeBattle.fights[
+    enemy.userId
+] = true
 
 await safeSend(
     msg.key.remoteJid,
     {
         text:
 
-`⚔️ ${attacker.currentCharacter.name}
+`⚔️ بدأ القتال
 
-هاجم
+🔴 ${attacker.currentCharacter.name}
 
-🛡️ ${enemy.currentCharacter.name}
+VS
 
-${crit ? '💥 ضربة حرجة\n' : ''}
-
-💥 ${damage}
-
-❤️ ${enemy.currentHp}/${enemy.currentCharacter.power}`
+🔵 ${enemy.currentCharacter.name}`
 }
 )
 
-if (
-    enemy.currentHp <= 0
-) {
+const fightInterval =
+setInterval(
+    async () => {
 
-    if (
-        !enemy.usingSecond &&
-        enemy.secondCharacter
-    ) {
+        if (
+            !battleState.activeBattle
+        ) {
 
-        enemy.usingSecond =
-            true
+            clearInterval(
+                fightInterval
+            )
 
-        enemy.currentCharacter =
-            enemy.secondCharacter
+            return
+        }
 
-        enemy.currentHp =
-            enemy.secondCharacter.power
+        if (
+            !attacker.alive ||
+            !enemy.alive
+        ) {
 
-        await safeSend(
-            msg.key.remoteJid,
+            clearInterval(
+                fightInterval
+            )
+
+            delete battleState.activeBattle.fights[
+                attacker.userId
+            ]
+
+            delete battleState.activeBattle.fights[
+                enemy.userId
+            ]
+
+            return
+        }
+
+        const fighters =
+        [
             {
-                text:
+                atk: attacker,
+                def: enemy
+            },
+            {
+                atk: enemy,
+                def: attacker
+            }
+        ]
+
+        for (
+            const turn of fighters
+        ) {
+
+            if (
+                !turn.atk.alive ||
+                !turn.def.alive
+            ) continue
+
+            let crit = false
+
+            let dodge =
+                Math.random() * 100 < 15
+
+            if (dodge) {
+
+                await safeSend(
+                    msg.key.remoteJid,
+                    {
+                        text:
+
+`💨 ${turn.def.currentCharacter.name}
+
+تفادى الهجوم`
+}
+)
+
+                continue
+            }
+
+            let damage =
+                Math.floor(
+                    turn.atk.currentCharacter.power *
+                    (
+                        0.9 +
+                        Math.random() * 0.3
+                    )
+                )
+
+            if (
+                Math.random() * 100 < 20
+            ) {
+
+                crit = true
+
+                damage =
+                    Math.floor(
+                        damage * 1.8
+                    )
+            }
+
+            turn.def.currentHp -= damage
+
+            if (
+                turn.def.currentHp < 0
+            ) {
+
+                turn.def.currentHp = 0
+            }
+
+            await safeSend(
+                msg.key.remoteJid,
+                {
+                    text:
+
+`${crit ? '💥 CRIT!\n' : ''}
+
+⚔️ ${turn.atk.currentCharacter.name}
+
+سبب
+
+💥 ${damage}
+
+❤️ ${turn.def.currentCharacter.name}
+
+${turn.def.currentHp}/${turn.def.currentCharacter.power}`
+}
+)
+
+            if (
+                turn.def.currentHp <= 0
+            ) {
+
+                if (
+                    !turn.def.usingSecond &&
+                    turn.def.secondCharacter
+                ) {
+
+                    turn.def.usingSecond =
+                        true
+
+                    turn.def.currentCharacter =
+                        turn.def.secondCharacter
+
+                    turn.def.currentHp =
+                        turn.def.secondCharacter.power
+
+                    await safeSend(
+                        msg.key.remoteJid,
+                        {
+                            text:
 
 `☠️ ماتت الشخصية الأولى
 
 🔥 دخل:
 
-${enemy.currentCharacter.name}`
+${turn.def.currentCharacter.name}`
 }
 )
 
-        return
-    }
+                    continue
+                }
 
-    enemy.alive = false
+                turn.def.alive = false
 
-    enemy.respawning = true
+                turn.def.respawning = true
 
-    await safeSend(
-        msg.key.remoteJid,
-        {
-            text:
+                await safeSend(
+                    msg.key.remoteJid,
+                    {
+                        text:
 
-`☠️ ${enemy.currentCharacter.name}
+`☠️ ${turn.def.currentCharacter.name}
 
 هُزم
 
-⏳ سيعود خلال 30 ثانية`
+⏳ Respawn خلال 30 ثانية`
 }
 )
 
-    setTimeout(
-        async () => {
+                setTimeout(
+    async () => {
 
-            if (
-                !battleState.activeBattle
-            ) return
+        if (
+            !battleState.activeBattle
+        ) return
 
-            enemy.alive = true
+        turn.def.alive = true
 
-            enemy.respawning = false
+        turn.def.respawning = false
 
-            enemy.currentHp =
-                enemy.currentCharacter.power
+        turn.def.currentHp =
+            turn.def.currentCharacter.power
 
-        },
-        30000
-    )
-}
+        await safeSend(
+            battleState.activeBattle.roomId,
+            {
+                text:
+
+`🔄 عاد
+
+${turn.def.currentCharacter.name}
+
+إلى المعركة`
+            }
+        )
+
+    },
+    30000
+)
+
+                clearInterval(
+                    fightInterval
+                )
+
+                delete battleState.activeBattle.fights[
+                    attacker.userId
+                ]
+
+                delete battleState.activeBattle.fights[
+                    enemy.userId
+                ]
+
+                return
+            }
+        }
+
+    },
+
+    3000
+)
 
 return
 
