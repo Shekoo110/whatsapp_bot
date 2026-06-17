@@ -2844,7 +2844,7 @@ const seconds =
 remaining % 60
 
 const timeText =
-"${minutes}:${String(seconds).padStart(2, '0')}"
+`${minutes}:${String(seconds).padStart(2, '0')}`
 
 function flagOwner(flag) {
 
@@ -3228,6 +3228,8 @@ if (text.startsWith('.انضم')) {
 
     currentCharacter: char1,
 
+    originalCharacter: char1,
+
     secondCharacter: char2,
 
     usingSecond: false,
@@ -3241,9 +3243,12 @@ if (text.startsWith('.انضم')) {
     respawning: false,
 
     kills: 0,
-deaths: 0,
-captures: 0,
-lastCaptureTime: 0
+
+    deaths: 0,
+
+    captures: 0,
+
+    lastCaptureTime: 0
 }
 
     battleState
@@ -3401,7 +3406,7 @@ setTimeout(
         }
         
 const mvp =
-battleState.activeBattle.players
+[...battleState.activeBattle.players]
 .sort(
 (a,b) =>
 (
@@ -3680,6 +3685,19 @@ delete battleState.captureIntervals[
     userId
 ]
 
+}
+        
+        const oldFlag =
+player.flag
+
+if (
+oldFlag &&
+battleState.activeBattle.flags[oldFlag]
+) {
+
+battleState.activeBattle.flags[
+oldFlag
+].capturer = null
 }
 
 player.flag = flag
@@ -4184,8 +4202,8 @@ othersOnFlag.length > 0
 ?
 othersOnFlag.map(
 p =>
-"${p.team === 'red' ? '🔴' : '🔵'} ${ p.currentCharacter.name }"
-).join('\n')
+`${p.team === 'red' ? '🔴' : '🔵'} ${p.currentCharacter.name}`
+)
 :
 'لا يوجد'
 
@@ -4413,8 +4431,13 @@ ${turn.def.currentCharacter.name}`
 
         turn.def.respawning = false
 
+        turn.def.currentCharacter =
+            turn.def.originalCharacter
+
+        turn.def.usingSecond = false
+
         turn.def.currentHp =
-            turn.def.currentCharacter.power
+            turn.def.originalCharacter.power
 
         await safeSend(
             battleState.activeBattle.roomId,
