@@ -3624,6 +3624,17 @@ console.log(
     'WEBP SIZE:',
     stat.size
 )
+    await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        document:
+            fs.readFileSync(output),
+        mimetype:
+            'image/webp',
+        fileName:
+            'test.webp'
+    }
+)
 
 const webp =
     await fs.promises.readFile(
