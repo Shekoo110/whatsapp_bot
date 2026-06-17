@@ -76,6 +76,19 @@ const kingdomStages = [
 const battleState =
     require('./battleSystem')
 
+function getFlagBar(progress) {
+
+    const filled =
+        Math.floor(progress / 10)
+
+    const empty =
+        10 - filled
+
+    return (
+        '█'.repeat(filled) +
+        '░'.repeat(empty)
+    )
+}
 process.on('uncaughtException', err => {
     console.error('UNCAUGHT:')
     console.error(err)
@@ -2787,6 +2800,114 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text === '.حالة') {
+
+if (!battleState.activeBattle) {
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+'❌ لا توجد حرب حالياً'
+}
+)
+}
+
+const battle =
+battleState.activeBattle
+
+function flagOwner(flag) {
+
+if (flag.owner === 'red')
+    return '🔴'
+
+if (flag.owner === 'blue')
+    return '🔵'
+
+return '⚪'
+
+}
+
+function playersOnFlag(flagLetter) {
+
+const players =
+    battle.players.filter(
+        p =>
+            p.flag === flagLetter &&
+            p.alive
+    )
+
+if (
+    players.length === 0
+) {
+
+    return 'لا يوجد'
+}
+
+return players
+    .map(
+        p =>
+
+"${p.team === 'red' ? '🔴' : '🔵'} ${p.currentCharacter.name}"
+)
+.join('\n')
+}
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+
+`⚔️ حالة الحرب
+
+👥 اللاعبين:
+${battle.players.length}/8
+
+🔴 النقاط:
+${battle.redScore || 0}
+
+🔵 النقاط:
+${battle.blueScore || 0}
+
+━━━━━━━━━━━━━━━
+
+🏴 A ${flagOwner(battle.flags.A)}
+${battle.flags.A.progress}%
+
+${playersOnFlag('A')}
+
+━━━━━━━━━━━━━━━
+
+🏴 B ${flagOwner(battle.flags.B)}
+${battle.flags.B.progress}%
+
+${playersOnFlag('B')}
+
+━━━━━━━━━━━━━━━
+
+🏴 C ${flagOwner(battle.flags.C)}
+${battle.flags.C.progress}%
+
+${playersOnFlag('C')}
+
+━━━━━━━━━━━━━━━
+
+🏴 D ${flagOwner(battle.flags.D)}
+${battle.flags.D.progress}%
+
+${playersOnFlag('D')}
+
+━━━━━━━━━━━━━━━
+
+🏴 E ${flagOwner(battle.flags.E)}
+${battle.flags.E.progress}%
+
+${playersOnFlag('E')}`
+}
+)
+}
+    
 // =========================
 // .حرب
 // =========================
@@ -2910,6 +3031,19 @@ if (text.startsWith('.انضم')) {
         )
     }
 
+    if (
+        battleState.activeBattle.started
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ الحرب بدأت بالفعل'
+            }
+        )
+    }
+
     const args =
         text.trim().split(' ')
 
@@ -2970,6 +3104,20 @@ if (text.startsWith('.انضم')) {
         )
     }
 
+    if (
+        char1Index ===
+        char2Index
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ اختر شخصيتين مختلفتين'
+            }
+        )
+    }
+
     const alreadyJoined =
         battleState
         .activeBattle
@@ -3009,25 +3157,24 @@ if (text.startsWith('.انضم')) {
 
     const battlePlayer = {
 
-        userId,
+    userId,
 
-        team,
+    team,
 
-        currentCharacter:
-            char1,
+    currentCharacter: char1,
 
-        secondCharacter:
-            char2,
+    secondCharacter: char2,
 
-        currentHp:
-            char1.power,
+    usingSecond: false,
 
-        alive: true,
+    currentHp: char1.power,
 
-        flag: null,
+    alive: true,
 
-        respawning: false
-    }
+    flag: null,
+
+    respawning: false
+}
 
     battleState
         .activeBattle
@@ -3061,7 +3208,7 @@ if (text.startsWith('.انضم')) {
         .players
         .length
 
-    return safeSend(
+    await safeSend(
         msg.key.remoteJid,
         {
             text:
@@ -3069,10 +3216,10 @@ if (text.startsWith('.انضم')) {
 `✅ تم الانضمام للحرب
 
 🔥 الأساسية:
-${char1.name || char1.characterName}
+${char1.name}
 
 🌀 الاحتياطية:
-${char2.name || char2.characterName}
+${char2.name}
 
 🎨 الفريق:
 ${team === 'red'
@@ -3082,6 +3229,779 @@ ${team === 'red'
 👥 ${totalPlayers}/8`
         }
     )
+
+    if (totalPlayers >= 8) {
+
+await safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+`⚔️ اكتمل اللوبي
+
+🔴 4 VS 4 🔵
+
+⏳ تبدأ الحرب خلال 10 ثوانٍ`
+}
+)
+
+setTimeout(
+    async () => {
+
+        if (
+    !battleState.activeBattle
+) return
+
+battleState
+    .activeBattle
+    .started = true
+
+battleState.activeBattle.redScore = 0
+
+battleState.activeBattle.blueScore = 0
+
+        await safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`⚔️ بدأت الحرب
+
+⏱️ 5:00
+
+🏴 A ⚪
+
+🏴 B ⚪
+
+🏴 C ⚪
+
+🏴 D ⚪
+
+🏴 E ⚪`
+}
+)
+battleState.scoreInterval =
+setInterval(
+    () => {
+
+        if (
+            !battleState.activeBattle
+        ) return
+
+        const flags =
+            battleState.activeBattle.flags
+
+        Object.values(flags)
+        .forEach(flag => {
+
+            if (
+                flag.owner === 'red'
+            ) {
+
+                battleState
+                .activeBattle
+                .redScore += 1
+            }
+
+            if (
+                flag.owner === 'blue'
+            ) {
+
+                battleState
+                .activeBattle
+                .blueScore += 1
+            }
+
+        })
+
+    },
+
+    15000
+)
+
+setTimeout(
+    async () => {
+
+        if (
+            !battleState.activeBattle
+        ) return
+
+        clearInterval(
+            battleState.scoreInterval
+        )
+
+        const red =
+            battleState.activeBattle.redScore
+
+        const blue =
+            battleState.activeBattle.blueScore
+
+        let winner =
+            'تعادل'
+
+        if (red > blue)
+            winner =
+                '🔴 الأحمر'
+
+        if (blue > red)
+            winner =
+                '🔵 الأزرق'
+
+        await safeSend(
+            battleState.activeBattle.roomId,
+            {
+                text:
+
+`🏁 انتهت الحرب
+
+🔴 ${red}
+
+🔵 ${blue}
+
+🏆 الفائز:
+
+${winner}`
+            }
+        )
+
+        if (battleState.scoreInterval) {
+
+    clearInterval(
+        battleState.scoreInterval
+    )
+}
+
+battleState.activeBattle =
+    null
+
+    },
+
+    5 * 60 * 1000
+)
+    },
+    10000
+)
+
+}
+
+return
+}
+
+    if (text.startsWith('.احتل')) {
+
+if (
+    !battleState.activeBattle ||
+    !battleState.activeBattle.started
+) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ لا توجد حرب نشطة'
+}
+)
+}
+
+const args =
+    text.trim().split(' ')
+
+const flag =
+    args[1]?.toUpperCase()
+
+if (
+    !['A','B','C','D','E']
+    .includes(flag)
+) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ اختر علم A أو B أو C أو D أو E'
+}
+)
+}
+
+const player =
+    battleState.activeBattle.players
+    .find(
+        p =>
+        p.userId === userId
+    )
+
+if (!player) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ أنت لست داخل الحرب'
+}
+)
+}
+
+const flagData =
+    battleState.activeBattle.flags[
+        flag
+    ]
+
+if (
+    battleState.captureIntervals[
+        userId
+    ]
+) {
+
+    clearInterval(
+        battleState.captureIntervals[
+            userId
+        ]
+    )
+
+    delete battleState.captureIntervals[
+        userId
+    ]
+}
+
+player.flag = flag
+
+await safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+"🏴 بدأت احتلال العلم ${flag}"
+}
+)
+
+battleState.captureIntervals[
+    userId
+] = setInterval(
+    async () => {
+
+        if (
+    !battleState.activeBattle
+) return
+
+const enemies =
+    battleState.activeBattle.players.filter(
+        p =>
+            p.team !== player.team &&
+            p.flag === flag &&
+            p.alive
+    )
+
+if (enemies.length > 0) {
+
+    clearInterval(
+        battleState.captureIntervals[
+            userId
+        ]
+    )
+
+    await safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`⚔️ تم إيقاف الاحتلال
+
+يوجد عدو على العلم ${flag}
+
+استخدم:
+
+.قاتل`
+        }
+    )
+
+    return
+}
+
+if (
+    flagData.owner &&
+    flagData.owner !== player.team
+) {
+
+    flagData.progress -= 10
+
+    if (
+        flagData.progress <= 0
+    ) {
+
+        flagData.progress = 0
+
+        flagData.owner = null
+    }
+
+} else {
+
+    flagData.progress += 10
+
+    if (
+        flagData.progress > 100
+    ) {
+
+        flagData.progress = 100
+    }
+}
+
+        await safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`🏴 ${flag}
+
+${getFlagBar(
+flagData.progress
+)}
+
+${flagData.progress}%`
+}
+)
+
+        if (
+    flagData.progress === 0 &&
+    flagData.owner &&
+    flagData.owner !== player.team
+) {
+
+    flagData.owner = null
+
+    await safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🏴 العلم ${flag}
+
+أصبح محايداً ⚪`
+        }
+    )
+}
+
+if (
+    flagData.progress >= 100
+) {
+
+    clearInterval(
+        battleState.captureIntervals[
+            userId
+        ]
+    )
+
+    flagData.owner =
+        player.team
+
+    await safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`🏴 تم احتلال العلم ${flag}
+
+${player.team === 'red'
+? '🔴 الأحمر'
+: '🔵 الأزرق'}`
+        }
+    )
+}
+
+    },
+
+    1000
+)
+
+return
+
+}
+
+    if (text === '.اعلام') {
+
+if (!battleState.activeBattle) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ لا توجد حرب حالياً'
+}
+)
+}
+
+const flags =
+    battleState.activeBattle.flags
+
+function owner(flag) {
+
+    if (flag.owner === 'red')
+        return '🔴'
+
+    if (flag.owner === 'blue')
+        return '🔵'
+
+    return '⚪'
+}
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🏴 حالة الأعلام
+
+🏴 A ${owner(flags.A)}
+${getFlagBar(flags.A.progress)}
+${flags.A.progress}%
+
+🏴 B ${owner(flags.B)}
+${getFlagBar(flags.B.progress)}
+${flags.B.progress}%
+
+🏴 C ${owner(flags.C)}
+${getFlagBar(flags.C.progress)}
+${flags.C.progress}%
+
+🏴 D ${owner(flags.D)}
+${getFlagBar(flags.D.progress)}
+${flags.D.progress}%
+
+🏴 E ${owner(flags.E)}
+${getFlagBar(flags.E.progress)}
+${flags.E.progress}%`
+}
+)
+}
+
+    // =========================
+// .اذهب A
+// =========================
+
+if (text.startsWith('.اذهب')) {
+
+    if (
+        !battleState.activeBattle ||
+        !battleState.activeBattle.started
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا توجد حرب نشطة'
+            }
+        )
+    }
+
+    const args =
+        text.trim().split(' ')
+
+    const flag =
+        args[1]?.toUpperCase()
+
+    if (
+        !['A','B','C','D','E']
+        .includes(flag)
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ اختر علماً صحيحاً (A-E)'
+            }
+        )
+    }
+
+    const player =
+        battleState.activeBattle.players
+        .find(
+            p =>
+            p.userId === userId
+        )
+
+    if (!player) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ أنت لست داخل الحرب'
+            }
+        )
+    }
+
+    if (
+    battleState.captureIntervals[
+        userId
+    ]
+) {
+
+    clearInterval(
+        battleState.captureIntervals[
+            userId
+        ]
+    )
+
+    delete battleState.captureIntervals[
+        userId
+    ]
+}
+
+player.flag = flag
+
+const enemiesOnFlag =
+    battleState.activeBattle.players.filter(
+        p =>
+            p.userId !== userId &&
+            p.team !== player.team &&
+            p.flag === flag &&
+            p.alive
+    )
+
+if (enemiesOnFlag.length > 0) {
+
+    await safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`⚔️ يوجد عدو على العلم ${flag}
+
+استخدم:
+
+.قاتل`
+        }
+    )
+}
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+`🏃‍♂️ توجهت إلى العلم ${flag}
+
+🏴 ${flag}`
+    }
+)
+
+    if (text === '.قاتل') {
+
+if (
+    !battleState.activeBattle ||
+    !battleState.activeBattle.started
+) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ لا توجد حرب نشطة'
+}
+)
+}
+
+const attacker =
+    battleState.activeBattle.players.find(
+        p =>
+            p.userId === userId
+    )
+
+if (!attacker) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ أنت لست داخل الحرب'
+}
+)
+}
+
+if (
+    attacker.respawning
+) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+'⏳ أنت ميت حالياً'
+}
+)
+}
+
+const enemy =
+    battleState.activeBattle.players.find(
+        p =>
+            p.userId !== userId &&
+            p.team !== attacker.team &&
+            p.flag === attacker.flag &&
+            p.alive
+    )
+
+if (!enemy) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+'❌ لا يوجد عدو على هذا العلم'
+}
+)
+}
+
+let dodgeChance = 15
+
+if (
+    Math.random() * 100 <
+    dodgeChance
+) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`💨 ${enemy.currentCharacter.name}
+
+تفادى الهجوم`
+}
+)
+}
+
+let crit = false
+
+let damage =
+    Math.floor(
+        attacker.currentCharacter.power *
+        (
+            0.9 +
+            Math.random() * 0.3
+        )
+    )
+
+if (
+    Math.random() * 100 < 20
+) {
+
+    crit = true
+
+    damage =
+        Math.floor(
+            damage * 1.8
+        )
+}
+
+enemy.currentHp -= damage
+
+if (
+    enemy.currentHp < 0
+) {
+
+    enemy.currentHp = 0
+}
+
+await safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+`⚔️ ${attacker.currentCharacter.name}
+
+هاجم
+
+🛡️ ${enemy.currentCharacter.name}
+
+${crit ? '💥 ضربة حرجة\n' : ''}
+
+💥 ${damage}
+
+❤️ ${enemy.currentHp}/${enemy.currentCharacter.power}`
+}
+)
+
+if (
+    enemy.currentHp <= 0
+) {
+
+    if (
+        !enemy.usingSecond &&
+        enemy.secondCharacter
+    ) {
+
+        enemy.usingSecond =
+            true
+
+        enemy.currentCharacter =
+            enemy.secondCharacter
+
+        enemy.currentHp =
+            enemy.secondCharacter.power
+
+        await safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+
+`☠️ ماتت الشخصية الأولى
+
+🔥 دخل:
+
+${enemy.currentCharacter.name}`
+}
+)
+
+        return
+    }
+
+    enemy.alive = false
+
+    enemy.respawning = true
+
+    await safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`☠️ ${enemy.currentCharacter.name}
+
+هُزم
+
+⏳ سيعود خلال 30 ثانية`
+}
+)
+
+    setTimeout(
+        async () => {
+
+            if (
+                !battleState.activeBattle
+            ) return
+
+            enemy.alive = true
+
+            enemy.respawning = false
+
+            enemy.currentHp =
+                enemy.currentCharacter.power
+
+        },
+        30000
+    )
+}
+
+return
+
 }
     
 if (text.startsWith('.مفضلة ')) {
