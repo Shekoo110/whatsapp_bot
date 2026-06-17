@@ -2245,23 +2245,21 @@ ${juubi.maxHp.toLocaleString()}
 
             .on(
                 'error',
-                (err)
-            => {
+                (err) => {
 
-                console.log(
-                    'FFMPEG ERROR FULL:'
-                )
+                    console.log(
+                        'FFMPEG ERROR FULL:'
+                    )
 
-                console.error(
-                    err
-                )
+                    console.error(
+                        err
+                    )
 
-                reject(err)
-            }  
-        )  
-    }  
-)
-
+                    reject(err)
+                }
+            )
+        }
+    )
 }
 
     
