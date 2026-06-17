@@ -4605,88 +4605,103 @@ ${fixed}`
 if (text === '.اصلاح_ex') {
 
 const player =
-    await Player.findOne({
-        userId
-    })
+await Player.findOne({
+userId
+})
 
 if (!player) {
-
-    return safeSend(
-        msg.key.remoteJid,
-        {
-            text:
-            '❌ لا يوجد حساب'
-        }
-    )
-}
-
-let fixed = 0
-
-for (const char of player.characters) {
-
-    if (
-        char.evolutionLevel === 6
-    ) {
-
-        if (
-            char.power < 25000
-        ) {
-
-            char.power = 25000
-            fixed++
-        }
-
-        if (!char.urAbilities)
-            char.urAbilities = []
-
-        const availableAbilities =
-            urAbilities.filter(
-                a =>
-                !char.urAbilities.some(
-                    owned =>
-                    owned.name === a.name
-                )
-            )
-
-        if (
-            availableAbilities.length > 0 &&
-            char.urAbilities.length < 2
-        ) {
-
-            const exAbility =
-                availableAbilities[
-                    Math.floor(
-                        Math.random() *
-                        availableAbilities.length
-                    )
-                ]
-
-            char.urAbilities.push(
-                exAbility
-            )
-        }
-    }
-}
-
-player.markModified(
-    'characters'
-)
-
-await player.save()
 
 return safeSend(
     msg.key.remoteJid,
     {
         text:
+        '❌ لا يوجد حساب'
+    }
+)
 
-`✅ تم إصلاح شخصيات EX
+}
+
+let fixed = 0
+let found = 0
+let abilitiesAdded = 0
+
+for (const char of player.characters) {
+
+if (
+    Number(
+        char.evolutionLevel || 0
+    ) >= 6
+) {
+
+    found++
+
+    if (
+        char.power < 25000
+    ) {
+
+        char.power = 25000
+
+        fixed++
+    }
+
+    if (!char.urAbilities)
+        char.urAbilities = []
+
+    const availableAbilities =
+        urAbilities.filter(
+            a =>
+            !char.urAbilities.some(
+                owned =>
+                owned.name === a.name
+            )
+        )
+
+    if (
+        availableAbilities.length > 0 &&
+        char.urAbilities.length < 2
+    ) {
+
+        const exAbility =
+            availableAbilities[
+                Math.floor(
+                    Math.random() *
+                    availableAbilities.length
+                )
+            ]
+
+        char.urAbilities.push(
+            exAbility
+        )
+
+        abilitiesAdded++
+    }
+}
+
+}
+
+player.markModified(
+'characters'
+)
+
+await player.save()
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+
+`✅ تم فحص شخصيات EX
+
+👑 شخصيات EX المكتشفة:
+${found}
 
 ⚔️ الشخصيات التي تم رفع قوتها:
 ${fixed}
 
-👑 جميع شخصيات EX أصبحت بقوة 25000
+🔥 القدرات المضافة:
+${abilitiesAdded}
 
-🔥 وتم منح قدرة إضافية للشخصيات الناقصة`
+🏆 جميع شخصيات EX أصبحت بقوة 25000`
 }
 )
 }
@@ -16733,17 +16748,30 @@ console.log('عدد الشخصيات:', characters?.length)
 if (!player) {
 
     player = new Player({
-        userId,
-        pulls: 5,
-        lastReset: Date.now(),
-        characters: [],
-        hp: 10000,
-        crit: 5,
-        dodge: 3,
-        xp: 0,
-        level: 1,
-        money: 0
-    })
+    userId,
+
+    pulls: 5,
+
+    lastReset:
+    Math.floor(
+        Date.now() /
+        (60 * 60 * 1000)
+    ),
+
+    characters: [],
+
+    hp: 10000,
+
+    crit: 5,
+
+    dodge: 3,
+
+    xp: 0,
+
+    level: 1,
+
+    money: 0
+})
 }
 
 if (
@@ -16762,7 +16790,8 @@ ${player.maxCharacters || 30}`
     )
 }
 
-const cooldown = 30 * 60 * 1000
+const cooldown =
+    60 * 60 * 1000
 
 const currentPeriod =
     Math.floor(Date.now() / cooldown)
@@ -16790,8 +16819,10 @@ if (player.pulls <= 0) {
             (remaining % (1000 * 60)) / 1000
         )
 
-    return sock.sendMessage(msg.key.remoteJid, {
-        text:
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
 
 `⏳ انتهت السحبات
 
@@ -16800,8 +16831,9 @@ if (player.pulls <= 0) {
 ${minutes} دقيقة
 ${seconds} ثانية
 
-🎁 تتجدد السحبات تلقائياً كل 30 دقيقة`
-})
+🎁 تتجدد السحبات تلقائياً عند رأس كل ساعة`
+        }
+    )
 }
 
 let luckBonus = 0
@@ -16850,34 +16882,34 @@ if (
 ) {
 
     const favorite =
-        characters.find(
-            c =>
-                c.name ===
-                player.favoriteCharacter &&
-                c.rarity === 'SSS'
-        )
+(
+    player.favoriteCharacter &&
+    player.favoriteExpires > Date.now() &&
+    player.favoriteObtained < 2
+)
+?
+characters.find(
+    c =>
+        c.name ===
+        player.favoriteCharacter &&
+        c.rarity === 'SSS'
+)
+:
+null
 
-    if (favorite) {
+if (favorite) {
 
-        randomCharacter =
-            favorite
+    randomCharacter =
+        favorite
 
-        player.favoriteObtained =
-            (player.favoriteObtained || 0) + 1
-
+    player.favoriteObtained =
+        (player.favoriteObtained || 0) + 1
         if (
-            player.favoriteObtained >= 2
-        ) {
+    player.favoriteObtained >= 2
+) {
 
-            player.favoriteCharacter =
-                null
-
-            player.favoriteObtained =
-                0
-
-            player.favoriteExpires =
-                0
-        }
+    player.favoriteObtained = 2
+}
     }
 }
 
