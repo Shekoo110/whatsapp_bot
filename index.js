@@ -3592,6 +3592,11 @@ if (quotedMsg.videoMessage) {
         quotedMsg.videoMessage?.gifPlayback
     )
 
+    console.log(
+        'VIDEO SECONDS:',
+        quotedMsg.videoMessage?.seconds
+    )
+
     const input =
         `./tmp_${Date.now()}.mp4`
 
@@ -3604,14 +3609,24 @@ if (quotedMsg.videoMessage) {
     )
 
     await videoToSticker(
-        input,
+    input,
+    output
+)
+
+const stat =
+    await fs.promises.stat(
         output
     )
 
-    const webp =
-        await fs.promises.readFile(
-            output
-        )
+console.log(
+    'WEBP SIZE:',
+    stat.size
+)
+
+const webp =
+    await fs.promises.readFile(
+        output
+    )
 
     await sock.sendMessage(
         msg.key.remoteJid,
