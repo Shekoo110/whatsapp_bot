@@ -2790,6 +2790,207 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text.startsWith('.مفضلة ')) {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا تملك حساباً'
+            }
+        )
+    }
+
+    if (
+        player.favoriteCharacter &&
+        player.favoriteExpires >
+        Date.now()
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+
+`❌ لديك شخصية مفضلة حالياً
+
+⭐ ${player.favoriteCharacter}
+
+استعملها حتى تحصل على النسختين أو انتظر انتهاء المدة`
+            }
+        )
+    }
+
+    const name =
+        text.replace(
+            '.مفضلة',
+            ''
+        ).trim()
+
+    const search =
+        name.toLowerCase()
+
+    const sssCharacters =
+        characters.filter(
+            c => c.rarity === 'SSS'
+        )
+
+    let target =
+        sssCharacters.find(
+            c =>
+                c.name.toLowerCase() ===
+                search
+        )
+
+    if (!target) {
+
+        target =
+            sssCharacters.find(
+                c =>
+                    c.name
+                     .toLowerCase()
+                     .startsWith(
+                         search
+                     )
+            )
+    }
+
+    if (!target) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لم يتم العثور على شخصية SSS بهذا الاسم'
+            }
+        )
+    }
+
+    if (
+        player.money < 200000
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ تحتاج 200000 ذهب'
+            }
+        )
+    }
+
+    player.money -= 200000
+
+    player.favoriteCharacter =
+        target.name
+
+    player.favoriteObtained = 0
+
+    player.favoriteExpires =
+        Date.now() +
+        (
+            4 *
+            24 *
+            60 *
+            60 *
+            1000
+        )
+
+    await player.save()
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`⭐ تم تعيين الشخصية المفضلة
+
+👤 ${target.name}
+
+💰 التكلفة:
+200000
+
+⏳ المدة:
+4 أيام
+
+🎯 النسخ المتبقية:
+2`
+        }
+    )
+}
+    if (text === '.المفضلة') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا تملك حساباً'
+            }
+        )
+    }
+
+    if (
+        !player.favoriteCharacter
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا توجد شخصية مفضلة حالياً'
+            }
+        )
+    }
+
+    const remaining =
+        Math.max(
+            0,
+            player.favoriteExpires -
+            Date.now()
+        )
+
+    const days =
+        Math.floor(
+            remaining /
+            (1000 * 60 * 60 * 24)
+        )
+
+    const hours =
+        Math.floor(
+            (
+                remaining %
+                (1000 * 60 * 60 * 24)
+            ) /
+            (1000 * 60 * 60)
+        )
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+
+`⭐ الشخصية المفضلة
+
+👤 ${player.favoriteCharacter}
+
+🎯 النسخ المحصلة:
+${player.favoriteObtained}/2
+
+⏳ الوقت المتبقي:
+${days} يوم
+${hours} ساعة`
+        }
+    )
+}
+    
 if (text === '.استرجاع_sss') {
 
     const players = await Player.find({})
@@ -15172,14 +15373,66 @@ if (!filteredCharacters.length) {
     )
 }
 
-const randomCharacter =
-    filteredCharacters[
-        Math.floor(
-            Math.random() *
-            filteredCharacters.length
-        )
-    ]
+let randomCharacter
 
+if (
+    rarity === 'SSS' &&
+    player.favoriteCharacter &&
+    player.favoriteObtained < 2 &&
+    player.favoriteExpires > Date.now()
+) {
+
+    const favorite =
+        characters.find(
+            c =>
+                c.name ===
+                player.favoriteCharacter &&
+                c.rarity === 'SSS'
+        )
+
+    if (favorite) {
+
+        randomCharacter =
+            favorite
+
+        player.favoriteObtained =
+            (player.favoriteObtained || 0) + 1
+
+        if (
+            player.favoriteObtained >= 2
+        ) {
+
+            player.favoriteCharacter =
+                null
+
+            player.favoriteObtained =
+                0
+
+            player.favoriteExpires =
+                0
+        }
+    }
+}
+
+if (!randomCharacter) {
+
+    randomCharacter =
+        filteredCharacters[
+            Math.floor(
+                Math.random() *
+                filteredCharacters.length
+            )
+        ]
+}
+if (
+    player.favoriteCharacter &&
+    player.favoriteExpires <= Date.now()
+) {
+
+    player.favoriteCharacter = null
+    player.favoriteObtained = 0
+    player.favoriteExpires = 0
+}
 
 // غير مكرر أو ليس SSS
 player.characters.push({
