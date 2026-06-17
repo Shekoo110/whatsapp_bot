@@ -73,7 +73,8 @@ const kingdomStages = [
 }
 
 ]
-
+const battleState =
+    require('./battleSystem')
 
 process.on('uncaughtException', err => {
     console.error('UNCAUGHT:')
@@ -2786,6 +2787,303 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+// =========================
+// .حرب
+// =========================
+
+if (text === '.حرب') {
+
+    if (battleState.activeBattle) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ توجد حرب جارية بالفعل'
+            }
+        )
+    }
+
+    battleState.activeBattle = {
+
+        roomId:
+            msg.key.remoteJid,
+
+        started: false,
+
+        createdBy:
+            userId,
+
+        createdAt:
+            Date.now(),
+
+        players: [],
+
+        redTeam: [],
+
+        blueTeam: [],
+
+        maxPlayers: 8,
+
+        duration:
+            5 * 60,
+
+        flags: {
+
+            A: {
+                owner: null,
+                progress: 0,
+                players: []
+            },
+
+            B: {
+                owner: null,
+                progress: 0,
+                players: []
+            },
+
+            C: {
+                owner: null,
+                progress: 0,
+                players: []
+            },
+
+            D: {
+                owner: null,
+                progress: 0,
+                players: []
+            },
+
+            E: {
+                owner: null,
+                progress: 0,
+                players: []
+            }
+        }
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`⚔️ تم إنشاء حرب جديدة
+
+👥 اللاعبين:
+0/8
+
+🏴 الأعلام:
+
+🏴 A
+🏴 B
+🏴 C
+🏴 D
+🏴 E
+
+━━━━━━━━━━━━━━━
+
+للانضمام:
+
+.انضم 1 2
+
+مثال:
+
+.انضم 3 5`
+        }
+    )
+}
+
+// =========================
+// .انضم 1 2
+// =========================
+
+if (text.startsWith('.انضم')) {
+
+    if (!battleState.activeBattle) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا توجد حرب حالياً'
+            }
+        )
+    }
+
+    const args =
+        text.trim().split(' ')
+
+    if (args.length < 3) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ الاستخدام:\n.انضم 1 2'
+            }
+        )
+    }
+
+    const char1Index =
+        parseInt(args[1]) - 1
+
+    const char2Index =
+        parseInt(args[2]) - 1
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لم يتم العثور على حسابك'
+            }
+        )
+    }
+
+    const char1 =
+        player.characters?.[
+            char1Index
+        ]
+
+    const char2 =
+        player.characters?.[
+            char2Index
+        ]
+
+    if (
+        !char1 ||
+        !char2
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ رقم شخصية غير صحيح'
+            }
+        )
+    }
+
+    const alreadyJoined =
+        battleState
+        .activeBattle
+        .players
+        .find(
+            p =>
+            p.userId ===
+            userId
+        )
+
+    if (alreadyJoined) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ أنت منضم بالفعل'
+            }
+        )
+    }
+
+    let team = 'red'
+
+    if (
+        battleState
+        .activeBattle
+        .redTeam
+        .length >
+        battleState
+        .activeBattle
+        .blueTeam
+        .length
+    ) {
+
+        team = 'blue'
+    }
+
+    const battlePlayer = {
+
+        userId,
+
+        team,
+
+        currentCharacter:
+            char1,
+
+        secondCharacter:
+            char2,
+
+        currentHp:
+            char1.power,
+
+        alive: true,
+
+        flag: null,
+
+        respawning: false
+    }
+
+    battleState
+        .activeBattle
+        .players
+        .push(
+            battlePlayer
+        )
+
+    if (team === 'red') {
+
+        battleState
+            .activeBattle
+            .redTeam
+            .push(
+                userId
+            )
+
+    } else {
+
+        battleState
+            .activeBattle
+            .blueTeam
+            .push(
+                userId
+            )
+    }
+
+    const totalPlayers =
+        battleState
+        .activeBattle
+        .players
+        .length
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+
+`✅ تم الانضمام للحرب
+
+🔥 الأساسية:
+${char1.name || char1.characterName}
+
+🌀 الاحتياطية:
+${char2.name || char2.characterName}
+
+🎨 الفريق:
+${team === 'red'
+? '🔴 الأحمر'
+: '🔵 الأزرق'}
+
+👥 ${totalPlayers}/8`
+        }
+    )
+}
+    
 if (text.startsWith('.مفضلة ')) {
 
     const player =
