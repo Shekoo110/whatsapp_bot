@@ -2254,7 +2254,7 @@ if (
                 'libwebp',
 
                 '-vf',
-                'fps=15,scale=512:512:force_original_aspect_ratio=increase,crop=512:512',
+                'fps=8,scale=512:512:force_original_aspect_ratio=increase,crop=512:512',
 
                 '-loop',
                 '0',
@@ -2272,28 +2272,30 @@ if (
             .on(
                 'end',
                 () => {
+
                     console.log(
                         '✅ WEBP CREATED'
                     )
+
                     resolve()
                 }
             )
 
             .on(
                 'error',
-                (err) => {
+                (err)
+            => {
 
-                    console.log(
-                        'FFMPEG ERROR FULL:'
-                    )
+                console.log(
+                    'FFMPEG ERROR FULL:'
+                )
 
-                    console.error(
-                        err
-                    )
+                console.error(
+                    err
+                )
 
-                    reject(err)
-                }
-            )
+                reject(err)
+            })
         }
     )
 }
