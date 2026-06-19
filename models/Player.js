@@ -382,7 +382,7 @@ luckyNumberWins: {
 lastEventReward: {
     type: Number,
     default: 0
-}
+},
 
     
     // =========================
