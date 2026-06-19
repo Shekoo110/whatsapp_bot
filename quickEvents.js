@@ -188,9 +188,9 @@ pool.length
 )
 ]
 
-player.characters.push(
-char
-)
+player.characters.push({
+...char
+})
 
 await player.save()
 
@@ -217,9 +217,9 @@ pool.length
 )
 ]
 
-player.characters.push(
-char
-)
+player.characters.push({
+...char
+})
 
 await player.save()
 
