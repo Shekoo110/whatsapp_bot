@@ -2973,6 +2973,44 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text === '.اصلاح_يونو') {
+
+const player =
+await Player.findOne({
+userId:
+'104350575792247@lid'
+})
+
+if (!player)
+return
+
+const yuno =
+characters.find(
+c =>
+c.name === 'Yuno' &&
+c.rarity === 'SSS'
+)
+
+player.characters.push(
+{ ...yuno }
+)
+
+player.characters.push(
+{ ...yuno }
+)
+
+await player.save()
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+'✅ تمت إعادة نسختين Yuno SSS'
+}
+)
+
+}
+    
 if (text === '.حالة') {
 
 if (!battleState.activeBattle) {
@@ -6816,17 +6854,18 @@ text:
 const shardData =
 available[index]
 
+const cleanName =
+shardData.name
+.replaceAll('_', ' ')
+.trim()
+.toLowerCase()
+
 const char =
 characters.find(
 c =>
-c.name ===
-shardData.name.replaceAll(
-'_',
-'.'
-)
-||
-c.name ===
-shardData.name
+c.name.trim().toLowerCase() ===
+cleanName &&
+c.rarity === 'SSS'
 )
 
 if (!char) {
@@ -6838,11 +6877,13 @@ text:
 '❌ لم يتم العثور على الشخصية'
 }
 )
+
 }
 
 player.characters.push({
 ...char
 })
+
 
 player.shards.set(
 shardData.name,
