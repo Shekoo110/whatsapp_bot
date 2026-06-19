@@ -361,6 +361,31 @@ kingdomRaid: {
 
 },
     // =========================
+// EVENTS SYSTEM
+// =========================
+
+eventWins: {
+    type: Number,
+    default: 0
+},
+
+quickShotWins: {
+    type: Number,
+    default: 0
+},
+
+luckyNumberWins: {
+    type: Number,
+    default: 0
+},
+
+lastEventReward: {
+    type: Number,
+    default: 0
+}
+
+    
+    // =========================
     // BOXES
     // =========================
     boxes: {
