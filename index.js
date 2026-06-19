@@ -2655,7 +2655,7 @@ isEventGroup &&
 quickEvents.sniper &&
 quickEvents.sniper.active &&
 !quickEvents.sniper.winner
-)
+) {
 
 const code =
 quickEvents.sniper.code
@@ -2715,7 +2715,6 @@ return
 if (
 isEventGroup &&
 text.startsWith('.تخمين ')
-)
 ) {
 
 if (
@@ -2762,8 +2761,10 @@ number ===
 quickEvents.lucky.answer
 ) {
 
-quickEvents.lucky.winner =
+quickEvents.lucky.winner = {
+groupId: msg.key.remoteJid,
 userId
+}
 
 const rewardText =
 await giveQuickReward(
