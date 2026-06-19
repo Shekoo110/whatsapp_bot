@@ -6723,12 +6723,16 @@ await player.save()
     msg.key.remoteJid,
     {
         text:
-`💎 تم التحويل
+`💎 تم التحويل إلى شظية
 
 👑 ${char.name}
 
-🧩 الشظايا:
-${currentShards + 1}`
+🧩 الشظايا الحالية:
+${currentShards + 1}/2
+
+♻️ يمكنك استرجاع الشخصية عبر:
+
+.استرجاع`
     }
 )
 
@@ -6749,6 +6753,127 @@ ${err.message}`
         }
     )
 }
+}
+
+    if (
+text.startsWith('.استرجاع ')
+) {
+
+const player =
+await Player.findOne({
+userId
+})
+
+if (!player) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+'❌ لا يوجد حساب'
+}
+)
+}
+
+const shards =
+player.shards || new Map()
+
+const available =
+[]
+
+for (
+const [name, amount]
+of shards.entries()
+) {
+
+if (amount > 0) {
+
+available.push({
+name,
+amount
+})
+}
+}
+
+const index =
+parseInt(
+text.split(' ')[1]
+) - 1
+
+if (
+isNaN(index) ||
+!available[index]
+) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+'❌ رقم غير صحيح'
+}
+)
+}
+
+const shardData =
+available[index]
+
+const char =
+characters.find(
+c =>
+c.name ===
+shardData.name.replaceAll(
+'_',
+'.'
+)
+||
+c.name ===
+shardData.name
+)
+
+if (!char) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+'❌ لم يتم العثور على الشخصية'
+}
+)
+}
+
+player.characters.push({
+...char
+})
+
+player.shards.set(
+shardData.name,
+shardData.amount - 1
+)
+
+player.markModified(
+'characters'
+)
+
+player.markModified(
+'shards'
+)
+
+await player.save()
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+
+`♻️ تم الاسترجاع
+
+👑 ${char.name}
+
+🧩 الشظايا المتبقية:
+
+${shardData.amount - 1}/2`
+}
+)
 }
     
     
@@ -7197,6 +7322,7 @@ let msgText =
 `
 
 let count = 0
+let index = 1
 
 for (
     const [name, amount]
@@ -7218,7 +7344,9 @@ for (
 
     msgText +=
 
-"${icon} ${displayName} • ${amount}/2 "
+"${index}- ${icon} ${displayName} • ${amount}/2 "
+
+    index++
 }
 
 if (count === 0) {
@@ -7234,7 +7362,13 @@ if (count === 0) {
 
 msgText +=
 
-" 📦 الإجمالي: ${count}"
+`\n━━━━━━━━━━━━━━
+
+📦 الإجمالي: ${count}
+
+♻️ للاسترجاع:
+
+.استرجاع رقم`
 
 return sock.sendMessage(
     msg.key.remoteJid,
