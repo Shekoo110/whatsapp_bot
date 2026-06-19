@@ -126,6 +126,19 @@ userId
 if (!player)
 return null
 
+    if (!player.boxes) {
+
+player.boxes = {
+basic: 0,
+rare: 0,
+epic: 0,
+legendary: 0,
+sss_chance: 0,
+sss_high: 0
+}
+
+}
+
 const reward =
 randomReward()
 
@@ -138,8 +151,7 @@ reward.amount
 
 await player.save()
 
-return
-"💰 ${reward.amount.toLocaleString()} ذهب"
+return `💰 ${reward.amount.toLocaleString()} ذهب`
 }
 
 if (
@@ -151,8 +163,7 @@ reward.amount
 
 await player.save()
 
-return
-"📚 ${reward.amount} XP"
+return `📚 ${reward.amount} XP`
 }
 
 if (
@@ -164,8 +175,7 @@ reward.amount
 
 await player.save()
 
-return
-"🎟️ ${reward.amount} تذكرة"
+return `🎟️ ${reward.amount} تذكرة`
 }
 
 if (
@@ -193,8 +203,7 @@ player.characters.push({
 
 await player.save()
 
-return
-"⭐ ${char.name}"
+return `⭐ ${char.name}`
 }
 
 if (
@@ -222,8 +231,7 @@ player.characters.push({
 
 await player.save()
 
-return
-"🌟 ${char.name}"
+return `🌟 ${char.name}`
 }
 
 if (
@@ -256,8 +264,7 @@ player.boxes.sss_high += 1
 
 await player.save()
 
-return
-'📦 SSS High Box ×1'
+return '📦 SSS High Box ×1'
 }
 
 async function startSniper(
