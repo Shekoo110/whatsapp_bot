@@ -5502,36 +5502,17 @@ const webp =
         output
     )
 
-const sticker =
-new Sticker(
-    webp,
-    {
-        pack:
-'❖ 𝑵𝒂𝒎𝒊𝒊 𝑺𝒘𝒂𝒏 ❖',
-
-        author: '.',
-
-        type:
-        StickerTypes.CROPPED,
-
-        quality: 100
-    }
-)
-
-const finalWebp =
-    await sticker.toBuffer()
-
 await sock.sendMessage(
     msg.key.remoteJid,
     {
-        sticker: finalWebp
+        sticker: webp
     }
 )
 
-    await fs.promises.unlink(input)
-    await fs.promises.unlink(output)
+await fs.promises.unlink(input)
+await fs.promises.unlink(output)
 
-    return
+return
 }
 
         return safeSend(
