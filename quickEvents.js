@@ -115,10 +115,9 @@ type: 'box_sss_high'
 }
 }
 
-async function giveReward(
+async function giveQuickReward(
 userId
 ) {
-
 const player =
 await Player.findOne({
 userId
@@ -471,11 +470,7 @@ return quickEvents
 }
 
 module.exports = {
-
-startQuickEvents,
-
-quickEvents,
-
-giveReward
-
+    quickEvents,
+    startQuickEvents,
+    giveQuickReward
 }
