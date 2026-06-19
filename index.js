@@ -2244,7 +2244,7 @@ ${juubi.maxHp.toLocaleString()}
     '-an',
 
     '-pix_fmt',
-    'yuva420p',
+'yuv420p',
 
     '-q:v',
     '35',
@@ -5429,7 +5429,19 @@ if (text === '.س') {
 
         // فيديو / GIF
 if (quotedMsg.videoMessage) {
+if (quotedMsg.videoMessage.seconds > 10) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: '❌ الحد الأقصى 10 ثواني'
+        }
+    )
+}
 
+console.log(
+    'MIMETYPE:',
+    quotedMsg.videoMessage.mimetype
+)
     console.log(
         'GIF PLAYBACK:',
         quotedMsg.videoMessage?.gifPlayback
@@ -5451,11 +5463,29 @@ if (quotedMsg.videoMessage) {
         buffer
     )
 
-    await videoToSticker(
-    input,
-    output
-)
+    try {
 
+    await videoToSticker(
+        input,
+        output
+    )
+
+} catch (err) {
+
+    console.log(
+        'VIDEO CONVERT ERROR:'
+    )
+
+    console.error(err)
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ فشل ffmpeg أثناء التحويل'
+        }
+    )
+}
 const stat =
     await fs.promises.stat(
         output
