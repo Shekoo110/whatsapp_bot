@@ -9,7 +9,7 @@ const allowedGroups = [
 ]
 const {
 quickEvents,
-giveReward,
+giveQuickReward,
 startQuickEvents
 } = require('./quickEvents')
 
@@ -2672,7 +2672,7 @@ userId
 }
 
 const rewardText =
-await giveReward(
+await giveQuickReward(
 userId
 )
 
@@ -2766,7 +2766,7 @@ quickEvents.lucky.winner =
 userId
 
 const rewardText =
-await giveReward(
+await giveQuickReward(
 userId
 )
 
