@@ -7,6 +7,11 @@ const allowedGroups = [
 '120363400448225715@g.us'
 
 ]
+const {
+quickEvents,
+giveReward,
+startQuickEvents
+} = require('./quickEvents')
 
 const disabledGroups = new Set()
 
@@ -2025,6 +2030,7 @@ const sock = makeWASocket({
 
     syncFullHistory: false
 })
+    startQuickEvents(sock)
 
 if (!state.creds.registered) {
 
@@ -2627,6 +2633,174 @@ if (!text) return
 const userId =
 msg.key.participant ||
 msg.key.remoteJid
+
+if (!msg.key.remoteJid.endsWith('@g.us'))
+return
+/* =========================
+🎯 القناص السريع
+========================= */
+
+const EVENT_GROUPS = [
+'120363400448225715@g.us',
+'120363020823525909@g.us'
+]
+
+const isEventGroup =
+EVENT_GROUPS.includes(
+msg.key.remoteJid
+)
+    
+if (
+isEventGroup &&
+quickEvents.sniper &&
+quickEvents.sniper.active &&
+!quickEvents.sniper.winner
+)
+
+const code =
+quickEvents.sniper.code
+
+if (
+text.trim().toUpperCase() ===
+code
+) {
+
+quickEvents.sniper.winner =
+{
+groupId: msg.key.remoteJid,
+userId
+}
+
+const rewardText =
+await giveReward(
+userId
+)
+
+const mention =
+'@' +
+userId.split('@')[0]
+
+await sock.sendMessage(
+msg.key.remoteJid,
+{
+text:
+
+`🎉 مبروك ${mention}
+
+🏆 فزت بفعالية القناص السريع
+
+🎁 الجائزة
+
+${rewardText}`,
+mentions: [
+userId
+]
+},
+{
+quoted: msg
+}
+)
+
+quickEvents.sniper =
+null
+
+return
+}
+}
+
+/* =========================
+🎲 رقم الحظ
+========================= */
+
+if (
+isEventGroup &&
+text.startsWith('.تخمين ')
+)
+) {
+
+if (
+!quickEvents.lucky ||
+!quickEvents.lucky.active
+) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+'❌ لا توجد فعالية رقم حظ حالياً'
+}
+)
+}
+
+if (
+quickEvents.lucky.winner
+) {
+
+return
+}
+
+const number =
+parseInt(
+text.split(' ')[1]
+)
+
+if (
+isNaN(number)
+) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+'❌ اكتب رقم صحيح'
+}
+)
+}
+
+if (
+number ===
+quickEvents.lucky.answer
+) {
+
+quickEvents.lucky.winner =
+userId
+
+const rewardText =
+await giveReward(
+userId
+)
+
+const mention =
+'@' +
+userId.split('@')[0]
+
+await sock.sendMessage(
+msg.key.remoteJid,
+{
+text:
+
+`🎉 مبروك ${mention}
+
+🏆 فزت بفعالية رقم الحظ
+
+🎁 الجائزة
+
+${rewardText}`,
+mentions: [
+userId
+]
+},
+{
+quoted: msg
+}
+)
+
+quickEvents.lucky =
+null
+
+return
+}
+}
 
 if (
     disabledGroups.has(
@@ -4868,67 +5042,7 @@ ${fixed}`
     )
 }
 
-if (text === '.اصلاح_ex') {
 
-const player =
-await Player.findOne({
-userId
-})
-
-if (!player) {
-
-return safeSend(
-    msg.key.remoteJid,
-    {
-        text:
-        '❌ لا يوجد حساب'
-    }
-)
-
-}
-
-let fixed = 0
-
-for (const char of player.characters) {
-
-if (
-    Number(
-        char.evolutionLevel || 0
-    ) >= 6
-) {
-
-    if (
-        char.power < 25000
-    ) {
-
-        char.power = 25000
-
-        fixed++
-    }
-}
-
-}
-
-player.markModified(
-'characters'
-)
-
-await player.save()
-
-return safeSend(
-msg.key.remoteJid,
-{
-text:
-
-`✅ تم إصلاح شخصيات EX
-
-⚔️ الشخصيات التي تم إصلاحها:
-${fixed}
-
-👑 جميع شخصيات EX أصبحت بقوة 25000`
-}
-)
-}
     
 if (text === '.المملكة') {
 
@@ -7043,61 +7157,92 @@ ${cost.toLocaleString()}
     
 if (text === '.شظايا') {
 
-    const player =
-        await Player.findOne({
-            userId
-        })
+const player =
+    await Player.findOne({
+        userId
+    })
 
-    if (!player)
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-                '❌ لا يوجد حساب'
-            }
-        )
+if (!player) {
 
-    const shards =
-        player.shards || new Map()
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ لا يوجد حساب'
+        }
+    )
+}
 
-    if (
-        !shards ||
-        shards.size === 0
-    ) {
+const shards =
+    player.shards || new Map()
 
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text:
-                '📭 لا تملك أي شظايا'
-            }
-        )
-    }
+if (
+    !shards ||
+    shards.size === 0
+) {
 
-    let msgText =
-`🧩 ━━〔 شظايا الشخصيات 〕━━ 🧩\n\n`
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+            '📭 لا تملك أي شظايا'
+        }
+    )
+}
 
-    for (
+let msgText =
+
+`🧩 شظايا الشخصيات
+
+`
+
+let count = 0
+
+for (
     const [name, amount]
     of shards.entries()
 ) {
 
+    if (amount <= 0)
+        continue
+
+    count++
+
     const displayName =
         name.replaceAll('_', ' ')
 
+    const icon =
+        amount >= 2
+        ? '🟩'
+        : '🟨'
+
     msgText +=
-`👑 ${displayName}
 
-📦 ${amount}/2
-
-`
+"${icon} ${displayName} • ${amount}/2 "
 }
+
+if (count === 0) {
+
     return sock.sendMessage(
         msg.key.remoteJid,
         {
-            text: msgText
+            text:
+            '📭 لا تملك أي شظايا'
         }
     )
+}
+
+msgText +=
+
+" 📦 الإجمالي: ${count}"
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text: msgText
+    }
+)
+
 }
 
     
