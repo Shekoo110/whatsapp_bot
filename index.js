@@ -2634,8 +2634,6 @@ const userId =
 msg.key.participant ||
 msg.key.remoteJid
 
-if (!msg.key.remoteJid.endsWith('@g.us'))
-return
 /* =========================
 🎯 القناص السريع
 ========================= */
@@ -7339,15 +7337,14 @@ for (
         name.replaceAll('_', ' ')
 
     const icon =
-        amount >= 2
-        ? '🟩'
-        : '🟨'
+    amount >= 2
+    ? '🟩'
+    : '🟨'
 
-    msgText +=
+msgText +=
+`${index}- ${icon} ${displayName} • ${amount}/2\n`
 
-"${index}- ${icon} ${displayName} • ${amount}/2 "
-
-    index++
+index++
 }
 
 if (count === 0) {
