@@ -1,4 +1,46 @@
 const fs = require('fs')
+function getSaudiDate() {
+
+return new Date()
+.toLocaleDateString(
+'en-CA',
+{
+timeZone: 'Asia/Riyadh'
+}
+)
+
+}
+
+async function resetDailyMissions(player) {
+
+const today =
+getSaudiDate()
+
+if (
+!player.dailyMissions ||
+player.dailyMissions.lastReset !==
+today
+) {
+
+player.dailyMissions = {
+
+login: false,
+wins: 0,
+bossKills: 0,
+pulls: 0,
+gotSSS: false,
+gotLegendary: 0,
+claimed: false,
+lastReset: today
+
+}
+
+await player.save()
+
+}
+
+}
+
 
 const allowedGroups = [
 
@@ -2060,21 +2102,11 @@ if (!state.creds.registered) {
 }
 
 sock.ev.on('creds.update', async () => {
-    console.log('🔥 CREDS UPDATE')
 
     await saveCreds()
 
-    console.log(
-        'FILES NOW:',
-        fs.readdirSync('./auth')
-    )
+    console.log('✅ Session Saved')
 
-    setTimeout(() => {
-        console.log(
-            'FILES AFTER 10s:',
-            fs.readdirSync('./auth')
-        )
-    }, 10000)
 })
 console.log("REGISTERED =", state.creds.registered)
 const BEAST_GROUPS = [
@@ -2973,30 +3005,242 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-if (text === '.اصلاح_يونو') {
+if (text === '.مهامي') {
+
+const player = await Player.findOne({ userId })
+
+if (!player) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: '❌ لا يوجد حساب'
+        }
+    )
+}
+await resetDailyMissions(player)
+const m = player.dailyMissions || {}
+
+const loginDone =
+m.login ? '✅' : '❌'
+
+const winsDone =
+m.wins >= 5 ? '✅' : '❌'
+
+const bossDone =
+m.bossKills >= 2 ? '✅' : '❌'
+
+const pullsDone =
+m.pulls >= 10 ? '✅' : '❌'
+
+const sssDone =
+m.gotSSS ? '✅' : '❌'
+
+const legendaryDone =
+m.gotLegendary >= 5 ? '✅' : '❌'
+
+const completed =
+[
+m.login,
+m.wins >= 5,
+m.bossKills >= 2,
+m.pulls >= 10,
+m.gotSSS,
+m.gotLegendary >= 5
+].filter(Boolean).length
+
+const allDone =
+completed === 6
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+
+`📜 المهام اليومية
+
+${loginDone} تسجيل الدخول اليومي
+
+${winsDone} الفوز في 5 قتالات
+📊 ${m.wins || 0}/5
+
+${bossDone} المشاركة ضد الزعيم مرتين
+📊 ${m.bossKills || 0}/2
+
+${pullsDone} تنفيذ 10 سحبات
+📊 ${m.pulls || 0}/10
+
+${sssDone} الحصول على شخصية SSS
+
+${legendaryDone} الحصول على 5 شخصيات أسطورية
+📊 ${m.gotLegendary || 0}/5
+
+━━━━━━━━━━━━━━
+
+🎯 التقدم:
+${completed}/6
+
+🎁 الجائزة الكاملة:
+
+💰 2,500,000 مال
+📚 5000 XP
+📦 Legendary Box ×1
+📦 SSS Chance Box ×1
+
+${
+allDone
+? '✅ جميع المهام مكتملة\nاستخدم: .استلام_المهام'
+: '⏳ أكمل جميع المهام أولاً'
+}`
+}
+)
+
+}
+
+    if (text === '.يومي') {
+
+const player = await Player.findOne({ userId })
+
+if (!player) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: '❌ لا يوجد حساب'
+        }
+    )
+}
+await resetDailyMissions(player)
+const today =
+new Date().toLocaleDateString(
+'en-CA',
+{
+timeZone:
+'Asia/Riyadh'
+}
+)
+
+if (
+player.dailyReward &&
+player.dailyReward.lastClaim ===
+today
+) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ استلمت اليومي بالفعل\n\n⏳ انتظر حتى 12 صباحاً بتوقيت السعودية'
+        }
+    )
+}
+
+const rewardMoney = 250000
+const rewardXp = 500
+
+player.money += rewardMoney
+player.xp += rewardXp
+
+// تسجيل الدخول اليومي للمهمات
+player.dailyMissions.login = true
+
+player.dailyReward.lastClaim =
+today
+
+await player.save()
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+
+`🎁 المكافأة اليومية
+
+💰 ${rewardMoney.toLocaleString()} مال
+📚 ${rewardXp} XP
+
+✅ تم احتساب مهمة تسجيل الدخول اليومي
+
+⏳ يتجدد الساعة 12 صباحاً بتوقيت السعودية`
+}
+)
+
+}
+
+    if (text === '.استلام_المهام') {
 
 const player =
-await Player.findOne({
-userId:
-'104350575792247@lid'
-})
+await Player.findOne({ userId })
 
-if (!player)
-return
+if (!player) {
 
-const yuno =
-characters.find(
-c =>
-c.name === 'Yuno' &&
-c.rarity === 'SSS'
-)
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ لا يوجد حساب'
+        }
+    )
+}
 
-player.characters.push(
-{ ...yuno }
-)
+const m =
+player.dailyMissions
 
-player.characters.push(
-{ ...yuno }
+if (!m) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ لا توجد بيانات مهام'
+        }
+    )
+}
+
+if (m.claimed) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ استلمت مكافأة المهام اليوم'
+        }
+    )
+}
+
+const completed =
+
+m.login &&
+m.wins >= 5 &&
+m.bossKills >= 2 &&
+m.pulls >= 10 &&
+m.gotSSS &&
+m.gotLegendary >= 5
+
+if (!completed) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+            '❌ لم تكمل جميع المهام بعد'
+        }
+    )
+}
+
+// الجوائز
+
+player.money += 2500000
+
+player.xp += 5000
+
+player.boxes.legendary += 1
+
+player.boxes.sss_chance += 1
+
+m.claimed = true
+
+player.markModified(
+'dailyMissions'
 )
 
 await player.save()
@@ -3005,7 +3249,18 @@ return safeSend(
 msg.key.remoteJid,
 {
 text:
-'✅ تمت إعادة نسختين Yuno SSS'
+
+`🎉 تم استلام مكافأة المهام اليومية
+
+💰 2,500,000 مال
+
+📚 5000 XP
+
+📦 Legendary Box ×1
+
+📦 SSS Chance Box ×1
+
+✅ مبروك`
 }
 )
 
