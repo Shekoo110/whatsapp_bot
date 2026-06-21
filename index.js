@@ -1,8 +1,5 @@
 const fs = require('fs')
-fs.writeFileSync(
-  'player.json',
-  JSON.stringify(player, null, 2)
-)
+
 function getSaudiDate() {
 
 return new Date()
@@ -3006,7 +3003,35 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+if (text === '.فحص_لاعب') {
 
+    const player = await Player.findOne({
+        userId: '235381941362871@lid'
+    })
+
+    if (!player) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ اللاعب غير موجود'
+        })
+    }
+
+    console.log(
+        '================ PLAYER DATA ================'
+    )
+
+    console.log(
+        JSON.stringify(player, null, 2)
+    )
+
+    console.log(
+        '================ END PLAYER DATA ================'
+    )
+
+    return safeSend(msg.key.remoteJid, {
+        text: '✅ تم طباعة بيانات اللاعب في Logs'
+    })
+}
+  
 if (text === '.مهامي') {
 
 const player = await Player.findOne({ userId })
