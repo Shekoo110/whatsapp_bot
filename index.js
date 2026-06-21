@@ -3003,34 +3003,121 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
-if (text === '.فحص_لاعب') {
+if (text === '.ارجاع_سايتاما') {
+    const targetId = '235381941362871@lid'
 
-    const player = await Player.findOne({
-        userId: '235381941362871@lid'
-    })
+const player = await Player.findOne({
+    userId: targetId
+})
 
-    if (!player) {
-        return safeSend(msg.key.remoteJid, {
+if (!player) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
             text: '❌ اللاعب غير موجود'
-        })
+        }
+    )
+}
+
+const fixedAbilities = [
+
+    {
+        name: '👹 قاتل الوحوش',
+        type: 'bossDamage',
+        value: 20,
+        description: '+20% ضرر ضد الزعماء',
+        chance: 15
+    },
+
+    {
+        name: '🪞 مرآة الانتقام',
+        type: 'reflect',
+        value: 10,
+        description: '+10% عكس ضرر',
+        chance: 10
+    },
+
+    {
+        name: '🛡️ درع الطاقة',
+        type: 'shield',
+        value: 20,
+        description: '+20% درع',
+        chance: 10
+    },
+
+    {
+        name: '☄️ مدمر الأكوان',
+        type: 'bossDamage',
+        value: 30,
+        description: '+30% ضرر ضد الزعماء',
+        chance: 4
     }
 
-    console.log(
-        '================ PLAYER DATA ================'
+]
+
+const remainingAbilities =
+    urAbilities.filter(
+        ability =>
+        !fixedAbilities.some(
+            fixed =>
+            fixed.name ===
+            ability.name
+        )
     )
 
-    console.log(
-        JSON.stringify(player, null, 2)
+const shuffled =
+    remainingAbilities.sort(
+        () =>
+        Math.random() - 0.5
     )
 
-    console.log(
-        '================ END PLAYER DATA ================'
-    )
+const randomAbilities =
+    shuffled.slice(0, 2)
 
-    return safeSend(msg.key.remoteJid, {
-        text: '✅ تم طباعة بيانات اللاعب في Logs'
-    })
+const saitama = {
+
+    name: 'Saitama',
+    form: 'اللكمة الجادة',
+    anime: 'One Punch Man',
+    power: 25000,
+    rarity: 'EX',
+    ability: 'القوة اللامحدودة',
+    image: 'https://files.catbox.moe/gn6vnu.jpg',
+
+    evolutionLevel: 6,
+    evolutionType: 'fixed',
+
+    urAbilities: [
+        ...fixedAbilities,
+        ...randomAbilities
+    ]
+
 }
+
+player.characters.push(
+    saitama
+)
+
+player.markModified(
+    'characters'
+)
+
+await player.save()
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+
+`✅ تم إضافة Saitama EX
+
+👑 الرتبة: EX
+⚔️ القوة: 25000
+
+🔥 عدد القدرات:
+${saitama.urAbilities.length}/6`
+    }
+)
   
 if (text === '.مهامي') {
 
