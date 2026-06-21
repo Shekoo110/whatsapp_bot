@@ -383,7 +383,12 @@ lastEventReward: {
     type: Number,
     default: 0
 },
-    dailyMissions: {
+
+// =========================
+// DAILY MISSIONS
+// =========================
+
+dailyMissions: {
 
     login: {
         type: Boolean,
@@ -421,6 +426,15 @@ lastEventReward: {
     },
 
     lastReset: {
+        type: String,
+        default: ''
+    }
+
+},
+
+dailyReward: {
+
+    lastClaim: {
         type: String,
         default: ''
     }
