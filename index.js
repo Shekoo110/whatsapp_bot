@@ -12706,10 +12706,11 @@ await Player.findOne({ userId })
 
     const lastSkill =
     userId === fight.player1
-        ? fight.skillTurn1
-        : fight.skillTurn2
+        ? (fight.skillTurn1 ?? -99)
+        : (fight.skillTurn2 ?? -99)
 
-if (fight.turnCount - lastSkill < 2) {
+if (lastSkill >= 0 &&
+    fight.turnCount - lastSkill < 2) {
 
     return safeSend(
         msg.key.remoteJid,
@@ -12779,9 +12780,9 @@ critMessage =
 if (dodged) {
 
 fight.turn =
-    userId === fight.player1
-        ? fight.player2
-        : fight.player1
+userId === fight.player1
+    ? fight.player2
+    : fight.player1
 
 fight.lastMove = new Date()
 
@@ -13139,10 +13140,11 @@ attacker =
 }
 const lastUltimate =
     userId === fight.player1
-        ? fight.ultimateTurn1
-        : fight.ultimateTurn2
-if ((fight.turnCount || 0) - lastUltimate < 5) {
-    
+        ? (fight.ultimateTurn1 ?? -99)
+        : (fight.ultimateTurn2 ?? -99)
+
+if (lastUltimate >= 0 &&
+    fight.turnCount - lastUltimate < 5) {
 
     return safeSend(
         msg.key.remoteJid,
@@ -14024,18 +14026,20 @@ fight.hp2 = Math.max(0, fight.hp2)
     }
 
     fight.turn =
-        userId === fight.player1
-            ? fight.player2
-            : fight.player1
+    userId === fight.player1
+        ? fight.player2
+        : fight.player1
 
-    fight.lastMove = new Date()
+fight.lastMove = new Date()
 
-    if (fight.hp1 <= 0 || fight.hp2 <= 0) {
+fight.turnCount = (fight.turnCount || 0) + 1
 
-const winner =
-    fight.hp1 > 0
-        ? fight.player1
-        : fight.player2
+if (fight.hp1 <= 0 || fight.hp2 <= 0) {
+
+    const winner =
+        fight.hp1 > 0
+            ? fight.player1
+            : fight.player2
 
 const loser =
     winner === fight.player1
