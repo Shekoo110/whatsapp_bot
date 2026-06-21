@@ -3118,7 +3118,7 @@ return safeSend(
 ${saitama.urAbilities.length}/6`
     }
 )
-  
+}
 if (text === '.مهامي') {
 
 const player = await Player.findOne({ userId })
