@@ -13,13 +13,11 @@ timeZone: 'Asia/Riyadh'
 
 async function resetDailyMissions(player) {
 
-const today =
-getSaudiDate()
+const today = getSaudiDate()
 
 if (
 !player.dailyMissions ||
-player.dailyMissions.lastReset !==
-today
+player.dailyMissions.lastReset !== today
 ) {
 
 player.dailyMissions = {
@@ -36,9 +34,9 @@ lastReset: today
 }
 
 await player.save()
-
 }
 
+return player
 }
 
 
@@ -9234,9 +9232,9 @@ if (text === '.اصلاح_المخزون') {
     for (const player of players) {
 
         const expected =
-            30 +
-            (Math.floor(player.level / 10) * 5) +
-            10
+    30 +
+    (Math.floor(player.level / 10) * 5) +
+    15
 
         player.maxCharacters = expected
 
