@@ -17117,6 +17117,35 @@ me.totalBossDamage =
 
 me.bossHits =
     (me.bossHits || 0) + 1
+
+// مهمة الزعيم اليومية
+
+if (me.dailyMissions) {
+
+    const today = getSaudiDate()
+
+    if (
+        me.dailyMissions.lastReset !== today
+    ) {
+
+        await resetDailyMissions(me)
+
+    }
+
+    if (
+        me.dailyMissions.bossKills < 2
+    ) {
+
+        me.dailyMissions.bossKills += 1
+
+        me.markModified(
+            'dailyMissions'
+        )
+    }
+}
+
+currentBoss.groupAttackCount =
+    (currentBoss.groupAttackCount || 0) + 1
             
             currentBoss.groupAttackCount =
     (currentBoss.groupAttackCount || 0) + 1
@@ -17756,6 +17785,7 @@ if (!randomCharacter) {
             )
         ]
 }
+
 if (
     player.favoriteCharacter &&
     player.favoriteExpires <= Date.now()
@@ -17764,6 +17794,33 @@ if (
     player.favoriteCharacter = null
     player.favoriteObtained = 0
     player.favoriteExpires = 0
+}
+
+// =========================
+// DAILY MISSIONS
+// =========================
+
+if (player.dailyMissions) {
+
+    player.dailyMissions.pulls += 1
+
+    if (
+        randomCharacter.rarity === 'اسطوري'
+    ) {
+
+        player.dailyMissions.gotLegendary += 1
+    }
+
+    if (
+        randomCharacter.rarity === 'SSS'
+    ) {
+
+        player.dailyMissions.gotSSS = true
+    }
+
+    player.markModified(
+        'dailyMissions'
+    )
 }
 
 // غير مكرر أو ليس SSS
@@ -18845,10 +18902,25 @@ if (tierChance <= 50) {
     let winnerId;
 
     if (finalMyAttack >= finalEnemyAttack) {
-        winnerId = userId;
-        winner = 'أنت';
-        reward = Math.max(500, Math.floor(enemyPower / 10));
-    } else {
+
+    winnerId = userId;
+    winner = 'أنت';
+    reward = Math.max(
+        500,
+        Math.floor(enemyPower / 10)
+    );
+
+    // مهمة الفوز اليومية
+    if (me.dailyMissions) {
+
+        me.dailyMissions.wins += 1;
+
+        me.markModified(
+            'dailyMissions'
+        );
+    }
+
+} else {
         winnerId = targetId;
         winner = 'الخصم';
         reward = Math.max(500, Math.floor(myPower / 10));
