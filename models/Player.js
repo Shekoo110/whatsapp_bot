@@ -383,6 +383,49 @@ lastEventReward: {
     type: Number,
     default: 0
 },
+    dailyMissions: {
+
+    login: {
+        type: Boolean,
+        default: false
+    },
+
+    wins: {
+        type: Number,
+        default: 0
+    },
+
+    bossKills: {
+        type: Number,
+        default: 0
+    },
+
+    pulls: {
+        type: Number,
+        default: 0
+    },
+
+    gotSSS: {
+        type: Boolean,
+        default: false
+    },
+
+    gotLegendary: {
+        type: Number,
+        default: 0
+    },
+
+    claimed: {
+        type: Boolean,
+        default: false
+    },
+
+    lastReset: {
+        type: String,
+        default: ''
+    }
+
+},
 
     
     // =========================
