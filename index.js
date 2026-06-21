@@ -1,4 +1,8 @@
 const fs = require('fs')
+fs.writeFileSync(
+  'player.json',
+  JSON.stringify(player, null, 2)
+)
 function getSaudiDate() {
 
 return new Date()
