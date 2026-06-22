@@ -3150,7 +3150,6 @@ const sssDone =
 m.gotSSS ? '✅' : '❌'
 
 const legendaryDone =
-const legendaryDone =
 m.gotLegendary >= 3 ? '✅' : '❌'
 
 const completed =
