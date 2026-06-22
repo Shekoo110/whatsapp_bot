@@ -3150,7 +3150,8 @@ const sssDone =
 m.gotSSS ? '✅' : '❌'
 
 const legendaryDone =
-m.gotLegendary >= 5 ? '✅' : '❌'
+const legendaryDone =
+m.gotLegendary >= 3 ? '✅' : '❌'
 
 const completed =
 [
@@ -3159,7 +3160,7 @@ m.wins >= 5,
 m.bossKills >= 2,
 m.pulls >= 10,
 m.gotSSS,
-m.gotLegendary >= 5
+m.gotLegendary >= 3
 ].filter(Boolean).length
 
 const allDone =
@@ -3185,8 +3186,8 @@ ${pullsDone} تنفيذ 10 سحبات
 
 ${sssDone} الحصول على شخصية SSS
 
-${legendaryDone} الحصول على 5 شخصيات أسطورية
-📊 ${m.gotLegendary || 0}/5
+${legendaryDone} الحصول على 3 شخصيات أسطورية
+📊 ${m.gotLegendary || 0}/3
 
 ━━━━━━━━━━━━━━
 
