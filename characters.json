@@ -7826,5 +7826,392 @@
   "rarity": "SSS",
   "ability": "إطلاق فينوس",
   "image": "https://files.catbox.moe/xxawrz.jpg"
-}
+},
+  {
+  "name": "Yinlin",
+  "form": "سيدة الخيوط الرعدية",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "التحكم بالبرق والخيوط",
+  "image": "https://files.catbox.moe/juc0l6.jpg"
+},
+
+{
+  "name": "Jinhsi",
+  "form": "حاكمة التنين النوراني",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "طاقة التنين المقدسة",
+  "image": "https://files.catbox.moe/peksw7.jpg"
+},
+
+{
+  "name": "Changli",
+  "form": "سيدة اللهب القرمزي",
+  "anime": "Wuthering Waves",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "لهب العنقاء المتوهج",
+  "image": "https://files.catbox.moe/ulb4rv.jpg"
+},
+
+{
+  "name": "Zhezhi",
+  "form": "رسامة الأرواح",
+  "anime": "Wuthering Waves",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "تحويل الرسوم إلى قوة",
+  "image": "https://files.catbox.moe/uul9m3.jpg"
+},
+
+{
+  "name": "Shorekeeper",
+  "form": "حارسة الشاطئ الأبدي",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "الشفاء والسيطرة الزمنية",
+  "image": "https://files.catbox.moe/knbtn9.jpg"
+},
+
+{
+  "name": "Camellya",
+  "form": "زهرة الأشواك القاتلة",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "نباتات الأشواك المدمرة",
+  "image": "https://files.catbox.moe/cypq09.jpg"
+},
+
+{
+  "name": "Carlotta",
+  "form": "سيدة الجليد الملكي",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "بلورات الصقيع الحادة",
+  "image": "https://files.catbox.moe/1tizc8.jpg"
+},
+
+{
+  "name": "Roccia",
+  "form": "نجمة المسرح القتالي",
+  "anime": "Wuthering Waves",
+  "power": 6750,
+  "rarity": "SSS",
+  "ability": "الدمى القتالية المتحركة",
+  "image": "https://files.catbox.moe/k54kxx.jpg"
+},
+
+{
+  "name": "Phoebe",
+  "form": "نور الفجر الساطع",
+  "anime": "Wuthering Waves",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "إشعاع النور المركز",
+  "image": "https://files.catbox.moe/7slo3u.jpg"
+},
+
+{
+  "name": "Cantarella",
+  "form": "ملكة الأمواج السوداء",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سيطرة كاملة على المد والجزر",
+  "image": "https://files.catbox.moe/rf4qzz.jpg"
+},
+
+{
+  "name": "Zani",
+  "form": "القاضية الحديدية",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "ضربات البرق الساحقة",
+  "image": "https://files.catbox.moe/acwole.jpg"
+},
+
+{
+  "name": "Ciaccona",
+  "form": "عازفة الرياح",
+  "anime": "Wuthering Waves",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "أنغام تعزز القوة",
+  "image": "https://files.catbox.moe/bseoat.jpg"
+},
+
+{
+  "name": "Cartethyia",
+  "form": "حارسة البحار العظمى",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "أمواج الطوفان الهائلة",
+  "image": "https://files.catbox.moe/zrfakd.jpg"
+},
+
+{
+  "name": "Lupa",
+  "form": "الذئبة القرمزية",
+  "anime": "Wuthering Waves",
+  "power": 6850,
+  "rarity": "SSS",
+  "ability": "سرعة ومخالب مدمرة",
+  "image": "https://files.catbox.moe/aj1jkp.jpg"
+},
+
+{
+  "name": "Phrolova",
+  "form": "سيدة الكوابيس",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "إيهام الخصوم بالرؤى المرعبة",
+  "image": "https://files.catbox.moe/wm0xa9.jpg"
+},
+
+{
+  "name": "Hiyuki",
+  "form": "قبضة الجليد الأزرق",
+  "anime": "Wuthering Waves",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "تجميد الأهداف فوراً",
+  "image": "https://files.catbox.moe/67cnj7.jpg"
+},
+
+{
+  "name": "Lucilla",
+  "form": "حارسة النور الفضي",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "إطلاق أشعة الضوء المركزة",
+  "image": "https://files.catbox.moe/g00495.jpg"
+},
+
+{
+  "name": "Mornye",
+  "form": "فارسة الغسق",
+  "anime": "Wuthering Waves",
+  "power": 6750,
+  "rarity": "SSS",
+  "ability": "طاقة الشفق القتالية",
+  "image": "https://files.catbox.moe/znbq2i.jpg"
+},
+
+{
+  "name": "Chisa",
+  "form": "وردة الرياح",
+  "anime": "Wuthering Waves",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "عواصف متتابعة سريعة",
+  "image": "https://files.catbox.moe/c3swa5.jpg"
+},
+
+{
+  "name": "Galbrena",
+  "form": "قائدة الحرس الذهبي",
+  "anime": "Wuthering Waves",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "تعزيز الحلفاء وحمايتهم",
+  "image": "https://files.catbox.moe/cyqkdx.jpg"
+},
+
+{
+  "name": "Iuno",
+  "form": "عين السماء",
+  "anime": "Wuthering Waves",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "هجمات دقيقة بعيدة المدى",
+  "image": "https://files.catbox.moe/wtqu4d.jpg"
+},
+
+{
+  "name": "Augusta",
+  "form": "قائدة الإمبراطورية",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "قيادة قتالية مطلقة",
+  "image": "https://files.catbox.moe/rsng0u.jpg"
+},
+
+{
+  "name": "Denia",
+  "form": "سيدة البلورات",
+  "anime": "Wuthering Waves",
+  "power": 6750,
+  "rarity": "SSS",
+  "ability": "إنشاء بلورات هجومية",
+  "image": "https://files.catbox.moe/ial4uz.jpg"
+},
+
+{
+  "name": "Sigrika",
+  "form": "رمح العاصفة",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "اندفاعات رعدية خاطفة",
+  "image": "https://files.catbox.moe/akjqis.jpg"
+},
+
+{
+  "name": "Lynae",
+  "form": "ظل القمر",
+  "anime": "Wuthering Waves",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "التخفي والهجوم المباغت",
+  "image": "https://files.catbox.moe/gv9w2p.jpg"
+},
+
+{
+  "name": "Hsin",
+  "form": "سيف التنين",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "ضربات تنينية متتابعة",
+  "image": "https://files.catbox.moe/qap6te.jpg"
+},
+
+{
+  "name": "Qingxiao",
+  "form": "حكمة السحب",
+  "anime": "Wuthering Waves",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "التحكم بالرياح والضباب",
+  "image": "https://files.catbox.moe/4thhc8.webp"
+},
+
+{
+  "name": "Xuanling",
+  "form": "نجم السماء الشرقية",
+  "anime": "Wuthering Waves",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "طاقة النجوم المتفجرة",
+  "image": "https://files.catbox.moe/3ip2yf.jpeg"
+},
+
+{
+  "name": "Suisui",
+  "form": "نبع الحياة",
+  "anime": "Wuthering Waves",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "شفاء وتجديد مستمر",
+  "image": "https://files.catbox.moe/aiq66v.jpeg"
+},
+
+{
+  "name": "Souming",
+  "form": "سيد الأرواح",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "استدعاء الأرواح القتالية",
+  "image": "https://files.catbox.moe/c5g66p.jpeg"
+},
+{
+  "name": "Aemeath",
+  "form": "حارس الأفق",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "قوة الأفق اللامتناهي",
+  "image": "https://files.catbox.moe/1ry1l9.jpg"
+},
+  {
+  "name": "Jiyan",
+  "form": "سيد الرياح الخضراء",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "عاصفة التنين السماوي",
+  "image": "https://files.catbox.moe/0z447v.jpg"
+},
+
+{
+  "name": "Calcharo",
+  "form": "ظل الرعد الأسود",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "صواعق الإبادة",
+  "image": "https://files.catbox.moe/qalh50.jpg"
+},
+
+{
+  "name": "Brant",
+  "form": "قائد البحار القرمزي",
+  "anime": "Wuthering Waves",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "لهيب الأمواج المتدفقة",
+  "image": "https://files.catbox.moe/kd3d0x.jpg"
+},
+
+{
+  "name": "Xiangli Yao",
+  "form": "عبقري البرق المطلق",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "المجال الكهرومغناطيسي",
+  "image": "https://files.catbox.moe/pwwa20.jpg"
+},
+
+{
+  "name": "Scar",
+  "form": "مبعوث الفوضى القرمزي",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "كارثة اللهب الملعون",
+  "image": "https://files.catbox.moe/x727jk.jpg"
+},
+
+{
+  "name": "Geshu Lin",
+  "form": "جنرال الرياح الحديدية",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "هيمنة ساحة المعركة",
+  "image": "https://files.catbox.moe/nqgtez.jpg"
+},
+
+{
+  "name": "Qiuyuan",
+  "form": "سيد اللهب السماوي",
+  "anime": "Wuthering Waves",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "الاحتراق القرمزي المطلق",
+  "image": "https://files.catbox.moe/drambs.jpg"
+},
+
+{
+  "name": "Jingran",
+  "form": "نصل القمر الفضي",
+  "anime": "Wuthering Waves",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "رقصة الشفرات المتوهجة",
+  "image": "https://files.catbox.moe/fqrtrq.jpg"
+},
 ]
