@@ -2619,11 +2619,19 @@ if (shouldReconnect) {
 global.eventsStarted = false
 global.quickEventsStarted = false
 
+    if (global.quickEventsInterval) {
+    clearInterval(global.quickEventsInterval)
+    global.quickEventsInterval = null
+}
     // أضف هذا
     if (global.auctionInterval) {
         clearInterval(global.auctionInterval)
         global.auctionInterval = null
     }
+    if (global.bossSpawnInterval) {
+    clearInterval(global.bossSpawnInterval)
+    global.bossSpawnInterval = null
+}
 
     setTimeout(() => {
         startBot()
@@ -2642,29 +2650,33 @@ global.quickEventsStarted = false
 
 let lastBossHour = -1
 
-setInterval(async () => {
+if (!global.bossSpawnInterval) {
 
-    const now = new Date()
+    global.bossSpawnInterval = setInterval(async () => {
 
-    if (
-        now.getMinutes() === 0 &&
-        now.getHours() !== lastBossHour &&
-        !currentBoss
-    ) {
+        const now = new Date()
 
-        lastBossHour = now.getHours()
+        if (
+            now.getMinutes() === 0 &&
+            now.getHours() !== lastBossHour &&
+            !currentBoss
+        ) {
 
-        await spawnBoss(
-            sock,
-            GROUP_ID
-        )
+            lastBossHour = now.getHours()
 
-        console.log(
-            '👑 تم إنشاء زعيم جديد'
-        )
-    }
+            await spawnBoss(
+                sock,
+                GROUP_ID
+            )
 
-}, 60000)
+            console.log(
+                '👑 تم إنشاء زعيم جديد'
+            )
+        }
+
+    }, 60000)
+
+}
 
 
     function getStrongestCharacter(
