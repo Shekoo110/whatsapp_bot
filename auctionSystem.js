@@ -22,6 +22,7 @@ highestBidder: null,
 endTime: null
 
 }
+let auctionTimeout = null
 
 function getAuctionCharacters() {
 
@@ -114,7 +115,11 @@ text
 
 }
 
-setTimeout(
+if (auctionTimeout) {
+    clearTimeout(auctionTimeout)
+}
+
+auctionTimeout = setTimeout(
 () => finishAuction(sock),
 15 * 60 * 1000
 )
@@ -151,7 +156,10 @@ text:
 )
 
 }
-
+if (auctionTimeout) {
+    clearTimeout(auctionTimeout)
+    auctionTimeout = null
+}
 currentAuction.active = false
 return
 }
@@ -212,7 +220,16 @@ winner.userId
 
 }
 
+if (auctionTimeout) {
+    clearTimeout(auctionTimeout)
+    auctionTimeout = null
+}
+
 currentAuction.active = false
+currentAuction.character = null
+currentAuction.highestBid = 100000
+currentAuction.highestBidder = null
+currentAuction.endTime = null
 
 }
 
