@@ -5,19 +5,22 @@ currentAuction
 } = require('./auctionSystem')
 function scheduleAuction(sock) {
 
-setInterval(async () => {
+if (global.auctionInterval) {
+    return
+}
+
+global.auctionInterval = setInterval(async () => {
 
 const now = new Date()
 
-const minutes =
-now.getMinutes()
+const minutes = now.getMinutes()
 
-const hours =
-now.getHours()
+const hours = now.getHours()
 
 if (
 minutes === 0 &&
-hours % 2 === 0
+hours % 2 === 0 &&
+!currentAuction.active
 ) {
 
 try {
@@ -2612,6 +2615,12 @@ if (shouldReconnect) {
 
     global.auctionStarted = false
     global.eventsStarted = false
+
+    // أضف هذا
+    if (global.auctionInterval) {
+        clearInterval(global.auctionInterval)
+        global.auctionInterval = null
+    }
 
     setTimeout(() => {
         startBot()
