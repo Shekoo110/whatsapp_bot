@@ -2616,7 +2616,8 @@ if (shouldReconnect) {
     )
 
     global.auctionStarted = false
-    global.eventsStarted = false
+global.eventsStarted = false
+global.quickEventsStarted = false
 
     // أضف هذا
     if (global.auctionInterval) {
