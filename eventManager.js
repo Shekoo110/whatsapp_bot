@@ -256,6 +256,24 @@ for (const jid in groupEvents) {
 return expired
 
 }
+function resetAllEvents() {
+
+for (const jid in groupEvents) {
+
+    const data = groupEvents[jid]
+
+    if (data.timeout) {
+        clearTimeout(data.timeout)
+    }
+
+    data.eventRunning = false
+    data.currentEvent = null
+    data.participants = []
+    data.timeout = null
+    data.startedAt = 0
+}
+
+}
 
 module.exports = {
 
@@ -271,6 +289,8 @@ finishEvent,
 
 getGroupData,
 
-getExpiredEvents
+getExpiredEvents,
+
+resetAllEvents
 
 }
