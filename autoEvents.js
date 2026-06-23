@@ -61,6 +61,10 @@ fs.writeFileSync(
 
 function startAutoEvents(sock) {
 
+console.log(
+'🎯 Auto Events Scheduler Started'
+)
+
 if (autoEventsStarted) {
 
     console.log(
