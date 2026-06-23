@@ -1,4 +1,43 @@
 const fs = require('fs')
+const {
+startAuction,
+currentAuction
+} = require('./auctionSystem')
+function scheduleAuction(sock) {
+
+setInterval(async () => {
+
+const now = new Date()
+
+const minutes =
+now.getMinutes()
+
+const hours =
+now.getHours()
+
+if (
+minutes === 0 &&
+hours % 2 === 0
+) {
+
+try {
+
+await startAuction(sock)
+
+} catch (err) {
+
+console.log(
+'Auction Error:',
+err
+)
+
+}
+
+}
+
+}, 60000)
+
+}
 
 function getSaudiDate() {
 
@@ -2488,16 +2527,28 @@ console.log(
 
     console.log('البوت اشتغل')
 
-    if (!global.eventsStarted) {
+if (!global.auctionStarted) {
 
-        global.eventsStarted = true
+    global.auctionStarted = true
 
-        startAutoEvents(sock)
+    scheduleAuction(sock)
 
-        console.log(
-            '✅ Auto Events Started'
-        )
-    }
+    console.log(
+        '✅ Auction System Started'
+    )
+
+}
+
+if (!global.eventsStarted) {
+
+    global.eventsStarted = true
+
+    startAutoEvents(sock)
+
+    console.log(
+        '✅ Auto Events Started'
+    )
+}
 
     if (currentBoss) {
 
@@ -3003,122 +3054,130 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
-if (text === '.ارجاع_سايتاما') {
-    const targetId = '235381941362871@lid'
+if (text.startsWith('.مزايدة ')) {
 
-const player = await Player.findOne({
-    userId: targetId
+if (!currentAuction.active) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+'❌ لا يوجد مزاد نشط حالياً'
+}
+)
+
+}
+
+const amount =
+parseInt(
+text.split(' ')[1]
+)
+
+if (
+isNaN(amount)
+)
+return
+
+const player =
+await Player.findOne({
+userId
 })
 
 if (!player) {
-    return safeSend(
-        msg.key.remoteJid,
-        {
-            text: '❌ اللاعب غير موجود'
-        }
-    )
-}
-
-const fixedAbilities = [
-
-    {
-        name: '👹 قاتل الوحوش',
-        type: 'bossDamage',
-        value: 20,
-        description: '+20% ضرر ضد الزعماء',
-        chance: 15
-    },
-
-    {
-        name: '🪞 مرآة الانتقام',
-        type: 'reflect',
-        value: 10,
-        description: '+10% عكس ضرر',
-        chance: 10
-    },
-
-    {
-        name: '🛡️ درع الطاقة',
-        type: 'shield',
-        value: 20,
-        description: '+20% درع',
-        chance: 10
-    },
-
-    {
-        name: '☄️ مدمر الأكوان',
-        type: 'bossDamage',
-        value: 30,
-        description: '+30% ضرر ضد الزعماء',
-        chance: 4
-    }
-
-]
-
-const remainingAbilities =
-    urAbilities.filter(
-        ability =>
-        !fixedAbilities.some(
-            fixed =>
-            fixed.name ===
-            ability.name
-        )
-    )
-
-const shuffled =
-    remainingAbilities.sort(
-        () =>
-        Math.random() - 0.5
-    )
-
-const randomAbilities =
-    shuffled.slice(0, 2)
-
-const saitama = {
-
-    name: 'Saitama',
-    form: 'اللكمة الجادة',
-    anime: 'One Punch Man',
-    power: 25000,
-    rarity: 'EX',
-    ability: 'القوة اللامحدودة',
-    image: 'https://files.catbox.moe/gn6vnu.jpg',
-
-    evolutionLevel: 6,
-    evolutionType: 'fixed',
-
-    urAbilities: [
-        ...fixedAbilities,
-        ...randomAbilities
-    ]
-
-}
-
-player.characters.push(
-    saitama
-)
-
-player.markModified(
-    'characters'
-)
-
-await player.save()
 
 return safeSend(
-    msg.key.remoteJid,
-    {
-        text:
-
-`✅ تم إضافة Saitama EX
-
-👑 الرتبة: EX
-⚔️ القوة: 25000
-
-🔥 عدد القدرات:
-${saitama.urAbilities.length}/6`
-    }
-)
+msg.key.remoteJid,
+{
+text:
+'❌ لا يوجد حساب'
 }
+)
+
+}
+
+if (
+amount > player.money
+) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+
+`❌ لا تملك هذا المبلغ
+
+💰 رصيدك:
+${player.money.toLocaleString()}`
+}
+)
+
+}
+
+const minBid =
+currentAuction.highestBid +
+150000
+
+if (
+amount < minBid
+) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+
+`❌ أقل مزايدة هي
+
+💰 ${minBid.toLocaleString()}`
+}
+)
+
+}
+
+currentAuction.highestBid =
+amount
+
+currentAuction.highestBidder =
+userId
+
+const mention =
+'@' +
+userId.split('@')[0]
+
+for (
+const group of
+currentAuction.auctionGroups ||
+[
+'120363020823525909@g.us',
+'120363409897316453@g.us'
+]
+) {
+
+await sock.sendMessage(
+group,
+{
+text:
+
+`🏆 أعلى مزايد حالياً
+
+${mention}
+
+💰 ${amount.toLocaleString()}
+
+🎁 ${currentAuction.character.name}`,
+mentions: [
+userId
+]
+}
+)
+
+}
+
+return
+
+}
+
+    
 if (text === '.مهامي') {
 
 const player = await Player.findOne({ userId })
