@@ -55,23 +55,30 @@ if (currentAuction.active) return
 const character =
 getRandomAuctionCharacter()
 
-currentAuction = {
+if (!character) {
 
-active: true,
+console.log(
+'❌ لا توجد شخصيات مناسبة للمزاد'
+)
 
-character,
-
-highestBid: 100000,
-
-highestBidder: null,
-
-endTime:
-Date.now() +
-(15 * 60 * 1000),
-
-auctionGroups
+return
 
 }
+
+currentAuction.active = true
+
+currentAuction.character = character
+
+currentAuction.highestBid = 100000
+
+currentAuction.highestBidder = null
+
+currentAuction.endTime =
+Date.now() +
+(15 * 60 * 1000)
+
+currentAuction.auctionGroups =
+auctionGroups
 
 const text =
 
