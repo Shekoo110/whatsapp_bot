@@ -50,6 +50,8 @@ Math.random() * pool.length
 }
 async function startAuction(sock) {
 
+console.log('🏛️ START AUCTION CALLED')
+
 if (currentAuction.active) return
 
 const character =
@@ -120,6 +122,8 @@ setTimeout(
 }
 
 async function finishAuction(sock) {
+
+console.log('🏁 FINISH AUCTION CALLED')
 
 if (!currentAuction.active)
 return
