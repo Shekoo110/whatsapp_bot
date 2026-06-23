@@ -303,5 +303,11 @@ setInterval(
 
 }
 
-module.exports =
-startAutoEvents
+function resetAutoEvents() {
+    autoEventsStarted = false
+}
+
+module.exports = {
+    startAutoEvents,
+    resetAutoEvents
+}
