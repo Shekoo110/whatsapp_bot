@@ -67,7 +67,9 @@ highestBidder: null,
 
 endTime:
 Date.now() +
-(15 * 60 * 1000)
+(15 * 60 * 1000),
+
+auctionGroups
 
 }
 
