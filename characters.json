@@ -8811,5 +8811,202 @@
   "rarity": "SSS",
   "ability": "التخطيط والإرباك المطلق",
   "image": "https://files.catbox.moe/hzywir.jpg"
+},
+  {
+  "name": "Han Mo",
+  "form": "سيدة البحر الأزرق",
+  "anime": "Reverend Insanity",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "أمواج الروح العميقة",
+  "image": "https://files.catbox.moe/ovuoo0.jpg"
+},
+
+{
+  "name": "Xue Er",
+  "form": "جليد الأرواح",
+  "anime": "Reverend Insanity",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "عاصفة الصقيع المقدس",
+  "image": "https://files.catbox.moe/qesh2q.webp"
+},
+
+{
+  "name": "Ren Zu",
+  "form": "سلف البشر",
+  "anime": "Reverend Insanity",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "إرادة البشرية الخالدة",
+  "image": "https://files.catbox.moe/2hboi3.jpg"
+},
+
+{
+  "name": "Red Lotus",
+  "form": "لوتس الزمن",
+  "anime": "Reverend Insanity",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "دورة الزمن القرمزية",
+  "image": "https://files.catbox.moe/ip9fkq.jpg"
+},
+
+{
+  "name": "Fang Yuan",
+  "form": "سيد المخططات",
+  "anime": "Reverend Insanity",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "إرادة لا تنكسر",
+  "image": "https://files.catbox.moe/fe454x.jpg"
+},
+
+{
+  "name": "Fors",
+  "form": "بوابة النجوم",
+  "anime": "Lord of the Mysteries",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "عبور الأبعاد",
+  "image": "https://files.catbox.moe/k0g8ct.jpg"
+},
+
+{
+  "name": "Justice",
+  "form": "ملكة الأحكام",
+  "anime": "Lord of the Mysteries",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "هيمنة العقل",
+  "image": "https://files.catbox.moe/azyjrc.jpg"
+},
+
+{
+  "name": "Spiral",
+  "form": "عدو المجرات",
+  "anime": "Gurren Lagann",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "قمع التطور الكوني",
+  "image": "https://files.catbox.moe/5vfguq.jpg"
+},
+
+{
+  "name": "Simon",
+  "form": "الحفار الأعظم",
+  "anime": "Gurren Lagann",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "طاقة اللولب اللامتناهية",
+  "image": "https://files.catbox.moe/as36ro.jpg"
+},
+
+{
+  "name": "Kamina",
+  "form": "روح الثورة",
+  "anime": "Gurren Lagann",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "إرادة لا تتراجع",
+  "image": "https://files.catbox.moe/1a4iu1.jpg"
+},
+
+{
+  "name": "Sparrow",
+  "form": "مهرج الضباب",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "خدع الضباب الرمادي",
+  "image": "https://files.catbox.moe/f5ugek.jpg"
+},
+
+{
+  "name": "Sherlock Moriarity",
+  "form": "العقل المدبر",
+  "anime": "Moriarty The Patriot",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "شبكة المؤامرات",
+  "image": "https://files.catbox.moe/o2yrzj.jpg"
+},
+
+{
+  "name": "Azik",
+  "form": "حارس الموت",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سيادة الأرواح",
+  "image": "https://files.catbox.moe/h3hvp5.jpg"
+},
+
+{
+  "name": "Amanises",
+  "form": "سيدة الليل",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "ظلال القمر الأبدي",
+  "image": "https://files.catbox.moe/35bwmz.jpg"
+},
+
+{
+  "name": "Amon",
+  "form": "لص المصير",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سرقة القدرات",
+  "image": "https://files.catbox.moe/668mbo.jpg"
+},
+
+{
+  "name": "Adam",
+  "form": "ناسج الأحلام",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "تشكيل الواقع الذهني",
+  "image": "https://files.catbox.moe/evts4p.jpeg"
+},
+  {
+  "name": "Roselle",
+  "form": "الإمبراطور الأسود",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "هندسة القوانين الغامضة",
+  "image": "https://files.catbox.moe/4zq39x.jpg"
+},
+
+{
+  "name": "Mr Door",
+  "form": "سيد الأبواب",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "عبور العوالم اللامحدود",
+  "image": "https://files.catbox.moe/auu30z.jpg"
+},
+
+{
+  "name": "Celestial Worthy",
+  "form": "سيد الضباب",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "السيطرة على المصائر",
+  "image": "https://files.catbox.moe/l820n9.jpg"
+},
+  {
+  "name": "Klein",
+  "form": "سيد الضباب الرمادي",
+  "anime": "Lord of the Mysteries",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "التحكم بالمصير والغموض",
+  "image": "https://files.catbox.moe/r8fsk8.jpg"
 }
 ]
