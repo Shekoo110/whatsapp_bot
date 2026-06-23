@@ -434,44 +434,50 @@ null
 function startQuickEvents(
 sock
 ) {
+if (global.quickEventsStarted) {
+    return quickEvents
+}
 
-setInterval(
-async () => {
+global.quickEventsStarted = true
+let lastSniperMinute = null
+let lastLuckyMinute = null
 
-const now =
-new Date()
+setInterval(async () => {
 
-const minute =
-now.getMinutes()
+const now = new Date()
 
-const second =
-now.getSeconds()
+const minute = now.getMinutes()
+const hour = now.getHours()
+
+const sniperKey =
+`${hour}:${minute}`
 
 if (
 minute === 25 &&
-second === 0 &&
+lastSniperMinute !== sniperKey &&
 !quickEvents.sniper
 ) {
 
-await startSniper(
-sock
-)
+lastSniperMinute = sniperKey
+
+await startSniper(sock)
 }
+
+const luckyKey =
+`${hour}:${minute}`
 
 if (
 minute === 30 &&
-second === 0 &&
+lastLuckyMinute !== luckyKey &&
 !quickEvents.lucky
 ) {
 
-await startLucky(
-sock
-)
+lastLuckyMinute = luckyKey
+
+await startLucky(sock)
 }
 
-},
-1000
-)
+}, 5000)
 
 return quickEvents
 }
