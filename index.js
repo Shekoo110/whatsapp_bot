@@ -1,5 +1,8 @@
 const fs = require('fs')
 const {
+    resetAutoEvents
+} = require('./startAutoEvents')
+const {
 startAuction,
 currentAuction
 } = require('./auctionSystem')
