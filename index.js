@@ -2610,6 +2610,9 @@ if (shouldReconnect) {
         '🔄 RECONNECTING IN 5s'
     )
 
+    global.auctionStarted = false
+    global.eventsStarted = false
+
     setTimeout(() => {
         startBot()
     }, 5000)
