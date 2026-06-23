@@ -160,7 +160,13 @@ if (auctionTimeout) {
     clearTimeout(auctionTimeout)
     auctionTimeout = null
 }
+
 currentAuction.active = false
+currentAuction.character = null
+currentAuction.highestBid = 100000
+currentAuction.highestBidder = null
+currentAuction.endTime = null
+
 return
 }
 
