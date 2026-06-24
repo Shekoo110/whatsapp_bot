@@ -116,7 +116,10 @@ async function launchEvent() {
                     groupId,
                     sharedEvent
                 )
-
+console.log(
+    '✅ Event Sent:',
+    groupId
+)
             } catch (err) {
 
                 console.log(
@@ -268,18 +271,18 @@ expiredCheckInterval = setInterval(
                     of winners
                 ) {
 
-                    const reward =
-                        await giveReward(
-                            id
-                        )
+                    let reward = 'لا توجد جائزة'
 
-                    result +=
-
-`👑 @${id.split('@')[0]}
-🎁 ${reward}
-
-`
+try {
+    reward = await giveReward(id)
+} catch (err) {
+    console.log(
+        'Reward Error:',
+        id,
+        err
+    )
 }
+
 
                 if (
                     !sock?.user?.id
@@ -331,9 +334,9 @@ function resetAutoEvents() {
         expiredCheckInterval = null
     }
 
+    if (typeof eventManager.resetAllEvents === 'function') {
     eventManager.resetAllEvents()
 }
-
 module.exports = {
     startAutoEvents,
     resetAutoEvents
