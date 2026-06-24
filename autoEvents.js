@@ -80,7 +80,17 @@ autoEventsStarted = true
 
 async function launchEvent() {
 
-    console.log('🚀 Launch Event Started')
+    console.log('🚀 AUTO EVENT TRIGGERED')
+
+    console.log(
+        'SOCKET READY:',
+        !!sock?.user
+    )
+
+    console.log(
+        'WS STATE:',
+        sock?.ws?.readyState
+    )
 
     if (
         !sock ||
@@ -95,12 +105,21 @@ async function launchEvent() {
     try {
 
         const sharedEvent =
-            eventManager.getRandomEvent()
+    eventManager.getRandomEvent()
 
-        console.log(
-            'Event:',
-            sharedEvent
-        )
+console.log(
+    'EVENT SELECTED:',
+    sharedEvent
+)
+
+if (!sharedEvent) {
+
+    console.log(
+        '❌ NO EVENT FOUND'
+    )
+
+    return
+}
 
         for (const groupId of eventGroups) {
 
