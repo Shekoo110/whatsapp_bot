@@ -93,15 +93,12 @@ async function launchEvent() {
     )
 
     if (
-        !sock ||
-        !sock.user ||
-        !sock.user.id ||
-        sock.ws?.readyState !== 1
-    ) {
-        console.log('⚠️ Connection Not Ready')
-        return
-    }
-
+    !sock ||
+    !sock.user
+) {
+    console.log('⚠️ Connection Not Ready')
+    return
+}
     try {
 
         const sharedEvent =
