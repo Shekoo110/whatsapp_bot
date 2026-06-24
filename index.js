@@ -2115,7 +2115,7 @@ const sock = makeWASocket({
 
     syncFullHistory: false
 })
-    startQuickEvents(sock)
+    
 
 if (!state.creds.registered) {
 
@@ -2552,6 +2552,15 @@ if (!global.eventsStarted) {
 
     console.log(
         '✅ Auto Events Started'
+    )
+}
+
+if (!global.quickEventsStarted) {
+
+    startQuickEvents(sock)
+
+    console.log(
+        '✅ Quick Events Started'
     )
 }
 
