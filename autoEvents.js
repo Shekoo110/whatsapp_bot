@@ -111,14 +111,17 @@ async function launchEvent() {
                     groupId
                 )
 
-                await eventManager.startEvent(
-                    sock,
-                    groupId,
-                    sharedEvent
-                )
+                const started =
+await eventManager.startEvent(
+    sock,
+    groupId,
+    sharedEvent
+)
+
 console.log(
-    '✅ Event Sent:',
-    groupId
+    'EVENT RESULT:',
+    groupId,
+    started
 )
             } catch (err) {
 
