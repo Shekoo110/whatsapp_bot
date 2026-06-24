@@ -2629,8 +2629,15 @@ if (shouldReconnect) {
 
     global.auctionStarted = false
 global.quickEventsStarted = false
-
-resetAutoEvents()
+global.eventsStarted = false
+try {
+    resetAutoEvents()
+} catch (err) {
+    console.log(
+        'resetAutoEvents Error:',
+        err
+    )
+}
 
     if (global.quickEventsInterval) {
     clearInterval(global.quickEventsInterval)
