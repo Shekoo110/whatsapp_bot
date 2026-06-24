@@ -2616,8 +2616,9 @@ if (shouldReconnect) {
     )
 
     global.auctionStarted = false
-global.eventsStarted = false
 global.quickEventsStarted = false
+
+resetAutoEvents()
 
     if (global.quickEventsInterval) {
     clearInterval(global.quickEventsInterval)
