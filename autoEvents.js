@@ -16,7 +16,9 @@ const EVENT_FILE =
 './eventTimer.json'
 
 let autoEventsStarted = false
-
+let eventCycleInterval = null
+let expiredCheckInterval = null
+let eventStartTimeout = null
 function loadNextEventTime() {
 
 if (
@@ -173,7 +175,7 @@ console.log(
     } Seconds`
 )
 
-setTimeout(
+eventStartTimeout = setTimeout(
     async function startCycle() {
 
         await launchEvent()
@@ -187,7 +189,7 @@ setTimeout(
             )
         )
 
-        setInterval(
+        eventCycleInterval = setInterval(
             async () => {
 
                 await launchEvent()
@@ -211,7 +213,7 @@ setTimeout(
     remaining
 )
 
-setInterval(
+expiredCheckInterval = setInterval(
     async () => {
 
         try {
@@ -311,7 +313,25 @@ setInterval(
 }
 
 function resetAutoEvents() {
+
     autoEventsStarted = false
+
+    if (eventStartTimeout) {
+        clearTimeout(eventStartTimeout)
+        eventStartTimeout = null
+    }
+
+    if (eventCycleInterval) {
+        clearInterval(eventCycleInterval)
+        eventCycleInterval = null
+    }
+
+    if (expiredCheckInterval) {
+        clearInterval(expiredCheckInterval)
+        expiredCheckInterval = null
+    }
+
+    eventManager.resetAllEvents()
 }
 
 module.exports = {
