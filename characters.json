@@ -4911,7 +4911,7 @@
   "name": "Natsu",
   "form": "ملك لهب التنين",
   "anime": "Fairy Tail",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "نار التنين الأعظم",
   "image": "https://files.catbox.moe/44kwsa.jpg"
@@ -4921,7 +4921,7 @@
   "name": "Gray",
   "form": "إمبراطور الجليد الشيطاني",
   "anime": "Fairy Tail",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "تجميد الفناء",
   "image": "https://files.catbox.moe/51u2co.jpg"
@@ -4931,7 +4931,7 @@
   "name": "Lucy",
   "form": "ملكة الأرواح السماوية",
   "anime": "Fairy Tail",
-  "power": 6100,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "استدعاء الملوك السماويين",
   "image": "https://files.catbox.moe/o2w35q.jpg"
@@ -4961,7 +4961,7 @@
   "name": "Makarov",
   "form": "سيد الجنيات الأعظم",
   "anime": "Fairy Tail",
-  "power": 6200,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "قانون الجنيات",
   "image": "https://files.catbox.moe/k59q00.jpg"
@@ -4981,7 +4981,7 @@
   "name": "Laxus",
   "form": "إمبراطور برق التنين",
   "anime": "Fairy Tail",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "برق الإبادة",
   "image": "https://files.catbox.moe/8ouymp.jpg"
@@ -5001,7 +5001,7 @@
   "name": "Bakugo",
   "form": "سيد الانفجارات",
   "anime": "My Hero Academia",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "الانفجار النووي",
   "image": "https://files.catbox.moe/px7teo.jpg"
@@ -5011,7 +5011,7 @@
   "name": "Shoto",
   "form": "سيد الجليد والنار",
   "anime": "My Hero Academia",
-  "power": 6400,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "نصف حريق نصف جليد",
   "image": "https://files.catbox.moe/ymvnpq.jpg"
@@ -5081,7 +5081,7 @@
   "name": "Stain",
   "form": "صياد الأبطال",
   "anime": "My Hero Academia",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "شلل الدم",
   "image": "https://files.catbox.moe/lwut8o.jpg"
@@ -5111,7 +5111,7 @@
   "name": "Mikasa",
   "form": "سيف الأكيرمان",
   "anime": "Attack on Titan",
-  "power": 5400,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "الغريزة القتالية المطلقة",
   "image": "https://files.catbox.moe/jzvtcd.jpg"
@@ -5171,7 +5171,7 @@
   "name": "Yosano",
   "form": "ملاك الشفاء المرعب",
   "anime": "Bungou Stray Dogs",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "لن تموت",
   "image": "https://files.catbox.moe/7yhrnj.jpg"
@@ -5311,7 +5311,7 @@
   "name": "Jugram",
   "form": "التوازن المطلق",
   "anime": "Bleach",
-  "power": 6200,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "قلب الحظ",
   "image": "https://files.catbox.moe/o7jxlu.jpg"
@@ -5321,7 +5321,7 @@
   "name": "Uryu",
   "form": "أنتيثيسيس",
   "anime": "Bleach",
-  "power": 6100,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "عكس المصير",
   "image": "https://files.catbox.moe/vvs0zr.jpg"
@@ -5331,7 +5331,7 @@
   "name": "Lille Barro",
   "form": "هيئة الملاك",
   "anime": "Bleach",
-  "power": 6300,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "الاختراق المطلق",
   "image": "https://files.catbox.moe/yrvnt1.jpg"
@@ -5341,7 +5341,7 @@
   "name": "Gerard",
   "form": "معجزة العمالقة",
   "anime": "Bleach",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "المعجزة",
   "image": "https://files.catbox.moe/sebdw7.jpg"
@@ -5533,7 +5533,7 @@
   "name": "Sasuke",
   "form": "رينيغان كامل",
   "anime": "Naruto",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "تبديل المواقع",
   "image": "https://files.catbox.moe/0ky9p9.jpg"
@@ -5703,7 +5703,7 @@
   "name": "Yuta",
   "form": "النسخة الكاملة",
   "anime": "Jujutsu Kaisen",
-  "power": 6300,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "ريكا",
   "image": "https://files.catbox.moe/e374pe.jpg"
@@ -5723,7 +5723,7 @@
   "name": "Toji",
   "form": "قاتل السحرة",
   "anime": "Jujutsu Kaisen",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "الجسد السماوي",
   "image": "https://files.catbox.moe/oalg0m.jpg"
@@ -5883,7 +5883,7 @@
   "name": "Dante",
   "form": "القوة الكاملة",
   "anime": "Black Clover",
-  "power": 6100,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "الجاذبية",
   "image": "https://files.catbox.moe/314exb.jpg"
@@ -5893,7 +5893,7 @@
   "name": "Zenon",
   "form": "قلب الشيطان",
   "anime": "Black Clover",
-  "power": 6200,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "العظام الشيطانية",
   "image": "https://files.catbox.moe/gkdfoe.jpg"
@@ -5913,7 +5913,7 @@
   "name": "Licht",
   "form": "الزعيم الأسطوري",
   "anime": "Black Clover",
-  "power": 6200,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "سيوف الضوء",
   "image": "https://files.catbox.moe/kkd2pl.jpg"
@@ -5973,7 +5973,7 @@
   "name": "Byakuya",
   "form": "الألف زهرة",
   "anime": "Bleach",
-  "power": 6000,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "سينبونزاكورا",
   "image": "https://files.catbox.moe/sctkl6.jpeg"
@@ -5983,7 +5983,7 @@
   "name": "Rukia",
   "form": "الصفر المطلق",
   "anime": "Bleach",
-  "power": 5800,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "التجمد الأبدي",
   "image": "https://files.catbox.moe/9kj62p.jpg"
@@ -5993,7 +5993,7 @@
   "name": "Hitsugaya",
   "form": "الهيئة الناضجة",
   "anime": "Bleach",
-  "power": 6000,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "تنين الجليد",
   "image": "https://files.catbox.moe/8idkv4.jpg"
@@ -6013,7 +6013,7 @@
   "name": "Barragan",
   "form": "ملك الهيوكو موندو",
   "anime": "Bleach",
-  "power": 6000,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "الشيخوخة المطلقة",
   "image": "https://files.catbox.moe/el5inw.jpg"
@@ -6083,7 +6083,7 @@
   "name": "Ryuma",
   "form": " السيف",
   "anime": "One Piece",
-  "power": 6400,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "قتل التنين",
   "image": "https://files.catbox.moe/dglygt.jpg"
@@ -6203,7 +6203,7 @@
   "name": "Hisoka",
   "form": "بعد الإحياء",
   "anime": "Hunter x Hunter",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "العلكة السحرية",
   "image": "https://files.catbox.moe/zkm3rv.jpg"
@@ -6233,7 +6233,7 @@
   "name": "Noelle",
   "form": "فالكيري التنين",
   "anime": "Black Clover",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "تنين البحر",
   "image": "https://files.catbox.moe/nzph0s.jpg"
@@ -6573,7 +6573,7 @@
   "name": "Marco",
   "form": "العنقاء الأزرق",
   "anime": "One Piece",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "لهب التجدد",
   "image": "https://files.catbox.moe/t24vlr.jpg"
@@ -6743,7 +6743,7 @@
   "name": "Killer Bee",
   "form": "جينشوريكي الثمانية",
   "anime": "Naruto",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "الثور الثماني",
   "image": "https://files.catbox.moe/vfybe1.jpg"
@@ -6763,7 +6763,7 @@
   "name": "Tsunade",
   "form": "الأميرة الطبية",
   "anime": "Naruto",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "التجدد الكامل",
   "image": "https://files.catbox.moe/bdtrio.jpg"
@@ -6783,7 +6783,7 @@
   "name": "Orochimaru",
   "form": "الباحث المحرم",
   "anime": "Naruto",
-  "power": 6400,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "الخلود",
   "image": "https://files.catbox.moe/4gzjt1.jpg"
@@ -6843,7 +6843,7 @@
   "name": "Rengoku",
   "form": "لهيب العدالة",
   "anime": "Demon Slayer",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "تنفس الهب",
   "image": "https://files.catbox.moe/4vvwsv.jpg"
@@ -6963,7 +6963,7 @@
   "name": "Choso",
   "form": "أخ الدم",
   "anime": "Jujutsu Kaisen",
-  "power": 6500,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "التحكم بالدم",
   "image": "https://files.catbox.moe/75qvqu.jpg"
@@ -7043,7 +7043,7 @@
   "name": "Benimaru",
   "form": "القائد الشيطاني",
   "anime": "Tensura",
-  "power": 4900,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "لهب الجحيم",
   "image": "https://files.catbox.moe/8gghrz.jpg"
@@ -7093,7 +7093,7 @@
   "name": "Killua",
   "form": "وريث الزولديك الأعظم",
   "anime": "Hunter x Hunter",
-  "power": 6200,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "هيمنة البرق الخاطف",
   "image": "https://files.catbox.moe/3mzoab.jpg"
@@ -7516,7 +7516,7 @@
     "name": "Nami",
     "form": "ملكة الطقس",
     "anime": "One Piece",
-    "power": 6000,
+    "power": 6600,
     "rarity": "SSS",
     "ability": "التحكم بالطقس والصواعق",
     "image": "https://files.catbox.moe/sshfo1.jpg"
@@ -7525,7 +7525,7 @@
     "name": "Nico Robin",
     "form": "الطفلة الشيطانية",
     "anime": "One Piece",
-    "power": 6000,
+    "power": 6600,
     "rarity": "SSS",
     "ability": "استنساخ الأطراف والقبضة العملاقة",
     "image": "https://files.catbox.moe/w8gbmb.jpg"
@@ -7597,7 +7597,7 @@
     "name": "L",
     "form": "أعظم محقق في العالم",
     "anime": "Death Note",
-    "power": 6500,
+    "power": 6600,
     "rarity": "SS",
     "ability": "الاستنتاج المطلق",
     "image": "https://files.catbox.moe/kbco8a.jpg"
@@ -7681,7 +7681,7 @@
     "power": 6700,
     "rarity": "SSS",
     "ability": "فاكهة الرمال",
-    "image": "https://files.catbox.moe/87v2om.jpg"
+    "image": "https://files.catbox.moe/nw7myq.jpg"
   },
   {
     "name": "Yoruichi Shihouin",
@@ -7705,7 +7705,7 @@
     "name": "Rangiku Matsumoto",
     "form": "نائبة الفرقة العاشرة",
     "anime": "Bleach",
-    "power": 6500,
+    "power": 6600,
     "rarity": "SSS",
     "ability": "رماد الهاينيكو",
     "image": "https://files.catbox.moe/vk1dof.jpg"
@@ -7714,7 +7714,7 @@
     "name": "Riruka Dokugamine",
     "form": "سيدة بيت الدمى",
     "anime": "Bleach",
-    "power": 6000,
+    "power": 6600,
     "rarity": "SSS",
     "ability": "بيت الدمى المحبوبة",
     "image": "https://files.catbox.moe/94uh0b.jpg"
@@ -7741,7 +7741,7 @@
     "name": "Shakuyaku",
     "form": "الإمبراطورة السابقة",
     "anime": "One Piece",
-    "power": 6100,
+    "power": 6600,
     "rarity": "SSS",
     "ability": "بصيرة القراصنة الأسطورية",
     "image": "https://files.catbox.moe/m78yjy.jpg"
