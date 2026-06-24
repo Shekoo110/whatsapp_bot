@@ -44,8 +44,15 @@ sharedEvent = null
 const data =
     getGroupData(jid)
 
-if (data.eventRunning)
+if (data.eventRunning) {
+
+    console.log(
+        '⚠️ EVENT ALREADY RUNNING:',
+        jid
+    )
+
     return false
+}
 
 if (data.timeout) {
 
@@ -73,8 +80,13 @@ jid
 )
 
 console.log(
-'EVENT DATA:',
-data.currentEvent
+    'EVENT DATA:',
+    data.currentEvent
+)
+
+console.log(
+    'COMMAND:',
+    data.currentEvent.command
 )
 
 try {
