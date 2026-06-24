@@ -78,16 +78,15 @@ autoEventsStarted = true
 
 async function launchEvent() {
 
-    console.log(
-        '🚀 Launch Event Started'
-    )
+    console.log('🚀 Launch Event Started')
 
-    if (!sock?.user?.id) {
-
-        console.log(
-            '⚠️ WhatsApp not ready'
-        )
-
+    if (
+        !sock ||
+        !sock.user ||
+        !sock.user.id ||
+        sock.ws?.readyState !== 1
+    ) {
+        console.log('⚠️ Connection Not Ready')
         return
     }
 
@@ -96,26 +95,34 @@ async function launchEvent() {
         const sharedEvent =
             eventManager.getRandomEvent()
 
-        for (
-            const groupId
-            of eventGroups
-        ) {
+        console.log(
+            'Event:',
+            sharedEvent
+        )
 
-            console.log(
-                'Sending Event To:',
-                groupId
-            )
+        for (const groupId of eventGroups) {
 
-            console.log(
-                'Event:',
-                sharedEvent
-            )
+            try {
 
-            await eventManager.startEvent(
-                sock,
-                groupId,
-                sharedEvent
-            )
+                console.log(
+                    'Sending Event To:',
+                    groupId
+                )
+
+                await eventManager.startEvent(
+                    sock,
+                    groupId,
+                    sharedEvent
+                )
+
+            } catch (err) {
+
+                console.log(
+                    'EVENT GROUP ERROR:',
+                    groupId,
+                    err.message
+                )
+            }
         }
 
     } catch (err) {
