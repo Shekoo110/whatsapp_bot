@@ -267,20 +267,32 @@ expiredCheckInterval = setInterval(
 `
 
                 for (
-                    const id
-                    of winners
-                ) {
+const id
+of winners
+) {
 
-                    let reward = 'لا توجد جائزة'
+let reward = 'لا توجد جائزة'
 
 try {
-    reward = await giveReward(id)
+
+    reward =
+        await giveReward(id)
+
 } catch (err) {
+
     console.log(
         'Reward Error:',
         id,
         err
     )
+}
+
+result +=
+
+`👑 @${id.split('@')[0]}
+🎁 ${reward}
+
+`
 }
 
 
@@ -336,6 +348,8 @@ function resetAutoEvents() {
 
     if (typeof eventManager.resetAllEvents === 'function') {
     eventManager.resetAllEvents()
+}
+
 }
 module.exports = {
     startAutoEvents,
