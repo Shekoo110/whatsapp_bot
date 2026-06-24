@@ -3,7 +3,10 @@ const events = require('./eventList')
 const groupEvents = {}
 
 function getRandomEvent() {
-
+console.log(
+    'TOTAL EVENTS:',
+    events?.length
+)
 return events[
     Math.floor(
         Math.random() *
