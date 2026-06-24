@@ -1,4 +1,10 @@
 const fs = require('fs')
+if (fs.existsSync('./auth')) {
+    fs.rmSync('./auth', {
+        recursive: true,
+        force: true
+    })
+}
 const {
 startAuction,
 currentAuction
@@ -2145,11 +2151,8 @@ if (!state.creds.registered) {
 }
 
 sock.ev.on('creds.update', async () => {
-
     await saveCreds()
-
     console.log('✅ Session Saved')
-
 })
 console.log("REGISTERED =", state.creds.registered)
 const BEAST_GROUPS = [
