@@ -9010,14 +9010,14 @@
   "image": "https://files.catbox.moe/r8fsk8.jpg"
 },
   {
-  "name": "ميديا",
+  "name": "Medea",
   "form": "وريثة آل سولون",
   "anime": "Your Throne",
   "power": 6800,
   "rarity": "SSS",
   "ability": "عبقرية التخطيط",
-  "image": ""
-},
+  "image": "https://files.catbox.moe/w3l5il.jpg"
+}
   {
   "name": "Toshiro Hijikata",
   "form": "شيطان الشينسينغومي",
@@ -9025,7 +9025,7 @@
   "power": 7000,
   "rarity": "SSS",
   "ability": "سيف العدالة",
-  "image": ""
+  "image": "https://files.catbox.moe/lg6qc9.jpg"
 },
 
 {
@@ -9035,7 +9035,7 @@
   "power": 6800,
   "rarity": "SSS",
   "ability": "تكتيكات الثوار",
-  "image": ""
+  "image": "https://files.catbox.moe/nfzzlx.jpg"
 },
 
 {
@@ -9045,7 +9045,7 @@
   "power": 6900,
   "rarity": "SSS",
   "ability": "عين الدمار",
-  "image": ""
+  "image": "https://files.catbox.moe/q3k3bm.jpg"
 },
 
 {
@@ -9055,16 +9055,16 @@
   "power": 6600,
   "rarity": "SSS",
   "ability": "حظ السماء",
-  "image": ""
+  "image": "https://files.catbox.moe/a3cbfl.jpg"
 },
   {
   "name": "Kayden Break",
   "form": "سيد البرق",
   "anime": "Eleceed",
-  "power": 7200,
+  "power": 7000,
   "rarity": "SSS",
   "ability": "عاصفة البرق",
-  "image": ""
+  "image": "https://files.catbox.moe/b5wkyc.jpg"
 },
   {
   "name": "Igris",
@@ -9073,16 +9073,16 @@
   "power": 7000,
   "rarity": "SSS",
   "ability": "سيف الظلام",
-  "image": ""
+  "image": "https://files.catbox.moe/epdn1u.jpg"
 },
 {
-  "name": "Jiwoo Seo",
-  "form": "البرق الخاطف",
+  "name": "Yoo Jiyoung",
+  "form": "زعيمة شينهوا",
   "anime": "Eleceed",
   "power": 6800,
   "rarity": "SSS",
-  "ability": "سرعة البرق",
-  "image": ""
+  "ability": "التحكم بالرياح",
+  "image": "https://files.catbox.moe/sau65t.jpg"
 },
   {
   "name": "Shinichi Kudo",
@@ -9091,17 +9091,17 @@
   "power": 6800,
   "rarity": "SSS",
   "ability": "استنتاج عبقري",
-  "image": ""
+  "image": "https://files.catbox.moe/sewe0w.jpg"
 },
 
 {
-  "name": "Gin",
+  "name": "Gin Conan",
   "form": "قاتل المنظمة السوداء",
   "anime": "Detective Conan",
   "power": 7000,
   "rarity": "SSS",
   "ability": "رصاصة قاتلة",
-  "image": ""
+  "image": "https://files.catbox.moe/dxb5n5.jpg"
 },
 
 {
@@ -9111,7 +9111,7 @@
   "power": 6700,
   "rarity": "SSS",
   "ability": "مهمة سرية",
-  "image": ""
+  "image": "https://files.catbox.moe/bkirsi.jpg"
 },
 
 {
@@ -9121,7 +9121,7 @@
   "power": 6900,
   "rarity": "SSS",
   "ability": "طلقة مستحيلة",
-  "image": ""
+  "image": "https://files.catbox.moe/od67ed.jpg"
 },
   {
   "name": "Yusaku Kudo",
@@ -9130,7 +9130,7 @@
   "power": 6850,
   "rarity": "SSS",
   "ability": "عقل الأسطورة",
-  "image": ""
+  "image": "https://files.catbox.moe/2gvhq7.jpg"
 },
   {
   "name": "Yukiko Kudo",
@@ -9139,8 +9139,17 @@
   "power": 6600,
   "rarity": "SSS",
   "ability": "سيدة التنكر",
-  "image": ""
+  "image": "https://files.catbox.moe/1o1p8q.jpg"
 },
+  {
+  "name": "Eri Kisaki",
+  "form": "ملكة القانون",
+  "anime": "Detective Conan",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "عبقرية المرافعة",
+  "image": "https://files.catbox.moe/a5o2xm.jpg"
+  },
   {
   "name": "Ouki",
   "form": "وحش تشين العظيم",
@@ -9148,7 +9157,7 @@
   "power": 7000,
   "rarity": "SSS",
   "ability": "هالة الجنرال العظيم",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/2l6om9.jpg"
 },
 
 {
@@ -9158,7 +9167,7 @@
   "power": 6950,
   "rarity": "SSS",
   "ability": "استراتيجية السماء",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/h46fmr.jpg"
 },
 
 {
@@ -9168,7 +9177,7 @@
   "power": 6900,
   "rarity": "SSS",
   "ability": "خطة الممالك الست",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/dn3rc0.jpg"
 },
 
 {
@@ -9178,7 +9187,7 @@
   "power": 6800,
   "rarity": "SSS",
   "ability": "تكتيكات الفوضى",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/9g0det.jpg"
 },
 
 {
@@ -9188,7 +9197,7 @@
   "power": 7000,
   "rarity": "SSS",
   "ability": "كاكوغا التنين",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/4l0xst.jpg"
 },
   {
   "name": "Kaito Kid",
@@ -9197,7 +9206,7 @@
   "power": 6750,
   "rarity": "SSS",
   "ability": "خدع المستحيل",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/bf41gz.jpg"
 },
   {
   "name": "Kogoro Mouri",
@@ -9206,7 +9215,7 @@
   "power": 6600,
   "rarity": "SSS",
   "ability": "طلقة دقيقة",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/85xa8h.jpg"
 },
   {
   "name": "Vermouth",
@@ -9215,7 +9224,7 @@
   "power": 6800,
   "rarity": "SSS",
   "ability": "التنكر المثالي",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/bzrbyb.jpg"
 },
   {
   "name": "Olvia",
@@ -9224,7 +9233,7 @@
   "power": 6600,
   "rarity": "SSS",
   "ability": "معرفة القرن المفقود",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/7cvb9p.jpg"
 },
 
 {
@@ -9234,7 +9243,7 @@
   "power": 6800,
   "rarity": "SSS",
   "ability": "هيبة الإمبراطور",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/7pssod.jpg"
 },
 
 {
@@ -9244,7 +9253,7 @@
   "power": 6900,
   "rarity": "SSS",
   "ability": "فاكهة الدخان",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/xud50d.jpg"
 },
   {
   "name": "Gin Ichimaru",
@@ -9253,7 +9262,7 @@
   "power": 6950,
   "rarity": "SSS",
   "ability": "شينسو القاتلة",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/1lg0az.jpeg"
 },
   {
   "name": "Delilah",
@@ -9262,7 +9271,7 @@
   "power": 7000,
   "rarity": "SSS",
   "ability": "سحر الكوارث",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/1z82jn.jpg"
 },
   {
   "name": "Kakashi Hatake",
@@ -9271,7 +9280,7 @@
   "power": 6900,
   "rarity": "SSS",
   "ability": "كاموي",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/xqa52s.jpg"
 },
 
 {
@@ -9281,7 +9290,7 @@
   "power": 7000,
   "rarity": "SSS",
   "ability": "البوابة الثامنة",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/xgbbol.jpg"
 },
   {
   "name": "Corazon",
@@ -9290,7 +9299,7 @@
   "power": 6900,
   "rarity": "SSS",
   "ability": "قلب الرحمة",
-  "image": ""
+  "image": "https://files.catbox.moe/3dy18j.jpg"
 },
   {
   "name": "Kuma",
@@ -9299,7 +9308,7 @@
   "power": 6900,
   "rarity": "SSS",
   "ability": "فاكهة الدفع",
-  "image": "https://files.catbox.moe/4v2l9y.jpg"
+  "image": "https://files.catbox.moe/nj8881.jpg"
 },
   {
   "name": "Carrot",
@@ -9308,7 +9317,7 @@
   "power": 6700,
   "rarity": "SSS",
   "ability": "سولونغ القمر",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/oy1wzq.jpg"
 },
 
 {
@@ -9318,7 +9327,7 @@
   "power": 6650,
   "rarity": "SSS",
   "ability": "الكاراتيه البرمائي",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/7d5zui.jpg"
 },
 
 {
@@ -9328,6 +9337,33 @@
   "power": 6800,
   "rarity": "SSS",
   "ability": "هاكي الملاحظة المتقدم",
-  "image": "ضع_الرابط"
+  "image": "https://files.catbox.moe/tc1cci.jpg"
+},
+  {
+  "name": "Shamrock",
+  "form": "قائد الفرسان المقدسين",
+  "anime": "One Piece",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سيف السيربيروس",
+  "image": "https://files.catbox.moe/m03zfc.jpg"
+},
+{
+  "name": "Gunko",
+  "form": "الفارسة الغامضة",
+  "anime": "One Piece",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "سهام التوجيه",
+  "image": "https://files.catbox.moe/cabvv6.jpg"
+},
+  {
+  "name": "Arthur Leywin",
+  "form": "الملك الرمادي",
+  "anime": "The Beginning After The End",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "قوة الأثير",
+  "image": "https://files.catbox.moe/m34hnn.jpg"
 }
 ]
