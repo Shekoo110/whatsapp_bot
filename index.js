@@ -12856,6 +12856,15 @@ const firstTurn =
 
 fight.turn = firstTurn
 
+fight.player1Turns = 0
+fight.player2Turns = 0
+
+fight.skillTurn1 = -99
+fight.skillTurn2 = -99
+
+fight.ultimateTurn1 = -99
+fight.ultimateTurn2 = -99
+
 await fight.save()
 
 console.log("saved")
