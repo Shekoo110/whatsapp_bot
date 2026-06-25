@@ -3118,7 +3118,8 @@ if (text === '.fixhan' && userId.split('@')[0] === ownerId) {
             arrayFilters: [
                 {
                     "c.name": "Loki",
-                    "c.anime": "Pick Me Up! Infinite Gacha"
+                    "c.anime": "Pick Me Up! Infinite Gacha",
+                    "c.form": "اللاعب رقم واحد"
                 }
             ]
         }
