@@ -16019,16 +16019,16 @@ ${player.towerFloor}`
 
 🛍️ الشراء:
 
-.شراء basic
-.شراء rare
-.شراء epic
-.شراء legendary
-.شراء ssschance
-.شراء ssshigh
+.شراءصندوق basic
+.شراءصندوق rare
+.شراءصندوق epic
+.شراءصندوق legendary
+.شراءصندوق ssschance
+.شراءصندوق ssshigh
 
-.شراء ممتاز
-.شراء اسطوري
-.شراء sss`
+.شراءشخصية ممتاز
+.شراءشخصية اسطوري
+.شراءشخصية sss`
         }
     )
         }
@@ -16105,8 +16105,11 @@ if (!player.towerTickets) {
     player.towerTickets = 0
 }
 
-const args = text.split(' ')
-const item = args[1]?.toLowerCase()
+const item =
+    text
+    .replace('.شراءصندوق ', '')
+    .trim()
+    .toLowerCase()
 
 if (!item) {
     return sock.sendMessage(msg.key.remoteJid, {
@@ -18615,21 +18618,32 @@ try {
     )
 
     // هنا أضف الكود
-    if (character.rarity === 'SSS') {
+    const isRare =
+    character.rarity === 'SSS'
 
-        pendingSellConfirm.set(userId, {
-            index,
-            character,
-            price: sellPrice
-        })
+const isEvolved =
+    character.evolutionLevel > 0
 
-        return safeSend(msg.key.remoteJid, {
-            text:
+if (isRare || isEvolved) {
 
-`⚠️ تأكيد بيع شخصية نادرة
+    pendingSellConfirm.set(userId, {
+        index,
+        character,
+        price: sellPrice
+    })
+
+    const rank =
+        character.evolutionLevel > 0
+            ? `مطور +${character.evolutionLevel}`
+            : character.rarity
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+
+`⚠️ تأكيد بيع شخصية مهمة
 
 👤 ${character.name}
-🌟 ${character.rarity}
+🌟 ${rank}
 ⚔️ ${character.power}
 
 💰 سعر البيع:
@@ -18641,8 +18655,8 @@ ${sellPrice}
 أو
 
 .لا`
-        })
-    }
+    })
+}
 
     totalMoney += sellPrice
     soldCount++
