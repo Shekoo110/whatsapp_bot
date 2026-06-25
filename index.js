@@ -1,4 +1,7 @@
 const fs = require('fs')
+const pendingSellConfirm =
+global.pendingSellConfirm ||
+(global.pendingSellConfirm = new Map())
 if (fs.existsSync('./auth')) {
     fs.rmSync('./auth', {
         recursive: true,
@@ -18574,22 +18577,52 @@ try {
 
     for (const index of indexes) {
 
-        const character =
-            player.characters[index]
+    const character =
+        player.characters[index]
 
-        if (!character)
-            continue
+    if (!character)
+        continue
 
-        const sellPrice = Math.max(
-            100,
-            Math.floor(character.power / 2)
-        )
+    const sellPrice = Math.max(
+        100,
+        Math.floor(character.power / 2)
+    )
 
-        totalMoney += sellPrice
-        soldCount++
+    // هنا أضف الكود
+    if (character.rarity === 'SSS') {
 
-        player.characters.splice(index, 1)
+        pendingSellConfirm.set(userId, {
+            index,
+            character,
+            price: sellPrice
+        })
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+
+`⚠️ تأكيد بيع شخصية نادرة
+
+👤 ${character.name}
+🌟 ${character.rarity}
+⚔️ ${character.power}
+
+💰 سعر البيع:
+${sellPrice}
+
+اكتب:
+.نعم
+
+أو
+
+.لا`
+        })
     }
+
+    totalMoney += sellPrice
+    soldCount++
+
+    player.characters.splice(index, 1)
+}
 
     if (soldCount === 0) {
 
@@ -18627,7 +18660,49 @@ ${player.money}`
 }
 
 }
+    
+if (text === '.نعم') {
 
+    const confirm = pendingSellConfirm.get(userId)
+
+    if (!confirm) return
+
+    const player = await Player.findOne({ userId })
+
+    if (!player) return
+
+    player.characters.splice(confirm.index, 1)
+
+    player.money += confirm.price
+
+    await player.save()
+
+    pendingSellConfirm.delete(userId)
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+
+`✅ تم بيع الشخصية
+
+👤 ${confirm.character.name}
+
+💰 +${confirm.price}
+
+💳 الرصيد:
+${player.money}`
+    })
+}
+
+if (text === '.لا') {
+
+    if (!pendingSellConfirm.has(userId)) return
+
+    pendingSellConfirm.delete(userId)
+
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ تم إلغاء عملية البيع'
+    })
+}
 
 // =========================
 // .مزاد
