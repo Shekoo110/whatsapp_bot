@@ -13436,6 +13436,11 @@ const lastUltimate =
         ? (fight.ultimateTurn1 ?? -99)
         : (fight.ultimateTurn2 ?? -99)
 
+    console.log(
+    'ULT CHECK',
+    currentTurns,
+    lastUltimate
+)
 if (
     lastUltimate >= 0 &&
     currentTurns - lastUltimate < 5
@@ -13587,14 +13592,34 @@ fight.hp1 += heal
 
 }
 
-fight.turn =  
-userId === fight.player1  
-    ? fight.player2  
+fight.turn =
+userId === fight.player1
+    ? fight.player2
     : fight.player1
 
 fight.lastMove = new Date()
 
-if (fight.hp1 <= 0 || fight.hp2 <= 0) {  
+if (userId === fight.player1) {
+    fight.player1Turns =
+        (fight.player1Turns || 0) + 1
+
+    console.log(
+        'P1 TURNS =',
+        fight.player1Turns
+    )
+
+} else {
+
+    fight.player2Turns =
+        (fight.player2Turns || 0) + 1
+
+    console.log(
+        'P2 TURNS =',
+        fight.player2Turns
+    )
+}
+
+if (fight.hp1 <= 0 || fight.hp2 <= 0) {
 
 const winner =  
     fight.hp1 > 0  
@@ -13715,13 +13740,7 @@ mentions: [winner]
 })
 }
 
-if (userId === fight.player1) {
-    fight.player1Turns =
-        (fight.player1Turns || 0) + 1
-} else {
-    fight.player2Turns =
-        (fight.player2Turns || 0) + 1
-}
+
 
 await fight.save()
 
