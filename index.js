@@ -13181,8 +13181,26 @@ winnerData.boxes.rare += 1
     boxReward = '✨ صندوق ملحمي'  
 }  
 
-winnerData.wins += 1  
-winnerData.mmr += 20  
+const oldRank = winnerData.rank
+
+winnerData.wins += 1
+winnerData.mmr += 20
+
+winnerData.rank = getRank(winnerData.mmr)
+
+let rankUpMessage = ''
+
+if (oldRank !== winnerData.rank) {
+
+    rankUpMessage =
+`\n🎉 ترقية رتبة!
+
+@${winner.split('@')[0]}
+
+${oldRank}
+⬇️
+${winnerData.rank}`
+}
 
 loserData.losses += 1  
 
@@ -13222,7 +13240,9 @@ return safeSend(msg.key.remoteJid, {
 🏅 MMR:
 +20
 
-${boxReward}`,
+${boxReward}
+
+${rankUpMessage}`,
 mentions: [winner]
 })
 }
@@ -13620,8 +13640,26 @@ winnerData.boxes.rare += 1
     boxReward = '✨ صندوق ملحمي'  
 }  
 
-winnerData.wins += 1  
-winnerData.mmr += 20  
+const oldRank = winnerData.rank
+
+winnerData.wins += 1
+winnerData.mmr += 20
+
+winnerData.rank = getRank(winnerData.mmr)
+
+let rankUpMessage = ''
+
+if (oldRank !== winnerData.rank) {
+
+    rankUpMessage =
+`\n🎉 ترقية رتبة!
+
+@${winner.split('@')[0]}
+
+${oldRank}
+⬇️
+${winnerData.rank}`
+}
 
 loserData.losses += 1  
 
@@ -13661,7 +13699,9 @@ return safeSend(msg.key.remoteJid, {
 🏅 MMR:
 +20
 
-${boxReward}`,
+${boxReward}
+
+${rankUpMessage}`,
 mentions: [winner]
 })
 }
@@ -14350,8 +14390,26 @@ const xpReward =
 winnerData.money += moneyReward
 winnerData.xp += xpReward
 
+const oldRank = winnerData.rank
+
 winnerData.wins += 1
 winnerData.mmr += 20
+
+winnerData.rank = getRank(winnerData.mmr)
+
+let rankUpMessage = ''
+
+if (oldRank !== winnerData.rank) {
+
+    rankUpMessage =
+`\n🎉 ترقية رتبة!
+
+@${winner.split('@')[0]}
+
+${oldRank}
+⬇️
+${winnerData.rank}`
+}
         let boxReward = ''
 
 const randomBox = Math.random()
@@ -14409,8 +14467,10 @@ return safeSend(msg.key.remoteJid, {
 🏅 MMR:
 +20
 
-${boxReward}`,
-    mentions: [winner]
+${boxReward}
+
+${rankUpMessage}`,
+mentions: [winner]
 })
     }
 
@@ -14438,6 +14498,31 @@ ${absorbed > 0 ? `🛡️ امتص الدرع: ${absorbed}\n` : ''}${heal > 0 ? 
     })
 }
 
+if (text === '.رانكي') {
+
+    const player =
+    await Player.findOne({ userId })
+
+    if (!player) {
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ ليس لديك حساب'
+        })
+    }
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`🏅 الرتبة الحالية
+
+👤 @${userId.split('@')[0]}
+
+📊 MMR: ${player.mmr}
+
+🎖️ الرتبة:
+${player.rank}`,
+        mentions: [userId]
+    })
+}
+    
         if (text === '.البرج') {
 
     let player =
