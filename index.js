@@ -14659,41 +14659,7 @@ ${player.usedCharacters?.length || 0}/30
         }
     )
 }
-        if (text === '.resetall') {
-
-  try {
-
-    await Player.updateMany(
-      {},
-      {
-        $set: {
-          level: 1,
-          xp: 0,
-          attackBonus: 0,
-          defenseBonus: 0,
-          critBonus: 0,
-          dodgeBonus: 0,
-          reflectBonus: 0,
-          lifestealBonus: 0,
-          bossDamageBonus: 0,
-          specialAbilities: [],
-          bonusAppliedLevels: []
-        }
-      }
-    )
-
-    return sock.sendMessage(msg.key.remoteJid, {
-      text: '✅ تم تصفير جميع اللاعبين إلى لفل 1'
-    })
-
-  } catch (err) {
-    console.log(err)
-
-    return sock.sendMessage(msg.key.remoteJid, {
-      text: '❌ حدث خطأ أثناء التصفير'
-    })
-  }
-        }
+        
 
         // =========================
         // .صوت
@@ -15808,6 +15774,15 @@ ${character.anime}`
 
 if (text === '.ريست_البرج_للجميع') {
 
+    if (!isOwner(msg)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ هذا الأمر للمطور فقط'
+            }
+        )
+    }
+
     await Player.updateMany(
         {},
         {
@@ -15834,7 +15809,6 @@ if (text === '.ريست_البرج_للجميع') {
         msg.key.remoteJid,
         {
             text:
-
 `🔄 تم إعادة تعيين البرج لجميع اللاعبين
 
 ✅ الطابق عاد إلى 1
@@ -16112,59 +16086,7 @@ ${player.towerFloor}`
     )
         }
 
-    if (text === '.ريست_البرج') {
-
-    let player =
-        await Player.findOne({ userId })
-
-    if (!player) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ لا تملك حساباً'
-            }
-        )
-    }
-
-    player.towerFloor = 1
-
-    player.usedCharacters = []
-
-    player.towerCompleted = false
-
-    // يبقى اللقب محفوظاً
-    // player.title = null
-
-    player.attackBonus = 0
-    player.defenseBonus = 0
-    player.hpBonus = 0
-    player.speedBonus = 0
-
     
-
-    await player.save()
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-`🔄 تم إعادة تعيين البرج
-
-🏰 الطابق الحالي: 1
-
-📉 تم حذف جميع مكافآت البرج:
-⚔️ الهجوم
-🛡️ الدفاع
-❤️ الصحة
-⚡ السرعة
-
-👑 تم الاحتفاظ باللقب:
-${player.title || 'لا يوجد'}
-
-يمكنك بدء البرج من جديد.`
-        }
-    )
-    }
 
         if (text.startsWith('.شراءصندوق ')) {
 
