@@ -16105,11 +16105,17 @@ if (!player.towerTickets) {
     player.towerTickets = 0
 }
 
-const item =
+let item =
     text
     .replace('.شراءصندوق ', '')
     .trim()
     .toLowerCase()
+
+if (item === 'ssschance')
+    item = 'sss_chance'
+
+if (item === 'ssshigh')
+    item = 'sss_high'
 
 if (!item) {
     return sock.sendMessage(msg.key.remoteJid, {
@@ -16122,8 +16128,8 @@ const prices = {
     rare: 10,
     epic: 20,
     legendary: 35,
-    ssschance: 60,
-    ssshigh: 100
+    sss_chance: 60,
+    sss_high: 100
 }
 
 const names = {
@@ -16179,6 +16185,107 @@ ${names[item]}
 
 📦 عدد هذا الصندوق:
 ${player.boxes[item]}`
+})
+}
+    if (text.startsWith('.شراءشخصية ')) {
+
+let player = await Player.findOne({ userId })
+
+if (!player) {
+    return safeSend(msg.key.remoteJid,{
+        text:'❌ لم يتم العثور على حسابك'
+    })
+}
+
+const type =
+    text
+    .replace('.شراءشخصية ','')
+    .trim()
+    .toLowerCase()
+
+const prices = {
+    'ممتاز': 15,
+    'اسطوري': 40,
+    'sss': 150
+}
+
+if (!prices[type]) {
+    return safeSend(msg.key.remoteJid,{
+        text:
+`❌ النوع غير موجود
+
+.شراءشخصية ممتاز
+.شراءشخصية اسطوري
+.شراءشخصية sss`
+    })
+}
+
+if ((player.towerTickets || 0) < prices[type]) {
+    return safeSend(msg.key.remoteJid,{
+        text:
+`❌ ليس لديك تذاكر كافية
+
+🎫 المطلوب: ${prices[type]}
+🎫 لديك: ${player.towerTickets || 0}`
+    })
+}
+
+let pool = []
+
+if (type === 'ممتاز') {
+    pool = characters.filter(
+        c =>
+        c.rarity === 'A' ||
+        c.rarity === 'S'
+    )
+}
+
+if (type === 'اسطوري') {
+    pool = characters.filter(
+        c =>
+        c.rarity === 'SS' ||
+        c.rarity === 'SS+'
+    )
+}
+
+if (type === 'sss') {
+    pool = characters.filter(
+        c => c.rarity === 'SSS'
+    )
+}
+
+if (!pool.length) {
+    return safeSend(msg.key.remoteJid,{
+        text:'❌ لا توجد شخصيات مطابقة'
+    })
+}
+
+const reward =
+JSON.parse(
+JSON.stringify(
+pool[Math.floor(Math.random()*pool.length)]
+))
+
+player.towerTickets -= prices[type]
+
+player.characters.push({
+    ...reward,
+    evolutionLevel: 0
+})
+
+await player.save()
+
+return safeSend(msg.key.remoteJid,{
+    text:
+
+`🎉 تم الشراء بنجاح
+
+👤 ${reward.name}
+🌟 ${reward.rarity}
+⚔️ ${reward.power}
+
+🎫 المتبقي:
+${player.towerTickets}`
 })
 }
 
