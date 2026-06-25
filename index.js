@@ -13460,16 +13460,22 @@ if (
 } else {
     fight.ultimateTurn2 = fight.player2Turns || 0
 }
+
+const playerData =
+    await Player.findOne({
+        userId
+    })
+
 const attackerStats =
-getTotalStats(playerData)
+    getTotalStats(playerData)
 
 const opponentData =
-await Player.findOne({
-userId:
-fight.player1 === userId
-? fight.player2
-: fight.player1
-})
+    await Player.findOne({
+        userId:
+            fight.player1 === userId
+                ? fight.player2
+                : fight.player1
+    })
 
 const opponentStats =
 getTotalStats(opponentData)
@@ -14018,6 +14024,8 @@ if (text === '.مساهمات') {
     const me =
         await Player.findOne({ userId })
 
+    let mentions = []
+
     let leaderboard =
 `🏆 أفضل المقاتلين ضد جميع الزعماء
 
@@ -14040,8 +14048,12 @@ if (text === '.مساهمات') {
             i === 2 ? '🥉' :
             `#${i + 1}`
 
+        mentions.push(player.userId)
+
         leaderboard +=
 `${medal}
+
+👤 @${player.userId.split('@')[0]}
 
 💥 ${(player.totalBossDamage || 0).toLocaleString()} ضرر
 
@@ -14055,14 +14067,19 @@ if (text === '.مساهمات') {
     leaderboard +=
 `📊 مساهمتك
 
+👤 @${userId.split('@')[0]}
+
 💥 ${(me?.totalBossDamage || 0).toLocaleString()} ضرر
 
 ⚔️ ${(me?.bossHits || 0).toLocaleString()} هجمة`
 
+    mentions.push(userId)
+
     return safeSend(
         msg.key.remoteJid,
         {
-            text: leaderboard
+            text: leaderboard,
+            mentions
         }
     )
 }
