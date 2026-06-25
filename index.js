@@ -12717,6 +12717,10 @@ const hp2 = getGroupHP(player2Data)
 await PvP.create({
     player1: userId,
     player2: target,
+
+    player1Turns: 0,
+    player2Turns: 0,
+
     turn: target,
     active: false,
 
@@ -12951,15 +12955,19 @@ attacker =
 }
 const playerData =
 await Player.findOne({ userId })
-
+const currentTurns =
+    userId === fight.player1
+        ? (fight.player1Turns || 0)
+        : (fight.player2Turns || 0)
     const lastSkill =
     userId === fight.player1
         ? (fight.skillTurn1 ?? -99)
         : (fight.skillTurn2 ?? -99)
 
-if (lastSkill >= 0 &&
-    fight.turnCount - lastSkill < 2) {
-
+if (
+    lastSkill >= 0 &&
+    currentTurns - lastSkill < 2
+) {
     return safeSend(
         msg.key.remoteJid,
         {
@@ -12971,9 +12979,9 @@ if (lastSkill >= 0 &&
     )
 }
     if (userId === fight.player1) {
-    fight.skillTurn1 = fight.turnCount
+    fight.skillTurn1 = fight.player1Turns || 0
 } else {
-    fight.skillTurn2 = fight.turnCount
+    fight.skillTurn2 = fight.player2Turns || 0
 }
 
 const attackerStats =
@@ -13218,7 +13226,11 @@ ${boxReward}`,
 mentions: [winner]
 })
 }
-
+if (userId === fight.player1) {
+    fight.skillTurn1 = fight.player1Turns || 0
+} else {
+    fight.skillTurn2 = fight.player2Turns || 0
+}
 await fight.save()
 
 playerData.skillCooldown = Date.now() + 10000
@@ -13386,14 +13398,19 @@ attacker =
     ]
 
 }
+    const currentTurns =
+    userId === fight.player1
+        ? (fight.player1Turns || 0)
+        : (fight.player2Turns || 0)
 const lastUltimate =
     userId === fight.player1
         ? (fight.ultimateTurn1 ?? -99)
         : (fight.ultimateTurn2 ?? -99)
 
-if (lastUltimate >= 0 &&
-    fight.turnCount - lastUltimate < 5) {
-
+if (
+    lastUltimate >= 0 &&
+    currentTurns - lastUltimate < 5
+) {
     return safeSend(
         msg.key.remoteJid,
         {
@@ -13405,9 +13422,9 @@ if (lastUltimate >= 0 &&
     )
 }
     if (userId === fight.player1) {
-    fight.ultimateTurn1 = fight.turnCount
+    fight.ultimateTurn1 = fight.player1Turns || 0
 } else {
-    fight.ultimateTurn2 = fight.turnCount
+    fight.ultimateTurn2 = fight.player2Turns || 0
 }
 const attackerStats =
 getTotalStats(playerData)
@@ -13647,6 +13664,14 @@ return safeSend(msg.key.remoteJid, {
 ${boxReward}`,
 mentions: [winner]
 })
+}
+
+if (userId === fight.player1) {
+    fight.player1Turns =
+        (fight.player1Turns || 0) + 1
+} else {
+    fight.player2Turns =
+        (fight.player2Turns || 0) + 1
 }
 
 await fight.save()
@@ -14282,6 +14307,14 @@ fight.lastMove = new Date()
 
 fight.turnCount = (fight.turnCount || 0) + 1
 
+if (userId === fight.player1) {
+    fight.player1Turns =
+        (fight.player1Turns || 0) + 1
+} else {
+    fight.player2Turns =
+        (fight.player2Turns || 0) + 1
+}
+
 if (fight.hp1 <= 0 || fight.hp2 <= 0) {
 
     const winner =
@@ -14404,90 +14437,6 @@ ${absorbed > 0 ? `🛡️ امتص الدرع: ${absorbed}\n` : ''}${heal > 0 ? 
         mentions: [fight.turn]
     })
 }
-
-
-    if (text === '.مهارة') {
-
-    const fight = await PvP.findOne({
-        active: true,
-        $or: [
-            { player1: userId },
-            { player2: userId }
-        ]
-    })
-
-    if (!fight) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ أنت لست داخل قتال'
-        })
-    }
-
-    if (fight.turn !== userId) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ ليس دورك'
-        })
-    }
-
-    const playerData =
-    await Player.findOne({ userId })
-
-const stats =
-    getTotalStats(playerData)
-
-const damage =
-    Math.floor(stats.attack * 1.5 * (0.8 + Math.random() * 0.4))
-
-    if (userId === fight.player1) {
-
-        fight.hp2 -= damage
-        fight.turn = fight.player2
-        
-
-    } else {
-
-        fight.hp1 -= damage
-        fight.turn = fight.player1
-    }
-await fight.save()
-    if (fight.hp1 <= 0 || fight.hp2 <= 0) {
-
-        const winner =
-            fight.hp1 > 0
-                ? fight.player1
-                : fight.player2
-
-        await PvP.deleteOne({
-            _id: fight._id
-        })
-
-        return safeSend(msg.key.remoteJid, {
-            text:
-`🏆 انتهى القتال
-
-الفائز:
-@${winner.split('@')[0]}`,
-            mentions: [winner]
-        })
-    }
-
-    await fight.save()
-
-    return safeSend(msg.key.remoteJid, {
-        text:
-`🔥 مهارة خاصة
-
-💥 الضرر:
-${damage}
-
-❤️ ${fight.hp1}
-💙 ${fight.hp2}
-
-🎯 الدور الآن:
-
-@${fight.turn.split('@')[0]}`,
-        mentions: [fight.turn]
-    })
-    }
 
         if (text === '.البرج') {
 
