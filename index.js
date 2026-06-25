@@ -1,4 +1,5 @@
 const fs = require('fs')
+const commands = require('./commands/index')
 const pendingSellConfirm =
 global.pendingSellConfirm ||
 (global.pendingSellConfirm = new Map())
@@ -3104,6 +3105,87 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+    
+if (text === '.اوامر') {
+
+    let menu =
+`📚 *قائمة أوامر البوت*
+
+━━━━━━━━━━━━━━
+
+`
+
+    for (const category in commands) {
+
+        // إخفاء أوامر المطور
+        if (
+            category === 'المطور' &&
+            !isOwner(msg)
+        ) continue
+
+        menu += `📂 ${category}\n`
+        menu += `اكتب:\n`
+        menu += `.اوامر ${category}\n\n`
+    }
+
+    menu += `━━━━━━━━━━━━━━
+💡 مثال:
+.اوامر الشخصيات`
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: menu
+        }
+    )
+}
+    if (text.startsWith('.اوامر ')) {
+
+    const category =
+        text
+            .replace('.اوامر ', '')
+            .trim()
+
+    if (!commands[category]) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ هذا القسم غير موجود.'
+            }
+        )
+    }
+
+    if (
+        category === 'المطور' &&
+        !isOwner(msg)
+    ) {
+        return
+    }
+
+    let menu =
+`📂 *${category}*
+
+━━━━━━━━━━━━━━
+
+`
+
+    commands[category].forEach(cmd => {
+
+        menu += `• ${cmd}\n`
+
+    })
+
+    menu += `\n━━━━━━━━━━━━━━`
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: menu
+        }
+    )
+}
+    
 
 if (text === '.fixhan' && userId.split('@')[0] === ownerId) {
 
