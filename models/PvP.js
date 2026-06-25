@@ -64,24 +64,37 @@ const pvpSchema = new mongoose.Schema({
         }
     },
 
-    skillTurn1: {
+    // عدد الجولات التي لعبها كل لاعب
+    player1Turns: {
         type: Number,
         default: 0
+    },
+
+    player2Turns: {
+        type: Number,
+        default: 0
+    },
+
+    // آخر جولة استخدم فيها المهارة
+    skillTurn1: {
+        type: Number,
+        default: -99
     },
 
     skillTurn2: {
         type: Number,
-        default: 0
+        default: -99
     },
 
+    // آخر جولة استخدم فيها الألتميت
     ultimateTurn1: {
         type: Number,
-        default: 0
+        default: -99
     },
 
     ultimateTurn2: {
         type: Number,
-        default: 0
+        default: -99
     },
 
     turnCount: {
