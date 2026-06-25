@@ -9008,5 +9008,326 @@
   "rarity": "SSS",
   "ability": "التحكم بالمصير والغموض",
   "image": "https://files.catbox.moe/r8fsk8.jpg"
+},
+  {
+  "name": "ميديا",
+  "form": "وريثة آل سولون",
+  "anime": "Your Throne",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "عبقرية التخطيط",
+  "image": ""
+},
+  {
+  "name": "Toshiro Hijikata",
+  "form": "شيطان الشينسينغومي",
+  "anime": "Gintama",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سيف العدالة",
+  "image": ""
+},
+
+{
+  "name": "Kotaro Katsura",
+  "form": "قائد الجوي",
+  "anime": "Gintama",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "تكتيكات الثوار",
+  "image": ""
+},
+
+{
+  "name": "Shinsuke Takasugi",
+  "form": "زعيم الكيهيتاي",
+  "anime": "Gintama",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "عين الدمار",
+  "image": ""
+},
+
+{
+  "name": "Tatsuma Sakamoto",
+  "form": "التاجر الأسطوري",
+  "anime": "Gintama",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "حظ السماء",
+  "image": ""
+},
+  {
+  "name": "Kayden Break",
+  "form": "سيد البرق",
+  "anime": "Eleceed",
+  "power": 7200,
+  "rarity": "SSS",
+  "ability": "عاصفة البرق",
+  "image": ""
+},
+  {
+  "name": "Igris",
+  "form": "فارس الظلال",
+  "anime": "Solo Leveling",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سيف الظلام",
+  "image": ""
+},
+{
+  "name": "Jiwoo Seo",
+  "form": "البرق الخاطف",
+  "anime": "Eleceed",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "سرعة البرق",
+  "image": ""
+},
+  {
+  "name": "Shinichi Kudo",
+  "form": "المتحري الثانوي",
+  "anime": "Detective Conan",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "استنتاج عبقري",
+  "image": ""
+},
+
+{
+  "name": "Gin",
+  "form": "قاتل المنظمة السوداء",
+  "anime": "Detective Conan",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "رصاصة قاتلة",
+  "image": ""
+},
+
+{
+  "name": "Bourbon",
+  "form": "العميل الثلاثي",
+  "anime": "Detective Conan",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "مهمة سرية",
+  "image": ""
+},
+
+{
+  "name": "Shuichi Akai",
+  "form": "قناص الـFBI",
+  "anime": "Detective Conan",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "طلقة مستحيلة",
+  "image": ""
+},
+  {
+  "name": "Yusaku Kudo",
+  "form": "أعظم روائي غموض",
+  "anime": "Detective Conan",
+  "power": 6850,
+  "rarity": "SSS",
+  "ability": "عقل الأسطورة",
+  "image": ""
+},
+  {
+  "name": "Yukiko Kudo",
+  "form": "الممثلة الأسطورية",
+  "anime": "Detective Conan",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "سيدة التنكر",
+  "image": ""
+},
+  {
+  "name": "Ouki",
+  "form": "وحش تشين العظيم",
+  "anime": "Kingdom",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "هالة الجنرال العظيم",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Riboku",
+  "form": "عبقري تشاو",
+  "anime": "Kingdom",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "استراتيجية السماء",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Ousen",
+  "form": "القائد الذي لا يُهزم",
+  "anime": "Kingdom",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "خطة الممالك الست",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Kanki",
+  "form": "جنرال الرعب",
+  "anime": "Kingdom",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "تكتيكات الفوضى",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Ken Kaneki",
+  "form": "ملك الغيلان",
+  "anime": "Tokyo Ghoul",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "كاكوغا التنين",
+  "image": "ضع_الرابط"
+},
+  {
+  "name": "Kaito Kid",
+  "form": "اللص الشبح",
+  "anime": "Detective Conan",
+  "power": 6750,
+  "rarity": "SSS",
+  "ability": "خدع المستحيل",
+  "image": "ضع_الرابط"
+},
+  {
+  "name": "Kogoro Mouri",
+  "form": "أسطورة الشرطة السابقة",
+  "anime": "Detective Conan",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "طلقة دقيقة",
+  "image": "ضع_الرابط"
+},
+  {
+  "name": "Vermouth",
+  "form": "الساحرة ذات الألف وجه",
+  "anime": "Detective Conan",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "التنكر المثالي",
+  "image": "ضع_الرابط"
+},
+  {
+  "name": "Olvia",
+  "form": "عالمة أوهارا",
+  "anime": "One Piece",
+  "power": 6600,
+  "rarity": "SSS",
+  "ability": "معرفة القرن المفقود",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Buggy",
+  "form": "الإمبراطور المهرج",
+  "anime": "One Piece",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "هيبة الإمبراطور",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Smoker",
+  "form": "الصياد الأبيض",
+  "anime": "One Piece",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "فاكهة الدخان",
+  "image": "ضع_الرابط"
+},
+  {
+  "name": "Gin Ichimaru",
+  "form": "الثعلب الماكر",
+  "anime": "Bleach",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "شينسو القاتلة",
+  "image": "ضع_الرابط"
+},
+  {
+  "name": "Delilah",
+  "form": "وردة الكارثة",
+  "anime": "Advent of the Three Calamities",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سحر الكوارث",
+  "image": "ضع_الرابط"
+},
+  {
+  "name": "Kakashi Hatake",
+  "form": "نينجا النسخ",
+  "anime": "Naruto",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "كاموي",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Might Guy",
+  "form": "الوحش الأخضر",
+  "anime": "Naruto",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "البوابة الثامنة",
+  "image": "ضع_الرابط"
+},
+  {
+  "name": "Corazon",
+  "form": "روشينانتي",
+  "anime": "One Piece",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "قلب الرحمة",
+  "image": ""
+},
+  {
+  "name": "Kuma",
+  "form": "الثوري الصامت",
+  "anime": "One Piece",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "فاكهة الدفع",
+  "image": "https://files.catbox.moe/4v2l9y.jpg"
+},
+  {
+  "name": "Carrot",
+  "form": "مينك الأرنب",
+  "anime": "One Piece",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "سولونغ القمر",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Koala",
+  "form": "ضابطة الجيش الثوري",
+  "anime": "One Piece",
+  "power": 6650,
+  "rarity": "SSS",
+  "ability": "الكاراتيه البرمائي",
+  "image": "ضع_الرابط"
+},
+
+{
+  "name": "Yasopp",
+  "form": "قناص قراصنة الشعر الأحمر",
+  "anime": "One Piece",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "هاكي الملاحظة المتقدم",
+  "image": "ضع_الرابط"
 }
 ]
