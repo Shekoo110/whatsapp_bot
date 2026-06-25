@@ -3104,6 +3104,31 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+if (text === '.fixhan' && userId.split('@')[0] === ownerId) {
+
+    const result = await Player.updateMany(
+        {},
+        {
+            $set: {
+                "characters.$[c].name": "Han Israt"
+            }
+        },
+        {
+            arrayFilters: [
+                {
+                    "c.name": "Loki",
+                    "c.anime": "Pick Me Up! Infinite Gacha"
+                }
+            ]
+        }
+    )
+
+    return safeSend(msg.key.remoteJid, {
+        text: `✅ تم تحديث ${result.modifiedCount} لاعب`
+    })
+}
+    
 if (text.startsWith('.مزايدة ')) {
 
 if (!currentAuction.active) {
