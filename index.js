@@ -935,7 +935,107 @@ function getTowerReward(floor) {
             return null
     }
 }
+async function startZoneCycle(sock, jid) {
 
+    if (
+        !global.battleRoyale ||
+        !global.battleRoyale.active ||
+        !global.battleRoyale.started
+    ) return
+
+    global.battleRoyale.zoneActive = true
+
+    global.battleRoyale.players.forEach(player => {
+        if (player.alive)
+            player.inZone = false
+    })
+
+    await sock.sendMessage(jid, {
+        text:
+`☣️ الزون ${global.battleRoyale.zoneLevel}
+
+🏃 أمام الجميع 10 ثوانٍ.
+
+اكتب:
+
+.دخول_زون`
+    })
+
+    setTimeout(async () => {
+
+        if (
+            !global.battleRoyale ||
+            !global.battleRoyale.active ||
+            !global.battleRoyale.started
+        ) return
+
+        let report = '☣️ نتائج الزون:\n\n'
+
+        global.battleRoyale.players.forEach(player => {
+
+            if (!player.alive) return
+
+            if (!player.inZone) {
+
+                player.hp -= global.battleRoyale.zoneDamage
+
+                report +=
+`☠️ @${player.userId.split('@')[0]}
+-${global.battleRoyale.zoneDamage} HP
+❤️ ${Math.max(0, player.hp)} / ${player.maxHp}
+
+`
+
+                if (player.hp <= 0) {
+
+                    player.hp = 0
+                    player.alive = false
+
+                    global.battleRoyale.rankings.push({
+                        userId: player.userId
+                    })
+
+                    report +=
+`💀 @${player.userId.split('@')[0]} مات بسبب الزون
+
+`
+                }
+
+            } else {
+
+                report +=
+`🏃 @${player.userId.split('@')[0]} دخل الزون
+
+`
+            }
+
+        })
+
+        global.battleRoyale.zoneLevel++
+        global.battleRoyale.zoneDamage += 2000
+        global.battleRoyale.zoneActive = false
+
+        await sock.sendMessage(jid, {
+            text: report,
+            mentions: global.battleRoyale.players.map(p => p.userId)
+        })
+
+        // إذا بقي أكثر من لاعب يعيد تشغيل الزون
+        const alive =
+            global.battleRoyale.players.filter(
+                p => p.alive
+            )
+
+        if (alive.length > 1) {
+
+            setTimeout(() => {
+                startZoneCycle(sock, jid)
+            }, 30000)
+
+        }
+
+    }, 10000)
+}
 function getRandomCharacterByRarity(rarity) {
 
     const list = characters.filter(
@@ -9979,20 +10079,23 @@ if (text === '.بدء_رويال') {
     }
 
     global.battleRoyale = {
-        active: true,
-        started: false,
+    active: true,
+    started: false,
 
-        players: [],
+    players: [],
 
-        currentTurn: null,
+    currentTurn: null,
 
-        currentDrop: null,
+    currentDrop: null,
 
-        turnCount: 0,
+    turnCount: 0,
 
-        rankings: []
-    }
+    rankings: [],
 
+    zoneLevel: 1,
+    zoneActive: false,
+    zoneDamage: 3000
+}
     return sock.sendMessage(
         msg.key.remoteJid,
         {
@@ -10361,6 +10464,8 @@ XP: ${me.xp}`
 
     alive: true,
 
+    inZone: true,
+
     attackBonus: 0,
 
     shield: false,
@@ -10556,34 +10661,88 @@ ${p.hp || 30000}
         )
     }
 
-    global.battleRoyale.players =
-        readyPlayers
+    global.battleRoyale.players = readyPlayers
+global.battleRoyale.started = true
 
-    global.battleRoyale.started = true
+// يبدأ أول زون بعد 30 ثانية
+setTimeout(() => {
+    startZoneCycle(sock, msg.key.remoteJid)
+}, 30000)
 
-    
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
 `🔥 بدأت معركة الباتل رويال
 
 👥 المشاركون:
 ${readyPlayers.length}
 
-🎯 أول دور تم اختياره
+⏳ الزون ستبدأ بالانكماش بعد 30 ثانية.
 
 اكتب:
 
 .متبقي
 
 لمشاهدة الأحياء`
+    }
+)
+}
+    
+if (text === '.دخول_زون') {
+
+    if (!global.battleRoyale?.started) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد باتل رويال نشط'
+            }
+        )
+    }
+
+    if (!global.battleRoyale.zoneActive) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ الزون ليست نشطة حالياً'
+            }
+        )
+    }
+
+    const player =
+        global.battleRoyale.players.find(
+            p =>
+                p.userId === userId &&
+                p.alive
+        )
+
+    if (!player) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت لست مشاركاً في الرويال'
+            }
+        )
+    }
+
+    if (player.inZone) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '⚠️ أنت داخل الزون بالفعل'
+            }
+        )
+    }
+
+    player.inZone = true
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '🏃 دخلت الزون بنجاح!'
         }
     )
 }
-    
-
     
 if (text === '.اقصاء') {
 
