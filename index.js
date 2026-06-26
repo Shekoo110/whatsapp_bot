@@ -10497,9 +10497,8 @@ XP: ${me.xp}`
 
     avgPower: 0,
 
-    hp: 30000,
-
-    maxHp: 30000,
+    hp: 100000,
+maxHp: 100000,
 
     alive: true,
 
@@ -10964,19 +10963,19 @@ ${targets}
         parseInt(text.split(' ')[1])
 
     if (
-        isNaN(num) ||
-        num < 1 ||
-        num > alive.length
-    ) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: `❌ اختر رقماً بين 1 و ${alive.length}`
-            }
-        )
-    }
+    isNaN(num) ||
+    num < 1 ||
+    num > alive.length
+) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: `❌ اختر رقماً بين 1 و ${alive.length}`
+        }
+    )
+}
 
-    const target = alive[num - 1]
+const target = alive[num - 1]
 
 if (!target) {
     return sock.sendMessage(
@@ -11057,13 +11056,11 @@ ${Math.max(0, target.hp)}
 
     target.hp -= poisonDamage
 
-    txt +=
-`\n☠️ ضرر السم:
+    txt += `\n☠️ ضرر السم:
 ${poisonDamage}`
 
     target.poison = false
 }
-
 if (target.hp <= 0) {
 
     if (target.revive) {
@@ -11108,7 +11105,7 @@ const survivors =
     global.battleRoyale.players.filter(
         p => p.alive
     )
-
+let aliveTargets = []
 if (survivors.length === 1) {
 
     const winner = survivors[0]
@@ -11153,34 +11150,46 @@ if (survivors.length === 1) {
         await player.save()
     }
 
-    const first = top3[0]
-const second = top3[1]
-const third = top3[2]
+    const first = top3[0] || null
+const second = top3[1] || null
+const third = top3[2] || null
+    
+txt += `\n🏆 انتهت معركة الباتل رويال\n`
 
+if (first) {
 txt += `
-
-🏆 انتهت معركة الباتل رويال
 
 🥇 المركز الأول
 @${first.userId.split('@')[0]}
 
 💰 500000
 ⭐ 100000 XP
-🎁 صندوق SSS مرتفع
+🎁 صندوق SSS مرتفع`
+}
+
+if (second) {
+txt += `
 
 🥈 المركز الثاني
 @${second.userId.split('@')[0]}
 
 💰 250000
 ⭐ 50000 XP
-🎁 صندوق فرصة SSS
+🎁 صندوق فرصة SSS`
+}
+
+if (third) {
+txt += `
 
 🥉 المركز الثالث
 @${third.userId.split('@')[0]}
 
 💰 100000
 ⭐ 25000 XP
-🎁 صندوق Legendary
+🎁 صندوق Legendary`
+}
+
+txt += `
 
 🎉 تم توزيع الجوائز تلقائياً`
 
@@ -11196,8 +11205,6 @@ const alivePlayers =
             p.alive &&
             p.userId !== attacker.userId
     )
-
-let aliveTargets = []
 
 if (alivePlayers.length > 0) {
 
@@ -11264,15 +11271,17 @@ ${targetList}
 }
 
 const mentions = [
-    ...new Set(
-        [
-            attacker?.userId,
-            target?.userId,
-            global.battleRoyale.currentTurn,
-            ...aliveTargets.map(p => p?.userId)
-        ].filter(Boolean)
-    )
-]
+    attacker?.userId,
+    target?.userId,
+    global.battleRoyale.currentTurn,
+    ...aliveTargets.map(p => p.userId)
+].filter(Boolean)
+
+if (survivors.length === 1) {
+    if (first) mentions.push(first.userId)
+    if (second) mentions.push(second.userId)
+    if (third) mentions.push(third.userId)
+}
 
 return sock.sendMessage(
     msg.key.remoteJid,
@@ -11295,7 +11304,8 @@ return sock.sendMessage(
     )
 
 }
-        }
+
+}
     if (text === '.نتائج_رويال') {
 
     if (!global.battleRoyale) {
