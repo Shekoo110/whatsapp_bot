@@ -11295,7 +11295,7 @@ return sock.sendMessage(
     )
 
 }
-
+        }
     if (text === '.نتائج_رويال') {
 
     if (!global.battleRoyale) {
