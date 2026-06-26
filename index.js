@@ -935,6 +935,7 @@ function getTowerReward(floor) {
             return null
     }
 }
+
 async function startZoneCycle(sock, jid) {
 
     if (
@@ -991,6 +992,13 @@ async function startZoneCycle(sock, jid) {
                     player.hp = 0
                     player.alive = false
 
+                    if (
+                        global.battleRoyale.currentTurn ===
+                        player.userId
+                    ) {
+                        global.battleRoyale.currentTurn = null
+                    }
+
                     global.battleRoyale.rankings.push({
                         userId: player.userId
                     })
@@ -1020,22 +1028,53 @@ async function startZoneCycle(sock, jid) {
             mentions: global.battleRoyale.players.map(p => p.userId)
         })
 
-        // إذا بقي أكثر من لاعب يعيد تشغيل الزون
         const alive =
             global.battleRoyale.players.filter(
                 p => p.alive
             )
 
+        if (alive.length === 1) {
+
+            const winner = alive[0]
+
+            global.battleRoyale.rankings.push({
+                userId: winner.userId
+            })
+
+            await sock.sendMessage(
+                jid,
+                {
+                    text:
+`🏆 انتهى الباتل رويال!
+
+الفائز:
+
+@${winner.userId.split('@')[0]}`,
+                    mentions: [winner.userId]
+                }
+            )
+
+            global.battleRoyale.started = false
+            global.battleRoyale.active = false
+            global.battleRoyale.zoneActive = false
+            global.battleRoyale.currentTurn = null
+            global.battleRoyale.currentDrop = null
+
+            return
+        }
+
         if (alive.length > 1) {
 
             setTimeout(() => {
                 startZoneCycle(sock, jid)
-            }, 30000)
+            }, 45000)
 
         }
 
     }, 10000)
 }
+
+
 function getRandomCharacterByRarity(rarity) {
 
     const list = characters.filter(
@@ -10781,43 +10820,47 @@ if (alive.length <= 1) {
 const current =
     alive[
         Math.floor(
-            Math.random() *
-            alive.length
+            Math.random() * alive.length
         )
     ]
 
 global.battleRoyale.currentTurn =
     current.userId
 
+const aliveTargets =
+    alive.filter(
+        p => p.userId !== current.userId
+    )
+
 const targets =
-    alive
-        .filter(
-            p => p.userId !== current.userId
-        )
-        .map((p, i) => {
+    aliveTargets.map((p, i) => {
 
-            let status = ''
+        let status = ''
 
-            if (p.shield)
-                status += '\n🛡️ درع'
+        if (p.shield)
+            status += '\n🛡️ درع'
 
-            if (p.poison)
-                status += '\n☠️ مسموم'
+        if (p.poison)
+            status += '\n☠️ مسموم'
 
-            if (p.sniper)
-                status += '\n🎯 سنايبر'
+        if (p.sniper)
+            status += '\n🎯 سنايبر'
 
-            if (p.revive)
-                status += '\n💉 إحياء كامل'
+        if (p.revive)
+            status += '\n💉 إحياء كامل'
 
-            if (p.reviveHalf)
-                status += '\n❤️‍🩹 إحياء نصف الدم'
+        if (p.reviveHalf)
+            status += '\n❤️‍🩹 إحياء نصف الدم'
 
-            return `${i + 1}️⃣ @${p.userId.split('@')[0]}
+        return `${i + 1}️⃣ @${p.userId.split('@')[0]}
 ❤️ ${Math.max(0, p.hp)} / ${p.maxHp}${status}`
 
-        })
-        .join('\n\n')
+    }).join('\n\n')
+
+const mentions = [
+    current.userId,
+    ...aliveTargets.map(p => p.userId)
+]
 
 return sock.sendMessage(
     msg.key.remoteJid,
@@ -10838,9 +10881,7 @@ ${targets}
 اكتب:
 
 .اضرب رقم`,
-        mentions: alive.map(
-            p => p.userId
-        )
+        mentions
     }
 )
 
@@ -10855,6 +10896,21 @@ ${targets}
             { text: '❌ لا يوجد باتل رويال نشط' }
         )
     }
+            if (global.battleRoyale.zoneActive) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`☣️ الزون تضيق الآن!
+
+❌ لا يمكن الهجوم أثناء الزون.
+
+إذا لم تدخل الزون اكتب:
+
+.دخول_زون`
+        }
+    )
+}
 
     const current = global.battleRoyale.players.find(
         p => p.userId === global.battleRoyale.currentTurn
@@ -11101,33 +11157,40 @@ if (survivors.length === 1) {
     
 const alivePlayers =
     global.battleRoyale.players.filter(
-        p =>
-            p.alive &&
-            p.userId !== attacker.userId
+        p => p.alive
     )
 
 let aliveTargets = []
 
-if (alivePlayers.length > 0) {
+if (alivePlayers.length > 1) {
 
-    const nextPlayer =
-        alivePlayers[
-            Math.floor(
-                Math.random() *
-                alivePlayers.length
-            )
-        ]
-
-    global.battleRoyale.currentTurn =
-        nextPlayer.userId
-
-    aliveTargets =
-        global.battleRoyale.players.filter(
-            p =>
-                p.alive &&
-                p.userId !== nextPlayer.userId
+    const candidates =
+        alivePlayers.filter(
+            p => p.userId !== attacker.userId
         )
 
+    if (candidates.length === 0) {
+
+        global.battleRoyale.currentTurn = null
+
+    } else {
+
+        const nextPlayer =
+            candidates[
+                Math.floor(
+                    Math.random() *
+                    candidates.length
+                )
+            ]
+
+        global.battleRoyale.currentTurn =
+            nextPlayer.userId
+
+        aliveTargets =
+            alivePlayers.filter(
+                p =>
+                    p.userId !== nextPlayer.userId
+            )
     const targetList =
         aliveTargets.map((p, i) => {
 
@@ -11172,7 +11235,7 @@ ${targetList}
 .اضرب رقم`
 }
 }
-
+}
 const mentions = [...new Set([
     attacker.userId,
     target.userId,
