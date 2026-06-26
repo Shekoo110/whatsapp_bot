@@ -10890,7 +10890,9 @@ ${targets}
     
         if (text.startsWith('.اضرب')) {
 
-    if (!global.battleRoyale?.started) {
+    try {
+
+        if (!global.battleRoyale?.started) {
         return sock.sendMessage(
             msg.key.remoteJid,
             { text: '❌ لا يوجد باتل رويال نشط' }
@@ -10976,10 +10978,19 @@ ${targets}
 
     const target = alive[num - 1]
 
-    let damage =
-        attacker.avgPower +
-        attacker.attackBonus +
-        Math.floor(Math.random() * 2000)
+if (!target) {
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ الهدف غير موجود.'
+        }
+    )
+}
+
+let damage =
+    attacker.avgPower +
+    attacker.attackBonus +
+    Math.floor(Math.random() * 2000)
 
     if (attacker.sniper) {
         damage *= 2
@@ -11142,12 +11153,36 @@ if (survivors.length === 1) {
         await player.save()
     }
 
-    txt +=
-`\n\n🏆 الفائز:
+    const first = top3[0]
+const second = top3[1]
+const third = top3[2]
 
-@${winner.userId.split('@')[0]}
+txt += `
 
-🎁 تم توزيع الجوائز تلقائياً`
+🏆 انتهت معركة الباتل رويال
+
+🥇 المركز الأول
+@${first.userId.split('@')[0]}
+
+💰 500000
+⭐ 100000 XP
+🎁 صندوق SSS مرتفع
+
+🥈 المركز الثاني
+@${second.userId.split('@')[0]}
+
+💰 250000
+⭐ 50000 XP
+🎁 صندوق فرصة SSS
+
+🥉 المركز الثالث
+@${third.userId.split('@')[0]}
+
+💰 100000
+⭐ 25000 XP
+🎁 صندوق Legendary
+
+🎉 تم توزيع الجوائز تلقائياً`
 
     global.battleRoyale.started = false
     global.battleRoyale.active = false
@@ -11157,40 +11192,32 @@ if (survivors.length === 1) {
     
 const alivePlayers =
     global.battleRoyale.players.filter(
-        p => p.alive
+        p =>
+            p.alive &&
+            p.userId !== attacker.userId
     )
 
 let aliveTargets = []
 
-if (alivePlayers.length > 1) {
+if (alivePlayers.length > 0) {
 
-    const candidates =
-        alivePlayers.filter(
-            p => p.userId !== attacker.userId
-        )
-
-    if (candidates.length === 0) {
-
-        global.battleRoyale.currentTurn = null
-
-    } else {
-
-        const nextPlayer =
-            candidates[
-                Math.floor(
-                    Math.random() *
-                    candidates.length
-                )
-            ]
-
-        global.battleRoyale.currentTurn =
-            nextPlayer.userId
-
-        aliveTargets =
-            alivePlayers.filter(
-                p =>
-                    p.userId !== nextPlayer.userId
+    const nextPlayer =
+        alivePlayers[
+            Math.floor(
+                Math.random() *
+                alivePlayers.length
             )
+        ]
+
+    global.battleRoyale.currentTurn =
+        nextPlayer.userId
+
+    aliveTargets =
+        global.battleRoyale.players.filter(
+            p =>
+                p.alive &&
+                p.userId !== nextPlayer.userId
+        )
     const targetList =
         aliveTargets.map((p, i) => {
 
@@ -11235,15 +11262,17 @@ ${targetList}
 .اضرب رقم`
 }
 }
-}
-const mentions = [...new Set([
-    attacker.userId,
-    target.userId,
-    ...(global.battleRoyale.currentTurn
-        ? [global.battleRoyale.currentTurn]
-        : []),
-    ...aliveTargets.map(p => p.userId)
-])]
+
+const mentions = [
+    ...new Set(
+        [
+            attacker?.userId,
+            target?.userId,
+            global.battleRoyale.currentTurn,
+            ...aliveTargets.map(p => p?.userId)
+        ].filter(Boolean)
+    )
+]
 
 return sock.sendMessage(
     msg.key.remoteJid,
@@ -11252,6 +11281,19 @@ return sock.sendMessage(
         mentions
     }
 )
+
+} catch (err) {
+
+    console.error('BattleRoyale Attack Error:', err)
+    console.error(err.stack)
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: '❌ حدث خطأ أثناء تنفيذ الهجوم.'
+        }
+    )
+
 }
 
     if (text === '.نتائج_رويال') {
