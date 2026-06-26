@@ -10005,15 +10005,14 @@ if (text === '.بدء_رويال') {
 
 للانضمام إلى الحدث
 
-بعد الدخول اختر تشكيلتك:
+بعد الدخول اختر فريقك:
 
-.تشكيلة_رويال 1 2 3`
+.فريق_رويال 1 2 3`
         }
     )
 }
 
-    if (text.startsWith('.تشكيلة_رويال')) {
-
+    if (text.startsWith('.فريق_رويال')) {
     if (!global.battleRoyale?.active) {
         return sock.sendMessage(
             msg.key.remoteJid,
@@ -10071,7 +10070,7 @@ if (text === '.بدء_رويال') {
             msg.key.remoteJid,
             {
                 text:
-'❌ مثال:\n.تشكيلة_رويال 1 2 3'
+'❌ مثال:\n.فريق_رويال 1 2 3'
             }
         )
     }
@@ -10134,14 +10133,16 @@ if (text === '.بدء_رويال') {
         msg.key.remoteJid,
         {
             text:
-`✅ تم حفظ تشكيلتك
+`👑 ═══════〔 تم حفظ فريق الرويال 〕═══════ 👑
 
 1️⃣ ${selected[0].name}
 2️⃣ ${selected[1].name}
 3️⃣ ${selected[2].name}
 
 ⚔️ متوسط القوة:
-${avgPower}`
+${avgPower}
+
+✅ أصبحت جاهزًا لبدء الباتل رويال`
         }
     )
 }
@@ -10629,23 +10630,62 @@ const current =
 global.battleRoyale.currentTurn =
     current.userId
 
+const targets =
+    alive
+        .filter(
+            p => p.userId !== current.userId
+        )
+        .map((p, i) => {
+
+            let status = ''
+
+            if (p.shield)
+                status += '\n🛡️ درع'
+
+            if (p.poison)
+                status += '\n☠️ مسموم'
+
+            if (p.sniper)
+                status += '\n🎯 سنايبر'
+
+            if (p.revive)
+                status += '\n💉 إحياء كامل'
+
+            if (p.reviveHalf)
+                status += '\n❤️‍🩹 إحياء نصف الدم'
+
+            return `${i + 1}️⃣ @${p.userId.split('@')[0]}
+❤️ ${Math.max(0, p.hp)} / ${p.maxHp}${status}`
+
+        })
+        .join('\n\n')
+
 return sock.sendMessage(
     msg.key.remoteJid,
     {
         text:
-
 `🎯 تم اختيار أول لاعب
 
 @${current.userId.split('@')[0]}
 
+━━━━━━━━━━━━━━
+
+🎯 الأهداف
+
+${targets}
+
+━━━━━━━━━━━━━━
+
 اكتب:
 
 .اضرب رقم`,
-        mentions: [current.userId]
+        mentions: alive.map(
+            p => p.userId
+        )
     }
 )
-}
 
+}
     
     
         if (text.startsWith('.اضرب')) {
@@ -10902,49 +10942,86 @@ if (survivors.length === 1) {
     
 const alivePlayers =
     global.battleRoyale.players.filter(
-        p => p.alive
+        p =>
+            p.alive &&
+            p.userId !== attacker.userId
     )
 
-if (alivePlayers.length > 1) {
+let aliveTargets = []
 
-    let nextPlayer
+if (alivePlayers.length > 0) {
 
-    do {
-
-        nextPlayer =
-            alivePlayers[
-                Math.floor(
-                    Math.random() *
-                    alivePlayers.length
-                )
-            ]
-
-    } while (
-        nextPlayer.userId ===
-        attacker.userId
-    )
+    const nextPlayer =
+        alivePlayers[
+            Math.floor(
+                Math.random() *
+                alivePlayers.length
+            )
+        ]
 
     global.battleRoyale.currentTurn =
         nextPlayer.userId
 
-    txt +=
+    aliveTargets =
+        global.battleRoyale.players.filter(
+            p =>
+                p.alive &&
+                p.userId !== nextPlayer.userId
+        )
 
-`\n\n🎯 الدور الآن على:
+    const targetList =
+        aliveTargets.map((p, i) => {
 
-@${nextPlayer.userId.split('@')[0]}`
+            let status = ''
+
+            if (p.shield)
+                status += '\n🛡️ درع'
+
+            if (p.poison)
+                status += '\n☠️ مسموم'
+
+            if (p.sniper)
+                status += '\n🎯 سنايبر'
+
+            if (p.revive)
+                status += '\n💉 إحياء كامل'
+
+            if (p.reviveHalf)
+                status += '\n❤️‍🩹 إحياء نصف الدم'
+
+            return `${i + 1}️⃣ @${p.userId.split('@')[0]}
+❤️ ${Math.max(0, p.hp)} / ${p.maxHp}${status}`
+
+        }).join('\n\n')
+
+    txt += `
+
+🎯 الدور الآن على:
+
+@${nextPlayer.userId.split('@')[0]}
+
+━━━━━━━━━━━━━━
+
+🎯 الأهداف
+
+${targetList}
+
+━━━━━━━━━━━━━━
+
+اكتب:
+
+.اضرب رقم`
 }
 }
-   
-const mentions = [
+
+const mentions = [...new Set([
     attacker.userId,
-    target.userId
-]
-
-if (global.battleRoyale.currentTurn) {
-    mentions.push(
-        global.battleRoyale.currentTurn
-    )
-}
+    target.userId,
+    ...(global.battleRoyale.currentTurn
+        ? [global.battleRoyale.currentTurn]
+        : []),
+    ...aliveTargets.map(p => p.userId)
+])]
 
 return sock.sendMessage(
     msg.key.remoteJid,
