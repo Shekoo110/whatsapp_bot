@@ -10826,6 +10826,15 @@ const current =
 global.battleRoyale.currentTurn =
     current.userId
 
+global.battleRoyale.turnQueue =
+    alive
+        .filter(p => p.userId !== current.userId)
+        .sort(() => Math.random() - 0.5)
+        .map(p => p.userId)
+
+global.battleRoyale.currentTurn =
+    current.userId
+
 const aliveTargets =
     alive.filter(
         p => p.userId !== current.userId
@@ -10889,7 +10898,7 @@ ${targets}
     
         if (text.startsWith('.اضرب')) {
 
-    try {
+try {
 
         if (!global.battleRoyale?.started) {
         return sock.sendMessage(
@@ -11105,7 +11114,13 @@ const survivors =
     global.battleRoyale.players.filter(
         p => p.alive
     )
+
 let aliveTargets = []
+
+let first = null
+let second = null
+let third = null
+
 if (survivors.length === 1) {
 
     const winner = survivors[0]
@@ -11121,12 +11136,18 @@ if (survivors.length === 1) {
 
     for (let i = 0; i < top3.length; i++) {
 
-        const player =
-            await Player.findOne({
-                userId: top3[i].userId
-            })
+        const rankPlayer = top3[i]
 
-        if (!player) continue
+if (!rankPlayer) continue
+
+const player = await Player.findOne({
+    userId: rankPlayer.userId
+})
+
+if (!player) {
+    console.log(`Player not found: ${rankPlayer.userId}`)
+    continue
+}
 
         if (i === 0) {
 
@@ -11150,9 +11171,9 @@ if (survivors.length === 1) {
         await player.save()
     }
 
-    const first = top3[0] || null
-const second = top3[1] || null
-const third = top3[2] || null
+    first = top3[0] || null
+second = top3[1] || null
+third = top3[2] || null
     
 txt += `\n🏆 انتهت معركة الباتل رويال\n`
 
@@ -11208,16 +11229,40 @@ const alivePlayers =
 
 if (alivePlayers.length > 0) {
 
-    const nextPlayer =
-        alivePlayers[
-            Math.floor(
-                Math.random() *
-                alivePlayers.length
-            )
-        ]
+    while (
+    global.battleRoyale.turnQueue.length &&
+    !global.battleRoyale.players.find(
+        p =>
+            p.userId === global.battleRoyale.turnQueue[0] &&
+            p.alive
+    )
+) {
+    global.battleRoyale.turnQueue.shift()
+}
 
-    global.battleRoyale.currentTurn =
-        nextPlayer.userId
+if (global.battleRoyale.turnQueue.length === 0) {
+
+    global.battleRoyale.turnQueue =
+        global.battleRoyale.players
+            .filter(
+                p =>
+                    p.alive &&
+                    p.userId !== attacker.userId
+            )
+            .sort(() => Math.random() - 0.5)
+            .map(p => p.userId)
+}
+
+const nextUserId =
+    global.battleRoyale.turnQueue.shift()
+
+const nextPlayer =
+    global.battleRoyale.players.find(
+        p => p.userId === nextUserId
+    )
+
+global.battleRoyale.currentTurn =
+    nextPlayer.userId
 
     aliveTargets =
         global.battleRoyale.players.filter(
@@ -11271,17 +11316,15 @@ ${targetList}
 }
 
 const mentions = [
+    ...(first ? [first.userId] : []),
+    ...(second ? [second.userId] : []),
+    ...(third ? [third.userId] : []),
+
     attacker?.userId,
     target?.userId,
     global.battleRoyale.currentTurn,
     ...aliveTargets.map(p => p.userId)
 ].filter(Boolean)
-
-if (survivors.length === 1) {
-    if (first) mentions.push(first.userId)
-    if (second) mentions.push(second.userId)
-    if (third) mentions.push(third.userId)
-}
 
 return sock.sendMessage(
     msg.key.remoteJid,
