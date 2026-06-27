@@ -3664,10 +3664,10 @@ if (m.claimed) {
 const completed =
     m.login &&
     m.wins >= 5 &&
-    m.bossKills >= 2 &&
+    m.bossKills >= 1 &&
     m.pulls >= 10 &&
     m.gotSSS &&
-    m.gotLegendary >= 3
+    m.gotLegendary >= 2
 
 if (!completed) {
 
