@@ -3334,11 +3334,6 @@ if (text === '.اوامر') {
     )
 }
     
-
-    return safeSend(msg.key.remoteJid, {
-        text: `✅ تم تحديث ${result.modifiedCount} لاعب`
-    })
-}
     
 if (text.startsWith('.مزايدة ')) {
 
