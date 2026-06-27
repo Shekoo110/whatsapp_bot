@@ -331,6 +331,7 @@ ${answers.map(a => `*${a}*`).join(' - ')}`
         }
     }
 )
+}
 function checkAnswer(jid, userId, answer) {
 
     const room = module.exports.quizData.getQuizRoom(jid)
