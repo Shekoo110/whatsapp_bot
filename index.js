@@ -6111,22 +6111,35 @@ if (text === '.س') {
         const quotedMsg =
             quoted.quotedMessage
 
-        const buffer =
-            await downloadMediaMessage(
-                {
-                    message:
-                    quotedMsg
-                },
-                'buffer',
-                {},
-                {
-                    logger:
-                    console,
+        let buffer
 
-                    reuploadRequest:
-                    sock.updateMediaMessage
-                }
-            )
+try {
+
+    buffer = await downloadMediaMessage(
+        {
+            message: quotedMsg
+        },
+        'buffer',
+        {},
+        {
+            logger: console,
+            reuploadRequest: sock.updateMediaMessage
+        }
+    )
+
+} catch (err) {
+
+    console.log('DOWNLOAD MEDIA ERROR:')
+    console.error(err)
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: '❌ تعذر تحميل الوسائط، أعد إرسال الصورة ثم حاول مرة أخرى.'
+        }
+    )
+
+}
 
         // صورة
         if (
