@@ -3481,7 +3481,7 @@ const winsDone =
 m.wins >= 5 ? '✅' : '❌'
 
 const bossDone =
-m.bossKills >= 1 ? '✅' : '❌'
+m.bossKills >= 2 ? '✅' : '❌'
 
 const pullsDone =
 m.pulls >= 10 ? '✅' : '❌'
@@ -3490,16 +3490,16 @@ const sssDone =
 m.gotSSS ? '✅' : '❌'
 
 const legendaryDone =
-m.gotLegendary >= 2 ? '✅' : '❌'
+m.gotLegendary >= 3 ? '✅' : '❌'
 
 const completed =
 [
 m.login,
 m.wins >= 5,
-m.bossKills >= 1,
+m.bossKills >= 2,
 m.pulls >= 10,
 m.gotSSS,
-m.gotLegendary >= 2
+m.gotLegendary >= 3
 ].filter(Boolean).length
 
 const allDone =
@@ -3664,10 +3664,10 @@ if (m.claimed) {
 const completed =
     m.login &&
     m.wins >= 5 &&
-    m.bossKills >= 1 &&
+    m.bossKills >= 2 &&
     m.pulls >= 10 &&
     m.gotSSS &&
-    m.gotLegendary >= 2
+    m.gotLegendary >= 3
 
 if (!completed) {
 
