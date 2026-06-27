@@ -3335,26 +3335,6 @@ if (text === '.اوامر') {
 }
     
 
-if (text === '.fixhan' && userId.split('@')[0] === ownerId) {
-
-    const result = await Player.updateMany(
-        {},
-        {
-            $set: {
-                "characters.$[c].name": "Han Israt"
-            }
-        },
-        {
-            arrayFilters: [
-                {
-                    "c.name": "Loki",
-                    "c.anime": "Pick Me Up! Infinite Gacha",
-                    "c.form": "اللاعب رقم واحد"
-                }
-            ]
-        }
-    )
-
     return safeSend(msg.key.remoteJid, {
         text: `✅ تم تحديث ${result.modifiedCount} لاعب`
     })
@@ -3506,7 +3486,7 @@ const winsDone =
 m.wins >= 5 ? '✅' : '❌'
 
 const bossDone =
-m.bossKills >= 2 ? '✅' : '❌'
+m.bossKills >= 1 ? '✅' : '❌'
 
 const pullsDone =
 m.pulls >= 10 ? '✅' : '❌'
@@ -3515,16 +3495,16 @@ const sssDone =
 m.gotSSS ? '✅' : '❌'
 
 const legendaryDone =
-m.gotLegendary >= 3 ? '✅' : '❌'
+m.gotLegendary >= 2 ? '✅' : '❌'
 
 const completed =
 [
 m.login,
 m.wins >= 5,
-m.bossKills >= 2,
+m.bossKills >= 1,
 m.pulls >= 10,
 m.gotSSS,
-m.gotLegendary >= 3
+m.gotLegendary >= 2
 ].filter(Boolean).length
 
 const allDone =
