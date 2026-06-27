@@ -4,22 +4,9 @@ const questions =
 const imageQuestions =
     require('./imageQuestions')
 
-let roundsCount = 0
 const MAX_ROUNDS = 50
-let lastMode = -1
 
-let quizActive = false
-let currentQuestion = null
-let scoreboard = {}
-let answeredUsers = new Set()
-
-let usedQuestions = []
-let usedImages = []
-let usedRepeats = []
-
-let playerProgress = {}
-let questionSolved = false
-let questionStartTime = 0
+const quizRooms = {}
 
 const repeatQuestions = [
     'لوفي','زورو','نامي','سانجي','اوسوب','تشوبر','روبين','فرانكي','بروك','جينبي',
@@ -119,19 +106,19 @@ function normalize(text) {
         .trim()
 }
 
-function getRandomQuestion() {
+function getRandomQuestion(room) {
 
     const availableQuestions =
         questions.filter(
             (_, index) =>
-                !usedQuestions.includes(index)
+                !room.usedQuestions.includes(index)
         )
 
     if (!availableQuestions.length) {
 
-        usedQuestions = []
+        room.usedQuestions = []
 
-        return getRandomQuestion()
+        return getRandomQuestion(room)
     }
 
     const randomQuestion =
@@ -143,29 +130,25 @@ function getRandomQuestion() {
         ]
 
     const originalIndex =
-        questions.indexOf(
-            randomQuestion
-        )
+        questions.indexOf(randomQuestion)
 
-    usedQuestions.push(
-        originalIndex
-    )
+    room.usedQuestions.push(originalIndex)
 
     return randomQuestion
 }
-function getRandomRepeatQuestion() {
+function getRandomRepeatQuestion(room) {
 
     const available =
         repeatQuestions.filter(
             name =>
-                !usedRepeats.includes(name)
+                !room.usedRepeats.includes(name)
         )
 
     if (!available.length) {
 
-        usedRepeats = []
+        room.usedRepeats = []
 
-        return getRandomRepeatQuestion()
+        return getRandomRepeatQuestion(room)
     }
 
     const count =
@@ -176,27 +159,27 @@ function getRandomRepeatQuestion() {
 
     const selected =
         [...available]
-        .sort(() => Math.random() - 0.5)
-        .slice(0, count)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, count)
 
-    usedRepeats.push(...selected)
+    room.usedRepeats.push(...selected)
 
     return selected
 }
 
-function getRandomImageQuestion() {
+function getRandomImageQuestion(room) {
 
     const available =
         imageQuestions.filter(
             (_, index) =>
-                !usedImages.includes(index)
+                !room.usedImages.includes(index)
         )
 
     if (!available.length) {
 
-        usedImages = []
+        room.usedImages = []
 
-        return getRandomImageQuestion()
+        return getRandomImageQuestion(room)
     }
 
     const selected =
@@ -208,31 +191,26 @@ function getRandomImageQuestion() {
         ]
 
     const originalIndex =
-        imageQuestions.indexOf(
-            selected
-        )
+        imageQuestions.indexOf(selected)
 
-    usedImages.push(
-        originalIndex
-    )
+    room.usedImages.push(originalIndex)
 
     return selected
 }
 
-async function startQuestion(
-    sock,
-    jid
-) {
 
-    if (roundsCount >= MAX_ROUNDS) {
+async function startQuestion(sock, jid) {
 
-    quizActive = false
+    const room = module.exports.quizData.getQuizRoom(jid)
 
-    const ranking =
-        Object.entries(scoreboard)
+    if (room.roundsCount >= MAX_ROUNDS) {
+
+        room.quizActive = false
+
+        const ranking = Object.entries(room.scoreboard)
             .sort((a, b) => b[1] - a[1])
 
-    let resultText =
+        let resultText =
 `🏆 انتهت المسابقة
 
 📊 عدد الجولات: ${MAX_ROUNDS}
@@ -241,263 +219,216 @@ async function startQuestion(
 
 `
 
-    if (ranking.length) {
+        if (ranking.length) {
 
-        ranking.forEach(
-            ([userId, points], index) => {
+            ranking.forEach(([userId, points], index) => {
 
-                const medals = [
-                    '🥇',
-                    '🥈',
-                    '🥉'
-                ]
+                const medals = ['🥇', '🥈', '🥉']
 
                 resultText +=
 `${medals[index] || '🏅'} @${userId.split('@')[0]}
 ⭐ ${points} نقطة
 
 `
-            }
-        )
 
-    } else {
+            })
 
-        resultText +=
-'لا يوجد أي فائز.'
-    }
+        } else {
 
-    await sock.sendMessage(
-        jid,
-        {
-            text: resultText,
-            mentions:
-                ranking.map(
-                    r => r[0]
-                )
+            resultText += 'لا يوجد أي فائز.'
+
         }
-    )
 
-    roundsCount = 0
+        await sock.sendMessage(jid, {
+            text: resultText,
+            mentions: ranking.map(r => r[0])
+        })
 
-    usedQuestions.length = 0
-    usedImages.length = 0
-    usedRepeats.length = 0
+        room.roundsCount = 0
+        room.usedQuestions = []
+        room.usedImages = []
+        room.usedRepeats = []
+        room.scoreboard = {}
+        room.playerProgress = {}
+        room.answeredUsers.clear()
+        room.questionSolved = false
+        room.currentQuestion = null
+        room.lastMode = -1
 
-    lastMode = -1
-
-    for (const key in scoreboard) {
-        delete scoreboard[key]
+        return
     }
 
-    return
-}
+    room.answeredUsers.clear()
+    room.playerProgress = {}
+    room.questionSolved = false
+    room.questionStartTime = Date.now()
 
-    answeredUsers.clear()
-
-    playerProgress = {}
-
-    questionSolved = false
-
-    questionStartTime = Date.now()
-
-    roundsCount++
+    room.roundsCount++
 
     let mode
 
-do {
+    do {
 
-    mode =
-        Math.floor(Math.random() * 3)
+        mode = Math.floor(Math.random() * 3)
 
-} while (mode === lastMode)
+    } while (mode === room.lastMode)
 
-lastMode = mode
-    // سؤال
+    room.lastMode = mode
+
+    // سؤال نصي
     if (mode === 0) {
 
-        currentQuestion =
-            getRandomQuestion()
+        room.currentQuestion = getRandomQuestion(room)
 
-        return await sock.sendMessage(
-            jid,
-            {
-                text:
-
+        return await sock.sendMessage(jid, {
+            text:
 `🎯 سؤال جديد
 
-❓ ${currentQuestion.question}`
-            }
-        )
+❓ ${room.currentQuestion.question}`
+        })
+
     }
 
-    // كتابة
+    // اكتب التالي
     if (mode === 1) {
 
-        const answers =
-            getRandomRepeatQuestion()
+        const answers = getRandomRepeatQuestion(room)
 
-        currentQuestion = {
+        room.currentQuestion = {
             type: 'repeat',
             answers
         }
 
-        return await sock.sendMessage(
-            jid,
-            {
-                text:
-
+        return await sock.sendMessage(jid, {
+            text:
 `✍️ اكتب التالي:
 
 ${answers.map(a => `*${a}*`).join(' - ')}`
-            }
-        )
+        })
+
     }
 
-    // صورة
-const imageQuestion =
-    getRandomImageQuestion()
+    // سؤال صورة
 
-console.log(
-    'IMAGE QUESTION:',
-    imageQuestion
-)
+    const imageQuestion = getRandomImageQuestion(room)
 
-currentQuestion = {
-    type: 'image',
-    answers: imageQuestion.answers
-}
+    console.log('IMAGE QUESTION:', imageQuestion)
 
-return await sock.sendMessage(
-    jid,
-    {
+    room.currentQuestion = {
+        type: 'image',
+        answers: imageQuestion.answers
+    }
+
+    return await sock.sendMessage(jid, {
         image: {
             url: imageQuestion.image
         },
         caption: '🖼️ من هذه الشخصية؟'
-    }
-)
+    })
+
 }
+function checkAnswer(jid, userId, answer) {
 
-function checkAnswer(
-    userId,
-    answer
-) {
+    const room = module.exports.quizData.getQuizRoom(jid)
 
-    if (!currentQuestion)
+    if (!room.currentQuestion)
         return false
 
-    if (questionSolved)
+    if (room.questionSolved)
         return false
 
-    const normalizedAnswer =
-        normalize(answer)
+    const normalizedAnswer = normalize(answer)
 
-    if (!playerProgress[userId]) {
+    if (!room.playerProgress[userId]) {
 
-        playerProgress[userId] = {
+        room.playerProgress[userId] = {
             text: ''
         }
+
     }
 
     // تجميع جميع رسائل اللاعب
-    playerProgress[userId].text +=
+    room.playerProgress[userId].text +=
         ' ' + normalizedAnswer
 
     const fullText =
-        playerProgress[userId].text
+        room.playerProgress[userId].text
 
-    const uniqueAnswers =
-        [
-            ...new Set(
-                currentQuestion.answers.map(
-                    a => normalize(a)
-                )
+    const uniqueAnswers = [
+        ...new Set(
+            room.currentQuestion.answers.map(
+                a => normalize(a)
             )
-        ]
+        )
+    ]
 
-    if (currentQuestion.type === 'repeat') {
+    if (room.currentQuestion.type === 'repeat') {
 
-    const normalizedText =
-    normalize(fullText)
+        const normalizedText = normalize(fullText)
 
-const allFound =
-    uniqueAnswers.every(
-        answer =>
-            normalizedText.includes(
-                normalize(answer)
+        const allFound =
+            uniqueAnswers.every(
+                ans =>
+                    normalizedText.includes(ans)
             )
-    )
 
-    if (allFound) {
+        if (allFound) {
 
-        if (!scoreboard[userId]) {
-            scoreboard[userId] = 0
+            if (!room.scoreboard[userId]) {
+                room.scoreboard[userId] = 0
+            }
+
+            room.scoreboard[userId] += 1
+
+            room.questionSolved = true
+
+            delete room.playerProgress[userId]
+
+            return true
         }
 
-        scoreboard[userId] += 1
-
-        questionSolved = true
-
-        delete playerProgress[userId]
-
-        return true
+        return false
     }
-
-    return false
-}
 
     let matchedCount = 0
 
-for (const correct of uniqueAnswers) {
+    for (const correct of uniqueAnswers) {
 
-    const regex =
-        new RegExp(
-            `(^|\\s)${correct}(\\s|$)`
-        )
+        const regex =
+            new RegExp(`(^|\\s)${correct}(\\s|$)`)
 
-    if (
-        regex.test(fullText)
-    ) {
-        matchedCount++
+        if (regex.test(fullText)) {
+            matchedCount++
+        }
+
     }
-}
 
     const required =
-        currentQuestion.required ||
+        room.currentQuestion.required ||
         (
-            currentQuestion.type ===
-            'multi'
-                ? Math.min(
-                    3,
-                    uniqueAnswers.length
-                )
+            room.currentQuestion.type === 'multi'
+                ? Math.min(3, uniqueAnswers.length)
                 : 1
         )
 
-    if (
-        matchedCount >= required
-    ) {
+    if (matchedCount >= required) {
 
-        if (
-            !scoreboard[userId]
-        ) {
-            scoreboard[userId] = 0
+        if (!room.scoreboard[userId]) {
+            room.scoreboard[userId] = 0
         }
 
-        scoreboard[userId] += 1
+        room.scoreboard[userId] += 1
 
-        questionSolved = true
+        room.questionSolved = true
 
-        delete playerProgress[userId]
+        delete room.playerProgress[userId]
 
         return true
     }
 
     return false
 }
-
 module.exports = {
-
     getRandomQuestion,
     getRandomRepeatQuestion,
     getRandomImageQuestion,
@@ -507,45 +438,29 @@ module.exports = {
     checkAnswer,
 
     quizData: {
-        get quizActive() {
-            return quizActive
-        },
+        getQuizRoom(jid) {
 
-        set quizActive(value) {
-            quizActive = value
-        },
+            if (!quizRooms[jid]) {
 
-        get roundsCount() {
-            return roundsCount
-        },
+                quizRooms[jid] = {
+                    quizActive: false,
+                    currentQuestion: null,
+                    roundsCount: 0,
+                    scoreboard: {},
+                    answeredUsers: new Set(),
+                    usedQuestions: [],
+                    usedImages: [],
+                    usedRepeats: [],
+                    playerProgress: {},
+                    questionSolved: false,
+                    questionStartTime: 0,
+                    lastMode: -1
+                }
 
-        set roundsCount(value) {
-            roundsCount = value
-        },
+            }
 
-        get questionStartTime() {
-            return questionStartTime
-        },
-
-        get currentQuestion() {
-            return currentQuestion
-        },
-
-        set currentQuestion(value) {
-            currentQuestion = value
-        },
-
-        scoreboard,
-
-        answeredUsers,
-
-        usedQuestions,
-
-        usedImages,
-
-        usedRepeats,
-
-        playerProgress
+            return quizRooms[jid]
+        }
     }
 }
 
