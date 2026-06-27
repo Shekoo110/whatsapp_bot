@@ -11508,11 +11508,14 @@ if (text === '.بدا_مسابقة') {
     }
 
     room.quizActive = true
-
     room.roundsCount = 0
     room.currentQuestion = null
 
-    room.scoreboard = {}
+    // إعادة تعيين البيانات
+    for (const key in room.scoreboard) {
+        delete room.scoreboard[key]
+    }
+
     room.playerProgress = {}
     room.usedQuestions = []
     room.usedImages = []
@@ -11521,6 +11524,8 @@ if (text === '.بدا_مسابقة') {
     room.answeredUsers.clear()
 
     room.questionSolved = false
+    room.questionStartTime = 0
+    room.lastMode = -1
 
     await sock.sendMessage(msg.key.remoteJid, {
         text: '🎮 تم بدء المسابقة'
@@ -11548,9 +11553,8 @@ if (text === '.بدا_مسابقة') {
 
     let result = '🏆 نتائج المسابقة\n\n'
 
-    const ranking =
-        Object.entries(room.scoreboard)
-            .sort((a, b) => b[1] - a[1])
+    const ranking = Object.entries(room.scoreboard)
+        .sort((a, b) => b[1] - a[1])
 
     if (ranking.length === 0) {
 
@@ -11560,9 +11564,11 @@ if (text === '.بدا_مسابقة') {
 
         ranking.forEach(([id, points], index) => {
 
+            const medals = ['🥇', '🥈', '🥉']
+
             result +=
-`${index + 1}- @${id.split('@')[0]}
-⭐ النقاط: ${points}
+`${medals[index] || '🏅'} @${id.split('@')[0]}
+⭐ ${points} نقطة
 
 `
 
@@ -11579,7 +11585,11 @@ if (text === '.بدا_مسابقة') {
     )
 
     room.roundsCount = 0
-    room.scoreboard = {}
+
+    for (const key in room.scoreboard) {
+        delete room.scoreboard[key]
+    }
+
     room.currentQuestion = null
     room.playerProgress = {}
     room.usedQuestions = []
@@ -11589,8 +11599,54 @@ if (text === '.بدا_مسابقة') {
     room.answeredUsers.clear()
 
     room.questionSolved = false
+    room.questionStartTime = 0
     room.lastMode = -1
 }
+if (text === '.النقاط') {
+
+    const room = quizData.getQuizRoom(msg.key.remoteJid)
+
+    if (!room.quizActive) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '❌ لا توجد مسابقة حالياً في هذا القروب'
+        })
+    }
+
+    const ranking = Object.entries(room.scoreboard)
+        .filter(([, points]) => points > 0)
+        .sort((a, b) => b[1] - a[1])
+
+    if (ranking.length === 0) {
+        return sock.sendMessage(msg.key.remoteJid, {
+            text: '📊 لا يوجد أي لاعب حصل على نقاط حتى الآن.'
+        })
+    }
+
+    let result = '📊 النقاط الحالية\n\n'
+
+    ranking.forEach(([id, points], index) => {
+
+        const medals = ['🥇', '🥈', '🥉']
+
+        result +=
+`${medals[index] || '🏅'} @${id.split('@')[0]}
+⭐ ${points} نقطة
+
+`
+
+    })
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: result,
+            mentions: ranking.map(r => r[0])
+        }
+    )
+
+    return
+}
+    
     if (
 text.startsWith('.xo ')
 ) {
