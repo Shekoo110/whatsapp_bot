@@ -3178,7 +3178,8 @@ const room = quizData.getQuizRoom(msg.key.remoteJid)
 
 if (
     room.quizActive &&
-    text !== '.انهاء_مسابقة'
+    text !== '.انهاء_مسابقة' &&
+    text !== '.النقاط'
 ) {
 
     const isCorrect =
