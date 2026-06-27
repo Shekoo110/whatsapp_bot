@@ -245,15 +245,19 @@ async function startQuestion(sock, jid) {
         })
 
         room.roundsCount = 0
-        room.usedQuestions = []
-        room.usedImages = []
-        room.usedRepeats = []
-        room.scoreboard = {}
-        room.playerProgress = {}
-        room.answeredUsers.clear()
-        room.questionSolved = false
-        room.currentQuestion = null
-        room.lastMode = -1
+room.usedQuestions = []
+room.usedImages = []
+room.usedRepeats = []
+
+for (const key in room.scoreboard) {
+    delete room.scoreboard[key]
+}
+
+room.playerProgress = {}
+room.answeredUsers.clear()
+room.questionSolved = false
+room.currentQuestion = null
+room.lastMode = -1
 
         return
     }
@@ -319,14 +323,14 @@ ${answers.map(a => `*${a}*`).join(' - ')}`
         answers: imageQuestion.answers
     }
 
-    return await sock.sendMessage(jid, {
+    return await sock.sendMessage(
+    jid,
+    {
         image: {
             url: imageQuestion.image
-        },
-        caption: '🖼️ من هذه الشخصية؟'
-    })
-
-}
+        }
+    }
+)
 function checkAnswer(jid, userId, answer) {
 
     const room = module.exports.quizData.getQuizRoom(jid)
