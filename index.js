@@ -3174,54 +3174,62 @@ return
 // 🧠 QUIZ SYSTEM
 // =========================
 
+const room = quizData.getQuizRoom(msg.key.remoteJid)
+
 if (
-    quizData.quizActive &&
+    room.quizActive &&
     text !== '.انهاء_مسابقة'
 ) {
 
     const isCorrect =
-    checkAnswer(userId, text)
+        checkAnswer(
+            msg.key.remoteJid,
+            userId,
+            text
+        )
 
-if (isCorrect) {
+    if (isCorrect) {
 
-    const seconds =
-        (
-            Date.now() -
-            quizData.questionStartTime
-        ) / 1000
+        room.questionSolved = true
 
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
+        const seconds =
+(
+    Date.now() -
+    room.questionStartTime
+) / 1000
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        text:
 `🎉 إجابة صحيحة!
-
-🏆 الفائز: @${userId.split('@')[0]}
 
 ⏱️ الوقت: ${seconds.toFixed(1)} ثانية
 
-⭐ +1 نقطة`,
-            mentions: [userId]
-        },
-        {
-            quoted: msg
-        }
-    )
+⭐ +1 نقطة`
+    },
+    {
+        quoted: msg
+    }
+)
 
-    setTimeout(() => {
+        setTimeout(() => {
 
-        if (quizData.quizActive) {
+            if (room.quizActive) {
 
-            startQuestion(
-                sock,
-                msg.key.remoteJid
-            )
-        }
+                startQuestion(
+                    sock,
+                    msg.key.remoteJid
+                )
 
-    }, 2000)
-}
+            }
 
-return
+        }, 2000)
+
+    }
+
+    return
+
 }
 
 // =========================
@@ -11491,33 +11499,28 @@ ${msg.key.remoteJid}`
     
 if (text === '.بدا_مسابقة') {
 
-    if (quizData.quizActive) {
+    const room = quizData.getQuizRoom(msg.key.remoteJid)
+
+    if (room.quizActive) {
         return sock.sendMessage(msg.key.remoteJid, {
-            text: '❌ توجد مسابقة شغالة بالفعل'
+            text: '❌ توجد مسابقة شغالة بالفعل في هذا القروب'
         })
     }
 
-    quizData.quizActive = true
+    room.quizActive = true
 
-    quizData.roundsCount = 0
-quizData.currentQuestion = null
+    room.roundsCount = 0
+    room.currentQuestion = null
 
-    // 🔥 تصفير النقاط بطريقة آمنة
-    for (const key in quizData.scoreboard) {
-        delete quizData.scoreboard[key]
-    }
+    room.scoreboard = {}
+    room.playerProgress = {}
+    room.usedQuestions = []
+    room.usedImages = []
+    room.usedRepeats = []
 
-    // 🧹 تنظيف بيانات اللعب
-    quizData.usedQuestions.length = 0
+    room.answeredUsers.clear()
 
-for (const key in quizData.playerProgress) {
-    delete quizData.playerProgress[key]
-}
-
-    // ⚠️ مهم جدًا (لو موجود في الملف)
-    if (typeof questionSolved !== 'undefined') {
-        questionSolved = false
-    }
+    room.questionSolved = false
 
     await sock.sendMessage(msg.key.remoteJid, {
         text: '🎮 تم بدء المسابقة'
@@ -11528,45 +11531,65 @@ for (const key in quizData.playerProgress) {
 
     if (text === '.انهاء_مسابقة') {
 
-    if (!quizData.quizActive) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text: '❌ لا توجد مسابقة حالياً'
-        })
+    const room = quizData.getQuizRoom(msg.key.remoteJid)
+
+    if (!room.quizActive) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد مسابقة حالياً في هذا القروب'
+            }
+        )
     }
 
-    // 🔥 هنا تضيفها مباشرة
-    quizData.quizActive = false
-    quizData.currentQuestion = null
-    questionSolved = true
+    room.quizActive = false
+    room.currentQuestion = null
+    room.questionSolved = true
 
     let result = '🏆 نتائج المسابقة\n\n'
 
-    const ranking = Object.entries(quizData.scoreboard)
-        .sort((a, b) => b[1] - a[1])
+    const ranking =
+        Object.entries(room.scoreboard)
+            .sort((a, b) => b[1] - a[1])
 
     if (ranking.length === 0) {
+
         result += '❌ لا يوجد فائزون'
+
     } else {
+
         ranking.forEach(([id, points], index) => {
+
             result +=
 `${index + 1}- @${id.split('@')[0]}
 ⭐ النقاط: ${points}
 
 `
+
         })
+
     }
 
-    await sock.sendMessage(msg.key.remoteJid, {
-        text: result,
-        mentions: ranking.map(x => x[0])
-    })
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: result,
+            mentions: ranking.map(x => x[0])
+        }
+    )
 
-    quizData.usedQuestions.length = 0
-    quizData.playerProgress = {}
+    room.roundsCount = 0
+    room.scoreboard = {}
+    room.currentQuestion = null
+    room.playerProgress = {}
+    room.usedQuestions = []
+    room.usedImages = []
+    room.usedRepeats = []
 
-    if (quizData.answeredUsers) {
-        quizData.answeredUsers.clear()
-    }
+    room.answeredUsers.clear()
+
+    room.questionSolved = false
+    room.lastMode = -1
 }
     if (
 text.startsWith('.xo ')
