@@ -2,20 +2,20 @@ const bosses = [
 
 {
 name: "Aizen",
-hp: 3500000,
-maxHp: 3500000,
-attack: 2500,
+hp: 5500000,
+maxHp: 5500000,
+attack: 10000,
 
 followers: [
 {
     name: "Gin",
-    hp: 15000,
+    hp: 1500000,
     ability: "poison",
     image: "https://files.catbox.moe/g9e6ey.jpg"
 },
 {
     name: "Tosen",
-    hp: 15000,
+    hp: 1500000,
     ability: "blind",
     image: "https://files.catbox.moe/6e9lvz.jpg"
 }
@@ -32,20 +32,20 @@ effect: "halfDamage"
 
 {
 name: "Yhwach",
-hp: 3500000,
-maxHp: 3500000,
-attack: 2500,
+hp: 5500000,
+maxHp: 5500000,
+attack: 10000,
 
 followers: [
 {
     name: "Jugram",
-    hp: 18000,
+    hp: 1800000,
     ability: "reflect",
     image: "https://files.catbox.moe/1vuy9d.jpg"
 },
 {
     name: "Uryu",
-    hp: 18000,
+    hp: 1800000,
     ability: "dodge",
     image: "https://files.catbox.moe/q77oxp.jpg"
 }
@@ -62,20 +62,20 @@ effect: "dodge"
 
 {
 name: "Tokinada",
-hp: 3500000,
+hp: 5500000,
 maxHp: 3500000,
-attack: 2500,
+attack: 10000,
 
 followers: [
 {
     name: "Hikone",
-    hp: 16000,
+    hp: 1600000,
     ability: "bonusDamage",
     image: "https://files.catbox.moe/i1l10b.jpg"
 },
 {
     name: "Aura",
-    hp: 16000,
+    hp: 1600000,
     ability: "healBoss",
     image: "https://files.catbox.moe/sve9lh.jpg"
 }
@@ -92,19 +92,19 @@ effect: "heal"
 
 {
 name: "Imu",
-hp: 3500000,
-maxHp: 3500000,
-  attack: 3000,
+hp: 5500000,
+maxHp: 5500000,
+  attack: 10000,
 followers: [
 {
     name: "Saturn",
-    hp: 20000,
+    hp: 1500000,
     ability: "healBoss",
     image: "https://files.catbox.moe/iispeh.jpg"
 },
 {
     name: "Garling",
-    hp: 20000,
+    hp: 1500000,
     ability: "bonusDamage",
     image: "https://files.catbox.moe/42bjc5.jpg"
 }
@@ -121,20 +121,20 @@ effect: "bigHeal"
 
 {
 name: "Joy Boy",
-hp: 3500000,
+hp: 5500000,
 maxHp: 3500000,
-  attack: 3500,
+  attack: 10000,
 
 followers: [
 {
     name: "Zoro",
-    hp: 25000,
+    hp: 1500000,
     ability: "bonusDamage",
     image: "https://files.catbox.moe/wvaecf.jpg"
 },
 {
     name: "Sanji",
-    hp: 25000,
+    hp: 1500000,
     ability: "healBoss",
     image: "https://files.catbox.moe/8hufgb.jpg"
 }
@@ -151,20 +151,20 @@ effect: "doubleDamage"
 
 {
 name: "Madara",
-hp: 3500000,
-maxHp: 3500000,
-  attack: 3000,
+hp: 5500000,
+maxHp: 5500000,
+  attack: 10000,
 
 followers: [
 {
     name: "Obito",
-    hp: 20000,
+    hp: 1500000,
     ability: "dodge",
     image: "https://files.catbox.moe/p7lq99.jpg"
 },
 {
     name: "Pain",
-    hp: 20000,
+    hp: 1500000,
     ability: "reflect",
     image: "https://files.catbox.moe/p3o4ww.jpg"
 }
@@ -181,20 +181,20 @@ effect: "heal"
 
 {
 name: "Kaido",
-hp: 3500000,
-maxHp: 3500000,
-  attack: 3000,
+hp: 5500000,
+maxHp: 5500000,
+  attack: 10000,
 
 followers: [
 {
     name: "King",
-    hp: 20000,
+    hp: 1500000,
     ability: "reduceDamage",
     image: "https://files.catbox.moe/9c6tda.jpg"
 },
 {
     name: "Queen",
-    hp: 20000,
+    hp: 1500000,
     ability: "poison",
     image: "https://files.catbox.moe/zat21v.jpg"
 }
@@ -210,20 +210,20 @@ effect: "reduceDamage"
 
 {
 name: "Roger",
-hp: 3500000,
-maxHp: 3500000,
-  attack: 3000,
+hp: 5500000,
+maxHp: 5500000,
+  attack: 10000,
 
 followers: [
 {
     name: "Rayleigh",
-    hp: 18000,
+    hp: 1500000,
     ability: "bonusDamage",
     image: "https://files.catbox.moe/0qz0nl.jpg"
 },
 {
     name: "Gaban",
-    hp: 18000,
+    hp: 1500000,
     ability: "reflect",
     image: "https://files.catbox.moe/pqq9da.jpg"
 }
@@ -240,20 +240,20 @@ effect: "reduceDamage"
 
 {
 name: "Meruem",
-hp: 3500000,
-maxHp: 3500000,
-  attack: 2500,
+hp: 5500000,
+maxHp: 5500000,
+  attack: 10000,
 
 followers: [
 {
     name: "Youpi",
-    hp: 22000,
+    hp: 1500000,
     ability: "bonusDamage",
     image: "https://files.catbox.moe/rht29c.jpg"
 },
 {
     name: "Pouf",
-    hp: 22000,
+    hp: 1500000,
     ability: "healBoss",
     image: "https://files.catbox.moe/sxvyby.jpg"
 }
@@ -269,20 +269,20 @@ effect: "heal"
 
 {
 name: "Teach",
-hp: 3500000,
-maxHp: 3500000,
-  attack: 2500,
+hp: 5500000,
+maxHp: 5500000,
+  attack: 10000,
 
 followers: [
 {
     name: "Shiryu",
-    hp: 20000,
+    hp: 1500000,
     ability: "dodge",
     image: "https://files.catbox.moe/uhxd0l.jpg"
 },
 {
     name: "Burgess",
-    hp: 20000,
+    hp: 1500000,
     ability: "critical",
     image: "https://files.catbox.moe/ejt1ox.jpg"
 }
