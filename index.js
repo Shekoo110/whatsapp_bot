@@ -1,4 +1,5 @@
 const fs = require('fs')
+const getPlayerPower = require('./utils/getPlayerPower')
 const { getClanShop } = require('./clanShop')
 const Clan = require('./models/Clan')
 const updateClanPower =
