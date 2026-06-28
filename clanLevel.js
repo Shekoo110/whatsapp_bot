@@ -1,4 +1,5 @@
 const Clan = require('./models/Clan')
+const Player = require('./models/Player')
 
 const MAX_LEVEL = 25
 
@@ -16,23 +17,64 @@ async function addClanXP(clanId, amount) {
 
     if (!clan) return null
 
-    if (clan.level >= MAX_LEVEL)
-        return clan
+    if (clan.level >= MAX_LEVEL) {
+
+        return {
+            clan,
+            leveledUp: false
+        }
+
+    }
 
     clan.xp += amount
 
     let leveledUp = false
 
     while (
+
         clan.level < MAX_LEVEL &&
         clan.xp >= clan.nextLevelXp
+
     ) {
 
         clan.xp -= clan.nextLevelXp
 
         clan.level++
 
-        clan.coins += 50
+        // مكافأة كل عضو
+
+        for (const memberId of clan.members) {
+
+            await Player.updateOne(
+
+                {
+                    userId: memberId
+                },
+
+                {
+                    $inc: {
+
+                        money: 250000,
+
+                        clanCoins: 50
+
+                    }
+
+                }
+
+            )
+
+        }
+
+        if (clan.level >= MAX_LEVEL) {
+
+            clan.level = MAX_LEVEL
+            clan.xp = 0
+            clan.nextLevelXp = 0
+
+            break
+
+        }
 
         clan.nextLevelXp =
             getRequiredXP(clan.level)
@@ -44,8 +86,11 @@ async function addClanXP(clanId, amount) {
     await clan.save()
 
     return {
+
         clan,
+
         leveledUp
+
     }
 
 }
