@@ -3471,7 +3471,8 @@ ${emoji} ${clanName}
 🆔 ${clan.clanId}
 
 ⭐ المستوى: ${clan.level}
-✨ الخبرة: ${clan.exp}/${clan.nextLevelExp}
+✨ الخبرة: ${clan.xp}/${clan.nextLevelXp}
+🪙 عملات العشيرة: ${clan.coins.toLocaleString()}
 
 👑 القائد:
 @${clan.leader.split('@')[0]}
