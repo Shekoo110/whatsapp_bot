@@ -1,4 +1,5 @@
 const fs = require('fs')
+const Clan = require('./models/Clan')
 const commands = require('./commands/index')
 const pendingSellConfirm =
 global.pendingSellConfirm ||
@@ -3253,6 +3254,394 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+    if (text.startsWith('.انشاء_عشيرة')) {
+
+    const args = text.replace('.انشاء_عشيرة', '').trim()
+
+    if (!args) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ الاستخدام:\n.انشاء_عشيرة 👑 القراصنة'
+            }
+        )
+
+    }
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) return
+
+    if (player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ أنت داخل عشيرة بالفعل.'
+            }
+        )
+
+    }
+
+    if (player.money < 1500000) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ تحتاج 1,500,000 لإنشاء عشيرة.'
+            }
+        )
+
+    }
+
+    const split =
+        args.split(' ')
+
+    let emoji = '🏴'
+
+    if (/\p{Extended_Pictographic}/u.test(split[0])) {
+
+        emoji = split.shift()
+
+    }
+
+    const clanName =
+        split.join(' ').trim()
+
+    if (!clanName) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ اكتب اسم العشيرة.'
+            }
+        )
+
+    }
+
+    const exists =
+        await Clan.findOne({
+            name: clanName
+        })
+
+    if (exists) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ يوجد عشيرة بهذا الاسم.'
+            }
+        )
+
+    }
+
+    const total =
+        await Clan.countDocuments()
+
+    const clanId =
+        `CL${String(total + 1).padStart(3,'0')}`
+
+    await Clan.create({
+
+        clanId,
+
+        name: clanName,
+
+        emoji,
+
+        leader: userId,
+
+        members: [userId]
+
+    })
+
+    player.money -= 1500000
+
+    player.clanId = clanId
+
+    await player.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`🎉 تم إنشاء العشيرة بنجاح
+
+${emoji} ${clanName}
+
+🆔 ${clanId}
+
+👑 القائد:
+@${userId.split('@')[0]}
+
+💰 تم خصم 1,500,000`,
+            mentions: [userId]
+        }
+    )
+
+}
+    if (text === '.عشيرتي') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player || !player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت لست داخل أي عشيرة.'
+            }
+        )
+
+    }
+
+    const clan =
+        await Clan.findOne({
+            clanId: player.clanId
+        })
+
+    if (!clan) {
+
+        player.clanId = null
+        await player.save()
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لم يتم العثور على العشيرة.'
+            }
+        )
+
+    }
+
+    let totalPower = 0
+
+    for (const memberId of clan.members) {
+
+        const member =
+            await Player.findOne({
+                userId: memberId
+            })
+
+        if (!member) continue
+
+        if (!member.characters) continue
+
+        for (const ch of member.characters) {
+
+            totalPower += Number(ch.power || 0)
+
+        }
+
+    }
+
+    const mentions = []
+
+    let membersText = ''
+
+    for (const memberId of clan.members) {
+
+        mentions.push(memberId)
+
+        let icon = '👤'
+
+        if (memberId === clan.leader)
+            icon = '👑'
+
+        membersText +=
+`${icon} @${memberId.split('@')[0]}\n`
+
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`${clan.emoji} ${clan.name}
+
+🆔 ${clan.clanId}
+
+⭐ المستوى: ${clan.level}
+✨ الخبرة: ${clan.exp}/${clan.nextLevelExp}
+
+👑 القائد:
+@${clan.leader.split('@')[0]}
+
+👥 الأعضاء: ${clan.members.length}/4
+
+⚔️ قوة العشيرة: ${totalPower.toLocaleString()}
+
+🏆 الانتصارات: ${clan.wins}
+💀 الهزائم: ${clan.losses}
+
+━━━━━━━━━━━━
+
+👥 الأعضاء
+
+${membersText}`,
+            mentions
+        }
+    )
+
+}
+
+    if (
+    text.startsWith('.دعوة')
+) {
+
+    const mentioned =
+        msg.message
+        ?.extendedTextMessage
+        ?.contextInfo
+        ?.mentionedJid?.[0]
+
+    if (!mentioned) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ قم بمنشن اللاعب.'
+            }
+        )
+
+    }
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (
+        !player ||
+        !player.clanId
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ أنت لست داخل عشيرة.'
+            }
+        )
+
+    }
+
+    const clan =
+        await Clan.findOne({
+            clanId: player.clanId
+        })
+
+    if (!clan)
+        return
+
+    if (
+        clan.leader !== userId
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ فقط قائد العشيرة يستطيع الدعوة.'
+            }
+        )
+
+    }
+
+    if (
+        clan.members.length >= 4
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ العشيرة ممتلئة.'
+            }
+        )
+
+    }
+
+    const target =
+        await Player.findOne({
+            userId: mentioned
+        })
+
+    if (!target) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ اللاعب غير موجود.'
+            }
+        )
+
+    }
+
+    if (target.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ اللاعب داخل عشيرة.'
+            }
+        )
+
+    }
+
+    if (
+        clan.invites.includes(
+            mentioned
+        )
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ تمت دعوته مسبقاً.'
+            }
+        )
+
+    }
+
+    clan.invites.push(
+        mentioned
+    )
+
+    await clan.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`📨 تمت دعوة
+
+@${mentioned.split('@')[0]}
+
+للانضمام إلى
+
+${clan.emoji} ${clan.name}
+
+اكتب:
+.قبول
+أو
+.رفض`,
+            mentions: [mentioned]
+        }
+    )
+
+}
     
 if (text === '.اوامر') {
 
