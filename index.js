@@ -1,5 +1,7 @@
 const fs = require('fs')
+const { getClanShop } = require('./clanShop')
 const Clan = require('./models/Clan')
+const Player = require('./models/Player')
 const commands = require('./commands/index')
 const pendingSellConfirm =
 global.pendingSellConfirm ||
@@ -3255,6 +3257,289 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+if (text === '.متجر_العشيرة') {
+
+    const player = await Player.findOne({ userId })
+
+    if (!player || !player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت لست داخل أي عشيرة.'
+            }
+        )
+
+    }
+
+    const clan = await Clan.findOne({
+        clanId: player.clanId
+    })
+
+    if (!clan) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لم يتم العثور على العشيرة.'
+            }
+        )
+
+    }
+
+    const shop = getClanShop(clan.level)
+
+    let txt =
+`🏪 متجر العشيرة
+
+🪙 عملاتك: ${player.clanCoins || 0}
+
+━━━━━━━━━━━━━━
+
+`
+
+    shop.forEach((item, index) => {
+
+        if (item.locked) {
+
+            txt +=
+`${index + 1}- ${item.name} 🔒
+🔓 يفتح عند المستوى ${item.unlockLevel}
+
+`
+
+        } else {
+
+            txt +=
+`${index + 1}- ${item.name}
+
+💰 السعر: ${item.price} 🪙
+📦 الحد الأسبوعي: ${item.limit}
+
+`
+
+        }
+
+    })
+
+    txt +=
+`━━━━━━━━━━━━━━
+
+للشراء:
+.شراء_عشيرة رقم`
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: txt
+        }
+    )
+
+}
+    if (text.startsWith('.شراء_عشيرة')) {
+
+    const args = text.split(' ')
+    const index = Number(args[1]) - 1
+
+    if (isNaN(index)) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ مثال:\n.شراء_عشيرة 1'
+            }
+        )
+
+    }
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player || !player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ أنت لست داخل عشيرة.'
+            }
+        )
+
+    }
+
+    const clan =
+        await Clan.findOne({
+            clanId: player.clanId
+        })
+
+    if (!clan) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لم يتم العثور على العشيرة.'
+            }
+        )
+
+    }
+
+    const shop =
+        getClanShop(clan.level)
+
+    const item =
+        shop[index]
+
+    if (!item) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ العنصر غير موجود.'
+            }
+        )
+
+    }
+
+    if (item.locked) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ هذا العنصر يفتح عند مستوى ${item.unlockLevel}.`
+            }
+        )
+
+    }
+
+    const week =
+        new Date().toISOString().slice(0,10)
+
+    if (!player.clanShop)
+        player.clanShop = {}
+
+    if (!player.clanShop[week])
+        player.clanShop[week] = {}
+
+    const bought =
+        player.clanShop[week][item.id] || 0
+
+    if (bought >= item.limit) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ وصلت للحد الأسبوعي.'
+            }
+        )
+
+    }
+
+    if (
+        player.clanCoins <
+        item.price
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ لا تملك عملات عشيرة كافية.'
+            }
+        )
+
+    }
+
+    player.clanCoins -= item.price
+
+    player.clanShop[week][item.id] =
+        bought + 1
+        switch (item.id) {
+
+case "pull_ticket":
+
+player.pulls += 1
+
+break
+
+case "legendary_box":
+
+player.boxes.legendary += 1
+
+break
+
+case "sss_chance":
+
+player.boxes.sss_chance += 1
+
+break
+
+case "sss_high":
+
+player.boxes.sss_high += 1
+
+break
+
+case "storage":
+
+player.maxCharacters += 5
+
+break
+
+case "sss_shard":
+
+if (!player.shards)
+player.shards = {}
+
+break
+
+case "summon_boss":
+
+clan.bossAvailable = true
+
+break
+
+case "rename":
+
+if (userId !== clan.leader){
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+'❌ القائد فقط يستطيع شراء تغيير الاسم.'
+}
+)
+
+}
+
+player.renameClanTicket =
+(player.renameClanTicket||0)+1
+
+break
+
+}
+        await player.save()
+await clan.save()
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+`✅ اشتريت:
+
+${item.name}
+
+💰-${item.price} 🪙`
+}
+)
+
+}
+    
     if (text.startsWith('.انشاء_عشيرة')) {
 
     const args = text.replace('.انشاء_عشيرة', '').trim()
