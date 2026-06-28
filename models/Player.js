@@ -70,6 +70,15 @@ clanCoins: {
     type: Number,
     default: 0
 },
+    clanShop: {
+    type: Object,
+    default: {}
+},
+
+renameClanTicket: {
+    type: Number,
+    default: 0
+},
     
     // =========================
     // PvP SYSTEM
