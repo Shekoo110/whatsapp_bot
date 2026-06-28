@@ -1,5 +1,6 @@
 const Clan = require('../models/Clan')
 const Player = require('../models/Player')
+const getPlayerPower = require('./getPlayerPower')
 
 async function updateClanPower(clanId) {
 
@@ -17,17 +18,15 @@ async function updateClanPower(clanId) {
 
         if (!player) continue
 
-        for (const ch of player.characters || []) {
-
-            totalPower += Number(ch.power || 0)
-
-        }
+        totalPower += getPlayerPower(player)
 
     }
 
     clan.power = totalPower
 
     await clan.save()
+
+    return totalPower
 
 }
 
