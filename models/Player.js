@@ -29,6 +29,15 @@ const PlayerSchema = new mongoose.Schema({
     type: Number,
     default: 30
 },
+    clanStorageBonus: {
+    type: Number,
+    default: 0
+},
+
+clanStorageExpire: {
+    type: Number,
+    default: 0
+},
 
     // =========================
 // HP SYSTEM (PvP CORE)
