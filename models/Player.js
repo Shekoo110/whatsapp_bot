@@ -79,7 +79,8 @@ clanCoins: {
     type: Number,
     default: 0
 },
-    clanShop: {
+
+clanShop: {
     type: Object,
     default: {}
 },
@@ -87,6 +88,21 @@ clanCoins: {
 renameClanTicket: {
     type: Number,
     default: 0
+},
+
+clanStorageBonus: {
+    type: Number,
+    default: 0
+},
+
+clanStorageExpire: {
+    type: Number,
+    default: 0
+},
+
+pendingClanLeave: {
+    type: Number,
+    default: null
 },
     
     // =========================
