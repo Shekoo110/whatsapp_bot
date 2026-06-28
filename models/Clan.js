@@ -55,14 +55,29 @@ const clanSchema = new mongoose.Schema({
     },
 
     invites: {
-        type: [String],
-        default: []
-    },
+    type: [String],
+    default: []
+},
 
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+power: {
+    type: Number,
+    default: 0
+},
+
+warCooldown: {
+    type: Number,
+    default: 0
+},
+
+rankPoints: {
+    type: Number,
+    default: 1000
+},
+
+createdAt: {
+    type: Date,
+    default: Date.now
+}
 
 })
 
