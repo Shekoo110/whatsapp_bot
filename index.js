@@ -4143,7 +4143,7 @@ ${clan.emoji} ${clan.name}`
 
 }
 
-    if (text === '.خروج') {
+    
 if (text === '.خروج') {
 
     const player =
@@ -4316,6 +4316,87 @@ return safeSend(
 ⏳ يمكنك الانضمام إلى عشيرة أخرى بعد 24 ساعة.`
     }
 )
+
+        if (text === '.العشائر') {
+
+    const clans = await Clan.find()
+        .sort({ level: -1, power: -1 })
+
+    if (!clans.length) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد أي عشائر.'
+            }
+        )
+
+    }
+
+    let txt =
+`🏰 قائمة العشائر
+
+━━━━━━━━━━━━━━
+
+`
+
+    const mentions = []
+
+    for (let i = 0; i < clans.length; i++) {
+
+        const clan = clans[i]
+
+        let totalPower = 0
+
+        for (const memberId of clan.members) {
+
+            const member =
+                await Player.findOne({
+                    userId: memberId
+                })
+
+            if (!member) continue
+
+            for (const ch of member.characters || []) {
+
+                totalPower +=
+                    Number(ch.power || 0)
+
+            }
+
+        }
+
+        mentions.push(clan.leader)
+
+        txt +=
+`${i + 1}- ${clan.emoji} ${clan.name}
+
+👑 القائد:
+@${clan.leader.split('@')[0]}
+
+⭐ المستوى: ${clan.level}
+
+👥 الأعضاء:
+${clan.members.length}/4
+
+⚔️ القوة:
+${totalPower.toLocaleString()}
+
+━━━━━━━━━━━━━━
+
+`
+
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: txt,
+            mentions
+        }
+    )
+
+}
     
 if (text === '.اوامر') {
 
