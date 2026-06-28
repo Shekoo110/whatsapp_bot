@@ -3642,6 +3642,264 @@ ${clan.emoji} ${clan.name}
     )
 
 }
+    if (text === '.قبول') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) return
+
+    if (player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت داخل عشيرة بالفعل.'
+            }
+        )
+
+    }
+
+    // فحص مدة الانتظار
+    if (
+        player.clanCooldown &&
+        player.clanCooldown > Date.now()
+    ) {
+
+        const remaining =
+            player.clanCooldown - Date.now()
+
+        const hours =
+            Math.floor(
+                remaining / (1000 * 60 * 60)
+            )
+
+        const minutes =
+            Math.floor(
+                (remaining % (1000 * 60 * 60)) /
+                (1000 * 60)
+            )
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`⏳ لا يمكنك الانضمام إلى عشيرة الآن.
+
+الوقت المتبقي:
+🕒 ${hours} ساعة ${minutes} دقيقة`
+            }
+        )
+
+    }
+
+    const clan =
+        await Clan.findOne({
+            invites: userId
+        })
+
+    if (!clan) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد لديك أي دعوة.'
+            }
+        )
+
+    }
+
+    if (clan.members.length >= 4) {
+
+        clan.invites =
+            clan.invites.filter(
+                id => id !== userId
+            )
+
+        await clan.save()
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ العشيرة أصبحت ممتلئة.'
+            }
+        )
+
+    }
+
+    clan.members.push(userId)
+
+    clan.invites =
+        clan.invites.filter(
+            id => id !== userId
+        )
+
+    await clan.save()
+
+    player.clanId = clan.clanId
+    player.clanCooldown = 0
+
+    await player.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ انضممت إلى
+
+${clan.emoji} ${clan.name}
+
+مرحباً بك!
+
+👤 @${userId.split('@')[0]}`,
+            mentions: [userId]
+        }
+    )
+
+}
+if (text === '.رفض') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player) return
+
+    if (player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت داخل عشيرة بالفعل.'
+            }
+        )
+
+    }
+
+    const clan =
+        await Clan.findOne({
+            invites: userId
+        })
+
+    if (!clan) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد لديك أي دعوة.'
+            }
+        )
+
+    }
+
+    clan.invites =
+        clan.invites.filter(
+            id => id !== userId
+        )
+
+    await clan.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ تم رفض دعوة الانضمام إلى
+
+${clan.emoji} ${clan.name}`
+        }
+    )
+
+}
+
+    if (text === '.خروج') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player || !player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت لست داخل أي عشيرة.'
+            }
+        )
+
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`⚠️ هل أنت متأكد من مغادرة العشيرة؟
+
+• سيتم خروجك فوراً.
+• لن تتمكن من الانضمام إلى أي عشيرة أخرى لمدة *24 ساعة*.
+• لن تستفيد من مزايا ومستوى العشيرة خلال هذه المدة.
+
+اكتب:
+*.تأكيد_الخروج*`
+        }
+    )
+
+}
+    if (text === '.تأكيد_الخروج') {
+
+    const player =
+        await Player.findOne({ userId })
+
+    if (!player || !player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت لست داخل أي عشيرة.'
+            }
+        )
+
+    }
+
+    const clan =
+        await Clan.findById(player.clanId)
+
+    if (!clan) {
+
+        player.clanId = null
+        await player.save()
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ العشيرة غير موجودة.'
+            }
+        )
+
+    }
+
+    // يمنع الانضمام لمدة 24 ساعة
+    player.clanId = null
+    player.clanCooldown =
+        Date.now() + (24 * 60 * 60 * 1000)
+
+    await player.save()
+
+    clan.members =
+        clan.members.filter(
+            id => id !== userId
+        )
+
+    await clan.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ غادرت العشيرة بنجاح.
+
+⏳ يمكنك الانضمام إلى عشيرة أخرى بعد 24 ساعة.`
+        }
+    )
+
+}
     
 if (text === '.اوامر') {
 
