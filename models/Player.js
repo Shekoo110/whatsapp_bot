@@ -65,6 +65,11 @@ clanCooldown: {
     type: Number,
     default: 0
 },
+
+clanCoins: {
+    type: Number,
+    default: 0
+},
     
     // =========================
     // PvP SYSTEM
