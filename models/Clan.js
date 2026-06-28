@@ -30,19 +30,39 @@ const clanSchema = new mongoose.Schema({
     },
 
     level: {
-        type: Number,
-        default: 1
-    },
+    type: Number,
+    default: 1
+},
 
-    xp: {
-        type: Number,
-        default: 0
-    },
+xp: {
+    type: Number,
+    default: 0
+},
 
-    coins: {
-        type: Number,
-        default: 0
-    },
+nextLevelXp: {
+    type: Number,
+    default: 1000
+},
+
+coins: {
+    type: Number,
+    default: 0
+},
+
+shopRefresh: {
+    type: String,
+    default: ''
+},
+
+bossAvailable: {
+    type: Boolean,
+    default: false
+},
+
+bossPurchasedAt: {
+    type: Number,
+    default: 0
+},
 
     wins: {
         type: Number,
@@ -77,6 +97,26 @@ rankPoints: {
 createdAt: {
     type: Date,
     default: Date.now
+},
+
+shopPurchases: {
+    type: Map,
+    of: {
+        type: Map,
+        of: Number
+    },
+    default: {}
+},
+
+clanInventoryBonus: {
+    type: Map,
+    of: Number,
+    default: {}
+},
+
+clanBuffs: {
+    type: Object,
+    default: {}
 }
 
 })
