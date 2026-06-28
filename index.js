@@ -1,6 +1,8 @@
 const fs = require('fs')
 const { getClanShop } = require('./clanShop')
 const Clan = require('./models/Clan')
+const updateClanPower =
+require('./utils/updateClanPower')
 const Player = require('./models/Player')
 const commands = require('./commands/index')
 const pendingSellConfirm =
@@ -3694,6 +3696,7 @@ ${item.name}
         members: [userId]
 
     })
+        await updateClanPower(clanId)
 
     player.money -= 1500000
 
@@ -4062,17 +4065,18 @@ ${clan.emoji} ${clan.name}
 
     clan.members.push(userId)
 
-    clan.invites =
-        clan.invites.filter(
-            id => id !== userId
-        )
+clan.invites =
+    clan.invites.filter(
+        id => id !== userId
+    )
 
-    await clan.save()
+await clan.save()
 
-    player.clanId = clan.clanId
-    player.clanCooldown = 0
+await updateClanPower(clan.clanId)
 
-    await player.save()
+player.clanId = clan.clanId
+
+await player.save()
 
     return safeSend(
         msg.key.remoteJid,
@@ -4138,6 +4142,138 @@ if (text === '.رفض') {
 `❌ تم رفض دعوة الانضمام إلى
 
 ${clan.emoji} ${clan.name}`
+        }
+    )
+
+}
+    if (text.startsWith('.طرد')) {
+
+    const player = await Player.findOne({ userId })
+
+    if (!player || !player.clanId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت لست داخل أي عشيرة.'
+            }
+        )
+
+    }
+
+    const clan = await Clan.findOne({
+        clanId: player.clanId
+    })
+
+    if (!clan) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ العشيرة غير موجودة.'
+            }
+        )
+
+    }
+
+    if (clan.leader !== userId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ فقط قائد العشيرة يستطيع طرد الأعضاء.'
+            }
+        )
+
+    }
+
+    const mentioned =
+        msg.message?.extendedTextMessage?.contextInfo?.mentionedJid
+
+    if (!mentioned || mentioned.length === 0) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ قم بمنشن العضو الذي تريد طرده.'
+            }
+        )
+
+    }
+
+    const targetId = mentioned[0]
+
+    if (targetId === clan.leader) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يمكنك طرد نفسك.'
+            }
+        )
+
+    }
+
+    if (!clan.members.includes(targetId)) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ هذا اللاعب ليس داخل عشيرتك.'
+            }
+        )
+
+    }
+
+    const targetPlayer =
+        await Player.findOne({
+            userId: targetId
+        })
+
+    clan.members =
+        clan.members.filter(
+            id => id !== targetId
+        )
+
+    await clan.save()
+
+    // تحديث قوة العشيرة
+    await updateClanPower(clan.clanId)
+
+    if (targetPlayer) {
+
+        targetPlayer.clanId = null
+
+        targetPlayer.clanCooldown =
+            Date.now() + (24 * 60 * 60 * 1000)
+
+        // إزالة كل مزايا العشيرة
+        targetPlayer.maxCharacters -=
+            (targetPlayer.clanStorageBonus || 0)
+
+        if (targetPlayer.maxCharacters < 30)
+            targetPlayer.maxCharacters = 30
+
+        targetPlayer.clanStorageBonus = 0
+        targetPlayer.clanStorageExpire = 0
+        targetPlayer.clanCoins = 0
+        targetPlayer.clanShop = {}
+        targetPlayer.renameClanTicket = 0
+
+        await targetPlayer.save()
+
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم طرد
+
+@${targetId.split('@')[0]}
+
+من العشيرة.`,
+            mentions: [targetId]
         }
     )
 
@@ -4281,10 +4417,17 @@ if (player.clanStorageBonus > 0) {
     if (player.maxCharacters < 30)
         player.maxCharacters = 30
 
-    player.clanStorageBonus = 0
-    player.clanStorageExpire = 0
-
 }
+
+// تصفير جميع بيانات العشيرة
+
+player.clanStorageBonus = 0
+player.clanStorageExpire = 0
+
+player.clanCoins = 0
+player.clanShop = {}
+
+player.renameClanTicket = 0
 
 // الخروج
 
@@ -4304,6 +4447,9 @@ clan.members =
     )
 
 await clan.save()
+
+// تحديث قوة العشيرة
+await updateClanPower(clan.clanId)
 
 return safeSend(
     msg.key.remoteJid,
