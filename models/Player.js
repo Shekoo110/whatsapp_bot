@@ -52,6 +52,20 @@ level: { type: Number, default: 1 },
 
 money: { type: Number, default: 0 },
 
+// =========================
+// CLAN SYSTEM
+// =========================
+
+clanId: {
+    type: String,
+    default: null
+},
+
+clanCooldown: {
+    type: Number,
+    default: 0
+},
+    
     // =========================
     // PvP SYSTEM
     // =========================
