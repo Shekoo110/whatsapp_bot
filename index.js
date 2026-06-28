@@ -13517,18 +13517,14 @@ const players =
 
 const ranking = players.map(player => {
 
-    const totalPower =
-        (player.characters || [])
-            .reduce(
-                (sum, c) =>
-                    sum + (c.power || 0),
-                0
-            )
-
     return {
+
         userId: player.userId,
-        power: totalPower
+
+        power: getPlayerPower(player)
+
     }
+
 })
 
 ranking.sort(
