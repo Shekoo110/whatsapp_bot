@@ -3859,8 +3859,9 @@ ${clan.emoji} ${clan.name}`
     }
 
     const clan =
-        await Clan.findById(player.clanId)
-
+    await Clan.findOne({
+        clanId: player.clanId
+    })
     if (!clan) {
 
         player.clanId = null
