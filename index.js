@@ -4462,7 +4462,7 @@ return safeSend(
 ⏳ يمكنك الانضمام إلى عشيرة أخرى بعد 24 ساعة.`
     }
 )
-
+    }
         if (text === '.العشائر') {
 
     const clans = await Clan.find()
