@@ -44,11 +44,6 @@ nextLevelXp: {
     default: 1000
 },
 
-coins: {
-    type: Number,
-    default: 0
-},
-
 shopRefresh: {
     type: String,
     default: ''
