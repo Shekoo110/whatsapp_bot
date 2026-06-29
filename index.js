@@ -18427,14 +18427,10 @@ let damage = strongest.power
 let abilityText = ''
 let exSkillsText = ''
 let effectsText = ''
-            let playerSkillsText = ''
+let playerSkillsText = ''
 
 let ex = null
 
-            
-
-
-            
 if (
     strongest.evolutionLevel >= 1 &&
     strongest.urAbilities &&
@@ -18443,20 +18439,19 @@ if (
 
     ex = useEXAbilities(strongest)
 
-// زيادة الهجوم (تعمل على التابع والزعيم)
-damage = Math.floor(
-    damage *
-    (1 + ex.attackBonus / 100)
-)
+    // زيادة الهجوم
+    damage = Math.floor(
+        damage *
+        (1 + ex.attackBonus / 100)
+    )
 
-// ضرر إضافي ضد الزعيم فقط
-if (currentBoss && currentBoss.hp > 0) {
+    // زيادة ضرر الزعيم (تعمل على الجميع)
     damage = Math.floor(
         damage *
         (1 + ex.bossDamage / 100)
     )
-}
 
+    // حرج EX
     if (
         Math.random() * 100 <
         ex.critRate
@@ -18472,13 +18467,13 @@ if (currentBoss && currentBoss.hp > 0) {
 
     }
 
+    // امتصاص الحياة
     if (ex.lifesteal > 0) {
 
-        const heal =
-            Math.floor(
-                damage *
-                ex.lifesteal / 100
-            )
+        const heal = Math.floor(
+            damage *
+            ex.lifesteal / 100
+        )
 
         me.hp = Math.min(
             me.maxHp || 10000,
@@ -18487,46 +18482,37 @@ if (currentBoss && currentBoss.hp > 0) {
 
     }
 
-    me.urShield =
-        ex.shield
+    me.urShield = ex.shield
+    me.urReflect = ex.reflect
+    me.urDodge = ex.dodge
 
-    me.urReflect =
-        ex.reflect
+    for (const ability of (ex.abilitiesUsed || [])) {
+        exSkillsText += `⚔️ ${ability.name}\n`
+    }
 
-    me.urDodge =
-        ex.dodge
-    
+    if (ex.attackBonus)
+        effectsText += `🗡️ +${ex.attackBonus}% هجوم\n`
 
-for (const ability of (ex.abilitiesUsed || [])) {
+    if (ex.bossDamage)
+        effectsText += `💥 +${ex.bossDamage}% ضد الزعيم\n`
 
-    exSkillsText += `⚔️ ${ability.name}\n`
+    if (ex.lifesteal)
+        effectsText += `❤️ +${ex.lifesteal}% امتصاص حياة\n`
 
-}
+    if (ex.critRate)
+        effectsText += `🎯 +${ex.critRate}% حرج\n`
 
-if (ex.attackBonus)
-    effectsText += `🗡️ +${ex.attackBonus}% هجوم\n`
+    if (ex.critDamage)
+        effectsText += `☄️ +${ex.critDamage}% ضرر حرج\n`
 
-if (ex.bossDamage)
-    effectsText += `💥 +${ex.bossDamage}% ضد الزعيم\n`
+    if (ex.dodge)
+        effectsText += `👻 +${ex.dodge}% مراوغة\n`
 
-if (ex.lifesteal)
-    effectsText += `❤️ +${ex.lifesteal}% امتصاص حياة\n`
+    if (ex.reflect)
+        effectsText += `🪞 +${ex.reflect}% عكس ضرر\n`
 
-if (ex.critRate)
-    effectsText += `🎯 +${ex.critRate}% حرج\n`
-
-if (ex.critDamage)
-    effectsText += `☄️ +${ex.critDamage}% ضرر حرج\n`
-
-if (ex.dodge)
-    effectsText += `👻 +${ex.dodge}% مراوغة\n`
-
-if (ex.reflect)
-    effectsText += `🪞 +${ex.reflect}% عكس ضرر\n`
-
-if (ex.shield)
-    effectsText += `🛡️ +${ex.shield}% درع\n`
-    
+    if (ex.shield)
+        effectsText += `🛡️ +${ex.shield}% درع\n`
 }
 
 abilityText = abilityText || ''
@@ -18591,11 +18577,7 @@ if (
 ) {
     damage *= 2
 
-    abilityText += `
-
-👁️ شارينغان
-
-💥 ضربة حرجة ×2`
+    playerSkillsText += `👁️ شارينغان ×2\n`
 }
 
 // عين الصقر
@@ -18605,11 +18587,7 @@ if (
 ) {
     damage = Math.floor(damage * 1.2)
 
-    abilityText += `
-
-⚔️ عين الصقر
-
-🎯 +20% ضرر`
+    playerSkillsText += `⚔️ عين الصقر +20%\n`
 }
 
 // سوسانو
@@ -18619,11 +18597,7 @@ if (
 ) {
     damage = Math.floor(damage * 1.1)
 
-    abilityText += `
-
-💀 سوسانو
-
-⚔️ +10% ضرر`
+    playerSkillsText += `💀 سوسانو +10%\n`
 }
 
 // تنين الأساطير
@@ -18633,11 +18607,7 @@ if (
 ) {
     damage = Math.floor(damage * 1.1)
 
-    abilityText += `
-
-🐉 تنين الأساطير
-
-👑 ضرر إضافي ضد الزعيم`
+    playerSkillsText += `🐉 تنين الأساطير +10% ضد الزعيم\n`
 }
 
 // قوة الكواكب
@@ -18647,11 +18617,7 @@ if (
 ) {
     damage = Math.floor(damage * 1.15)
 
-    abilityText += `
-
-☄️ قوة الكواكب
-
-🌠 +15% ضرر`
+    playerSkillsText += `☄️ قوة الكواكب +15%\n`
 }
 
 // سيد المعارك
@@ -18661,11 +18627,7 @@ if (
 ) {
     damage = Math.floor(damage * 1.25)
 
-    abilityText += `
-
-⚔️ سيد المعارك
-
-💥 +25% ضرر`
+    playerSkillsText += `⚔️ سيد المعارك +25%\n`
 }
 
 // قوة الشياطين
@@ -18675,11 +18637,7 @@ if (
 ) {
     damage = Math.floor(damage * 1.2)
 
-    abilityText += `
-
-👹 قوة الشياطين
-
-🔥 +20% ضرر`
+    playerSkillsText += `👹 قوة الشياطين +20%\n`
 }
 
 // الحاكم المطلق
@@ -18689,11 +18647,7 @@ if (
 ) {
     damage = Math.floor(damage * 1.5)
 
-    abilityText += `
-
-🌟 الحاكم المطلق
-
-⚡ +50% ضرر`
+    playerSkillsText += `🌟 الحاكم المطلق +50%\n`
 }
 
             currentBoss.turnCounter =
@@ -19775,7 +19729,7 @@ ${abilityText.trim() || 'لا يوجد'}
 
 👑 قدرات اللاعب
 
-${playerSkillsText.trim() || 'لا يوجد'}
+${playerSkillsText || 'لا يوجد'}
 
 ━━━━━━━━━━━━━━
 
