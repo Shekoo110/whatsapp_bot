@@ -9,17 +9,8 @@ function useEXAbilities(character) {
     const abilities =
         character.urAbilities || []
 
-    const selected = []
-
-for (const ability of shuffle(abilities)) {
-
-    if (Math.random() * 100 <= ability.chance) {
-        selected.push(ability)
-    }
-
-    if (selected.length >= 4)
-        break
-}
+    // جميع القدرات مضمونة دائماً
+const selected = abilities.slice(0, 6)
 
     const result = {
 
