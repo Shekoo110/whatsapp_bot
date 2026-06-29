@@ -18447,9 +18447,9 @@ if (
 
     // زيادة ضرر الزعيم (تعمل على الجميع)
     damage = Math.floor(
-        damage *
-        (1 + ex.bossDamage / 100)
-    )
+    damage *
+    (1 + ex.bossDamage / 100)
+)
 
     // حرج EX
     if (
@@ -18649,7 +18649,9 @@ if (
 
     playerSkillsText += `🌟 الحاكم المطلق +50%\n`
 }
-
+// مضاعف التطوير النهائي
+damage = Math.floor(damage * 1.5)
+            
             currentBoss.turnCounter =
     (currentBoss.turnCounter || 0) + 1
 
@@ -19259,16 +19261,6 @@ ${Math.max(0, follower.hp)}`
     )
 }
 
-            if (
-    ex &&
-    strongest.evolutionLevel >= 1 &&
-    strongest.urAbilities &&
-    strongest.urAbilities.length > 0
-) {
-    damage = Math.floor(
-        damage * (1 + ex.bossDamage / 100)
-    )
-}
             currentBoss.hp = Math.max(
     0,
     (currentBoss.hp || 0) - damage
