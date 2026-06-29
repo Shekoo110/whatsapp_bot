@@ -18383,7 +18383,7 @@ if (
         ex.dodge
     
 
-for (const ability of ex.abilitiesUsed) {
+for (const ability of (ex.abilitiesUsed || [])) {
 
     exSkillsText += `⚔️ ${ability.name}\n`
 
@@ -18416,6 +18416,12 @@ if (ex.shield)
 }
 
 abilityText = abilityText || ''
+
+const roll = Math.random() * 100
+
+const critChance =
+    (me.critRate || 0) +
+    (me.critRateBonus || 0)
 
 if (roll <= critChance) {
 
