@@ -9,8 +9,17 @@ function useEXAbilities(character) {
     const abilities =
         character.urAbilities || []
 
-    const selected =
-        shuffle(abilities).slice(0, 4)
+    const selected = []
+
+for (const ability of shuffle(abilities)) {
+
+    if (Math.random() * 100 <= ability.chance) {
+        selected.push(ability)
+    }
+
+    if (selected.length >= 4)
+        break
+}
 
     const result = {
 
