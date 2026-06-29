@@ -18424,11 +18424,11 @@ const strongest = me.characters.sort(
 
 let damage = strongest.power
 
-     let abilityText = ''
-
+let abilityText = ''
 let exSkillsText = ''
-
 let effectsText = ''
+
+let ex = null
             
 if (
     strongest.evolutionLevel >= 1 &&
@@ -18436,8 +18436,7 @@ if (
     strongest.urAbilities.length > 0
 ) {
 
-    const ex =
-        useEXAbilities(strongest)
+    ex = useEXAbilities(strongest)
 
 // ضرر الزعيم فقط
 if (currentBoss && currentBoss.hp > 0) {
@@ -19296,11 +19295,11 @@ ${Math.max(0, follower.hp)}`
 }
 
             if (
+    ex &&
     strongest.evolutionLevel >= 1 &&
     strongest.urAbilities &&
     strongest.urAbilities.length > 0
 ) {
-
     damage = Math.floor(
         damage * (1 + ex.bossDamage / 100)
     )
