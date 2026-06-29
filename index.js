@@ -3916,14 +3916,14 @@ ${emoji} ${clanName}
 
 ⭐ المستوى: ${clan.level}
 ✨ الخبرة: ${clan.xp}/${clan.nextLevelXp}
-🪙 عملات العشيرة: ${clan.coins.toLocaleString()}
+🪙 عملات العشيرة: ${Number(clan.coins || 0).toLocaleString()}
 
 👑 القائد:
 @${clan.leader.split('@')[0]}
 
 👥 الأعضاء: ${clan.members.length}/4
 
-⚔️ قوة العشيرة: ${totalPower.toLocaleString()}
+⚔️ قوة العشيرة: ${Number(totalPower || 0).toLocaleString()}
 
 🏆 الانتصارات: ${clan.wins}
 💀 الهزائم: ${clan.losses}
