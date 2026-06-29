@@ -18410,21 +18410,7 @@ if (ex.reflect)
 
 if (ex.shield)
     effectsText += `🛡️ +${ex.shield}% درع\n`
-    abilityText +=
-`✨ قدرات EX المفعلة
-
-`
-
-    for (const ability of ex.abilitiesUsed) {
-
-        abilityText +=
-`${ability.name}
-${ability.description}
-
-`
-
-    }
-
+    
 }
 
 abilityText = abilityText || ''
@@ -18444,7 +18430,7 @@ if (roll <= critChance) {
 
     damage = Math.floor(damage * 1.5)
 
-    abilityText = `
+    abilityText += `
 👑 قدرة مفعلة
 
 ⚡ هاكي الملك
@@ -18455,7 +18441,7 @@ if (roll <= critChance) {
 
     damage += 1000
 
-    abilityText = `
+    abilityText += `
 ✨ قدرة مفعلة
 
 ⚡ استيقاظ
@@ -19635,7 +19621,13 @@ ${currentBoss.name}
 
 ━━━━━━━━━━━━━━
 
-✨ قدرات الشخصية
+⚡ القدرات القتالية
+
+${abilityText || 'لا يوجد'}
+
+━━━━━━━━━━━━━━
+
+✨ قدرات EX
 
 ${exSkillsText || 'لا يوجد'}
 
