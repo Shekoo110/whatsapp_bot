@@ -1,4 +1,5 @@
 const fs = require('fs')
+const useAttackAbilities = require('./systems/useAttackAbilities')
 const useEXAbilities = require('./utils/useEXAbilities')
 const getPlayerPower = require('./utils/getPlayerPower')
 const { getClanShop } = require('./clanShop')
@@ -18530,8 +18531,6 @@ damage = Math.floor(
         effectsText += `🛡️ +${ex.shield}% درع\n`
 }
 
-abilityText = abilityText || ''
-
 const result = useAttackAbilities({
     player: me,
     character: strongest,
@@ -18539,8 +18538,9 @@ const result = useAttackAbilities({
 })
 
 damage = result.damage
-abilityText += result.randomText
-playerSkillsText += result.playerText
+
+abilityText = (abilityText || '') + (result.randomText || '')
+playerSkillsText = (playerSkillsText || '') + (result.playerText || '')
 
     const ability =
         currentBoss.abilities[
