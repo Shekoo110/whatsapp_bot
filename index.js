@@ -18450,6 +18450,21 @@ if (
     damage *
     (1 + ex.bossDamage / 100)
 )
+    // بونصات اللاعب القديمة
+damage = Math.floor(
+    damage *
+    (1 + ((me.attackBonus || 0) / 100))
+)
+
+damage = Math.floor(
+    damage *
+    (1 + ((me.bossDamageBonus || 0) / 100))
+)
+
+damage = Math.floor(
+    damage *
+    (1 + ((me.damageBonus || 0) / 100))
+)
 
     // حرج EX
     if (
@@ -18649,8 +18664,7 @@ if (
 
     playerSkillsText += `🌟 الحاكم المطلق +50%\n`
 }
-// مضاعف التطوير النهائي
-damage = Math.floor(damage * 1.5)
+
             
             currentBoss.turnCounter =
     (currentBoss.turnCounter || 0) + 1
