@@ -18541,7 +18541,14 @@ damage = result.damage
 
 abilityText = (abilityText || '') + (result.randomText || '')
 playerSkillsText = (playerSkillsText || '') + (result.playerText || '')
+currentBoss.turnCounter =
+    (currentBoss.turnCounter || 0) + 1
 
+if (
+    currentBoss.turnCounter % 4 === 0 &&
+    Math.random() <= 0.60
+) {
+            
     const ability =
         currentBoss.abilities[
             Math.floor(
@@ -18911,6 +18918,7 @@ if (ability.effect === "dimensionCollapse") {
 }
     
 }
+        }
 
 if (!currentBoss || typeof currentBoss.hp !== 'number') {
     return safeSend(msg.key.remoteJid, {
@@ -19358,8 +19366,8 @@ ${mentionText}`,
             
             if (Math.random() <= 0.85) {
 
-    const bossDamage =
-        currentBoss.attack || 3000
+    let bossDamage =
+    currentBoss.attack || 3000
 
                 // درع UR
 if (me.urShield) {
