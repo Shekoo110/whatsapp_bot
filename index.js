@@ -3261,6 +3261,112 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+    if (text.startsWith('.قدرات')) {
+
+    const args = text.split(' ')
+    const index = parseInt(args[1])
+
+    if (isNaN(index))
+        return safeSend(msg.key.remoteJid, {
+            text:
+`❌ الاستخدام الصحيح
+
+.قدرات 1`
+        })
+
+    const player = await Player.findOne({ userId })
+
+    if (!player || !player.characters || player.characters.length === 0)
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ لا تملك شخصيات.'
+        })
+
+    const evolvedCharacters =
+        player.characters.filter(
+            c =>
+                c.evolutionLevel >= 1 &&
+                c.urAbilities &&
+                c.urAbilities.length > 0
+        )
+
+    if (index < 1 || index > evolvedCharacters.length)
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ رقم الشخصية غير صحيح.'
+        })
+
+    const character =
+        evolvedCharacters[index - 1]
+
+    let abilitiesText = ''
+
+    character.urAbilities.forEach((ability, i) => {
+
+        abilitiesText +=
+`━━━━━━━━━━━━━━━━
+
+${["①","②","③","④","⑤","⑥"][i] || `${i+1}.`} ${ability.name}
+
+📝 ${ability.description}
+
+`
+
+    })
+
+    const stars =
+        "★".repeat(character.evolutionLevel) +
+        "☆".repeat(6 - character.evolutionLevel)
+
+    const caption =
+`╔═══════〔 قدرات EX 〕═══════╗
+
+🧿 الشخصية
+${character.name}
+
+⭐ التطوير
+${stars} (${character.evolutionLevel}/6)
+
+${abilitiesText}╚════════════════════╝`
+
+    if (
+        character.image &&
+        (
+            character.image.startsWith("http://") ||
+            character.image.startsWith("https://")
+        )
+    ) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                image: {
+                    url: character.image
+                },
+                caption
+            }
+        )
+
+    }
+
+    const imagePath =
+        path.join(__dirname, character.image)
+
+    if (fs.existsSync(imagePath)) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                image: fs.readFileSync(imagePath),
+                caption
+            }
+        )
+
+    }
+
+    return safeSend(msg.key.remoteJid, {
+        text: caption
+    })
+}
+
 if (text === '.متجر_العشيرة') {
 
     const player = await Player.findOne({ userId })
@@ -18333,12 +18439,6 @@ if (
     const ex =
         useEXAbilities(strongest)
 
-    // يعمل على الجميع (الزعيم + التوابع)
-damage = Math.floor(
-    damage *
-    (1 + ex.attackBonus / 100)
-)
-
 // ضرر الزعيم فقط
 if (currentBoss && currentBoss.hp > 0) {
     damage = Math.floor(
@@ -19095,7 +19195,21 @@ if (
 
 ❤️ -${criticalDamage} HP`
 }
-    follower.hp -= damage
+    let followerDamage = damage
+
+if (
+    strongest.evolutionLevel >= 1 &&
+    strongest.urAbilities &&
+    strongest.urAbilities.length > 0
+) {
+
+    // إذا تريد أن نفس ضرر الزعيم يعمل على التابع أيضًا
+    followerDamage = Math.floor(
+        followerDamage * (1 + ex.bossDamage / 100)
+    )
+}
+
+follower.hp -= followerDamage
 
     if (follower.hp <= 0) {
 
@@ -19180,7 +19294,17 @@ ${Math.max(0, follower.hp)}`
         }
     )
 }
-            
+
+            if (
+    strongest.evolutionLevel >= 1 &&
+    strongest.urAbilities &&
+    strongest.urAbilities.length > 0
+) {
+
+    damage = Math.floor(
+        damage * (1 + ex.bossDamage / 100)
+    )
+}
             currentBoss.hp = Math.max(
     0,
     (currentBoss.hp || 0) - damage
