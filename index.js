@@ -3261,7 +3261,7 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-    if (text.startsWith('.قدرات')) {
+    if (text.startsWith('.قدره')) {
 
     const args = text.split(' ')
     const index = parseInt(args[1])
@@ -18427,8 +18427,13 @@ let damage = strongest.power
 let abilityText = ''
 let exSkillsText = ''
 let effectsText = ''
+            let playerSkillsText = ''
 
 let ex = null
+
+            
+
+
             
 if (
     strongest.evolutionLevel >= 1 &&
@@ -18438,7 +18443,13 @@ if (
 
     ex = useEXAbilities(strongest)
 
-// ضرر الزعيم فقط
+// زيادة الهجوم (تعمل على التابع والزعيم)
+damage = Math.floor(
+    damage *
+    (1 + ex.attackBonus / 100)
+)
+
+// ضرر إضافي ضد الزعيم فقط
 if (currentBoss && currentBoss.hp > 0) {
     damage = Math.floor(
         damage *
@@ -19756,21 +19767,21 @@ ${currentBoss.name}
 
 ━━━━━━━━━━━━━━
 
-⚡ القدرات القتالية
+⚡ القدرات العشوائية
 
-${abilityText || 'لا يوجد'}
+${abilityText.trim() || 'لا يوجد'}
+
+━━━━━━━━━━━━━━
+
+👑 قدرات اللاعب
+
+${playerSkillsText.trim() || 'لا يوجد'}
 
 ━━━━━━━━━━━━━━
 
 ✨ قدرات EX
 
-${exSkillsText || 'لا يوجد'}
-
-━━━━━━━━━━━━━━
-
-🔥 تأثيرات التطوير
-
-${effectsText || 'لا يوجد'}
+${exSkillsText.trim() || 'لا يوجد'}
 
 ━━━━━━━━━━━━━━
 
@@ -19787,7 +19798,6 @@ ${Number(damage).toLocaleString()}
 ❤️ صحة الزعيم
 
 ${Number(currentBoss.hp).toLocaleString()} / ${Number(currentBoss.maxHp).toLocaleString()}`
-
 if (strongest.rarity === 'SSS') {
 
     return sock.sendMessage(
