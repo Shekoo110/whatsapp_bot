@@ -1,16 +1,13 @@
 function shuffle(array) {
-
     return [...array].sort(() => Math.random() - 0.5)
-
 }
 
 function useEXAbilities(character) {
 
-    const abilities =
-        character.urAbilities || []
+    const abilities = character.urAbilities || []
 
-    // جميع القدرات مضمونة دائماً
-const selected = abilities.slice(0, 6)
+    // جميع القدرات تعمل مهما كان عددها
+    const selected = [...abilities]
 
     const result = {
 
@@ -75,7 +72,6 @@ const selected = abilities.slice(0, 6)
     }
 
     return result
-
 }
 
 module.exports = useEXAbilities
