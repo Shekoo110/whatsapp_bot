@@ -18333,15 +18333,19 @@ if (
     const ex =
         useEXAbilities(strongest)
 
-    damage = Math.floor(
-        damage *
-        (1 + ex.attackBonus / 100)
-    )
+    // يعمل على الجميع (الزعيم + التوابع)
+damage = Math.floor(
+    damage *
+    (1 + ex.attackBonus / 100)
+)
 
+// ضرر الزعيم فقط
+if (currentBoss && currentBoss.hp > 0) {
     damage = Math.floor(
         damage *
         (1 + ex.bossDamage / 100)
     )
+}
 
     if (
         Math.random() * 100 <
