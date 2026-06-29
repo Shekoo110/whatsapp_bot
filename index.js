@@ -18325,7 +18325,7 @@ let exSkillsText = ''
 let effectsText = ''
             
 if (
-    strongest.rarity === 'UR' &&
+    strongest.evolutionLevel >= 1 &&
     strongest.urAbilities &&
     strongest.urAbilities.length > 0
 ) {
