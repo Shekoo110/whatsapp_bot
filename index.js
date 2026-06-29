@@ -18918,7 +18918,7 @@ if (ability.effect === "dimensionCollapse") {
 }
     
 }
-        }
+        
 
 if (!currentBoss || typeof currentBoss.hp !== 'number') {
     return safeSend(msg.key.remoteJid, {
