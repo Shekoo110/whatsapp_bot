@@ -18318,6 +18318,12 @@ const strongest = me.characters.sort(
 
 let damage = strongest.power
 
+     let abilityText = ''
+
+let exSkillsText = ''
+
+let effectsText = ''
+            
 if (
     strongest.rarity === 'UR' &&
     strongest.urAbilities &&
@@ -18375,11 +18381,7 @@ if (
 
     me.urDodge =
         ex.dodge
-    let abilityText = ''
-
-let exSkillsText = ''
-
-let effectsText = ''
+    
 
 for (const ability of ex.abilitiesUsed) {
 
