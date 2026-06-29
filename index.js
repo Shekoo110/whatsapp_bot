@@ -18375,8 +18375,42 @@ if (
 
     me.urDodge =
         ex.dodge
+    let abilityText = ''
 
-    abilityText =
+let exSkillsText = ''
+
+let effectsText = ''
+
+for (const ability of ex.abilitiesUsed) {
+
+    exSkillsText += `⚔️ ${ability.name}\n`
+
+}
+
+if (ex.attackBonus)
+    effectsText += `🗡️ +${ex.attackBonus}% هجوم\n`
+
+if (ex.bossDamage)
+    effectsText += `💥 +${ex.bossDamage}% ضد الزعيم\n`
+
+if (ex.lifesteal)
+    effectsText += `❤️ +${ex.lifesteal}% امتصاص حياة\n`
+
+if (ex.critRate)
+    effectsText += `🎯 +${ex.critRate}% حرج\n`
+
+if (ex.critDamage)
+    effectsText += `☄️ +${ex.critDamage}% ضرر حرج\n`
+
+if (ex.dodge)
+    effectsText += `👻 +${ex.dodge}% مراوغة\n`
+
+if (ex.reflect)
+    effectsText += `🪞 +${ex.reflect}% عكس ضرر\n`
+
+if (ex.shield)
+    effectsText += `🛡️ +${ex.shield}% درع\n`
+    abilityText +=
 `✨ قدرات EX المفعلة
 
 `
@@ -18399,7 +18433,7 @@ if (roll <= critChance) {
 
     damage *= 2
 
-    abilityText = `
+    abilityText += `
 🔥 قدرة مفعلة
 
 ⚡ ضربة حرجة
@@ -19590,45 +19624,7 @@ currentBoss.finished = true
         })
     }
 }
-        let exSkillsText = ''
-let effectsText = ''
-
-if (
-    strongest.rarity === 'UR' &&
-    typeof ex !== 'undefined'
-) {
-
-    for (const ability of ex.abilitiesUsed) {
-
-        exSkillsText += `• ${ability.name}\n`
-
-    }
-
-    if (ex.attackBonus)
-        effectsText += `🗡️ +${ex.attackBonus}% هجوم\n`
-
-    if (ex.bossDamage)
-        effectsText += `💥 +${ex.bossDamage}% ضرر ضد الزعيم\n`
-
-    if (ex.lifesteal)
-        effectsText += `❤️ +${ex.lifesteal}% امتصاص حياة\n`
-
-    if (ex.critRate)
-        effectsText += `🎯 +${ex.critRate}% ضربة حرجة\n`
-
-    if (ex.critDamage)
-        effectsText += `☄️ +${ex.critDamage}% ضرر حرج\n`
-
-    if (ex.dodge)
-        effectsText += `👻 +${ex.dodge}% مراوغة\n`
-
-    if (ex.reflect)
-        effectsText += `🪞 +${ex.reflect}% عكس ضرر\n`
-
-    if (ex.shield)
-        effectsText += `🛡️ +${ex.shield}% درع\n`
-
-}
+        
         const attackCaption = `⚔️ ═════〔 هجوم الزعيم 〕═════ ⚔️
 
 🧿 المهاجم
