@@ -1,4 +1,5 @@
 const fs = require('fs')
+const useEXAbilities = require('./utils/useEXAbilities')
 const getPlayerPower = require('./utils/getPlayerPower')
 const { getClanShop } = require('./clanShop')
 const Clan = require('./models/Clan')
@@ -18319,126 +18320,80 @@ let damage = strongest.power
 
 if (
     strongest.rarity === 'UR' &&
-    strongest.urAbility
+    strongest.urAbilities &&
+    strongest.urAbilities.length > 0
 ) {
 
-    const ability =
-        strongest.urAbility
+    const ex =
+        useEXAbilities(strongest)
 
-    // ضرر إضافي
+    damage = Math.floor(
+        damage *
+        (1 + ex.attackBonus / 100)
+    )
+
+    damage = Math.floor(
+        damage *
+        (1 + ex.bossDamage / 100)
+    )
+
     if (
-        ability.type === 'bossDamage'
+        Math.random() * 100 <
+        ex.critRate
     ) {
 
         damage = Math.floor(
             damage *
-            (1 + ability.value / 100)
-        )
-    }
-
-    if (
-        ability.type === 'attack'
-    ) {
-
-        damage = Math.floor(
-            damage *
-            (1 + ability.value / 100)
-        )
-    }
-
-    // ضربة حرجة
-    if (
-        ability.type === 'critRate'
-    ) {
-
-        if (
-            Math.random() * 100 <=
-            ability.value
-        ) {
-
-            damage *= 2
-        }
-    }
-
-    // ضرر حرج إضافي
-    if (
-        ability.type === 'critDamage'
-    ) {
-
-        if (
-            Math.random() * 100 <= 20
-        ) {
-
-            damage = Math.floor(
-                damage *
-                (
-                    1 +
-                    ability.value / 100
-                )
+            (
+                1 +
+                ex.critDamage / 100
             )
-        }
+        )
+
     }
 
-    // امتصاص حياة
-    if (
-        ability.type === 'lifesteal'
-    ) {
+    if (ex.lifesteal > 0) {
 
         const heal =
             Math.floor(
                 damage *
-                ability.value / 100
+                ex.lifesteal / 100
             )
 
         me.hp = Math.min(
             me.maxHp || 10000,
             (me.hp || 10000) + heal
         )
+
     }
 
-    // مراوغة
-    if (
-        ability.type === 'dodge'
-    ) {
+    me.urShield =
+        ex.shield
 
-        me.urDodge =
-            ability.value
+    me.urReflect =
+        ex.reflect
+
+    me.urDodge =
+        ex.dodge
+
+    abilityText =
+`✨ قدرات EX المفعلة
+
+`
+
+    for (const ability of ex.abilitiesUsed) {
+
+        abilityText +=
+`${ability.name}
+${ability.description}
+
+`
+
     }
 
-    // عكس ضرر
-    if (
-        ability.type === 'reflect'
-    ) {
-
-        me.urReflect =
-            ability.value
-    }
-
-    // درع
-    if (
-        ability.type === 'shield'
-    ) {
-
-        me.urShield =
-            ability.value
-    }
 }
 
-// بونص الهجوم
-damage = Math.floor(
-    damage * (1 + (me.attackBonus || 0) / 100)
-)
-
-// بونص ضرر الزعيم
-damage = Math.floor(
-    damage * (1 + (me.bossDamageBonus || 0) / 100)
-)
-
-const critChance = 15 + (me.critBonus || 0)
-
-const roll = Math.random() * 100
-
-let abilityText = ""
+abilityText = abilityText || ''
 
 if (roll <= critChance) {
 
@@ -19635,27 +19590,80 @@ currentBoss.finished = true
         })
     }
 }
-        
-        const attackCaption = `⚔️ هجوم على الزعيم
+        let exSkillsText = ''
+let effectsText = ''
 
-🧿 الشخصية:
+if (
+    strongest.rarity === 'UR' &&
+    typeof ex !== 'undefined'
+) {
+
+    for (const ability of ex.abilitiesUsed) {
+
+        exSkillsText += `• ${ability.name}\n`
+
+    }
+
+    if (ex.attackBonus)
+        effectsText += `🗡️ +${ex.attackBonus}% هجوم\n`
+
+    if (ex.bossDamage)
+        effectsText += `💥 +${ex.bossDamage}% ضرر ضد الزعيم\n`
+
+    if (ex.lifesteal)
+        effectsText += `❤️ +${ex.lifesteal}% امتصاص حياة\n`
+
+    if (ex.critRate)
+        effectsText += `🎯 +${ex.critRate}% ضربة حرجة\n`
+
+    if (ex.critDamage)
+        effectsText += `☄️ +${ex.critDamage}% ضرر حرج\n`
+
+    if (ex.dodge)
+        effectsText += `👻 +${ex.dodge}% مراوغة\n`
+
+    if (ex.reflect)
+        effectsText += `🪞 +${ex.reflect}% عكس ضرر\n`
+
+    if (ex.shield)
+        effectsText += `🛡️ +${ex.shield}% درع\n`
+
+}
+        const attackCaption = `⚔️ ═════〔 هجوم الزعيم 〕═════ ⚔️
+
+🧿 المهاجم
 ${strongest.name}
 
-💥 الضرر:
-${damage}
-
-⭐ الخبرة المكتسبة:
-${xpGain}
-
-${abilityText}
-
-━━━━━━━━━━━━━━━━━━
-
-👑 الزعيم:
+👑 الزعيم
 ${currentBoss.name}
 
-❤️ المتبقي:
-${currentBoss.hp}/${currentBoss.maxHp}`
+━━━━━━━━━━━━━━
+
+✨ قدرات الشخصية
+
+${exSkillsText || 'لا يوجد'}
+
+━━━━━━━━━━━━━━
+
+🔥 تأثيرات التطوير
+
+${effectsText || 'لا يوجد'}
+
+━━━━━━━━━━━━━━
+
+📊 نتيجة الهجوم
+
+💥 الضرر
+${Number(damage).toLocaleString()}
+
+⭐ الخبرة
++${Number(xpGain).toLocaleString()} XP
+
+━━━━━━━━━━━━━━
+
+❤️ صحة الزعيم
+
+${Number(currentBoss.hp).toLocaleString()} / ${Number(currentBoss.maxHp).toLocaleString()}`
 
 if (strongest.rarity === 'SSS') {
 
