@@ -1727,6 +1727,67 @@ winner
     }, 5000)
 
 }
+async function cleanExpiredClanWars() {
+
+    try {
+
+        const Clan = require("./models/Clan")
+        const ClanWar = require("./models/ClanWar")
+
+        const pendingWars =
+            await ClanWar.find({
+
+                status: "pending"
+
+            })
+
+        for (const war of pendingWars) {
+
+            const age =
+                Date.now() -
+                new Date(war.createdAt).getTime()
+
+            if (age < 60000)
+                continue
+
+            war.status = "expired"
+
+            await war.save()
+
+            const attackerClan =
+                await Clan.findOne({
+
+                    clanId:
+                    war.attackerClan
+
+                })
+
+            if (attackerClan) {
+
+                attackerClan.dailyWars =
+                    Math.min(
+                        5,
+                        (attackerClan.dailyWars || 0) + 1
+                    )
+
+                await attackerClan.save()
+
+            }
+
+        }
+
+    }
+
+    catch (err) {
+
+        console.log(
+            "ClanWar Cleanup Error:",
+            err
+        )
+
+    }
+
+}
 
 // =========================
 // ملفات اللعبة
