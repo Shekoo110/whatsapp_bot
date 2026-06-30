@@ -3340,14 +3340,26 @@ cooldowns.set(key, now)
     if (!war) return
 
     const round = war.rounds.find(
-        x => x.round === war.currentRound
-    )
+    x => x.round === war.currentRound
+)
 
-    if (!round) {
+if (!round) {
+
+    if (
+
+        war.attackerScore >= 3 ||
+
+        war.defenderScore >= 3
+
+    ) {
 
         return finishClanWar(warId)
 
     }
+
+    return
+
+}
 
     const attacker = await Player.findOne({
         userId: round.attacker
@@ -3405,6 +3417,102 @@ round.defender
         }
 
     )
+            // =========================
+    // حساب القوة الحقيقي
+    // =========================
+
+    const result =
+        await clanBattle(
+            attacker,
+            defender
+        )
+
+    let winner
+
+    if (result.winner === attacker.userId) {
+
+        winner = round.attacker
+
+        war.attackerScore++
+
+    }
+
+    else {
+
+        winner = round.defender
+
+        war.defenderScore++
+
+    }
+
+    round.winner = winner
+    round.finished = true
+
+    await war.save()
+
+    await safeSend(
+
+        war.chatId,
+
+        {
+
+text:
+
+`🏆 انتهت الجولة ${round.round}
+
+الفائز:
+
+@${winner.split("@")[0]}
+
+━━━━━━━━━━━━━━
+
+⚔️ قوة المهاجم:
+${result.powerA.toLocaleString()}
+
+🛡️ قوة المدافع:
+${result.powerB.toLocaleString()}
+
+━━━━━━━━━━━━━━
+
+🏯 ${war.attackerScore}
+
+🆚
+
+🏯 ${war.defenderScore}`,
+
+mentions: [
+
+winner
+
+]
+
+        }
+
+    )
+
+    if (
+
+        war.attackerScore >= 3 ||
+
+        war.defenderScore >= 3
+
+    ) {
+
+        return finishClanWar(warId)
+
+    }
+
+    war.currentRound++
+
+    await war.save()
+
+    setTimeout(() => {
+
+        runClanRound(warId)
+
+    }, 5000)
+
+}
 async function finishClanWar(warId) {
 
     const Clan = require("./models/Clan")
@@ -3571,102 +3679,7 @@ ${loserClan.name}
     )
 
 }
-    // =========================
-    // حساب القوة الحقيقي
-    // =========================
-
-    const result =
-        await clanBattle(
-            attacker,
-            defender
-        )
-
-    let winner
-
-    if (result.winner === attacker.userId) {
-
-        winner = round.attacker
-
-        war.attackerScore++
-
-    }
-
-    else {
-
-        winner = round.defender
-
-        war.defenderScore++
-
-    }
-
-    round.winner = winner
-    round.finished = true
-
-    await war.save()
-
-    await safeSend(
-
-        war.chatId,
-
-        {
-
-text:
-
-`🏆 انتهت الجولة ${round.round}
-
-الفائز:
-
-@${winner.split("@")[0]}
-
-━━━━━━━━━━━━━━
-
-⚔️ قوة المهاجم:
-${result.powerA.toLocaleString()}
-
-🛡️ قوة المدافع:
-${result.powerB.toLocaleString()}
-
-━━━━━━━━━━━━━━
-
-🏯 ${war.attackerScore}
-
-🆚
-
-🏯 ${war.defenderScore}`,
-
-mentions: [
-
-winner
-
-]
-
-        }
-
-    )
-
-    if (
-
-        war.attackerScore >= 3 ||
-
-        war.defenderScore >= 3
-
-    ) {
-
-        return finishClanWar(warId)
-
-    }
-
-    war.currentRound++
-
-    await war.save()
-
-    setTimeout(() => {
-
-        runClanRound(warId)
-
-    }, 5000)
-
-}
+    
 
     async function cleanExpiredClanWars() {
 
