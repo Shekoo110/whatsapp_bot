@@ -1,12 +1,5 @@
 const fs = require('fs')
-const SafeAIRewriterV7 = require("./SafeAIRewriterV7")
 
-const optimizer = new SafeAIRewriterV7()
-
-const result = optimizer.run(
-    "./index.js",
-    "./index.optimized.js"
-)
 const useAttackAbilities = require('./systems/useAttackAbilities')
 const useEXAbilities = require('./utils/useEXAbilities')
 const getPlayerPower = require('./utils/getPlayerPower')
@@ -3270,47 +3263,7 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-if (text === ".فحص") {
 
-    await sock.sendMessage(msg.key.remoteJid, {
-        text: "🧠 جاري تحليل وتحسين الكود..."
-    })
-
-    try {
-
-        const optimizer = new SafeAIRewriterV7()
-
-        const result = optimizer.run(
-            "./index.js",
-            "./index.optimized.js"
-        )
-
-        const report =
-            "✅ تم تحسين الكود بنجاح\n\n" +
-            "📁 الملف: index.optimized.js\n\n" +
-            "🧠 التعديلات:\n" +
-            result.changes.slice(0, 15).join("\n")
-
-        await sock.sendMessage(msg.key.remoteJid, {
-            text: report
-        })
-
-        // 📦 إرسال الملف نفسه
-        await sock.sendMessage(msg.key.remoteJid, {
-            document: fs.readFileSync("./index.optimized.js"),
-            fileName: "index.optimized.js",
-            mimetype: "application/javascript"
-        })
-
-    } catch (err) {
-
-        await sock.sendMessage(msg.key.remoteJid, {
-            text: "❌ حدث خطأ أثناء التحسين:\n" + err.message
-        })
-    }
-}
-
-    
     if (text.startsWith('.قدره')) {
 
     const args = text.split(' ')
