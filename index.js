@@ -1,4 +1,5 @@
 const fs = require('fs')
+const SafeAIRewriterV7 = require("./SafeAIRewriterV7")
 const useAttackAbilities = require('./systems/useAttackAbilities')
 const useEXAbilities = require('./utils/useEXAbilities')
 const getPlayerPower = require('./utils/getPlayerPower')
@@ -3262,180 +3263,47 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
-    if (text === ".فحص") {
+if (text === ".فحص") {
 
-    const fs = require("fs")
-    const path = require("path")
+    await sock.sendMessage(msg.key.remoteJid, {
+        text: "🧠 جاري تحليل وتحسين الكود..."
+    })
 
-    const code = fs.readFileSync(
-        path.join(__dirname, "index.js"),
-        "utf8"
-    )
+    try {
 
-    const lines = code.split("\n")
+        const optimizer = new SafeAIRewriterV7()
 
-    const count = (regex) =>
-        (code.match(regex) || []).length
+        const result = optimizer.run(
+            "./index.js",
+            "./index.optimized.js"
+        )
 
-    const report = {
+        const report =
+            "✅ تم تحسين الكود بنجاح\n\n" +
+            "📁 الملف: index.optimized.js\n\n" +
+            "🧠 التعديلات:\n" +
+            result.changes.slice(0, 15).join("\n")
 
-        await: count(/\bawait\b/g),
-        findOne: count(/findOne\s*\(/g),
-        find: count(/\bfind\s*\(/g),
-        updateOne: count(/updateOne\s*\(/g),
-        updateMany: count(/updateMany\s*\(/g),
-        save: count(/\.save\s*\(/g),
-        sendMessage: count(/sendMessage\s*\(/g),
-        safeSend: count(/safeSend\s*\(/g),
-        promiseAll: count(/Promise\.all/g),
-        forLoop: count(/\bfor\s*\(/g),
-        whileLoop: count(/\bwhile\s*\(/g),
-        require: count(/require\s*\(/g)
+        await sock.sendMessage(msg.key.remoteJid, {
+            text: report
+        })
 
+        // 📦 إرسال الملف نفسه
+        await sock.sendMessage(msg.key.remoteJid, {
+            document: fs.readFileSync("./index.optimized.js"),
+            fileName: "index.optimized.js",
+            mimetype: "application/javascript"
+        })
+
+    } catch (err) {
+
+        await sock.sendMessage(msg.key.remoteJid, {
+            text: "❌ حدث خطأ أثناء التحسين:\n" + err.message
+        })
     }
-
-    let problems = []
-    let score = 100
-
-    if (report.await > 300) {
-        problems.push("🔴 await مرتفع جداً")
-        score -= 10
-    }
-
-    if (report.promiseAll === 0) {
-        problems.push("🔴 لا يوجد Promise.all")
-        score -= 5
-    }
-
-    if (report.save > 40) {
-        problems.push("🟠 save كثيرة")
-        score -= 8
-    }
-
-    if (report.updateOne > 40) {
-        problems.push("🟠 updateOne كثيرة")
-        score -= 8
-    }
-
-    if (report.findOne > 80) {
-        problems.push("🟡 findOne كثيرة")
-        score -= 6
-    }
-
-    if (report.sendMessage > 80) {
-        problems.push("🟡 sendMessage كثيرة")
-        score -= 5
-    }
-
-    if (report.forLoop > 100) {
-        problems.push("🟡 حلقات for كثيرة")
-        score -= 3
-    }
-
-    if (score < 0)
-        score = 0
-
-    let state = "🟢 ممتاز"
-
-    if (score < 90)
-        state = "🟡 جيد"
-
-    if (score < 70)
-        state = "🟠 متوسط"
-
-    if (score < 50)
-        state = "🔴 يحتاج تحسين"
-
-    return safeSend(
-        msg.key.remoteJid,
-        {
-            text:
-`📊 تقرير فحص البوت
-
-━━━━━━━━━━━━━━
-
-📄 الأسطر
-${lines.length.toLocaleString()}
-
-⏳ await
-${report.await}
-
-📂 findOne
-${report.findOne}
-
-📂 find
-${report.find}
-
-💾 save
-${report.save}
-
-📝 updateOne
-${report.updateOne}
-
-📝 updateMany
-${report.updateMany}
-
-📨 sendMessage
-${report.sendMessage}
-
-📩 safeSend
-${report.safeSend}
-
-⚡ Promise.all
-${report.promiseAll}
-
-🔁 for
-${report.forLoop}
-
-🔁 while
-${report.whileLoop}
-
-📦 require
-${report.require}
-
-━━━━━━━━━━━━━━
-
-${problems.length
-? problems.join("\n")
-: "✅ لا توجد مشاكل كبيرة"}
-
-━━━━━━━━━━━━━━
-
-🎯 التقييم
-
-${state}
-
-⭐ ${score}/100
-
-💡 اكتب
-
-.تحسين`
-        }
-    )
-
 }
 
-    if (text === ".تحسين") {
-
-    const optimizer =
-        require("./tools/optimizer")
-
-    const file =
-        await optimizer()
-
-    await sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            document:
-                fs.readFileSync(file),
-            mimetype:
-                "application/javascript",
-            fileName:
-                "index.optimized.js"
-        }
-    )
-
-}
+    
     if (text.startsWith('.قدره')) {
 
     const args = text.split(' ')
