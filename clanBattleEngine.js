@@ -1,4 +1,4 @@
-const useEXAbilities = require("./useEXAbilities")
+const useEXAbilities = require("./utils/useEXAbilities")
 
 function calculatePower(player) {
 
