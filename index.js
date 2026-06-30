@@ -3345,19 +3345,7 @@ cooldowns.set(key, now)
 
 if (!round) {
 
-    if (
-
-        war.attackerScore >= 3 ||
-
-        war.defenderScore >= 3
-
-    ) {
-
-        return finishClanWar(warId)
-
-    }
-
-    return
+    return finishClanWar(warId)
 
 }
 
@@ -3490,27 +3478,29 @@ winner
 
     )
 
-    if (
 
-        war.attackerScore >= 3 ||
+war.currentRound++
 
-        war.defenderScore >= 3
+await war.save()
 
-    ) {
+if (war.currentRound <= war.rounds.length) {
 
-        return finishClanWar(warId)
-
-    }
-
-    war.currentRound++
-
-    await war.save()
-
-    setTimeout(() => {
+    return setTimeout(() => {
 
         runClanRound(warId)
 
     }, 5000)
+
+}
+
+return finishClanWar(warId)
+
+// بدء الجولة التالية بعد 5 ثواني
+setTimeout(() => {
+
+    runClanRound(warId)
+
+}, 5000)
 
 }
 async function finishClanWar(warId) {
@@ -3535,13 +3525,54 @@ async function finishClanWar(warId) {
             clanId: war.defenderClan
         })
 
-    let winnerClan
-    let loserClan
+let winnerClan
+let loserClan
 
-    if (
-        war.attackerScore >
-        war.defenderScore
-    ) {
+if (war.attackerScore > war.defenderScore) {
+
+    winnerClan = attackerClan
+    loserClan = defenderClan
+
+}
+
+else if (war.defenderScore > war.attackerScore) {
+
+    winnerClan = defenderClan
+    loserClan = attackerClan
+
+}
+
+else {
+
+    // تعادل → نحسمها بمجموع قوة العشيرة
+
+    const Player = require("./models/Player")
+    const clanBattle = require("./clanBattleEngine")
+
+    let attackerPower = 0
+    let defenderPower = 0
+
+    for (const id of attackerClan.members) {
+
+        const p = await Player.findOne({ userId: id })
+
+        if (!p) continue
+
+        attackerPower += (await clanBattle(p, p)).powerA
+
+    }
+
+    for (const id of defenderClan.members) {
+
+        const p = await Player.findOne({ userId: id })
+
+        if (!p) continue
+
+        defenderPower += (await clanBattle(p, p)).powerA
+
+    }
+
+    if (attackerPower >= defenderPower) {
 
         winnerClan = attackerClan
         loserClan = defenderClan
@@ -3554,6 +3585,8 @@ async function finishClanWar(warId) {
         loserClan = attackerClan
 
     }
+
+}
 
     // =======================
     // الجوائز
@@ -3664,7 +3697,7 @@ ${loserClan.emoji} ${loserClan.name}
 
 ⭐ +250 XP
 
-🏅 +25 Rating
+🏯 +25 Rating للعشيرة
 
 ━━━━━━━━━━━━━━
 
@@ -3672,7 +3705,9 @@ ${loserClan.name}
 
 💰 +150,000
 
-⭐ +125 XP`
+⭐ +125 XP
+
+📉 خسارة الحرب
 
         }
 
@@ -3742,9 +3777,82 @@ ${loserClan.name}
     }
 
 }
+async function cleanEmptyClans() {
+
+    const Clan = require("./models/Clan")
+
+    const clans = await Clan.find()
+
+    for (const clan of clans) {
+
+        if (!clan.members || clan.members.length === 0) {
+
+            console.log(`Deleted empty clan: ${clan.name}`)
+
+            await Clan.deleteOne({
+                clanId: clan.clanId
+            })
+
+        }
+
+    }
+
+}
+
     // =========================
     // الأوامر العادية هنا
     // =========================
+    if (text === ".تصفير_العشائر") {
+
+    try {
+
+        const Clan = require("./models/Clan")
+
+        await Clan.updateMany(
+            {},
+            {
+                $set: {
+                    wins: 0,
+                    losses: 0,
+                    rankPoints: 1000,
+                    dailyWars: 5,
+                    warCooldown: 0
+                }
+            }
+        )
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`✅ تم تصفير جميع بيانات العشائر.
+
+🏆 الانتصارات: 0
+❌ الخسائر: 0
+🏅 التصنيف: 1000
+⚔️ محاولات الحرب: 5`
+            }
+        )
+
+    }
+
+    catch (err) {
+
+        console.log(err)
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ حدث خطأ.
+
+${err.message}`
+            }
+        )
+
+    }
+
+}
 
     if (text === ".الغاء_الحروب") {
 
@@ -5655,15 +5763,59 @@ clan.members =
         id => id !== userId
     )
 
-await clan.save()
+// إذا أصبحت العشيرة فارغة نحذفها
+if (clan.members.length === 0) {
 
-// تحديث قوة العشيرة
-await updateClanPower(clan.clanId)
+    const ClanWar = require("./models/ClanWar")
+
+    await Clan.deleteOne({
+        clanId: clan.clanId
+    })
+
+    await ClanWar.deleteMany({
+
+        $or: [
+
+            { attackerClan: clan.clanId },
+
+            { defenderClan: clan.clanId }
+
+        ]
+
+    })
+
+}
+
+else {
+
+    // إذا خرج القائد ننقل القيادة لأول عضو
+    if (clan.leader === userId) {
+
+        clan.leader = clan.members[0]
+
+    }
+
+    await clan.save()
+
+    // تحديث قوة العشيرة
+    await updateClanPower(clan.clanId)
+
+}
 
 return safeSend(
     msg.key.remoteJid,
     {
         text:
+clan.members.length === 0 ?
+
+`✅ غادرت العشيرة.
+
+🗑️ لم يتبق أي عضو داخلها.
+
+تم حذف العشيرة تلقائياً.`
+
+:
+
 `✅ غادرت العشيرة بنجاح.
 
 ❌ تمت إزالة جميع مزايا العشيرة.
