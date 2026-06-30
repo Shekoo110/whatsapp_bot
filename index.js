@@ -1,5 +1,12 @@
 const fs = require('fs')
 const SafeAIRewriterV7 = require("./SafeAIRewriterV7")
+
+const optimizer = new SafeAIRewriterV7()
+
+const result = optimizer.run(
+    "./index.js",
+    "./index.optimized.js"
+)
 const useAttackAbilities = require('./systems/useAttackAbilities')
 const useEXAbilities = require('./utils/useEXAbilities')
 const getPlayerPower = require('./utils/getPlayerPower')
