@@ -3415,6 +3415,27 @@ ${state}
 
 }
 
+    if (text === ".تحسين") {
+
+    const optimizer =
+        require("./tools/optimizer")
+
+    const file =
+        await optimizer()
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            document:
+                fs.readFileSync(file),
+            mimetype:
+                "application/javascript",
+            fileName:
+                "index.optimized.js"
+        }
+    )
+
+}
     if (text.startsWith('.قدره')) {
 
     const args = text.split(' ')
