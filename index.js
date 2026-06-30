@@ -4,7 +4,51 @@ const useAttackAbilities = require('./systems/useAttackAbilities')
 const useEXAbilities = require('./utils/useEXAbilities')
 const getPlayerPower = require('./utils/getPlayerPower')
 const { getClanShop } = require('./clanShop')
-const Clan = require('./models/Clan')
+const Clan = require("./models/Clan")
+
+async function resetClanWars() {
+
+    try {
+
+        const now = new Date()
+
+        const riyadh = new Date(
+            now.toLocaleString("en-US", {
+                timeZone: "Asia/Riyadh"
+            })
+        )
+
+        if (
+            riyadh.getHours() === 0 &&
+            riyadh.getMinutes() === 0
+        ) {
+
+            await Clan.updateMany(
+                {},
+                {
+                    $set: {
+                        dailyWars: 5,
+                        lastWarReset: riyadh.toISOString().slice(0, 10)
+                    }
+                }
+            )
+
+            console.log("✅ تم إعادة محاولات حروب العشائر.")
+
+        }
+
+    }
+
+    catch (err) {
+
+        console.log(err)
+
+    }
+
+}
+
+// يفحص كل دقيقة
+setInterval(resetClanWars, 60000)
 const updateClanPower =
 require('./utils/updateClanPower')
 const Player = require('./models/Player')
@@ -1420,6 +1464,173 @@ round.defender
 
     )
 
+            async function finishClanWar(warId) {
+
+    const Clan = require("./models/Clan")
+    const ClanWar = require("./models/ClanWar")
+    const Player = require("./models/Player")
+
+    const war = await ClanWar.findOne({
+        warId
+    })
+
+    if (!war) return
+
+    const attackerClan =
+        await Clan.findOne({
+            clanId: war.attackerClan
+        })
+
+    const defenderClan =
+        await Clan.findOne({
+            clanId: war.defenderClan
+        })
+
+    let winnerClan
+    let loserClan
+
+    if (
+        war.attackerScore >
+        war.defenderScore
+    ) {
+
+        winnerClan = attackerClan
+        loserClan = defenderClan
+
+    }
+
+    else {
+
+        winnerClan = defenderClan
+        loserClan = attackerClan
+
+    }
+
+    // =======================
+    // الجوائز
+    // =======================
+
+    const winnerMoney = 300000
+    const loserMoney = 150000
+
+    const winnerCoins = 100
+
+    const winnerXP = 250
+    const loserXP = 125
+
+    const winnerRating = 25
+
+    // =======================
+    // الفائز
+    // =======================
+
+    for (const id of winnerClan.members) {
+
+        const player =
+            await Player.findOne({
+                userId: id
+            })
+
+        if (!player) continue
+
+        player.money += winnerMoney
+
+        player.clanCoins += winnerCoins
+
+        player.xp += winnerXP
+
+        await player.save()
+
+    }
+
+    winnerClan.rankPoints += winnerRating
+
+    winnerClan.xp += winnerXP
+
+    winnerClan.wins++
+
+    await winnerClan.save()
+
+    // =======================
+    // الخاسر
+    // =======================
+
+    for (const id of loserClan.members) {
+
+        const player =
+            await Player.findOne({
+                userId: id
+            })
+
+        if (!player) continue
+
+        player.money += loserMoney
+
+        player.xp += loserXP
+
+        await player.save()
+
+    }
+
+    loserClan.xp += loserXP
+
+    loserClan.losses++
+
+    await loserClan.save()
+
+    war.status = "finished"
+
+    await war.save()
+
+    await safeSend(
+
+        war.chatId,
+
+        {
+
+text:
+
+`🏆 انتهت الحرب
+
+━━━━━━━━━━━━━━
+
+🥇 الفائز
+
+${winnerClan.emoji} ${winnerClan.name}
+
+${war.attackerScore}
+
+🆚
+
+${war.defenderScore}
+
+${loserClan.emoji} ${loserClan.name}
+
+━━━━━━━━━━━━━━
+
+🎉 جميع أعضاء ${winnerClan.name}
+
+💰 +300,000
+
+🪙 +100 عملة عشيرة
+
+⭐ +250 XP
+
+🏅 +25 Rating
+
+━━━━━━━━━━━━━━
+
+${loserClan.name}
+
+💰 +150,000
+
+⭐ +125 XP`
+
+        }
+
+    )
+
+}
     // =========================
     // حساب القوة الحقيقي
     // =========================
@@ -3902,7 +4113,111 @@ ${err.message}`
     }
 
 }     
+    if (text === ".رفض_الحرب") {
 
+    try {
+
+        const Clan = require("./models/Clan")
+        const ClanWar = require("./models/ClanWar")
+
+        const myClan = await Clan.findOne({
+            leader: userId
+        })
+
+        if (!myClan) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: "❌ فقط قائد العشيرة يستطيع رفض الحرب."
+            })
+
+        }
+
+        const war = await ClanWar.findOne({
+
+            defenderClan: myClan.clanId,
+
+            status: "pending"
+
+        })
+
+        if (!war) {
+
+            return safeSend(msg.key.remoteJid, {
+
+                text: "❌ لا يوجد طلب حرب معلق."
+
+            })
+
+        }
+
+        // إعادة محاولة الحرب للعشيرة المهاجمة
+        const attackerClan = await Clan.findOne({
+            clanId: war.attackerClan
+        })
+
+        if (attackerClan) {
+
+            attackerClan.dailyWars =
+                (attackerClan.dailyWars || 0) + 1
+
+            await attackerClan.save()
+
+        }
+
+        war.status = "rejected"
+
+        await war.save()
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+text:
+`━━━━━━━━━━━━━━
+
+❌ تم رفض طلب الحرب.
+
+🏯 ${myClan.emoji} ${myClan.name}
+
+رفضت التحدي.
+
+━━━━━━━━━━━━━━
+
+🔄 تمت إعادة محاولة الحرب
+للعشيرة المهاجمة.
+
+━━━━━━━━━━━━━━`
+
+            }
+
+        )
+
+    }
+
+    catch (err) {
+
+        console.log(err)
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+text:
+`❌ حدث خطأ أثناء رفض الحرب.
+
+${err.message}`
+
+            }
+
+        )
+
+    }
+
+}
     if (text.startsWith('.قدره')) {
 
     const args = text.split(' ')
