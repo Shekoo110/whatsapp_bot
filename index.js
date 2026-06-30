@@ -1,4 +1,25 @@
 const fs = require('fs')
+async function cleanEmptyClans() {
+
+    const Clan = require("./models/Clan")
+
+    const clans = await Clan.find()
+
+    for (const clan of clans) {
+
+        if (!clan.members || clan.members.length === 0) {
+
+            console.log(`Deleted empty clan: ${clan.name}`)
+
+            await Clan.deleteOne({
+                clanId: clan.clanId
+            })
+
+        }
+
+    }
+
+}
 
 const useAttackAbilities = require('./systems/useAttackAbilities')
 const useEXAbilities = require('./utils/useEXAbilities')
@@ -3777,27 +3798,7 @@ ${loserClan.name}
     }
 
 }
-async function cleanEmptyClans() {
 
-    const Clan = require("./models/Clan")
-
-    const clans = await Clan.find()
-
-    for (const clan of clans) {
-
-        if (!clan.members || clan.members.length === 0) {
-
-            console.log(`Deleted empty clan: ${clan.name}`)
-
-            await Clan.deleteOne({
-                clanId: clan.clanId
-            })
-
-        }
-
-    }
-
-}
 
     // =========================
     // الأوامر العادية هنا
