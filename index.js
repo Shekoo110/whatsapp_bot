@@ -1316,7 +1316,225 @@ const safeSaveMarket = (market) => {
         console.log('Save error market')
     }
 }
+async function startClanWar(warId) {
 
+    const ClanWar = require("./models/ClanWar")
+
+    const war =
+        await ClanWar.findOne({
+            warId
+        })
+
+    if (!war) return
+
+    if (
+        war.rounds.length === 0
+    ) return
+
+    war.currentRound = 1
+
+    await war.save()
+
+    return runClanRound(warId)
+
+}
+async function runClanRound(warId) {
+
+    const ClanWar = require("./models/ClanWar")
+    const Player = require("./models/Player")
+
+    const war = await ClanWar.findOne({
+        warId
+    })
+
+    if (!war) return
+
+    const round = war.rounds.find(
+        x =>
+        x.round === war.currentRound
+    )
+
+    if (!round) {
+
+        return finishClanWar(warId)
+
+    }
+
+    const attacker =
+        await Player.findOne({
+            userId: round.attacker
+        })
+
+    const defender =
+        await Player.findOne({
+            userId: round.defender
+        })
+
+    if (!attacker || !defender) {
+
+        round.finished = true
+
+        round.winner = null
+
+        await war.save()
+
+        war.currentRound++
+
+        await war.save()
+
+        return runClanRound(warId)
+
+    }
+
+    await safeSend(
+
+        war.chatId,
+
+        {
+
+text:
+
+`🥊 الجولة ${round.round}
+
+━━━━━━━━━━━━━━
+
+@${round.attacker.split("@")[0]}
+
+🆚
+
+@${round.defender.split("@")[0]}
+
+⚔️ بدأ القتال...
+
+━━━━━━━━━━━━━━`,
+
+mentions: [
+
+round.attacker,
+
+round.defender
+
+]
+
+        }
+
+    )
+
+    // نحسب القوة
+
+    const attackerPower =
+        attacker.characters.reduce(
+            (sum, c) =>
+            sum + (c.power || 0),
+            0
+        )
+
+    const defenderPower =
+        defender.characters.reduce(
+            (sum, c) =>
+            sum + (c.power || 0),
+            0
+        )
+
+    // عامل الحظ ±5%
+
+    const attackerFinal =
+        attackerPower *
+        (0.95 + Math.random() * 0.10)
+
+    const defenderFinal =
+        defenderPower *
+        (0.95 + Math.random() * 0.10)
+
+    let winner
+
+    if (
+        attackerFinal >= defenderFinal
+    ) {
+
+        winner = round.attacker
+
+        war.attackerScore++
+
+    }
+
+    else {
+
+        winner = round.defender
+
+        war.defenderScore++
+
+    }
+
+    round.winner = winner
+
+    round.finished = true
+
+    await war.save()
+
+    await safeSend(
+
+        war.chatId,
+
+        {
+
+text:
+
+`🏆 انتهت الجولة ${round.round}
+
+الفائز:
+
+@${
+winner.split("@")[0]
+}
+
+━━━━━━━━━━━━━━
+
+🏯 ${
+war.attackerScore
+}
+
+🆚
+
+🏯 ${
+war.defenderScore
+}`,
+
+mentions: [
+
+winner
+
+]
+
+        }
+
+    )
+
+    // إذا وصل أحدهم إلى 3 انتصارات
+
+    if (
+
+        war.attackerScore >= 3 ||
+
+        war.defenderScore >= 3
+
+    ) {
+
+        return finishClanWar(warId)
+
+    }
+
+    war.currentRound++
+
+    await war.save()
+
+    setTimeout(() => {
+
+        runClanRound(warId)
+
+    }, 5000)
+
+}
 
 // =========================
 // ملفات اللعبة
@@ -3464,7 +3682,8 @@ ${err.message}`
     }
 
 }
-    if (text === ".قبول_الحرب") {
+
+   if (text === ".قبول_الحرب") {
 
     try {
 
@@ -3518,21 +3737,23 @@ ${err.message}`
 
         war.status = "accepted"
 
-        const attackerClan =
-            await Clan.findOne({
-                clanId: war.attackerClan
-            })
+        const attackerClan = await Clan.findOne({
+            clanId: war.attackerClan
+        })
 
-        const defenderClan =
-            await Clan.findOne({
-                clanId: war.defenderClan
-            })
+        const defenderClan = await Clan.findOne({
+            clanId: war.defenderClan
+        })
 
         const attackerMembers =
-            shuffle(attackerClan.members)
+            shuffle([...attackerClan.members])
 
         const defenderMembers =
-            shuffle(defenderClan.members)
+            shuffle([...defenderClan.members])
+
+        war.chatId = msg.key.remoteJid
+
+        war.currentRound = 1
 
         war.rounds = []
 
@@ -3547,11 +3768,9 @@ ${err.message}`
 
                 round: i + 1,
 
-                attacker:
-                    attackerMembers[i],
+                attacker: attackerMembers[i],
 
-                defender:
-                    defenderMembers[i],
+                defender: defenderMembers[i],
 
                 winner: null,
 
@@ -3573,7 +3792,6 @@ ${err.message}`
         war.rounds.forEach(r => {
 
             draw +=
-
 `${r.round}️⃣
 
 @${r.attacker.split("@")[0]}
@@ -3591,7 +3809,7 @@ ${err.message}`
         draw +=
 `⏳ تبدأ الجولة الأولى خلال لحظات.`
 
-        return safeSend(
+        await safeSend(
 
             msg.key.remoteJid,
 
@@ -3610,6 +3828,8 @@ ${err.message}`
             }
 
         )
+
+        await startClanWar(war.warId)
 
     }
 
@@ -3634,7 +3854,8 @@ ${err.message}`
 
     }
 
-}
+}     
+
     if (text.startsWith('.قدره')) {
 
     const args = text.split(' ')
