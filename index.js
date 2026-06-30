@@ -3262,8 +3262,379 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+if (text.startsWith('.حرب_عشيرة')) {
 
+    try {
 
+        const Clan = require('./models/Clan')
+        const ClanWar = require('./models/ClanWar')
+        const { generateId } = require('./utils/id')
+
+        const sender = userId
+
+        const mentioned =
+            msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+
+        if (!mentioned) {
+
+            return safeSend(msg.key.remoteJid, {
+                text:
+`❌ يجب منشن قائد العشيرة الأخرى.
+
+مثال:
+
+.حرب_عشيرة @القائد`
+            })
+
+        }
+
+        const myClan =
+            await Clan.findOne({
+                leader: sender
+            })
+
+        if (!myClan) {
+
+            return safeSend(msg.key.remoteJid, {
+                text:
+`❌ فقط قائد العشيرة يستطيع بدء الحرب.`
+            })
+
+        }
+
+        const enemyClan =
+            await Clan.findOne({
+                leader: mentioned
+            })
+
+        if (!enemyClan) {
+
+            return safeSend(msg.key.remoteJid, {
+                text:
+`❌ الشخص الممنشن ليس قائد أي عشيرة.`
+            })
+
+        }
+
+        if (
+            myClan.clanId ===
+            enemyClan.clanId
+        ) {
+
+            return safeSend(msg.key.remoteJid, {
+                text:
+`❌ لا يمكنك تحدي عشيرتك.`
+            })
+
+        }
+
+        const today =
+            new Date().toLocaleDateString(
+                'en-CA',
+                {
+                    timeZone: 'Asia/Riyadh'
+                }
+            )
+
+        if (
+            myClan.lastWarReset !== today
+        ) {
+
+            myClan.dailyWars = 5
+            myClan.lastWarReset = today
+
+            await myClan.save()
+
+        }
+
+        if (
+            myClan.dailyWars <= 0
+        ) {
+
+            return safeSend(msg.key.remoteJid, {
+                text:
+`❌ انتهت محاولات الحروب اليومية.
+
+تتجدد الساعة 12:00 صباحاً بتوقيت السعودية.`
+            })
+
+        }
+
+        const pending =
+            await ClanWar.findOne({
+
+                status: "pending",
+
+                $or: [
+
+                    {
+                        attackerClan:
+                            myClan.clanId
+                    },
+
+                    {
+                        defenderClan:
+                            myClan.clanId
+                    }
+
+                ]
+
+            })
+
+        if (pending) {
+
+            return safeSend(msg.key.remoteJid, {
+                text:
+`❌ لديك طلب حرب معلق بالفعل.`
+            })
+
+        }
+
+        const war =
+            await ClanWar.create({
+
+                warId:
+                    generateId(),
+
+                attackerClan:
+                    myClan.clanId,
+
+                defenderClan:
+                    enemyClan.clanId,
+
+                attackerLeader:
+                    sender,
+
+                defenderLeader:
+                    mentioned,
+
+                status:
+                    "pending",
+
+                mode:
+                    "member"
+
+            })
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`━━━━━━━━━━━━━━
+
+⚔️ طلب حرب عشائر
+
+🏯 ${myClan.emoji} ${myClan.name}
+
+تتحدى
+
+🏯 ${enemyClan.emoji} ${enemyClan.name}
+
+👑 قائد العشيرة الأخرى:
+
+@${mentioned.split('@')[0]}
+
+━━━━━━━━━━━━━━
+
+للقبول:
+
+.قبول_الحرب
+
+للرفض:
+
+.رفض_الحرب
+
+⏳ ينتهي الطلب خلال دقيقة.
+
+━━━━━━━━━━━━━━`,
+            mentions: [mentioned]
+        })
+
+    }
+
+    catch (err) {
+
+        console.log(err)
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`❌ حدث خطأ أثناء إنشاء طلب الحرب.
+
+${err.message}`
+        })
+
+    }
+
+}
+    if (text === ".قبول_الحرب") {
+
+    try {
+
+        const Clan = require("./models/Clan")
+        const ClanWar = require("./models/ClanWar")
+
+        function shuffle(array) {
+
+            const arr = [...array]
+
+            for (let i = arr.length - 1; i > 0; i--) {
+
+                const j = Math.floor(Math.random() * (i + 1))
+
+                ;[arr[i], arr[j]] =
+                [arr[j], arr[i]]
+
+            }
+
+            return arr
+
+        }
+
+        const myClan = await Clan.findOne({
+            leader: userId
+        })
+
+        if (!myClan) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: "❌ فقط قائد العشيرة يستطيع قبول الحرب."
+            })
+
+        }
+
+        const war = await ClanWar.findOne({
+
+            defenderClan: myClan.clanId,
+
+            status: "pending"
+
+        })
+
+        if (!war) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: "❌ لا يوجد طلب حرب معلق."
+            })
+
+        }
+
+        war.status = "accepted"
+
+        const attackerClan =
+            await Clan.findOne({
+                clanId: war.attackerClan
+            })
+
+        const defenderClan =
+            await Clan.findOne({
+                clanId: war.defenderClan
+            })
+
+        const attackerMembers =
+            shuffle(attackerClan.members)
+
+        const defenderMembers =
+            shuffle(defenderClan.members)
+
+        war.rounds = []
+
+        const totalRounds = Math.min(
+            attackerMembers.length,
+            defenderMembers.length
+        )
+
+        for (let i = 0; i < totalRounds; i++) {
+
+            war.rounds.push({
+
+                round: i + 1,
+
+                attacker:
+                    attackerMembers[i],
+
+                defender:
+                    defenderMembers[i],
+
+                winner: null,
+
+                finished: false
+
+            })
+
+        }
+
+        await war.save()
+
+        let draw =
+`🎲 نتائج القرعة
+
+━━━━━━━━━━━━━━
+
+`
+
+        war.rounds.forEach(r => {
+
+            draw +=
+
+`${r.round}️⃣
+
+@${r.attacker.split("@")[0]}
+
+🆚
+
+@${r.defender.split("@")[0]}
+
+━━━━━━━━━━━━━━
+
+`
+
+        })
+
+        draw +=
+`⏳ تبدأ الجولة الأولى خلال لحظات.`
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: draw,
+
+                mentions: [
+
+                    ...attackerMembers,
+
+                    ...defenderMembers
+
+                ]
+
+            }
+
+        )
+
+    }
+
+    catch (err) {
+
+        console.log(err)
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+`❌ حدث خطأ أثناء قبول الحرب.
+
+${err.message}`
+
+            }
+
+        )
+
+    }
+
+}
     if (text.startsWith('.قدره')) {
 
     const args = text.split(' ')
