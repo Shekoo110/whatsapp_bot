@@ -1360,434 +1360,8 @@ const safeSaveMarket = (market) => {
         console.log('Save error market')
     }
 }
+    
 
-
-async function startClanWar(warId) {
-
-    const ClanWar = require("./models/ClanWar")
-
-    const war =
-        await ClanWar.findOne({
-            warId
-        })
-
-    if (!war) return
-
-    if (
-        war.rounds.length === 0
-    ) return
-
-    war.currentRound = 1
-
-    await war.save()
-
-    return runClanRound(warId)
-
-}
-
-        async function runClanRound(warId) {
-
-    const ClanWar = require("./models/ClanWar")
-    const Player = require("./models/Player")
-    const clanBattle = require("./clanBattleEngine")
-
-    const war = await ClanWar.findOne({
-        warId
-    })
-
-    if (!war) return
-
-    const round = war.rounds.find(
-        x => x.round === war.currentRound
-    )
-
-    if (!round) {
-
-        return finishClanWar(warId)
-
-    }
-
-    const attacker = await Player.findOne({
-        userId: round.attacker
-    })
-
-    const defender = await Player.findOne({
-        userId: round.defender
-    })
-
-    if (!attacker || !defender) {
-
-        round.finished = true
-        round.winner = null
-
-        await war.save()
-
-        war.currentRound++
-
-        await war.save()
-
-        return runClanRound(warId)
-
-    }
-
-    await safeSend(
-
-        war.chatId,
-
-        {
-
-text:
-
-`🥊 الجولة ${round.round}
-
-━━━━━━━━━━━━━━
-
-@${round.attacker.split("@")[0]}
-
-🆚
-
-@${round.defender.split("@")[0]}
-
-⚔️ بدأ القتال...
-
-━━━━━━━━━━━━━━`,
-
-mentions: [
-
-round.attacker,
-
-round.defender
-
-]
-
-        }
-
-    )
-
-            async function finishClanWar(warId) {
-
-    const Clan = require("./models/Clan")
-    const ClanWar = require("./models/ClanWar")
-    const Player = require("./models/Player")
-
-    const war = await ClanWar.findOne({
-        warId
-    })
-
-    if (!war) return
-
-    const attackerClan =
-        await Clan.findOne({
-            clanId: war.attackerClan
-        })
-
-    const defenderClan =
-        await Clan.findOne({
-            clanId: war.defenderClan
-        })
-
-    let winnerClan
-    let loserClan
-
-    if (
-        war.attackerScore >
-        war.defenderScore
-    ) {
-
-        winnerClan = attackerClan
-        loserClan = defenderClan
-
-    }
-
-    else {
-
-        winnerClan = defenderClan
-        loserClan = attackerClan
-
-    }
-
-    // =======================
-    // الجوائز
-    // =======================
-
-    const winnerMoney = 300000
-    const loserMoney = 150000
-
-    const winnerCoins = 100
-
-    const winnerXP = 250
-    const loserXP = 125
-
-    const winnerRating = 25
-
-    // =======================
-    // الفائز
-    // =======================
-
-    for (const id of winnerClan.members) {
-
-        const player =
-            await Player.findOne({
-                userId: id
-            })
-
-        if (!player) continue
-
-        player.money += winnerMoney
-
-        player.clanCoins += winnerCoins
-
-        player.xp += winnerXP
-
-        await player.save()
-
-    }
-
-    winnerClan.rankPoints += winnerRating
-
-    winnerClan.xp += winnerXP
-
-    winnerClan.wins++
-
-    await winnerClan.save()
-
-    // =======================
-    // الخاسر
-    // =======================
-
-    for (const id of loserClan.members) {
-
-        const player =
-            await Player.findOne({
-                userId: id
-            })
-
-        if (!player) continue
-
-        player.money += loserMoney
-
-        player.xp += loserXP
-
-        await player.save()
-
-    }
-
-    loserClan.xp += loserXP
-
-    loserClan.losses++
-
-    await loserClan.save()
-
-    war.status = "finished"
-
-    await war.save()
-
-    await safeSend(
-
-        war.chatId,
-
-        {
-
-text:
-
-`🏆 انتهت الحرب
-
-━━━━━━━━━━━━━━
-
-🥇 الفائز
-
-${winnerClan.emoji} ${winnerClan.name}
-
-${war.attackerScore}
-
-🆚
-
-${war.defenderScore}
-
-${loserClan.emoji} ${loserClan.name}
-
-━━━━━━━━━━━━━━
-
-🎉 جميع أعضاء ${winnerClan.name}
-
-💰 +300,000
-
-🪙 +100 عملة عشيرة
-
-⭐ +250 XP
-
-🏅 +25 Rating
-
-━━━━━━━━━━━━━━
-
-${loserClan.name}
-
-💰 +150,000
-
-⭐ +125 XP`
-
-        }
-
-    )
-
-}
-    // =========================
-    // حساب القوة الحقيقي
-    // =========================
-
-    const result =
-        await clanBattle(
-            attacker,
-            defender
-        )
-
-    let winner
-
-    if (result.winner === attacker.userId) {
-
-        winner = round.attacker
-
-        war.attackerScore++
-
-    }
-
-    else {
-
-        winner = round.defender
-
-        war.defenderScore++
-
-    }
-
-    round.winner = winner
-    round.finished = true
-
-    await war.save()
-
-    await safeSend(
-
-        war.chatId,
-
-        {
-
-text:
-
-`🏆 انتهت الجولة ${round.round}
-
-الفائز:
-
-@${winner.split("@")[0]}
-
-━━━━━━━━━━━━━━
-
-⚔️ قوة المهاجم:
-${result.powerA.toLocaleString()}
-
-🛡️ قوة المدافع:
-${result.powerB.toLocaleString()}
-
-━━━━━━━━━━━━━━
-
-🏯 ${war.attackerScore}
-
-🆚
-
-🏯 ${war.defenderScore}`,
-
-mentions: [
-
-winner
-
-]
-
-        }
-
-    )
-
-    if (
-
-        war.attackerScore >= 3 ||
-
-        war.defenderScore >= 3
-
-    ) {
-
-        return finishClanWar(warId)
-
-    }
-
-    war.currentRound++
-
-    await war.save()
-
-    setTimeout(() => {
-
-        runClanRound(warId)
-
-    }, 5000)
-
-}
-async function cleanExpiredClanWars() {
-
-    try {
-
-        const Clan = require("./models/Clan")
-        const ClanWar = require("./models/ClanWar")
-
-        const pendingWars =
-            await ClanWar.find({
-
-                status: "pending"
-
-            })
-
-        for (const war of pendingWars) {
-
-            const age =
-                Date.now() -
-                new Date(war.createdAt).getTime()
-
-            if (age < 60000)
-                continue
-
-            war.status = "expired"
-
-            await war.save()
-
-            const attackerClan =
-                await Clan.findOne({
-
-                    clanId:
-                    war.attackerClan
-
-                })
-
-            if (attackerClan) {
-
-                attackerClan.dailyWars =
-                    Math.min(
-                        5,
-                        (attackerClan.dailyWars || 0) + 1
-                    )
-
-                await attackerClan.save()
-
-            }
-
-        }
-
-    }
-
-    catch (err) {
-
-        console.log(
-            "ClanWar Cleanup Error:",
-            err
-        )
-
-    }
-
-}
 
 // =========================
 // ملفات اللعبة
@@ -3730,6 +3304,431 @@ if (
 cooldowns.set(key, now)
 
 
+    async function startClanWar(warId) {
+
+    const ClanWar = require("./models/ClanWar")
+
+    const war =
+        await ClanWar.findOne({
+            warId
+        })
+
+    if (!war) return
+
+    if (
+        war.rounds.length === 0
+    ) return
+
+    war.currentRound = 1
+
+    await war.save()
+
+    return runClanRound(warId)
+
+}
+
+        async function runClanRound(warId) {
+
+    const ClanWar = require("./models/ClanWar")
+    const Player = require("./models/Player")
+    const clanBattle = require("./clanBattleEngine")
+
+    const war = await ClanWar.findOne({
+        warId
+    })
+
+    if (!war) return
+
+    const round = war.rounds.find(
+        x => x.round === war.currentRound
+    )
+
+    if (!round) {
+
+        return finishClanWar(warId)
+
+    }
+
+    const attacker = await Player.findOne({
+        userId: round.attacker
+    })
+
+    const defender = await Player.findOne({
+        userId: round.defender
+    })
+
+    if (!attacker || !defender) {
+
+        round.finished = true
+        round.winner = null
+
+        await war.save()
+
+        war.currentRound++
+
+        await war.save()
+
+        return runClanRound(warId)
+
+    }
+
+    await safeSend(
+
+        war.chatId,
+
+        {
+
+text:
+
+`🥊 الجولة ${round.round}
+
+━━━━━━━━━━━━━━
+
+@${round.attacker.split("@")[0]}
+
+🆚
+
+@${round.defender.split("@")[0]}
+
+⚔️ بدأ القتال...
+
+━━━━━━━━━━━━━━`,
+
+mentions: [
+
+round.attacker,
+
+round.defender
+
+]
+
+        }
+
+    )
+async function finishClanWar(warId) {
+
+    const Clan = require("./models/Clan")
+    const ClanWar = require("./models/ClanWar")
+    const Player = require("./models/Player")
+
+    const war = await ClanWar.findOne({
+        warId
+    })
+
+    if (!war) return
+
+    const attackerClan =
+        await Clan.findOne({
+            clanId: war.attackerClan
+        })
+
+    const defenderClan =
+        await Clan.findOne({
+            clanId: war.defenderClan
+        })
+
+    let winnerClan
+    let loserClan
+
+    if (
+        war.attackerScore >
+        war.defenderScore
+    ) {
+
+        winnerClan = attackerClan
+        loserClan = defenderClan
+
+    }
+
+    else {
+
+        winnerClan = defenderClan
+        loserClan = attackerClan
+
+    }
+
+    // =======================
+    // الجوائز
+    // =======================
+
+    const winnerMoney = 300000
+    const loserMoney = 150000
+
+    const winnerCoins = 100
+
+    const winnerXP = 250
+    const loserXP = 125
+
+    const winnerRating = 25
+
+    // =======================
+    // الفائز
+    // =======================
+
+    for (const id of winnerClan.members) {
+
+        const player =
+            await Player.findOne({
+                userId: id
+            })
+
+        if (!player) continue
+
+        player.money += winnerMoney
+
+        player.clanCoins += winnerCoins
+
+        player.xp += winnerXP
+
+        await player.save()
+
+    }
+
+    winnerClan.rankPoints += winnerRating
+
+    winnerClan.xp += winnerXP
+
+    winnerClan.wins++
+
+    await winnerClan.save()
+        // =======================
+// الخاسر
+    // =======================
+
+    for (const id of loserClan.members) {
+
+        const player =
+            await Player.findOne({
+                userId: id
+            })
+
+        if (!player) continue
+
+        player.money += loserMoney
+
+        player.xp += loserXP
+
+        await player.save()
+
+    }
+
+    loserClan.xp += loserXP
+
+    loserClan.losses++
+
+    await loserClan.save()
+
+    war.status = "finished"
+
+    await war.save()
+
+    await safeSend(
+
+        war.chatId,
+
+        {
+
+text:
+
+`🏆 انتهت الحرب
+
+━━━━━━━━━━━━━━
+
+🥇 الفائز
+
+${winnerClan.emoji} ${winnerClan.name}
+
+${war.attackerScore}
+
+🆚
+
+${war.defenderScore}
+
+${loserClan.emoji} ${loserClan.name}
+
+━━━━━━━━━━━━━━
+
+🎉 جميع أعضاء ${winnerClan.name}
+
+💰 +300,000
+
+🪙 +100 عملة عشيرة
+
+⭐ +250 XP
+
+🏅 +25 Rating
+
+━━━━━━━━━━━━━━
+
+${loserClan.name}
+
+💰 +150,000
+
+⭐ +125 XP`
+
+        }
+
+    )
+
+}
+    // =========================
+    // حساب القوة الحقيقي
+    // =========================
+
+    const result =
+        await clanBattle(
+            attacker,
+            defender
+        )
+
+    let winner
+
+    if (result.winner === attacker.userId) {
+
+        winner = round.attacker
+
+        war.attackerScore++
+
+    }
+
+    else {
+
+        winner = round.defender
+
+        war.defenderScore++
+
+    }
+
+    round.winner = winner
+    round.finished = true
+
+    await war.save()
+
+    await safeSend(
+
+        war.chatId,
+
+        {
+
+text:
+
+`🏆 انتهت الجولة ${round.round}
+
+الفائز:
+
+@${winner.split("@")[0]}
+
+━━━━━━━━━━━━━━
+
+⚔️ قوة المهاجم:
+${result.powerA.toLocaleString()}
+
+🛡️ قوة المدافع:
+${result.powerB.toLocaleString()}
+
+━━━━━━━━━━━━━━
+
+🏯 ${war.attackerScore}
+
+🆚
+
+🏯 ${war.defenderScore}`,
+
+mentions: [
+
+winner
+
+]
+
+        }
+
+    )
+
+    if (
+
+        war.attackerScore >= 3 ||
+
+        war.defenderScore >= 3
+
+    ) {
+
+        return finishClanWar(warId)
+
+    }
+
+    war.currentRound++
+
+    await war.save()
+
+    setTimeout(() => {
+
+        runClanRound(warId)
+
+    }, 5000)
+
+}
+
+    async function cleanExpiredClanWars() {
+
+    try {
+
+        const Clan = require("./models/Clan")
+        const ClanWar = require("./models/ClanWar")
+
+        const pendingWars =
+            await ClanWar.find({
+
+                status: "pending"
+
+            })
+
+        for (const war of pendingWars) {
+
+            const age =
+                Date.now() -
+                new Date(war.createdAt).getTime()
+
+            if (age < 60000)
+                continue
+
+            war.status = "expired"
+
+            await war.save()
+
+            const attackerClan =
+                await Clan.findOne({
+
+                    clanId:
+                    war.attackerClan
+
+                })
+
+            if (attackerClan) {
+
+                attackerClan.dailyWars =
+                    Math.min(
+                        5,
+                        (attackerClan.dailyWars || 0) + 1
+                    )
+
+                await attackerClan.save()
+
+            }
+
+        }
+
+    }
+
+    catch (err) {
+
+        console.log(
+            "ClanWar Cleanup Error:",
+            err
+        )
+
+    }
+
+}
     // =========================
     // الأوامر العادية هنا
     // =========================
