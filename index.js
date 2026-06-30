@@ -3734,6 +3734,77 @@ cooldowns.set(key, now)
     // الأوامر العادية هنا
     // =========================
 
+    if (text === ".الغاء_الحروب") {
+
+    try {
+
+        const Clan = require("./models/Clan")
+        const ClanWar = require("./models/ClanWar")
+
+        const myClan = await Clan.findOne({
+            leader: userId
+        })
+
+        if (!myClan) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: "❌ فقط قائد العشيرة يستطيع استخدام هذا الأمر."
+            })
+
+        }
+
+        const result = await ClanWar.deleteMany({
+
+            $or: [
+
+                {
+                    attackerClan: myClan.clanId
+                },
+
+                {
+                    defenderClan: myClan.clanId
+                }
+
+            ]
+
+        })
+
+        myClan.dailyWars = 5
+
+        await myClan.save()
+
+        return safeSend(msg.key.remoteJid, {
+
+            text:
+`🗑️ تم إلغاء جميع الحروب والطلبات الخاصة بعشيرتك.
+
+📄 عدد السجلات المحذوفة:
+
+${result.deletedCount}
+
+🔄 تمت إعادة محاولات الحرب إلى 5.`
+
+        })
+
+    }
+
+    catch (err) {
+
+        console.log(err)
+
+        return safeSend(msg.key.remoteJid, {
+
+            text:
+`❌ حدث خطأ.
+
+${err.message}`
+
+        })
+
+    }
+
+}
+
 if (text.startsWith('.حرب_عشيرة')) {
 
     try {
