@@ -134,4 +134,4 @@ class SafeAIRewriterV7 {
     }
 }
 
-module.exports = new SafeAIRewriterV7()
+module.exports = SafeAIRewriterV7
