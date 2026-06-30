@@ -1316,6 +1316,8 @@ const safeSaveMarket = (market) => {
         console.log('Save error market')
     }
 }
+
+
 async function startClanWar(warId) {
 
     const ClanWar = require("./models/ClanWar")
@@ -1338,10 +1340,12 @@ async function startClanWar(warId) {
     return runClanRound(warId)
 
 }
-async function runClanRound(warId) {
+
+        async function runClanRound(warId) {
 
     const ClanWar = require("./models/ClanWar")
     const Player = require("./models/Player")
+    const clanBattle = require("./clanBattleEngine")
 
     const war = await ClanWar.findOne({
         warId
@@ -1350,8 +1354,7 @@ async function runClanRound(warId) {
     if (!war) return
 
     const round = war.rounds.find(
-        x =>
-        x.round === war.currentRound
+        x => x.round === war.currentRound
     )
 
     if (!round) {
@@ -1360,20 +1363,17 @@ async function runClanRound(warId) {
 
     }
 
-    const attacker =
-        await Player.findOne({
-            userId: round.attacker
-        })
+    const attacker = await Player.findOne({
+        userId: round.attacker
+    })
 
-    const defender =
-        await Player.findOne({
-            userId: round.defender
-        })
+    const defender = await Player.findOne({
+        userId: round.defender
+    })
 
     if (!attacker || !defender) {
 
         round.finished = true
-
         round.winner = null
 
         await war.save()
@@ -1420,37 +1420,19 @@ round.defender
 
     )
 
-    // نحسب القوة
+    // =========================
+    // حساب القوة الحقيقي
+    // =========================
 
-    const attackerPower =
-        attacker.characters.reduce(
-            (sum, c) =>
-            sum + (c.power || 0),
-            0
+    const result =
+        await clanBattle(
+            attacker,
+            defender
         )
-
-    const defenderPower =
-        defender.characters.reduce(
-            (sum, c) =>
-            sum + (c.power || 0),
-            0
-        )
-
-    // عامل الحظ ±5%
-
-    const attackerFinal =
-        attackerPower *
-        (0.95 + Math.random() * 0.10)
-
-    const defenderFinal =
-        defenderPower *
-        (0.95 + Math.random() * 0.10)
 
     let winner
 
-    if (
-        attackerFinal >= defenderFinal
-    ) {
+    if (result.winner === attacker.userId) {
 
         winner = round.attacker
 
@@ -1467,7 +1449,6 @@ round.defender
     }
 
     round.winner = winner
-
     round.finished = true
 
     await war.save()
@@ -1484,21 +1465,23 @@ text:
 
 الفائز:
 
-@${
-winner.split("@")[0]
-}
+@${winner.split("@")[0]}
 
 ━━━━━━━━━━━━━━
 
-🏯 ${
-war.attackerScore
-}
+⚔️ قوة المهاجم:
+${result.powerA.toLocaleString()}
+
+🛡️ قوة المدافع:
+${result.powerB.toLocaleString()}
+
+━━━━━━━━━━━━━━
+
+🏯 ${war.attackerScore}
 
 🆚
 
-🏯 ${
-war.defenderScore
-}`,
+🏯 ${war.defenderScore}`,
 
 mentions: [
 
@@ -1509,8 +1492,6 @@ winner
         }
 
     )
-
-    // إذا وصل أحدهم إلى 3 انتصارات
 
     if (
 
@@ -3480,6 +3461,7 @@ cooldowns.set(key, now)
     // =========================
     // الأوامر العادية هنا
     // =========================
+
 if (text.startsWith('.حرب_عشيرة')) {
 
     try {
@@ -3581,8 +3563,17 @@ if (text.startsWith('.حرب_عشيرة')) {
         const pending =
             await ClanWar.findOne({
 
-                status: "pending",
+                status: {
 
+    $in: [
+
+        "pending",
+
+        "accepted"
+
+    ]
+
+},
                 $or: [
 
                     {
@@ -3610,6 +3601,7 @@ if (text.startsWith('.حرب_عشيرة')) {
 
         const war =
             await ClanWar.create({
+                
 
                 warId:
                     generateId(),
@@ -3633,6 +3625,33 @@ if (text.startsWith('.حرب_عشيرة')) {
                     "member"
 
             })
+        myClan.dailyWars--
+
+await myClan.save()
+        setTimeout(async () => {
+
+    const pending =
+        await ClanWar.findOne({
+
+            warId: war.warId
+
+        })
+
+    if (
+
+        pending &&
+
+        pending.status === "pending"
+
+    ) {
+
+        pending.status = "expired"
+
+        await pending.save()
+
+    }
+
+}, 60000)
 
         return safeSend(msg.key.remoteJid, {
             text:
@@ -3729,11 +3748,23 @@ ${err.message}`
 
         if (!war) {
 
-            return safeSend(msg.key.remoteJid, {
-                text: "❌ لا يوجد طلب حرب معلق."
-            })
+    return safeSend(msg.key.remoteJid, {
+        text: "❌ لا يوجد طلب حرب معلق."
+    })
 
-        }
+}
+
+if (war.status !== "pending") {
+
+    return safeSend(msg.key.remoteJid, {
+
+        text: "❌ هذه الحرب لم تعد معلقة."
+
+    })
+
+}
+
+war.status = "accepted"
 
         war.status = "accepted"
 
@@ -3746,12 +3777,28 @@ ${err.message}`
         })
 
         const attackerMembers =
-            shuffle([...attackerClan.members])
+    shuffle([...attackerClan.members])
 
-        const defenderMembers =
-            shuffle([...defenderClan.members])
+const defenderMembers =
+    shuffle([...defenderClan.members])
 
-        war.chatId = msg.key.remoteJid
+if (
+
+    attackerMembers.length === 0 ||
+
+    defenderMembers.length === 0
+
+) {
+
+    return safeSend(msg.key.remoteJid, {
+
+        text: "❌ إحدى العشيرتين لا تحتوي على أعضاء."
+
+    })
+
+}
+
+war.chatId = msg.key.remoteJid
 
         war.currentRound = 1
 
