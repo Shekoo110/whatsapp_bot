@@ -1,191 +1,595 @@
 const axios = require("axios")
-const { createCanvas, loadImage } = require("canvas")
+
+const {
+    createCanvas,
+    loadImage,
+    registerFont
+} = require("canvas")
+
+const path = require("path")
 
 const cards = require("./cards.json")
+
 const frames = require("./frames")
 
-async function generateCard(cardId) {
+// إذا وضعت خط عربي
+try {
 
-    const character = cards.find(c => c.id === cardId)
+    registerFont(
+        path.join(
+            __dirname,
+            "assets",
+            "fonts",
+            "Cairo-Bold.ttf"
+        ),
+        {
+            family: "Cairo"
+        }
+    )
 
-    if (!character) return null
+} catch {}
 
-    const canvas = createCanvas(1024, 1536)
-    const ctx = canvas.getContext("2d")
+const CARD_WIDTH = 1024
+const CARD_HEIGHT = 1536
 
-    // ===========================
-    // خلفية
-    // ===========================
+//--------------------------------------------------
+// تحميل الصورة
+//--------------------------------------------------
 
-    ctx.fillStyle = "#0d0d0d"
-    ctx.fillRect(0, 0, 1024, 1536)
+async function loadRemoteImage(url) {
 
-    // ===========================
-    // تحميل الشخصية
-    // ===========================
+    const response =
+        await axios.get(
+            url,
+            {
+                responseType: "arraybuffer"
+            }
+        )
 
-    const response = await axios.get(character.image, {
-        responseType: "arraybuffer"
-    })
+    return loadImage(
+        Buffer.from(response.data)
+    )
 
-    const characterImage = await loadImage(Buffer.from(response.data))
+}
 
-    // ===========================
-    // Glow حسب النجوم
-    // ===========================
+//--------------------------------------------------
+// لون التوهج حسب النجوم
+//--------------------------------------------------
 
-    let glow = "#000000"
+function getGlow(stars) {
 
-    switch (character.stars) {
+    switch (stars) {
+
+        case 4:
+
+            return "#2f2f2f"
 
         case 5:
-            glow = "#9b4dff"
-            break
+
+            return "#914dff"
 
         case 6:
-            glow = "#ffd700"
-            break
+
+            return "#ffd700"
 
         default:
-            glow = "#222222"
+
+            return "#ffffff"
 
     }
 
-    // ===========================
-    // حجم الشخصية
-    // ===========================
+}
 
-    const imgW = characterImage.width
-    const imgH = characterImage.height
+//--------------------------------------------------
+// خلفية حسب العنصر
+//--------------------------------------------------
+
+function drawBackground(ctx, element) {
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            CARD_HEIGHT
+        )
+
+    switch (
+        (element || "").toLowerCase()
+    ) {
+
+        case "fire":
+
+            gradient.addColorStop(
+                0,
+                "#390000"
+            )
+
+            gradient.addColorStop(
+                1,
+                "#100000"
+            )
+
+            break
+
+        case "water":
+
+            gradient.addColorStop(
+                0,
+                "#001d4a"
+            )
+
+            gradient.addColorStop(
+                1,
+                "#020812"
+            )
+
+            break
+
+        case "light":
+
+            gradient.addColorStop(
+                0,
+                "#423600"
+            )
+
+            gradient.addColorStop(
+                1,
+                "#111111"
+            )
+
+            break
+
+        case "dark":
+
+            gradient.addColorStop(
+                0,
+                "#18002f"
+            )
+
+            gradient.addColorStop(
+                1,
+                "#050505"
+            )
+
+            break
+
+        default:
+
+            gradient.addColorStop(
+                0,
+                "#111111"
+            )
+
+            gradient.addColorStop(
+                1,
+                "#050505"
+            )
+
+    }
+
+    ctx.fillStyle =
+        gradient
+
+    ctx.fillRect(
+        0,
+        0,
+        CARD_WIDTH,
+        CARD_HEIGHT
+    )
+    
+}
+//--------------------------------------------------
+// رسم الشخصية
+//--------------------------------------------------
+
+function drawCharacter(ctx, image, stars) {
+
+    const imgW = image.width
+    const imgH = image.height
+
+    let maxWidth = 920
+    let maxHeight = 1280
+
+    if (stars === 6) {
+
+        maxWidth = 980
+        maxHeight = 1340
+
+    }
 
     const scale = Math.min(
-        900 / imgW,
-        1280 / imgH
+
+        maxWidth / imgW,
+
+        maxHeight / imgH
+
     )
 
     const drawW = imgW * scale
     const drawH = imgH * scale
 
-    const drawX = (1024 - drawW) / 2
-    const drawY = 140
+    const drawX = (CARD_WIDTH - drawW) / 2
+    const drawY = 110
 
-    // ===========================
-    // Glow
-    // ===========================
+    return {
+
+        drawX,
+
+        drawY,
+
+        drawW,
+
+        drawH
+
+    }
+
+}
+
+//--------------------------------------------------
+// رسم التوهج
+//--------------------------------------------------
+
+function drawGlow(
+
+    ctx,
+
+    image,
+
+    info,
+
+    color
+
+) {
 
     ctx.save()
 
-    ctx.shadowColor = glow
-    ctx.shadowBlur = 90
+    ctx.shadowColor = color
+
+    ctx.shadowBlur = 120
+
+    ctx.shadowOffsetX = 0
+
+    ctx.shadowOffsetY = 0
+
+    ctx.globalAlpha = 0.95
 
     ctx.drawImage(
-        characterImage,
-        drawX,
-        drawY,
-        drawW,
-        drawH
+
+        image,
+
+        info.drawX,
+
+        info.drawY,
+
+        info.drawW,
+
+        info.drawH
+
     )
 
     ctx.restore()
 
-    // ===========================
-    // الشخصية
-    // ===========================
+}
+
+//--------------------------------------------------
+// رسم الشخصية
+//--------------------------------------------------
+
+function drawMainCharacter(
+
+    ctx,
+
+    image,
+
+    info
+
+) {
 
     ctx.drawImage(
-        characterImage,
-        drawX,
-        drawY,
-        drawW,
-        drawH
+
+        image,
+
+        info.drawX,
+
+        info.drawY,
+
+        info.drawW,
+
+        info.drawH
+
     )
 
-    // ===========================
-    // الإطار
-    // ===========================
+}
 
-    const frame = await loadImage(
-        frames[character.stars]
+//--------------------------------------------------
+// لمعان أعلى البطاقة
+//--------------------------------------------------
+
+function drawTopLight(ctx) {
+
+    const gradient =
+
+    ctx.createLinearGradient(
+
+        0,
+
+        0,
+
+        0,
+
+        420
+
+    )
+
+    gradient.addColorStop(
+
+        0,
+
+        "rgba(255,255,255,0.18)"
+
+    )
+
+    gradient.addColorStop(
+
+        1,
+
+        "rgba(255,255,255,0)"
+
+    )
+
+    ctx.fillStyle = gradient
+
+    ctx.fillRect(
+
+        0,
+
+        0,
+
+        CARD_WIDTH,
+
+        420
+
+    )
+
+}
+
+//--------------------------------------------------
+// رسم الإطار
+//--------------------------------------------------
+
+async function drawFrame(
+
+    ctx,
+
+    stars
+
+) {
+
+    const frame =
+
+    await loadImage(
+
+        frames[stars]
+
     )
 
     ctx.drawImage(
+
         frame,
+
         0,
+
         0,
-        1024,
-        1536
+
+        CARD_WIDTH,
+
+        CARD_HEIGHT
+
     )
 
-    // ===========================
-    // النجوم
-    // ===========================
+}
+//--------------------------------------------------
+// رسم النجوم
+//--------------------------------------------------
 
-    ctx.font = "bold 54px Arial"
+function drawStars(ctx, stars) {
+
+    const startX = 512 - ((stars - 1) * 35)
+
+    ctx.font = "bold 56px Arial"
     ctx.textAlign = "center"
 
     ctx.lineWidth = 8
-    ctx.strokeStyle = "#000000"
+    ctx.strokeStyle = "#000"
 
-    let stars = ""
+    for (let i = 0; i < stars; i++) {
 
-    for (let i = 0; i < character.stars; i++) {
+        const x = startX + (i * 70)
 
-        stars += "★"
+        ctx.strokeText(
+            "★",
+            x,
+            1310
+        )
+
+        ctx.fillStyle = "#FFD700"
+
+        ctx.fillText(
+            "★",
+            x,
+            1310
+        )
 
     }
 
+}
+
+//--------------------------------------------------
+// الاسم
+//--------------------------------------------------
+
+function drawName(ctx, character) {
+
+    ctx.textAlign = "center"
+
+    ctx.font = "bold 52px Cairo"
+
+    ctx.lineWidth = 8
+    ctx.strokeStyle = "#000"
+
     ctx.strokeText(
-        stars,
+        character.name,
         512,
-        1380
+        1375
+    )
+
+    ctx.fillStyle = "#FFF"
+
+    ctx.fillText(
+        character.name,
+        512,
+        1375
+    )
+
+}
+
+//--------------------------------------------------
+// الأنمي
+//--------------------------------------------------
+
+function drawAnime(ctx, character) {
+
+    ctx.textAlign = "center"
+
+    ctx.font = "32px Cairo"
+
+    ctx.lineWidth = 6
+    ctx.strokeStyle = "#000"
+
+    ctx.strokeText(
+        character.anime,
+        512,
+        1425
+    )
+
+    ctx.fillStyle = "#DDD"
+
+    ctx.fillText(
+        character.anime,
+        512,
+        1425
+    )
+
+}
+
+//--------------------------------------------------
+// الرتبة
+//--------------------------------------------------
+
+function drawRank(ctx, character) {
+
+    const rank = character.rank || ""
+
+    ctx.textAlign = "right"
+
+    ctx.font = "bold 58px Arial"
+
+    ctx.lineWidth = 8
+    ctx.strokeStyle = "#000"
+
+    ctx.strokeText(
+        rank,
+        940,
+        90
     )
 
     ctx.fillStyle = "#FFD700"
 
     ctx.fillText(
-        stars,
-        512,
-        1380
-    )
-
-    // ===========================
-    // Rank
-    // ===========================
-
-    ctx.font = "bold 60px Arial"
-
-    ctx.strokeText(
-        character.rank || "",
-        512,
-        1450
-    )
-
-    ctx.fillStyle = "#FFFFFF"
-
-    ctx.fillText(
-        character.rank || "",
-        512,
-        1450
-    )
-
-    // ===========================
-    // اسم الشخصية
-    // ===========================
-
-    ctx.font = "bold 48px Arial"
-
-    ctx.strokeText(
-        character.name.toUpperCase(),
-        512,
+        rank,
+        940,
         90
     )
 
-    ctx.fillStyle = "#FFFFFF"
+}
 
-    ctx.fillText(
-        character.name.toUpperCase(),
-        512,
-        90
+//--------------------------------------------------
+// الدالة الرئيسية
+//--------------------------------------------------
+
+async function generateCard(cardId) {
+
+    const character =
+        cards.find(c => c.id === cardId)
+
+    if (!character)
+        return null
+
+    const canvas =
+        createCanvas(
+            CARD_WIDTH,
+            CARD_HEIGHT
+        )
+
+    const ctx =
+        canvas.getContext("2d")
+
+    drawBackground(
+        ctx,
+        character.element
+    )
+
+    drawTopLight(ctx)
+
+    const image =
+        await loadRemoteImage(
+            character.image
+        )
+
+    const info =
+        drawCharacter(
+            ctx,
+            image,
+            character.stars
+        )
+
+    drawGlow(
+        ctx,
+        image,
+        info,
+        getGlow(character.stars)
+    )
+
+    drawMainCharacter(
+        ctx,
+        image,
+        info
+    )
+
+    await drawFrame(
+        ctx,
+        character.stars
+    )
+
+    drawStars(
+        ctx,
+        character.stars
+    )
+
+    drawName(
+        ctx,
+        character
+    )
+
+    drawAnime(
+        ctx,
+        character
+    )
+
+    drawRank(
+        ctx,
+        character
     )
 
     return canvas.toBuffer("image/png")
