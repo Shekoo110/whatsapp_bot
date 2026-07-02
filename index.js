@@ -18846,8 +18846,7 @@ ${me.specialAbilities.length}`
             { text: '❌ لا يوجد حساب' }
         )
 
-    const boxType =
-        text.split(' ')[1]
+    const boxType = text.split(' ')[1]
 
     if (
         !player.boxes ||
@@ -18862,45 +18861,14 @@ ${me.specialAbilities.length}`
         )
     }
 
-    const character =
-        getRandomCharacterByBox(boxType)
+    const character = getRandomCharacterByBox(boxType)
 
     player.boxes[boxType]--
 
-const alreadyOwned =
-    player.characters.some(
-        c =>
-            c.name === character.name &&
-            c.form === character.form
-    )
-
-if (alreadyOwned) {
-
-    const compensation =
-        Math.floor(character.power * 2)
-
-    player.money += compensation
+    // إضافة الشخصية حتى لو كانت مكررة
+    player.characters.push(character)
 
     await player.save()
-
-    return sock.sendMessage(
-        msg.key.remoteJid,
-        {
-            text:
-`♻️ حصلت على شخصية مكررة
-
-🧿 ${character.name}
-
-💰 تم تحويلها إلى
-
-${compensation} مال`
-        }
-    )
-}
-
-player.characters.push(character)
-
-await player.save()
 
     return sock.sendMessage(
         msg.key.remoteJid,
@@ -18918,7 +18886,9 @@ ${character.rarity}
 ${character.power}
 
 🌌 الأنمي:
-${character.anime}`
+${character.anime}
+
+✨ تمت إضافة نسخة جديدة إلى مخزونك`
         }
     )
 }
