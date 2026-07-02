@@ -18991,17 +18991,19 @@ if (text.startsWith('.طابق')) {
 
     const args = text.trim().split(/\s+/)
 
-    if (args.length < 2)
-        return sock.sendMessage(msg.key.remoteJid, {
-            text:
+    if (args.length < 2) {
+
+    return sock.sendMessage(msg.key.remoteJid, {
+        text:
 `❌ استخدم:
 
 .طابق رقم_الشخصية
 
 مثال:
 .طابق 1`
-        })
-    }
+    })
+
+}
 
     const charNumber = Number(args[1]) - 1
 
