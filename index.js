@@ -10199,22 +10199,17 @@ text:
 const shards =
 player.shards || new Map()
 
-const available =
-[]
-
-for (
-const [name, amount]
-of shards.entries()
-) {
-
-if (amount > 0) {
-
-available.push({
-name,
-amount
-})
-}
-}
+const available = [...shards.entries()]
+    .filter(([name, amount]) => amount > 0)
+    .sort((a, b) =>
+        a[0].localeCompare(b[0], "en", {
+            sensitivity: "base"
+        })
+    )
+    .map(([name, amount]) => ({
+        name,
+        amount
+    }))
 
 const index =
 parseInt(
