@@ -10748,9 +10748,13 @@ let msgText =
 let count = 0
 let index = 1
 
+const sortedShards = [...shards.entries()].sort((a, b) =>
+    a[0].localeCompare(b[0], "en", { sensitivity: "base" })
+)
+
 for (
     const [name, amount]
-    of shards.entries()
+    of sortedShards
 ) {
 
     if (amount <= 0)
@@ -18444,113 +18448,92 @@ if (!player) {
         userId
     })
 }
-
-// 👇 هنا تضيفه مباشرة
-const unlockedAbilities = Object.keys(levelAbilities)
-    .filter(lvl => player.level >= Number(lvl))
-    .map(lvl => levelAbilities[lvl])
-const abilitiesText = unlockedAbilities.length > 0
-    ? unlockedAbilities.map(a => {
-        const icon = abilityIcons[a.type] || "✨"
-
-        return `${icon} ${a.name}
-⚡ النوع: ${a.type}
-📊 القوة: ${a.value}%
-📝 ${a.description}`
-    }).join('\n\n')
-    : "لا توجد قدرات بعد"
 // بعدها يكمل الكود الطبيعي
 const characters = Array.isArray(player.characters)
     ? player.characters
     : []
 
-    let strongest = null
-
-    for (const char of characters) {
-
-        if (
-            !strongest ||
-            Number(char.power || 0) >
-            Number(strongest.power || 0)
-        ) {
-            strongest = char
-        }
-    }
+    const mainCharacter = characters.length > 0 ? characters[0] : null
 
     console.timeLog(
         'PROFILE',
         'PLAYER LOADED'
     )
 
-    let profilePic = null
-
-    try {
-
-        profilePic = await Promise.race([
-            sock.profilePictureUrl(
-                userId,
-                'image'
-            ),
-            new Promise(resolve =>
-                setTimeout(
-                    () => resolve(null),
-                    5000
-                )
-            )
-        ])
-
-    } catch (e) {
-
-        profilePic = null
-    }
+    
 
     console.timeLog(
         'PROFILE',
         'PHOTO CHECKED'
     )
+    const evolutionRanks = [
+    "SSS",
+    "SSS+",
+    "SSS++",
+    "UR I",
+    "UR II",
+    "UR III",
+    "EX"
+]
+
+const displayRank =
+mainCharacter
+? (
+    mainCharacter.evolutionLevel > 0
+        ? evolutionRanks[mainCharacter.evolutionLevel]
+        : mainCharacter.rarity
+)
+: "-"
 
     const profileText =
 
-`👤 الملف الشخصي
+`╭━━━「 👤 الملف الشخصي 」━━━╮
 
-🎖️ الألقاب:
+🌟 الشخصية الرئيسية
 
-${player.titles?.length
-? player.titles.join('\n')
-: 'لا يوجد'}
+🧿 ${mainCharacter ? mainCharacter.name : "لا يوجد"}
 
-⭐ المستوى:
-${player.level || 1}
+🌟 التطوير
+${displayRank}
 
-✨ الخبرة:
-${player.xp || 0}
-
-💰 المال:
-${player.money || 0}
-
-🎟️ السحبات:
-${player.pulls || 0}
-
-🎫 تذاكر المتجر:
-${player.towerTickets || 0}
-
-❤️ HP:
-${player.hp || 10000}
+⚔️ القوة:
+${mainCharacter ? Number(mainCharacter.power).toLocaleString() : "-"}
 
 ━━━━━━━━━━━━━━
 
-✨ تأثير القدرات (الإجمالي):
+👤 اللاعب
 
-⚔️ هجوم:
+@${userId.split("@")[0]}
+
+🏅 المستوى:
+${player.level || 1}
+
+✨ الخبرة:
+${Number(player.xp || 0).toLocaleString()}
+
+❤️ HP:
+${Number(player.hp || 10000).toLocaleString()}
+
+🏰 الطابق الحالي:
+${player.towerFloor || 1}/30
+
+📦 المخزون:
+${characters.length}/${player.maxCharacters || 30}
+
+━━━━━━━━━━━━━━
+
+📊 تأثير القدرات
+
+⚔️ الهجوم:
 +${player.attackBonus || 0}%
 
-🛡️ دفاع:
+🛡️ الدفاع:
 +${player.defenseBonus || 0}%
 
-🎯 كريت:
+🎯 الكريت:
 +${player.critBonus || 0}%
 
-💨 مراوغة:
+💨 المراوغة:
 +${player.dodgeBonus || 0}%
 
 🪞 عكس الضرر:
@@ -18562,67 +18545,43 @@ ${player.hp || 10000}
 💖 HP:
 +${player.hpBonus || 0}%
 
-👑 ضرر الزعيم:
+👹 ضرر الزعيم:
 +${player.bossDamageBonus || 0}%
 
 ━━━━━━━━━━━━━━
 
-🏰 الطابق الحالي:
-${player.towerFloor || 1}/30
+👑 الألقاب
 
-📦 المخزون:
-${player.characters.length}/${player.maxCharacters || 30}
+${player.titles?.length
+? player.titles.join("\n")
+: "لا يوجد"}
 
-👑 ضرر الزعيم:
-${player.bossDamage || 0}
+╰━━━━━━━━━━━━━━╯`
 
-🎖️ القدرات المكتسبة
-
-${abilitiesText}
-
-━━━━━━━━━━━━━━
-
-🏆 أقوى شخصية
-
-🧿 الاسم:
-${strongest ? strongest.name : 'لا يوجد'}
-
-🌟 الندرة:
-${strongest ? strongest.rarity : '-'}
-
-⚔️ القوة:
-${strongest ? strongest.power : '-'}`
-
-    if (profilePic) {
-
-        try {
-
-            await sock.sendMessage(
-                msg.key.remoteJid,
-                {
-                    image: {
-                        url: profilePic
-                    },
-                    caption: profileText
-                }
-            )
-
-            console.timeEnd('PROFILE')
-            return
-
-        } catch (e) {
-
-            console.log(
-                'PROFILE IMAGE ERROR:',
-                e
-            )
-        }
-    }
+    if (mainCharacter && mainCharacter.image) {
 
     await sock.sendMessage(
         msg.key.remoteJid,
         {
-            text: profileText
+            image: {
+                url: mainCharacter.image
+            },
+            caption: profileText,
+            mentions: [userId]
+        }
+    )
+
+    console.timeEnd("PROFILE")
+    return
+}
+
+            
+
+    await sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: profileText,
+mentions: [userId]
         }
     )
 
@@ -19032,21 +18991,21 @@ if (text.startsWith('.طابق')) {
 
     const args = text.trim().split(/\s+/)
 
-    if (args.length < 3) {
+    if (args.length < 2)
         return sock.sendMessage(msg.key.remoteJid, {
             text:
 `❌ استخدم:
 
-.طابق رقم_الطابق رقم_الشخصية
+.طابق رقم_الشخصية
 
 مثال:
-.طابق 1 1`
+.طابق 1`
         })
     }
 
-    const floorNumber = Number(args[1])
-    const charNumber = Number(args[2]) - 1
+    const charNumber = Number(args[1]) - 1
 
+const floorNumber = player.towerFloor
     if (
         isNaN(floorNumber) ||
         isNaN(charNumber)
@@ -19056,12 +19015,7 @@ if (text.startsWith('.طابق')) {
         })
     }
 
-    if (floorNumber !== player.towerFloor) {
-        return sock.sendMessage(msg.key.remoteJid, {
-            text:
-`❌ الطابق الحالي لديك هو ${player.towerFloor}`
-        })
-    }
+
 
     const floor = towerFloors.find(
         f => f.floor === floorNumber
