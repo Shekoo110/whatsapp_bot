@@ -340,33 +340,24 @@ async function checkHeartAnswer(sock, jid, userId, text) {
         return false
 
     room.currentAttacker = userId
-    room.answered = true
+room.answered = true
 
-    await sock.sendMessage(
-        jid,
-        {
-            text:
-`✅ @${userId.split("@")[0]} أجاب أولاً!
+await showHearts(sock, jid)
 
-❤️ اختر اللاعب الذي تريد إنقاص قلبه.
-
-اكتب:
-
-.نقص رقم`,
-            mentions: [userId]
-        }
-    )
-
-    await showHearts(sock, jid)
-
-    return true
+return true
 
 }
 async function showHearts(sock, jid) {
 
     const room = getRoom(jid)
 
-    let text = "❤️ القلوب\n\n"
+    let text =
+`🎯 الفائز بالسؤال:
+@${room.currentAttacker.split("@")[0]}
+
+❤️ القلوب
+
+`
 
 for (let i = 0; i < room.players.length; i++) {
 
@@ -385,10 +376,10 @@ for (let i = 0; i < room.players.length; i++) {
     }
 
     text +=
-`🎯 @${room.currentAttacker.split("@")[0]} أجاب أولاً.
+`
+❤️ اختر اللاعب الذي تريد إنقاص قلبه.
 
 اكتب:
-
 .نقص رقم`
 
     await sock.sendMessage(
@@ -465,6 +456,9 @@ async function damagePlayer(sock, jid, attackerId, targetIndex) {
         await showHearts(sock, jid)
 
     }
+    if (room.hearts[target].hp > 0) {
+    await showHearts(sock, jid)
+}
 
     // اللاعبين الأحياء
     const alivePlayers =
