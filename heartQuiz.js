@@ -36,18 +36,17 @@ function getRoom(jid) {
     hearts: {},
 
     currentQuestion: null,
-currentAttacker: null,
-answerMessage: null,
-rounds: 0,
+    currentAttacker: null,
+    answerMessage: null,
+    rounds: 0,
+
+    playerProgress: {},
+    questionSolved: false,
 
     usedQuestions: [],
-
     usedImages: [],
-
     usedRepeats: [],
-
     eliminatedOrder: [],
-
     answered: false
 
 }
@@ -279,22 +278,33 @@ async function sendHeartQuestion(sock, jid) {
 
     room.currentAttacker = null
     room.currentQuestion = null
+    room.answerMessage = null
     room.answered = false
+    room.questionSolved = false
+    room.playerProgress = {}
 
     const mode = Math.floor(Math.random() * 2)
 
+    // سؤال نصي
     if (mode === 0) {
 
         const question = getRandomQuestion(room)
 
         room.currentQuestion = {
-            type: "text",
-            answers: [
-                normalize(question.answer)
-            ]
-        }
+    type: question.type || "single",
+    answers: question.answers.map(a => normalize(a)),
+    required:
+    question.required ||
+    (
+        question.type === "multi"
+            ? Math.min(3, question.answers.length)
+            : question.answers.length > 1
+                ? question.answers.length
+                : 1
+    )
+}
 
-        return sock.sendMessage(jid, {
+        return await sock.sendMessage(jid, {
             text:
 `🎯 سؤال جديد
 
@@ -303,100 +313,98 @@ async function sendHeartQuestion(sock, jid) {
 
     }
 
+    // سؤال صورة
     const image = getRandomImageQuestion(room)
 
     room.currentQuestion = {
-        type: "image",
-        answers: image.answers.map(a => normalize(a))
-    }
+    type: image.type || "single",
+    answers: image.answers.map(a => normalize(a)),
+    required:
+        image.required ||
+        (
+            image.type === "multi"
+                ? Math.min(3, image.answers.length)
+                : image.answers.length > 1
+                    ? image.answers.length
+                    : 1
+        )
+}
 
-    return sock.sendMessage(jid, {
+    return await sock.sendMessage(jid, {
         image: {
             url: image.image
         }
     })
 
 }
-async function checkHeartAnswer(sock, msg, jid, userId, text) {
+async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     const room = getRoom(jid)
 
-    if (!room.started)
-        return false
+    if (!room.started) return false
+    if (room.questionSolved) return false
+    if (!room.currentQuestion) return false
 
-    if (room.answered)
-        return false
+    const normalizedAnswer = normalize(answer)
 
-    if (!room.currentQuestion)
-        return false
+    if (!room.playerProgress)
+        room.playerProgress = {}
 
-    const answer = normalize(text)
-
-    const correct =
-        room.currentQuestion.answers.some(
-            a => normalize(a) === answer
-        )
-
-    if (!correct)
-        return false
-
-    // حفظ الفائز ورسالة إجابته
-    room.currentAttacker = userId
-    room.answerMessage = msg
-    room.answered = true
-
-    // إرسال قائمة القلوب كرد على رسالة الفائز
-    await showHearts(sock, jid)
-
-    return true
-
-}
-async function showHearts(sock, jid) {
-
-    const room = getRoom(jid)
-
-    let text =
-`🎯 @${room.currentAttacker.split("@")[0]} أجاب أولاً!
-
-❤️ القلوب
-
-`
-
-    for (let i = 0; i < room.players.length; i++) {
-
-        const id = room.players[i]
-        const data = room.hearts[id]
-
-        if (!data || data.hp <= 0) {
-
-            text += `${i + 1}- 💀 تم الإقصاء\n\n`
-            continue
-
+    if (!room.playerProgress[userId]) {
+        room.playerProgress[userId] = {
+            text: ""
         }
+    }
 
-        text += `${i + 1}- ${data.icon.repeat(data.hp)}\n\n`
+    room.playerProgress[userId].text +=
+        " " + normalizedAnswer
+
+    const fullText =
+        room.playerProgress[userId].text
+
+    const uniqueAnswers = [
+        ...new Set(
+            room.currentQuestion.answers.map(a => normalize(a))
+        )
+    ]
+
+    let matchedCount = 0
+
+    for (const correct of uniqueAnswers) {
+
+        const regex =
+            new RegExp(`(^|\\s)${correct}(\\s|$)`)
+
+        if (regex.test(fullText)) {
+            matchedCount++
+        }
 
     }
 
-    text +=
-`❤️ اختر اللاعب الذي تريد إنقاص قلبه.
-
-اكتب:
-.نقص رقم`
-
-    await sock.sendMessage(
-        jid,
-        {
-            text,
-            mentions: room.currentAttacker ? [room.currentAttacker] : []
-        },
-        room.answerMessage
-            ? {
-                  quoted: room.answerMessage
-              }
-            : {}
+    const required =
+    room.currentQuestion.required ||
+    (
+        room.currentQuestion.type === "multi"
+            ? Math.min(3, uniqueAnswers.length)
+            : uniqueAnswers.length > 1
+                ? uniqueAnswers.length
+                : 1
     )
+    if (matchedCount >= required) {
 
+        room.currentAttacker = userId
+room.answerMessage = msg
+room.questionSolved = true
+room.answered = true
+
+delete room.playerProgress[userId]
+
+await showHearts(sock, jid)
+
+return true
+    }
+
+    return false
 }
 async function damagePlayer(sock, jid, attackerId, targetIndex) {
 
@@ -510,10 +518,13 @@ if (alivePlayers.length === 1) {
 
     return
 }
-    // السؤال التالي
-    setTimeout(async () => {
-        await sendHeartQuestion(sock, jid)
-    }, 2000)
+room.playerProgress = {}
+room.questionSolved = false
+
+// السؤال التالي
+setTimeout(async () => {
+    await sendHeartQuestion(sock, jid)
+}, 2000)
 
 }
 module.exports = {
