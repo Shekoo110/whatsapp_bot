@@ -291,18 +291,16 @@ async function sendHeartQuestion(sock, jid) {
         const question = getRandomQuestion(room)
 
         room.currentQuestion = {
-    type: question.type || "single",
-    answers: question.answers.map(a => normalize(a)),
-    required:
-    question.required ||
-    (
-        question.type === "multi"
-            ? Math.min(3, question.answers.length)
-            : question.answers.length > 1
-                ? question.answers.length
-                : 1
-    )
-}
+            type: question.type || "single",
+            answers: question.answers.map(a => normalize(a)),
+            required:
+                question.required ??
+                (
+                    question.answers.length >= 3
+                        ? 3
+                        : question.answers.length
+                )
+        }
 
         return await sock.sendMessage(jid, {
             text:
@@ -317,18 +315,17 @@ async function sendHeartQuestion(sock, jid) {
     const image = getRandomImageQuestion(room)
 
     room.currentQuestion = {
-    type: image.type || "single",
+    type:
+        image.answers.length > 1 ? "multi" : "single",
+
     answers: image.answers.map(a => normalize(a)),
+
     required:
-        image.required ||
-        (
-            image.type === "multi"
-                ? Math.min(3, image.answers.length)
-                : image.answers.length > 1
-                    ? image.answers.length
-                    : 1
-        )
+        image.answers.length >= 3
+            ? 3
+            : image.answers.length
 }
+    }
 
     return await sock.sendMessage(jid, {
         image: {
@@ -356,11 +353,9 @@ async function checkHeartAnswer(sock, msg, jid, userId, answer) {
         }
     }
 
-    room.playerProgress[userId].text +=
-        " " + normalizedAnswer
+    room.playerProgress[userId].text += " " + normalizedAnswer
 
-    const fullText =
-        room.playerProgress[userId].text
+    const fullText = room.playerProgress[userId].text
 
     const uniqueAnswers = [
         ...new Set(
@@ -372,8 +367,7 @@ async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     for (const correct of uniqueAnswers) {
 
-        const regex =
-            new RegExp(`(^|\\s)${correct}(\\s|$)`)
+        const regex = new RegExp(`(^|\\s)${correct}(\\s|$)`)
 
         if (regex.test(fullText)) {
             matchedCount++
@@ -381,27 +375,20 @@ async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     }
 
-    const required =
-    room.currentQuestion.required ||
-    (
-        room.currentQuestion.type === "multi"
-            ? Math.min(3, uniqueAnswers.length)
-            : uniqueAnswers.length > 1
-                ? uniqueAnswers.length
-                : 1
-    )
+    const required = room.currentQuestion.required
+
     if (matchedCount >= required) {
 
         room.currentAttacker = userId
-room.answerMessage = msg
-room.questionSolved = true
-room.answered = true
+        room.answerMessage = msg
+        room.questionSolved = true
+        room.answered = true
 
-delete room.playerProgress[userId]
+        delete room.playerProgress[userId]
 
-await showHearts(sock, jid)
+        await showHearts(sock, jid)
 
-return true
+        return true
     }
 
     return false
@@ -413,26 +400,24 @@ async function showHearts(sock, jid) {
     if (!room.currentAttacker) return
 
     const alive = room.players.filter(
-        id => room.hearts[id] && room.hearts[id].hp > 0
-    )
+    id => room.hearts[id] && room.hearts[id].hp > 0
+)
 
-    let text =
+let text =
 `✅ @${room.currentAttacker.split("@")[0]} أجاب أولاً
 
 اختر لاعباً لتزيل منه قلباً:
 
 `
 
-    let number = 1
+let number = 1
 
-    for (const id of alive) {
+for (const id of alive) {
 
-        if (id === room.currentAttacker) continue
+    text += `${number}- @${id.split("@")[0]} ${room.hearts[id].icon.repeat(room.hearts[id].hp)}\n`
 
-        text += `${number}- @${id.split("@")[0]} ${room.hearts[id].icon.repeat(room.hearts[id].hp)}\n`
-
-        number++
-    }
+    number++
+}
 
     await sock.sendMessage(jid, {
         text,
@@ -450,22 +435,19 @@ async function damagePlayer(sock, jid, attackerId, targetIndex) {
         return
 
     // الرقم الذي يكتبه اللاعب يبدأ من 1
-    const target = room.players[targetIndex - 1]
+    const targets = room.players.filter(
+    id =>
+        room.hearts[id] &&
+        room.hearts[id].hp > 0
+)
 
-    if (!target)
-        return
+const target = targets[targetIndex - 1]
 
-    
-
-    // إذا كان مقصى بالفعل
-    if (
-        !room.hearts[target] ||
-        room.hearts[target].hp <= 0
-    ) {
-        return sock.sendMessage(jid, {
-            text: "❌ هذا اللاعب مقصى بالفعل."
-        })
-    }
+if (!target) {
+    return sock.sendMessage(jid, {
+        text: "❌ رقم لاعب غير صحيح."
+    })
+}
 
     // إنقاص قلب
     room.hearts[target].hp--
