@@ -406,6 +406,39 @@ return true
 
     return false
 }
+async function showHearts(sock, jid) {
+
+    const room = getRoom(jid)
+
+    if (!room.currentAttacker) return
+
+    const alive = room.players.filter(
+        id => room.hearts[id] && room.hearts[id].hp > 0
+    )
+
+    let text =
+`✅ @${room.currentAttacker.split("@")[0]} أجاب أولاً
+
+اختر لاعباً لتزيل منه قلباً:
+
+`
+
+    let number = 1
+
+    for (const id of alive) {
+
+        if (id === room.currentAttacker) continue
+
+        text += `${number}- @${id.split("@")[0]} ${room.hearts[id].icon.repeat(room.hearts[id].hp)}\n`
+
+        number++
+    }
+
+    await sock.sendMessage(jid, {
+        text,
+        mentions: [room.currentAttacker, ...alive]
+    })
+}
 async function damagePlayer(sock, jid, attackerId, targetIndex) {
 
     const room = getRoom(jid)
