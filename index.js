@@ -2987,13 +2987,15 @@ msg.key.remoteJid
 // =========================
 
 // التحقق من الإجابات
-await heartQuiz.checkHeartAnswer(
+const answered = await heartQuiz.checkHeartAnswer(
     sock,
     msg,
     msg.key.remoteJid,
     userId,
     text
 )
+
+if (answered) return
 
 // إنشاء الفعالية
 if (text === '.قلوب') {
