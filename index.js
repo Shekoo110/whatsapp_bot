@@ -2982,6 +2982,72 @@ const userId =
 msg.key.participant ||
 msg.key.remoteJid
 
+    // =========================
+// فعالية القلوب
+// =========================
+
+// التحقق من الإجابات
+await heartQuiz.checkHeartAnswer(
+    sock,
+    msg.key.remoteJid,
+    userId,
+    text
+)
+
+// إنشاء الفعالية
+if (text === '.قلوب') {
+    return heartQuiz.createHeartEvent(sock, msg)
+}
+
+// التسجيل
+if (text === '.تسجيل_قلوب') {
+    return heartQuiz.joinHeartEvent(
+        sock,
+        msg,
+        userId
+    )
+}
+
+// بدء الفعالية
+if (text === '.ابداقلـوب') {
+    return heartQuiz.startHeartEvent(
+        sock,
+        msg.key.remoteJid
+    )
+}
+
+// إنقاص قلب
+if (text.startsWith('.نقص ')) {
+
+    const room =
+        heartQuiz.getRoom(msg.key.remoteJid)
+
+    if (
+        room.currentAttacker !== userId
+    ) {
+        return
+    }
+
+    const number =
+        parseInt(text.split(' ')[1])
+
+    if (isNaN(number)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: "❌ اختر رقمًا صحيحًا."
+            }
+        )
+    }
+
+    return heartQuiz.damagePlayer(
+        sock,
+        msg.key.remoteJid,
+        userId,
+        number
+    )
+}
+
 /* =========================
 🎯 القناص السريع
 ========================= */
