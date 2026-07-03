@@ -1,4 +1,5 @@
 const fs = require('fs')
+const heartQuiz = require("./heartQuiz")
 async function cleanEmptyClans() {
 
     const Clan = require("./models/Clan")
