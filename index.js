@@ -2989,6 +2989,7 @@ msg.key.remoteJid
 // التحقق من الإجابات
 await heartQuiz.checkHeartAnswer(
     sock,
+    msg,
     msg.key.remoteJid,
     userId,
     text
@@ -3870,6 +3871,38 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+    if (text === ".انهاء_قلوب") {
+
+    const room = heartQuiz.getRoom(msg.key.remoteJid)
+
+    if (!room.active) {
+        await sock.sendMessage(msg.key.remoteJid, {
+            text: "❌ لا توجد فعالية قلوب حالياً."
+        })
+        return
+    }
+
+    room.active = false
+    room.started = false
+    room.players = []
+    room.hearts = {}
+    room.currentQuestion = null
+    room.currentAttacker = null
+    room.answerMessage = null
+    room.rounds = 0
+    room.usedQuestions = []
+    room.usedImages = []
+    room.usedRepeats = []
+    room.eliminatedOrder = []
+    room.answered = false
+
+    await sock.sendMessage(msg.key.remoteJid, {
+        text: "🛑 تم إنهاء فعالية القلوب."
+    })
+
+    return
+}
     
     if (text === ".تصفير_العشائر") {
 
