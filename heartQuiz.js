@@ -455,10 +455,9 @@ async function damagePlayer(sock, jid, attackerId, targetIndex) {
     )
 }
 
-await showHearts(sock, jid)
-
 room.answerMessage = null
 room.currentAttacker = null
+room.currentQuestion = null
 room.answered = false
 // اللاعبين الأحياء
 const alivePlayers =
