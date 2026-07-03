@@ -36,10 +36,9 @@ function getRoom(jid) {
     hearts: {},
 
     currentQuestion: null,
-
-    currentAttacker: null,
-
-    rounds: 0,
+currentAttacker: null,
+answerMessage: null,
+rounds: 0,
 
     usedQuestions: [],
 
@@ -152,6 +151,8 @@ room.usedImages = []
 room.usedRepeats = []
 room.eliminatedOrder = []
 room.answered = false
+room.answerMessage = null
+
 
     return sock.sendMessage(
         msg.key.remoteJid,
@@ -316,7 +317,7 @@ async function sendHeartQuestion(sock, jid) {
     })
 
 }
-async function checkHeartAnswer(sock, jid, userId, text) {
+async function checkHeartAnswer(sock, msg, jid, userId, text) {
 
     const room = getRoom(jid)
 
@@ -339,20 +340,23 @@ async function checkHeartAnswer(sock, jid, userId, text) {
     if (!correct)
         return false
 
+    // حفظ الفائز ورسالة إجابته
     room.currentAttacker = userId
-room.answered = true
+    room.answerMessage = msg
+    room.answered = true
 
-await showHearts(sock, jid)
+    // إرسال قائمة القلوب كرد على رسالة الفائز
+    await showHearts(sock, jid)
 
-return true
+    return true
 
 }
 async function showHearts(sock, jid) {
 
     const room = getRoom(jid)
 
-    let text = `🎯 دور:
-@${room.currentAttacker.split("@")[0]}
+    let text =
+`🎯 @${room.currentAttacker.split("@")[0]} أجاب أولاً!
 
 ❤️ القلوب
 
@@ -360,32 +364,39 @@ async function showHearts(sock, jid) {
 
     for (let i = 0; i < room.players.length; i++) {
 
-    const id = room.players[i]
-    const data = room.hearts[id]
+        const id = room.players[i]
+        const data = room.hearts[id]
 
-    if (!data || data.hp <= 0) {
+        if (!data || data.hp <= 0) {
 
-        text += `${i + 1}- 💀 تم الإقصاء\n\n`
-        continue
+            text += `${i + 1}- 💀 تم الإقصاء\n\n`
+            continue
+
+        }
+
+        text += `${i + 1}- ${data.icon.repeat(data.hp)}\n\n`
 
     }
 
-    text += `${i + 1}- ${data.icon.repeat(data.hp)}\n\n`
-
-}
-
-    text += `❤️ اختر اللاعب الذي تريد إنقاص قلبه.
+    text +=
+`❤️ اختر اللاعب الذي تريد إنقاص قلبه.
 
 اكتب:
 .نقص رقم`
 
-    await sock.sendMessage(jid, {
-        text,
-        mentions: [
-            room.currentAttacker,
-            ...room.players
-        ]
-    })
+    await sock.sendMessage(
+        jid,
+        {
+            text,
+            mentions: room.currentAttacker ? [room.currentAttacker] : []
+        },
+        room.answerMessage
+            ? {
+                  quoted: room.answerMessage
+              }
+            : {}
+    )
+
 }
 async function damagePlayer(sock, jid, attackerId, targetIndex) {
 
@@ -423,46 +434,44 @@ async function damagePlayer(sock, jid, attackerId, targetIndex) {
     // إنقاص قلب
     room.hearts[target].hp--
 
-    room.currentAttacker = null
-    room.answered = false
+
 
     // إذا خرج اللاعب
     if (room.hearts[target].hp <= 0) {
 
-        room.hearts[target].hp = 0
+    room.hearts[target].hp = 0
 
-        if (!room.eliminatedOrder.includes(target)) {
-            room.eliminatedOrder.push(target)
-        }
+    if (!room.eliminatedOrder.includes(target)) {
+        room.eliminatedOrder.push(target)
+    }
 
-        await sock.sendMessage(
-            jid,
-            {
-                text:
+    await sock.sendMessage(
+        jid,
+        {
+            text:
 `💀 @${attackerId.split("@")[0]}
 أقصى
 @${target.split("@")[0]}`,
-                mentions: [
-                    attackerId,
-                    target
-                ]
-            }
-        )
-
-        await showHearts(sock, jid)
-
-    }
-    if (room.hearts[target].hp > 0) {
-    await showHearts(sock, jid)
+            mentions: [
+                attackerId,
+                target
+            ]
+        }
+    )
 }
 
-    // اللاعبين الأحياء
-    const alivePlayers =
-        room.players.filter(
-            id =>
-                room.hearts[id] &&
-                room.hearts[id].hp > 0
-        )
+await showHearts(sock, jid)
+
+room.answerMessage = null
+room.currentAttacker = null
+room.answered = false
+// اللاعبين الأحياء
+const alivePlayers =
+    room.players.filter(
+        id =>
+            room.hearts[id] &&
+            room.hearts[id].hp > 0
+    )
 
     // نهاية اللعبة
     if (alivePlayers.length <= 3) {
@@ -500,13 +509,13 @@ async function damagePlayer(sock, jid, attackerId, targetIndex) {
         room.players = []
         room.hearts = {}
         room.currentQuestion = null
-        room.currentAttacker = null
-        room.usedQuestions = []
-        room.usedImages = []
-        room.usedRepeats = []
-        room.eliminatedOrder = []
-        room.answered = false
-
+room.currentAttacker = null
+room.answerMessage = null
+room.usedQuestions = []
+room.usedImages = []
+room.usedRepeats = []
+room.eliminatedOrder = []
+room.answered = false
         return
 
     }
