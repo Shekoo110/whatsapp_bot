@@ -312,11 +312,10 @@ async function sendHeartQuestion(sock, jid) {
     }
 
     // سؤال صورة
-    const image = getRandomImageQuestion(room)
+const image = getRandomImageQuestion(room)
 
-    room.currentQuestion = {
-    type:
-        image.answers.length > 1 ? "multi" : "single",
+room.currentQuestion = {
+    type: image.answers.length > 1 ? "multi" : "single",
 
     answers: image.answers.map(a => normalize(a)),
 
@@ -325,15 +324,12 @@ async function sendHeartQuestion(sock, jid) {
             ? 3
             : image.answers.length
 }
+
+return await sock.sendMessage(jid, {
+    image: {
+        url: image.image
     }
-
-    return await sock.sendMessage(jid, {
-        image: {
-            url: image.image
-        }
-    })
-
-}
+})
 async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     const room = getRoom(jid)
