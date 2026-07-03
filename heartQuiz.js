@@ -414,12 +414,7 @@ async function damagePlayer(sock, jid, attackerId, targetIndex) {
     if (!target)
         return
 
-    // لا يستطيع ضرب نفسه
-    if (target === attackerId) {
-        return sock.sendMessage(jid, {
-            text: "❌ لا يمكنك اختيار نفسك."
-        })
-    }
+    
 
     // إذا كان مقصى بالفعل
     if (
@@ -474,52 +469,48 @@ const alivePlayers =
     )
 
     // نهاية اللعبة
-    if (alivePlayers.length <= 3) {
+    // بقي لاعبان فقط، إذن اللاعب الذي خرج الآن هو المركز الثالث
+if (alivePlayers.length === 2) {
 
-        const ranking = [
-            ...alivePlayers.sort(
-                (a, b) => room.hearts[b].hp - room.hearts[a].hp
-            ),
-            ...[...room.eliminatedOrder].reverse()
-        ]
+    await sock.sendMessage(jid, {
+        text: `🥉 @${target.split("@")[0]} حصل على المركز الثالث!`,
+        mentions: [target]
+    })
 
-        const first = ranking[0]
-        const second = ranking[1]
-        const third = ranking[2]
+}
 
-        const text =
+// بقي لاعب واحد فقط، انتهت اللعبة
+if (alivePlayers.length === 1) {
+
+    const first = alivePlayers[0]
+    const second = target
+
+    await sock.sendMessage(jid, {
+        text:
 `🏆 انتهت فعالية القلوب
 
-🥇 @${first?.split("@")[0] || "-"}
+🥇 @${first.split("@")[0]}
 
-🥈 @${second?.split("@")[0] || "-"}
+🥈 @${second.split("@")[0]}`,
+        mentions: [first, second]
+    })
 
-🥉 @${third?.split("@")[0] || "-"}`
+    room.active = false
+    room.started = false
+    room.players = []
+    room.hearts = {}
+    room.currentQuestion = null
+    room.currentAttacker = null
+    room.answerMessage = null
+    room.rounds = 0
+    room.usedQuestions = []
+    room.usedImages = []
+    room.usedRepeats = []
+    room.eliminatedOrder = []
+    room.answered = false
 
-        await sock.sendMessage(
-            jid,
-            {
-                text,
-                mentions: [first, second, third].filter(Boolean)
-            }
-        )
-
-        room.active = false
-        room.started = false
-        room.players = []
-        room.hearts = {}
-        room.currentQuestion = null
-room.currentAttacker = null
-room.answerMessage = null
-room.usedQuestions = []
-room.usedImages = []
-room.usedRepeats = []
-room.eliminatedOrder = []
-room.answered = false
-        return
-
-    }
-
+    return
+}
     // السؤال التالي
     setTimeout(async () => {
         await sendHeartQuestion(sock, jid)
