@@ -351,15 +351,14 @@ async function showHearts(sock, jid) {
 
     const room = getRoom(jid)
 
-    let text =
-`🎯 الفائز بالسؤال:
+    let text = `🎯 دور:
 @${room.currentAttacker.split("@")[0]}
 
 ❤️ القلوب
 
 `
 
-for (let i = 0; i < room.players.length; i++) {
+    for (let i = 0; i < room.players.length; i++) {
 
     const id = room.players[i]
     const data = room.hearts[id]
@@ -373,23 +372,20 @@ for (let i = 0; i < room.players.length; i++) {
 
     text += `${i + 1}- ${data.icon.repeat(data.hp)}\n\n`
 
-    }
+}
 
-    text +=
-`
-❤️ اختر اللاعب الذي تريد إنقاص قلبه.
+    text += `❤️ اختر اللاعب الذي تريد إنقاص قلبه.
 
 اكتب:
 .نقص رقم`
 
-    await sock.sendMessage(
-        jid,
-        {
-            text,
-            mentions: [room.currentAttacker]
-        }
-    )
-
+    await sock.sendMessage(jid, {
+        text,
+        mentions: [
+            room.currentAttacker,
+            ...room.players
+        ]
+    })
 }
 async function damagePlayer(sock, jid, attackerId, targetIndex) {
 
