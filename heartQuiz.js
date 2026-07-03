@@ -330,6 +330,7 @@ return await sock.sendMessage(jid, {
         url: image.image
     }
 })
+}
 async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     const room = getRoom(jid)
