@@ -397,29 +397,39 @@ async function showHearts(sock, jid) {
     if (!room.currentAttacker) return
 
     const alive = room.players.filter(
-    id => room.hearts[id] && room.hearts[id].hp > 0
-)
+        id =>
+            room.hearts[id] &&
+            room.hearts[id].hp > 0
+    )
 
-let text =
+    let text =
 `✅ @${room.currentAttacker.split("@")[0]} أجاب أولاً
 
 اختر لاعباً لتزيل منه قلباً:
 
 `
 
-let number = 1
+    let number = 1
 
-for (const id of alive) {
+    for (const id of alive) {
 
-    text += `${number}- @${id.split("@")[0]} ${room.hearts[id].icon.repeat(room.hearts[id].hp)}\n`
+        text += `${number}- ${room.hearts[id].icon.repeat(room.hearts[id].hp)}\n`
 
-    number++
-}
+        number++
+
+    }
+
+    text += `
+
+✍️ اكتب:
+
+.نقص رقم`
 
     await sock.sendMessage(jid, {
         text,
-        mentions: [room.currentAttacker, ...alive]
+        mentions: [room.currentAttacker]
     })
+
 }
 async function damagePlayer(sock, jid, attackerId, targetIndex) {
 
@@ -464,9 +474,7 @@ if (!target) {
         jid,
         {
             text:
-`💀 @${attackerId.split("@")[0]}
-أقصى
-@${target.split("@")[0]}`,
+`💀 @${target.split("@")[0]} أقصي من قبل @${attackerId.split("@")[0]}`
             mentions: [
                 attackerId,
                 target
@@ -487,32 +495,38 @@ const alivePlayers =
             room.hearts[id].hp > 0
     )
 
-    // نهاية اللعبة
-    // بقي لاعبان فقط، إذن اللاعب الذي خرج الآن هو المركز الثالث
-if (alivePlayers.length === 2) {
 
-    await sock.sendMessage(jid, {
-        text: `🥉 @${target.split("@")[0]} حصل على المركز الثالث!`,
-        mentions: [target]
-    })
-
-}
 
 // بقي لاعب واحد فقط، انتهت اللعبة
 if (alivePlayers.length === 1) {
 
     const first = alivePlayers[0]
-    const second = target
+
+const second =
+room.eliminatedOrder[
+room.eliminatedOrder.length - 1
+]
+
+const third =
+room.eliminatedOrder[
+room.eliminatedOrder.length - 2
+]
 
     await sock.sendMessage(jid, {
-        text:
+    text:
 `🏆 انتهت فعالية القلوب
 
 🥇 @${first.split("@")[0]}
 
-🥈 @${second.split("@")[0]}`,
-        mentions: [first, second]
-    })
+🥈 @${second.split("@")[0]}
+
+🥉 @${third.split("@")[0]}`,
+    mentions: [
+        first,
+        second,
+        third
+    ]
+})
 
     room.active = false
     room.started = false
