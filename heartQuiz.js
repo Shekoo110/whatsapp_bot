@@ -471,13 +471,13 @@ if (!target) {
     }
 
     await sock.sendMessage(
-        jid,
-        {
-            text:
-`💀 @${target.split("@")[0]} أقصي من قبل @${attackerId.split("@")[0]}`
-            mentions: [
-                attackerId,
-                target
+    jid,
+    {
+        text:
+`💀 @${target.split("@")[0]} أقصي من قبل @${attackerId.split("@")[0]}`,
+        mentions: [
+            attackerId,
+            target
             ]
         }
     )
@@ -502,15 +502,8 @@ if (alivePlayers.length === 1) {
 
     const first = alivePlayers[0]
 
-const second =
-room.eliminatedOrder[
-room.eliminatedOrder.length - 1
-]
-
-const third =
-room.eliminatedOrder[
-room.eliminatedOrder.length - 2
-]
+const second = room.eliminatedOrder.at(-1)
+const third = room.eliminatedOrder.at(-2)
 
     await sock.sendMessage(jid, {
     text:
