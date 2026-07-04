@@ -59,14 +59,16 @@ function getRoom(jid) {
 function normalize(text) {
     return String(text)
         .toLowerCase()
-        .replace(/[جغق]/g, "ق")
-        .replace(/ة/g, "ه")
-        .replace(/ى/g, "ي")
-        .replace(/أ|إ|آ/g, "ا")
-        .replace(/ؤ/g, "و")
-        .replace(/ئ/g, "ي")
-        .replace(/[^\u0600-\u06FFa-z0-9\s]/g, "")
-        .replace(/\s+/g, " ")
+        .replace(/[جغق]/g, 'ق')
+        .replace(/ة/g, 'ه')
+        .replace(/ى/g, 'ي')
+        .replace(/أ/g, 'ا')
+        .replace(/إ/g, 'ا')
+        .replace(/آ/g, 'ا')
+        .replace(/ؤ/g, 'و')
+        .replace(/ئ/g, 'ي')
+        .replace(/[^\u0600-\u06FFa-z0-9\s]/g, '')
+        .replace(/\s+/g, ' ')
         .trim()
 }
 function getRandomQuestion(room) {
@@ -342,35 +344,71 @@ async function checkHeartAnswer(sock, msg, jid, userId, answer) {
     const room = getRoom(jid)
 
     if (!room.started) return false
-    if (room.questionSolved) return false
     if (!room.currentQuestion) return false
+    if (room.questionSolved) return false
 
     const normalizedAnswer = normalize(answer)
 
-    if (!room.playerProgress)
-        room.playerProgress = {}
-
     if (!room.playerProgress[userId]) {
+
         room.playerProgress[userId] = {
             text: ""
         }
+
     }
 
-    room.playerProgress[userId].text += " " + normalizedAnswer
+    // تجميع جميع رسائل اللاعب
+    room.playerProgress[userId].text +=
+        " " + normalizedAnswer
 
-    const fullText = room.playerProgress[userId].text
+    const fullText =
+        room.playerProgress[userId].text
 
     const uniqueAnswers = [
         ...new Set(
-            room.currentQuestion.answers.map(a => normalize(a))
+            room.currentQuestion.answers.map(
+                a => normalize(a)
+            )
         )
     ]
+
+    // نفس نظام "اكتب التالي"
+    if (room.currentQuestion.type === "repeat") {
+
+        const normalizedText =
+            normalize(fullText)
+
+        const allFound =
+            uniqueAnswers.every(
+                ans =>
+                    normalizedText.includes(ans)
+            )
+
+        if (allFound) {
+
+            room.currentAttacker = userId
+            room.answerMessage = msg
+            room.questionSolved = true
+            room.answered = true
+
+            delete room.playerProgress[userId]
+
+            await showHearts(sock, jid)
+
+            return true
+
+        }
+
+        return false
+
+    }
 
     let matchedCount = 0
 
     for (const correct of uniqueAnswers) {
 
-        const regex = new RegExp(`(^|\\s)${correct}(\\s|$)`)
+        const regex =
+            new RegExp(`(^|\\s)${correct}(\\s|$)`)
 
         if (regex.test(fullText)) {
             matchedCount++
@@ -378,7 +416,13 @@ async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     }
 
-    const required = room.currentQuestion.required
+    const required =
+        room.currentQuestion.required ||
+        (
+            room.currentQuestion.type === "multi"
+                ? Math.min(3, uniqueAnswers.length)
+                : 1
+        )
 
     if (matchedCount >= required) {
 
@@ -392,6 +436,7 @@ async function checkHeartAnswer(sock, msg, jid, userId, answer) {
         await showHearts(sock, jid)
 
         return true
+
     }
 
     return false
