@@ -9298,7 +9298,7 @@
   "power": 6900,
   "rarity": "SSS",
   "ability": "فاكهة الدفع",
-  "image": "https://files.catbox.moe/nj8881.jpg"
+  "image": "https://files.catbox.moe/k8hprn.jpg"
 },
   {
   "name": "Carrot",
@@ -9364,5 +9364,581 @@
   "rarity": "SSS",
   "ability": "قوة الأثير",
   "image": "https://files.catbox.moe/m34hnn.jpg"
+},
+  {
+  "name": "Maliketh",
+  "form": "الوحش الأسود",
+  "anime": "Elden Ring",
+  "power": 6960,
+  "rarity": "SSS",
+  "ability": "شفرة الموت",
+  "image": "https://files.catbox.moe/z9kw5j.jpg"
+},
+{
+  "name": "Godfrey",
+  "form": "المحارب الأول",
+  "anime": "Elden Ring",
+  "power": 6905,
+  "rarity": "SSS",
+  "ability": "ضربة الزلزال",
+  "image": "https://files.catbox.moe/3jpa8g.jpg"
+},
+{
+  "name": "Radahn",
+  "form": "القائد القرمزي",
+  "anime": "Elden Ring",
+  "power": 6995,
+  "rarity": "SSS",
+  "ability": "سيطرة الجاذبية",
+  "image": "https://files.catbox.moe/lewa4f.jpg"
+},
+{
+  "name": "Miquella",
+  "form": "الأمير الذهبي",
+  "anime": "Elden Ring",
+  "power": 6875,
+  "rarity": "SSS",
+  "ability": "نور الطهارة",
+  "image": "https://files.catbox.moe/b4rr06.jpg"
+},
+{
+  "name": "Radagon",
+  "form": "البطل الذهبي",
+  "anime": "Elden Ring",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "المطرقة المقدسة",
+  "image": "https://files.catbox.moe/tv2je9.jpg"
+},
+{
+  "name": "Morgott",
+  "form": "ملك العاصمة",
+  "anime": "Elden Ring",
+  "power": 6865,
+  "rarity": "SSS",
+  "ability": "رماح الطيف",
+  "image": "https://files.catbox.moe/2puyyv.jpg"
+},
+{
+  "name": "Mohg",
+  "form": "سيد الدم",
+  "anime": "Elden Ring",
+  "power": 6925,
+  "rarity": "SSS",
+  "ability": "لعنة الدم",
+  "image": "https://files.catbox.moe/owk785.jpg"
+},
+{
+  "name": "Leon Kennedy",
+  "form": "العميل الخاص",
+  "anime": "Resident Evil",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "الرماية الدقيقة",
+  "image": "https://files.catbox.moe/d7rqrd.jpg"
+},
+{
+  "name": "Ada Wong",
+  "form": "الجاسوسة الغامضة",
+  "anime": "Resident Evil",
+  "power": 6765,
+  "rarity": "SSS",
+  "ability": "التحرك الخاطف",
+  "image": "https://files.catbox.moe/hllzkf.jpg"
+},
+{
+  "name": "Chris Redfield",
+  "form": "قائد النخبة",
+  "anime": "Resident Evil",
+  "power": 6835,
+  "rarity": "SSS",
+  "ability": "القوة الساحقة",
+  "image": "https://files.catbox.moe/ra4t0z.jpg"
+},
+  {
+  "name": "Arthur Morgan",
+  "form": "خارج عن القانون",
+  "anime": "Red Dead Redemption",
+  "power": 6785,
+  "rarity": "SSS",
+  "ability": "الرماية الخاطفة",
+  "image": "https://files.catbox.moe/0j2w36.jpg"
+},
+{
+  "name": "Dutch",
+  "form": "زعيم العصابة",
+  "anime": "Red Dead Redemption",
+  "power": 6705,
+  "rarity": "SSS",
+  "ability": "القيادة الحاسمة",
+  "image": "https://files.catbox.moe/jitvur.jpg"
+},
+{
+  "name": "John Marston",
+  "form": "صياد الخارجين",
+  "anime": "Red Dead Redemption",
+  "power": 6765,
+  "rarity": "SSS",
+  "ability": "إطلاق قاتل",
+  "image": "https://files.catbox.moe/w5v5n5.jpg"
+},
+{
+  "name": "Soap",
+  "form": "جندي القوات الخاصة",
+  "anime": "Call of Duty",
+  "power": 6805,
+  "rarity": "SSS",
+  "ability": "اقتحام تكتيكي",
+  "image": "https://files.catbox.moe/gk7093.jpg"
+},
+{
+  "name": "Kratos",
+  "form": "المحارب الأسبرطي",
+  "anime": "God of War",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "غضب الأسبرطي",
+  "image": "https://files.catbox.moe/2hevo6.jpg"
+},
+{
+  "name": "Thor",
+  "form": "سيد الرعد",
+  "anime": "God of War",
+  "power": 6960,
+  "rarity": "SSS",
+  "ability": "مطرقة الصواعق",
+  "image": "https://files.catbox.moe/zlzuey.jpg"
+},
+{
+  "name": "Zeus",
+  "form": "حاكم الأولمب",
+  "anime": "God of War",
+  "power": 6990,
+  "rarity": "SSS",
+  "ability": "صاعقة السماء",
+  "image": "https://files.catbox.moe/wcec9d.jpg"
+},
+{
+  "name": "Odin",
+  "form": "الحاكم العجوز",
+  "anime": "God of War",
+  "power": 6955,
+  "rarity": "SSS",
+  "ability": "حكمة الرونات",
+  "image": "https://files.catbox.moe/4ziv85.jpg"
+},
+{
+  "name": "Geralt",
+  "form": "صياد الوحوش",
+  "anime": "The Witcher",
+  "power": 6895,
+  "rarity": "SSS",
+  "ability": "علامات السحر",
+  "image": "https://files.catbox.moe/hhohcj.jpg"
+},
+{
+  "name": "Jin Sakai",
+  "form": "الشبح",
+  "anime": "Ghost of Tsushima",
+  "power": 6870,
+  "rarity": "SSS",
+  "ability": "ضربة الظلال",
+  "image": "https://files.catbox.moe/0wc28l.jpg"
+},
+{
+  "name": "Lord Shimura",
+  "form": "سيد الساموراي",
+  "anime": "Ghost of Tsushima",
+  "power": 6835,
+  "rarity": "SSS",
+  "ability": "شفرة الشرف",
+  "image": "https://files.catbox.moe/wwqkxe.jpg"
+},
+  {
+  "name": "Joel Miller",
+  "form": "الناجي المخضرم",
+  "anime": "The Last of Us",
+  "power": 6820,
+  "rarity": "SSS",
+  "ability": "قتال البقاء",
+  "image": "https://files.catbox.moe/a5njie.jpg"
+},
+{
+  "name": "Nathan Drake",
+  "form": "صائد الكنوز",
+  "anime": "Uncharted",
+  "power": 6775,
+  "rarity": "SSS",
+  "ability": "المغامرة الجريئة",
+  "image": "https://files.catbox.moe/1vktyp.jpg"
+},
+{
+  "name": "Ezio Auditore",
+  "form": "القاتل الأسطوري",
+  "anime": "Assassin's Creed",
+  "power": 6920,
+  "rarity": "SSS",
+  "ability": "شفرة الاغتيال",
+  "image": "https://files.catbox.moe/la60eb.jpg"
+},
+{
+  "name": "Connor",
+  "form": "الأندرويد المحقق",
+  "anime": "Detroit: Become Human",
+  "power": 6735,
+  "rarity": "SSS",
+  "ability": "تحليل فوري",
+  "image": "https://files.catbox.moe/2ovts6.jpg"
+},
+{
+  "name": "Kazuma Kiryu",
+  "form": "تنين دوجيما",
+  "anime": "Yakuza",
+  "power": 6905,
+  "rarity": "SSS",
+  "ability": "لكمة التنين",
+  "image": "https://files.catbox.moe/qa2slt.jpg"
+},
+{
+  "name": "Dante",
+  "form": "صائد الشياطين",
+  "anime": "Devil May Cry",
+  "power": 6970,
+  "rarity": "SSS",
+  "ability": "أسلوب السيف والمسدسات",
+  "image": "https://files.catbox.moe/4256c1.jpg"
+},
+{
+  "name": "Vergil",
+  "form": "السياف الهادئ",
+  "anime": "Devil May Cry",
+  "power": 6990,
+  "rarity": "SSS",
+  "ability": "قطع الأبعاد",
+  "image": "https://files.catbox.moe/m6qc4a.jpg"
+},
+{
+  "name": "Nero",
+  "form": "وريث القوة",
+  "anime": "Devil May Cry",
+  "power": 6910,
+  "rarity": "SSS",
+  "ability": "ذراع الشيطان",
+  "image": "https://files.catbox.moe/e9qusd.jpg"
+},
+{
+  "name": "Venom Snake",
+  "form": "الشبح",
+  "anime": "Metal Gear",
+  "power": 6895,
+  "rarity": "SSS",
+  "ability": "التسلل التكتيكي",
+  "image": "https://files.catbox.moe/micw37.jpg"
+},
+{
+  "name": "Cloud Strife",
+  "form": "الجندي السابق",
+  "anime": "Final Fantasy",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "ضربة الانفجار",
+  "image": "https://files.catbox.moe/kufa9g.jpg"
+},
+{
+  "name": "Tifa Lockhart",
+  "form": "المقاتلة الحرة",
+  "anime": "Final Fantasy",
+  "power": 6865,
+  "rarity": "SSS",
+  "ability": "قبضة الدمار",
+  "image": "https://files.catbox.moe/3id5lm.jpg"
+},
+{
+  "name": "2B",
+  "form": "المقاتلة الآلية",
+  "anime": "NieR",
+  "power": 6925,
+  "rarity": "SSS",
+  "ability": "هجوم أندرويد",
+  "image": "https://files.catbox.moe/d6jlvt.avif"
+},
+{
+  "name": "Vito Scaletta",
+  "form": "رجل العصابة",
+  "anime": "Mafia",
+  "power": 6765,
+  "rarity": "SSS",
+  "ability": "إطلاق احترافي",
+  "image": "https://files.catbox.moe/a6cemb.jpg"
+},
+{
+  "name": "Kyle Crane",
+  "form": "عداء المدينة",
+  "anime": "Dying Light",
+  "power": 6855,
+  "rarity": "SSS",
+  "ability": "باركور قتالي",
+  "image": "https://files.catbox.moe/3rdouo.jpg"
+},
+{
+  "name": "Lara Croft",
+  "form": "مستكشفة الآثار",
+  "anime": "Tomb Raider",
+  "power": 6870,
+  "rarity": "SSS",
+  "ability": "قوس الصيادة",
+  "image": "https://files.catbox.moe/vw5ewp.jpg"
+},
+{
+  "name": "Sun Wukong",
+  "form": "ملك القرود",
+  "anime": "Black Myth: Wukong",
+  "power": 6985,
+  "rarity": "SSS",
+  "ability": "عصا التحولات",
+  "image": "https://files.catbox.moe/psur23.jpg"
+},
+  {
+  "name": "Vladimir Makarov",
+  "form": "العقل المدبر",
+  "anime": "Call of Duty",
+  "power": 6885,
+  "rarity": "SSS",
+  "ability": "التخطيط القتالي",
+  "image": "https://files.catbox.moe/0pnxu4.jpg"
+},
+{
+  "name": "Malenia",
+  "form": "سيدة الشفرة",
+  "anime": "Elden Ring",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "رقصة الطيور المائية",
+  "image": "https://files.catbox.moe/pffx7j.jpg"
+},
+  {
+  "name": "Alisa Bosconovitch",
+  "form": "الأندرويد القتالي",
+  "anime": "Tekken",
+  "power": 6825,
+  "rarity": "SSS",
+  "ability": "أجنحة الصواريخ",
+  "image": "https://files.catbox.moe/k0c9n8.jpg"
+},
+{
+  "name": "King",
+  "form": "ملك المصارعة",
+  "anime": "Tekken",
+  "power": 6915,
+  "rarity": "SSS",
+  "ability": "قبضة النمر",
+  "image": "https://files.catbox.moe/p91ub8.jpg"
+},
+{
+  "name": "Bryan Fury",
+  "form": "المقاتل السيبراني",
+  "anime": "Tekken",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "هجوم الفوضى",
+  "image": "https://files.catbox.moe/96k1fu.jpg"
+},
+{
+  "name": "Claudio Serafino",
+  "form": "صياد النجوم",
+  "anime": "Tekken",
+  "power": 6875,
+  "rarity": "SSS",
+  "ability": "طاقة سيريوس",
+  "image": "https://files.catbox.moe/lb5jxb.jpg"
+},
+{
+  "name": "Bob",
+  "form": "المقاتل السريع",
+  "anime": "Tekken",
+  "power": 6740,
+  "rarity": "SSS",
+  "ability": "اندفاع الإعصار",
+  "image": "https://files.catbox.moe/qm65fo.jpg"
+},
+{
+  "name": "Devil Jin",
+  "form": "الشيطان المتحول",
+  "anime": "Tekken",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "ليزر الظلام",
+  "image": "https://files.catbox.moe/lpg7tm.jpg"
+},
+{
+  "name": "Sergei Dragunov",
+  "form": "الجندي الصامت",
+  "anime": "Tekken",
+  "power": 6930,
+  "rarity": "SSS",
+  "ability": "قتال السامبو",
+  "image": "https://files.catbox.moe/bh7axh.jpg"
+},
+{
+  "name": "Eliza",
+  "form": "مصاصة الدماء",
+  "anime": "Tekken",
+  "power": 6885,
+  "rarity": "SSS",
+  "ability": "سحر الظلام",
+  "image": "https://files.catbox.moe/0wa2pj.jpg"
+},
+{
+  "name": "Heihachi Mishima",
+  "form": "سيد ميشيما",
+  "anime": "Tekken",
+  "power": 6975,
+  "rarity": "SSS",
+  "ability": "قبضة الرعد",
+  "image": "https://files.catbox.moe/d0ch2q.jpg"
+},
+{
+  "name": "Hwoarang",
+  "form": "خبير التايكوندو",
+  "anime": "Tekken",
+  "power": 6870,
+  "rarity": "SSS",
+  "ability": "ركلات الإعصار",
+  "image": "https://files.catbox.moe/egdfev.jpg"
+},
+{
+  "name": "Jin Kazama",
+  "form": "وريث ميشيما",
+  "anime": "Tekken",
+  "power": 6995,
+  "rarity": "SSS",
+  "ability": "قبضة البرق",
+  "image": "https://files.catbox.moe/3slakc.jpg"
+},
+{
+  "name": "Kazumi Mishima",
+  "form": "سيدة النمر",
+  "anime": "Tekken",
+  "power": 6910,
+  "rarity": "SSS",
+  "ability": "روح النمر",
+  "image": "https://files.catbox.moe/eqnect.jpg"
+},
+{
+  "name": "Kazuya Mishima",
+  "form": "وريث الظلام",
+  "anime": "Tekken",
+  "power": 6990,
+  "rarity": "SSS",
+  "ability": "قبضة الشيطان",
+  "image": "https://files.catbox.moe/5i20hb.jpg"
+},
+{
+  "name": "Lars Alexandersson",
+  "form": "قائد المتمردين",
+  "anime": "Tekken",
+  "power": 6890,
+  "rarity": "SSS",
+  "ability": "اندفاع البرق",
+  "image": "https://files.catbox.moe/3rxmv7.jpg"
+},
+{
+  "name": "Marshall Law",
+  "form": "خبير الكونغ فو",
+  "anime": "Tekken",
+  "power": 6865,
+  "rarity": "SSS",
+  "ability": "لكمة التنين",
+  "image": "https://files.catbox.moe/duxouy.jpg"
+},
+{
+  "name": "Lee Chaolan",
+  "form": "العبقري الأنيق",
+  "anime": "Tekken",
+  "power": 6855,
+  "rarity": "SSS",
+  "ability": "الضربات السريعة",
+  "image": "https://files.catbox.moe/57hpvj.jpg"
+},
+{
+  "name": "Lili Rochefort",
+  "form": "المقاتلة النبيلة",
+  "anime": "Tekken",
+  "power": 6805,
+  "rarity": "SSS",
+  "ability": "الرقصة القتالية",
+  "image": "https://files.catbox.moe/rca3od.jpg"
+},
+{
+  "name": "Miguel",
+  "form": "المقاتل الغاضب",
+  "anime": "Tekken",
+  "power": 6845,
+  "rarity": "SSS",
+  "ability": "هجوم الانتقام",
+  "image": "https://files.catbox.moe/0j88m3.jpg"
+},
+{
+  "name": "Nina Williams",
+  "form": "القاتلة المحترفة",
+  "anime": "Tekken",
+  "power": 6880,
+  "rarity": "SSS",
+  "ability": "اغتيال صامت",
+  "image": "https://files.catbox.moe/s9jg11.jpg"
+},
+{
+  "name": "Steve Fox",
+  "form": "بطل الملاكمة",
+  "anime": "Tekken",
+  "power": 6860,
+  "rarity": "SSS",
+  "ability": "قبضات البرق",
+  "image": "https://files.catbox.moe/samhwu.jpg"
+},
+{
+  "name": "Lidia Sobieska",
+  "form": "زعيمة الكاراتيه",
+  "anime": "Tekken",
+  "power": 6875,
+  "rarity": "SSS",
+  "ability": "قبضة الشرف",
+  "image": "https://files.catbox.moe/y5ptrd.jpg"
+},
+{
+  "name": "Paul Phoenix",
+  "form": "المحارب العنيد",
+  "anime": "Tekken",
+  "power": 6925,
+  "rarity": "SSS",
+  "ability": "قبضة العنقاء",
+  "image": "https://files.catbox.moe/cznpod.jpg"
+},
+{
+  "name": "Jun Kazama",
+  "form": "حارسة الطبيعة",
+  "anime": "Tekken",
+  "power": 6945,
+  "rarity": "SSS",
+  "ability": "نور التطهير",
+  "image": "https://files.catbox.moe/dwdp2d.jpg"
+},
+  {
+  "name": "Lady Maria",
+  "form": "سيدة برج الساعة",
+  "anime": "Bloodborne",
+  "power": 6960,
+  "rarity": "SSS",
+  "ability": "شفرة الدم",
+  "image": "https://files.catbox.moe/8zhztm.jpg"
+},
+{
+  "name": "Saber Alter",
+  "form": "الفارسة السوداء",
+  "anime": "Fate",
+  "power": 6990,
+  "rarity": "SSS",
+  "ability": "إكسكاليبر المظلم",
+  "image": "https://files.catbox.moe/ffn7v9.jpg"
 }
 ]
