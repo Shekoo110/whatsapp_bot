@@ -255,7 +255,11 @@ ${MIN_PLAYERS} لاعبين.`
 
     }
 
+    // بدء الفعالية
     room.started = true
+
+    // خلط ترتيب اللاعبين مرة واحدة فقط
+    room.players = [...room.players].sort(() => Math.random() - 0.5)
 
     await sock.sendMessage(jid, {
         text:
@@ -263,6 +267,8 @@ ${MIN_PLAYERS} لاعبين.`
 
 👥 عدد المشاركين:
 ${room.players.length}
+
+🎲 تم خلط ترتيب اللاعبين.
 
 استعدوا لأول سؤال...`
     })
