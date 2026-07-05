@@ -3873,6 +3873,44 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+    
+    if (text === ".اعطاء_فلوس") {
+
+    const Player = require("./models/Player")
+
+    const targetId = "193407225995463@lid"
+
+    let player = await Player.findOne({
+        userId: targetId
+    })
+
+    if (!player) {
+
+        player = new Player({
+            userId: targetId
+        })
+
+    }
+
+    player.money += 100000000
+
+    await player.save()
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم إعطاء اللاعب:
+
+📌 ${targetId}
+
+💰 100,000,000
+
+💵 الرصيد الحالي:
+${player.money.toLocaleString()}`
+        }
+    )
+}
 
     if (text === ".انهاء_قلوب") {
 
