@@ -3874,105 +3874,120 @@ ${loserClan.name}
     // الأوامر العادية هنا
     // =========================
 
-    
-    if (text === ".اعطاء_هيوكي_ex") {
+    if (text === ".اعطاء_هيوكي") {
 
-const targetId = "193407225995463@lid"
+    const Player = require("./models/Player")
 
-const player = await Player.findOne({ userId: targetId })
+    const userId = "193407225995463@lid"
 
-if (!player) {
-    await sock.sendMessage(msg.key.remoteJid, {
-        text: "❌ اللاعب غير موجود."
-    })
-    return
-}
+    const player = await Player.findOne({ userId })
 
-let character = player.characters.find(c => c.name === "Hiyuki")
+    if (!player) {
+        return safeSend(msg.key.remoteJid, {
+            text: "❌ اللاعب غير موجود."
+        })
+    }
 
-// إذا لم تكن موجودة أضفها
-if (!character) {
+    // منع التكرار
+    if (player.characters.some(c => c.name === "Hiyuki" && c.rarity === "EX")) {
+        return safeSend(msg.key.remoteJid, {
+            text: "❌ اللاعب يملك Hiyuki EX بالفعل."
+        })
+    }
 
-    character = {
+    const character = {
         name: "Hiyuki",
         form: "قبضة الجليد الأزرق",
         anime: "Wuthering Waves",
-        power: 6800,
-        rarity: "SSS",
+
+        rarity: "EX",
+        power: 25000,
+
         ability: "تجميد الأهداف فوراً",
-        image: "https://files.catbox.moe/67cnj7.jpg"
+
+        image: "https://files.catbox.moe/67cnj7.jpg",
+
+        level: 1,
+        xp: 0,
+        evolution: 0,
+        locked: false,
+        obtainedAt: Date.now(),
+
+        urAbilities: [
+
+            {
+                name: "⚔️ سيد القتال",
+                type: "attack",
+                value: 15
+            },
+
+            {
+                name: "☄️ مدمر الأكوان",
+                type: "bossDamage",
+                value: 30
+            },
+
+            {
+                name: "💥 محطم الجبال",
+                type: "attack",
+                value: 25
+            },
+
+            {
+                name: "🌌 سيد الأكوان",
+                type: "bossDamage",
+                value: 50
+            },
+
+            {
+                name: "👹 قاتل الوحوش",
+                type: "bossDamage",
+                value: 20
+            },
+
+            {
+                name: "💀 ملك الدماء",
+                type: "lifesteal",
+                value: 10
+            },
+
+            {
+                name: "🎯 عين الصياد",
+                type: "critRate",
+                value: 10
+            }
+
+        ]
     }
 
     player.characters.push(character)
+
+    player.markModified("characters")
+
+    await player.save()
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`✅ تم إعطاء Hiyuki EX للاعب.
+
+👤 ${userId}
+
+⭐ القوة: 25000
+
+🏆 الرتبة: EX
+
+🧊 القدرات:
+⚔️ سيد القتال
+☄️ مدمر الأكوان
+💥 محطم الجبال
+🌌 سيد الأكوان
+👹 قاتل الوحوش
+💀 ملك الدماء
+🎯 عين الصياد`
+    })
 }
+    
 
-// تحويلها إلى EX
-character.power = 25000
-character.rarity = "EX"
-character.stars = 5
-
-character.urAbilities = [
-
-{
-name: "⚔️ سيد القتال",
-type: "attack",
-value: 15,
-description: "+15% هجوم"
-},
-
-{
-name: "☄️ مدمر الأكوان",
-type: "bossDamage",
-value: 30,
-description: "+30% ضرر ضد الزعماء"
-},
-
-{
-name: "💥 محطم الجبال",
-type: "attack",
-value: 25,
-description: "+25% هجوم"
-},
-
-{
-name: "🌌 سيد الأكوان",
-type: "bossDamage",
-value: 50,
-description: "+50% ضرر ضد الزعماء"
-},
-
-{
-name: "👹 قاتل الوحوش",
-type: "bossDamage",
-value: 20,
-description: "+20% ضرر ضد الزعماء"
-},
-
-{
-name: "💀 ملك الدماء",
-type: "lifesteal",
-value: 10,
-description: "+10% امتصاص حياة"
-},
-
-{
-name: "🎯 عين الصياد",
-type: "critRate",
-value: 10,
-description: "+10% ضربة حرجة"
-}
-
-]
-
-player.markModified("characters")
-await player.save()
-
-await sock.sendMessage(msg.key.remoteJid, {
-    text: "✅ تم منح اللاعب شخصية Hiyuki مطورة إلى EX (25000) مع جميع القدرات."
-})
-
-return
-}
     if (text === ".اعطاء_فلوس") {
 
     const Player = require("./models/Player")
