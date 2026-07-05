@@ -10067,6 +10067,69 @@
   "ability": "السرعة الفائقة",
   "image": "https://files.catbox.moe/ibk274.jpg"
 },
+  {
+  "name": "Abdulrahman",
+  "form": "قائد الصقور",
+  "anime": "Yokoyama Mitsuteru Sangokushi",
+  "power": 6890,
+  "rarity": "SSS",
+  "ability": "ضربة الإعصار",
+  "image": "https://files.catbox.moe/zeesr6.jpg"
+},
+{
+  "name": "Hikmat",
+  "form": "صقر البرق",
+  "anime": "Yokoyama Mitsuteru Sangokushi",
+  "power": 6865,
+  "rarity": "SSS",
+  "ability": "اندفاع البرق",
+  "image": "https://files.catbox.moe/otjeoo.jpeg"
+},
+{
+  "name": "Hamza",
+  "form": "صقر اللهب",
+  "anime": "Yokoyama Mitsuteru Sangokushi",
+  "power": 6875,
+  "rarity": "SSS",
+  "ability": "لكمة اللهب",
+  "image": "https://files.catbox.moe/uzmqtw.jpg"
+},
+  {
+  "name": "Genzo Wakabayashi",
+  "form": "الحارس الأسطوري",
+  "anime": "Captain Tsubasa",
+  "power": 6910,
+  "rarity": "SSS",
+  "ability": "الصد الأسطوري",
+  "image": "https://files.catbox.moe/sdlilb.jpg"
+},
+{
+  "name": "Tsubasa Ozora",
+  "form": "قائد النسور",
+  "anime": "Captain Tsubasa",
+  "power": 6975,
+  "rarity": "SSS",
+  "ability": "التسديدة المدوية",
+  "image": "https://files.catbox.moe/va4u03.jpg"
+},
+{
+  "name": "Kojiro Hyuga",
+  "form": "النمر المفترس",
+  "anime": "Captain Tsubasa",
+  "power": 6955,
+  "rarity": "SSS",
+  "ability": "تسديدة النمر",
+  "image": "https://files.catbox.moe/s9rsuy.jpg"
+},
+  {
+  "name": "Naoto Date",
+  "form": "النمر المقنع",
+  "anime": "Tiger Mask",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "هجوم النمر",
+  "image": "https://files.catbox.moe/t409ow.jpg"
+},
 {
   "name": "Saber Alter",
   "form": "الفارسة السوداء",
