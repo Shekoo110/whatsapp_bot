@@ -3897,84 +3897,91 @@ ${loserClan.name}
 
     const character = {
 
-        name: "Hiyuki",
-        form: "قبضة الجليد الأزرق",
-        anime: "Wuthering Waves",
+    name: "Hiyuki",
+    form: "قبضة الجليد الأزرق",
+    anime: "Wuthering Waves",
 
-        rarity: "SSS",
+    rarity: "SSS",
 
-        evolutionLevel: 6,
-        evolutionType: "fixed",
+    evolutionLevel: 6,
+    evolutionType: "fixed",
 
-        power: 25000,
+    power: 25000,
 
-        ability: "تجميد الأهداف فوراً",
+    ability: "تجميد الأهداف فوراً",
 
-        image: "https://files.catbox.moe/67cnj7.jpg",
+    image: "https://files.catbox.moe/67cnj7.jpg",
 
-        level: 1,
-        xp: 0,
+    level: 1,
+    xp: 0,
 
-        evolution: 6,
+    evolution: 6,
 
-        locked: false,
+    locked: false,
 
-        obtainedAt: Date.now(),
+    obtainedAt: Date.now(),
 
-        urAbilities: [
+    urAbilities: [
 
-            {
-                name: "⚔️ سيد القتال",
-                type: "attack",
-                value: 15,
-                description: "+15% هجوم"
-            },
+        {
+            name: "⚔️ سيد القتال",
+            type: "attack",
+            value: 15,
+            description: "+15% هجوم",
+            chance: 100
+        },
 
-            {
-                name: "☄️ مدمر الأكوان",
-                type: "bossDamage",
-                value: 30,
-                description: "+30% ضرر ضد الزعماء"
-            },
+        {
+            name: "☄️ مدمر الأكوان",
+            type: "bossDamage",
+            value: 30,
+            description: "+30% ضرر ضد الزعماء",
+            chance: 100
+        },
 
-            {
-                name: "💥 محطم الجبال",
-                type: "attack",
-                value: 25,
-                description: "+25% هجوم"
-            },
+        {
+            name: "💥 محطم الجبال",
+            type: "attack",
+            value: 25,
+            description: "+25% هجوم",
+            chance: 100
+        },
 
-            {
-                name: "🌌 سيد الأكوان",
-                type: "bossDamage",
-                value: 50,
-                description: "+50% ضرر ضد الزعماء"
-            },
+        {
+            name: "🌌 سيد الأكوان",
+            type: "bossDamage",
+            value: 50,
+            description: "+50% ضرر ضد الزعماء",
+            chance: 100
+        },
 
-            {
-                name: "👹 قاتل الوحوش",
-                type: "bossDamage",
-                value: 20,
-                description: "+20% ضرر ضد الزعماء"
-            },
+        {
+            name: "👹 قاتل الوحوش",
+            type: "bossDamage",
+            value: 20,
+            description: "+20% ضرر ضد الزعماء",
+            chance: 100
+        },
 
-            {
-                name: "💀 ملك الدماء",
-                type: "lifesteal",
-                value: 10,
-                description: "+10% امتصاص حياة"
-            },
+        {
+            name: "💀 ملك الدماء",
+            type: "lifesteal",
+            value: 10,
+            description: "+10% امتصاص حياة",
+            chance: 100
+        },
 
-            {
-                name: "🎯 عين الصياد",
-                type: "critRate",
-                value: 10,
-                description: "+10% ضربة حرجة"
-            }
+        {
+            name: "🎯 عين الصياد",
+            type: "critRate",
+            value: 10,
+            description: "+10% ضربة حرجة",
+            chance: 100
+        }
 
-        ]
+    ]
 
-    }
+}
 
     player.characters.push(character)
 
