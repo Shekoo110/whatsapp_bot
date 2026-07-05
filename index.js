@@ -3889,18 +3889,23 @@ ${loserClan.name}
     }
 
     // منع التكرار
-    if (player.characters.some(c => c.name === "Hiyuki" && c.rarity === "EX")) {
+    if (player.characters.some(c => c.name === "Hiyuki")) {
         return safeSend(msg.key.remoteJid, {
-            text: "❌ اللاعب يملك Hiyuki EX بالفعل."
+            text: "❌ اللاعب يملك Hiyuki بالفعل."
         })
     }
 
     const character = {
+
         name: "Hiyuki",
         form: "قبضة الجليد الأزرق",
         anime: "Wuthering Waves",
 
-        rarity: "EX",
+        rarity: "SSS",
+
+        evolutionLevel: 6,
+        evolutionType: "fixed",
+
         power: 25000,
 
         ability: "تجميد الأهداف فوراً",
@@ -3909,8 +3914,11 @@ ${loserClan.name}
 
         level: 1,
         xp: 0,
-        evolution: 0,
+
+        evolution: 6,
+
         locked: false,
+
         obtainedAt: Date.now(),
 
         urAbilities: [
@@ -3918,46 +3926,54 @@ ${loserClan.name}
             {
                 name: "⚔️ سيد القتال",
                 type: "attack",
-                value: 15
+                value: 15,
+                description: "+15% هجوم"
             },
 
             {
                 name: "☄️ مدمر الأكوان",
                 type: "bossDamage",
-                value: 30
+                value: 30,
+                description: "+30% ضرر ضد الزعماء"
             },
 
             {
                 name: "💥 محطم الجبال",
                 type: "attack",
-                value: 25
+                value: 25,
+                description: "+25% هجوم"
             },
 
             {
                 name: "🌌 سيد الأكوان",
                 type: "bossDamage",
-                value: 50
+                value: 50,
+                description: "+50% ضرر ضد الزعماء"
             },
 
             {
                 name: "👹 قاتل الوحوش",
                 type: "bossDamage",
-                value: 20
+                value: 20,
+                description: "+20% ضرر ضد الزعماء"
             },
 
             {
                 name: "💀 ملك الدماء",
                 type: "lifesteal",
-                value: 10
+                value: 10,
+                description: "+10% امتصاص حياة"
             },
 
             {
                 name: "🎯 عين الصياد",
                 type: "critRate",
-                value: 10
+                value: 10,
+                description: "+10% ضربة حرجة"
             }
 
         ]
+
     }
 
     player.characters.push(character)
@@ -3977,6 +3993,7 @@ ${loserClan.name}
 🏆 الرتبة: EX
 
 🧊 القدرات:
+
 ⚔️ سيد القتال
 ☄️ مدمر الأكوان
 💥 محطم الجبال
@@ -3985,6 +4002,7 @@ ${loserClan.name}
 💀 ملك الدماء
 🎯 عين الصياد`
     })
+
 }
     
 
