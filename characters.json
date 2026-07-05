@@ -9519,7 +9519,7 @@
   "image": "https://files.catbox.moe/wcec9d.jpg"
 },
 {
-  "name": "Odin",
+  "name": "Odin GOW",
   "form": "الحاكم العجوز",
   "anime": "God of War",
   "power": 6955,
@@ -9931,6 +9931,24 @@
   "rarity": "SSS",
   "ability": "شفرة الدم",
   "image": "https://files.catbox.moe/8zhztm.jpg"
+},
+  {
+  "name": "Rudeus Greyrat",
+  "form": "قديس السحر",
+  "anime": "Mushoku Tensei",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "سحر متعدد العناصر",
+  "image": "https://files.catbox.moe/7gxo98.jpg"
+},
+  {
+  "name": "Jill Valentine",
+  "form": "عميلة النخبة",
+  "anime": "Resident Evil",
+  "power": 6845,
+  "rarity": "SSS",
+  "ability": "تكتيكات البقاء",
+  "image": "https://files.catbox.moe/s1xusb.jpg"
 },
 {
   "name": "Saber Alter",
