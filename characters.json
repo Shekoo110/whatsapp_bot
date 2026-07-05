@@ -9950,6 +9950,123 @@
   "ability": "تكتيكات البقاء",
   "image": "https://files.catbox.moe/s1xusb.jpg"
 },
+  {
+  "name": "Allen Walker",
+  "form": "طارد الأكومات",
+  "anime": "D.Gray-man",
+  "power": 6915,
+  "rarity": "SSS",
+  "ability": "براءة التاج",
+  "image": "https://files.catbox.moe/ecqv9f.jpg"
+},
+{
+  "name": "Yu Kanda",
+  "form": "السياف الأسود",
+  "anime": "D.Gray-man",
+  "power": 6890,
+  "rarity": "SSS",
+  "ability": "سيف موغين",
+  "image": "https://files.catbox.moe/ifecp4.jpg"
+},
+{
+  "name": "Train Heartnet",
+  "form": "القط الأسود",
+  "anime": "Black Cat",
+  "power": 6865,
+  "rarity": "SSS",
+  "ability": "الرصاصة السوداء",
+  "image": "https://files.catbox.moe/16os4p.jpg"
+},
+{
+  "name": "Kagura",
+  "form": "فتاة الياتو",
+  "anime": "Gintama",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "قوة الياتو",
+  "image": "https://files.catbox.moe/glt2ql.jpg"
+},
+  {
+  "name": "Guy Crimson",
+  "form": "اللورد القرمزي",
+  "anime": "That Time I Got Reincarnated as a Slime",
+  "power": 6995,
+  "rarity": "SSS",
+  "ability": "سحر الإبادة",
+  "image": "https://files.catbox.moe/ez8hzh.jpg"
+},
+{
+  "name": "Sebastian Michaelis",
+  "form": "الخادم الأسود",
+  "anime": "Black Butler",
+  "power": 6920,
+  "rarity": "SSS",
+  "ability": "العقد الشيطاني",
+  "image": "https://files.catbox.moe/xt80v7.jpg"
+},
+  {
+  "name": "Feitan Portor",
+  "form": "المعذب",
+  "anime": "Hunter x Hunter",
+  "power": 6935,
+  "rarity": "SSS",
+  "ability": "شمس الألم",
+  "image": "https://files.catbox.moe/atm08b.jpg"
+},
+{
+  "name": "Sesshomaru",
+  "form": "سيد اليوكاي",
+  "anime": "Inuyasha",
+  "power": 6985,
+  "rarity": "SSS",
+  "ability": "شفرة باكوسايغا",
+  "image": "https://files.catbox.moe/h3zwsb.jpg"
+},
+{
+  "name": "Inuyasha",
+  "form": "نصف اليوكاي",
+  "anime": "Inuyasha",
+  "power": 6905,
+  "rarity": "SSS",
+  "ability": "ندبة الرياح",
+  "image": "https://files.catbox.moe/ak05q0.jpg"
+},
+  {
+  "name": "Silver",
+  "form": "القرصان المخضرم",
+  "anime": "Treasure Island",
+  "power": 6715,
+  "rarity": "SSS",
+  "ability": "دهاء القراصنة",
+  "image": "https://files.catbox.moe/i2o6hu.jpg"
+},
+  {
+  "name": "Kambei Shimada",
+  "form": "القائد المخضرم",
+  "anime": "Samurai 7",
+  "power": 6895,
+  "rarity": "SSS",
+  "ability": "قيادة الساموراي",
+  "image": "https://files.catbox.moe/0oa8i8.jpg"
+},
+  {
+  "name": "Hazim",
+  "form": "فارس الرعد",
+  "anime": "Thunder Jet",
+  "power": 6915,
+  "rarity": "SSS",
+  "ability": "عاصفة الرعد",
+  "image": "https://files.catbox.moe/mjlf2f.jpg"
+},
+  {
+  "name": "Joe Shimamura",
+  "form": "السايبورغ 009",
+  "anime": "Cyborg 009",
+  "power": 6945,
+  "rarity": "SSS",
+  "ability": "السرعة الفائقة",
+  "image": "https://files.catbox.moe/ibk274.jpg"
+},
 {
   "name": "Saber Alter",
   "form": "الفارسة السوداء",
