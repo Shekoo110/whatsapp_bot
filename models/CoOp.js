@@ -1,9 +1,100 @@
 const mongoose = require('mongoose')
 
+// =========================
+// CHARACTER
+// =========================
+
+const CharacterSchema = new mongoose.Schema({
+
+    name: String,
+
+    power: Number,
+
+    hp: Number,
+
+    maxHp: Number,
+
+    shield: {
+        type: Number,
+        default: 0
+    },
+
+    alive: {
+        type: Boolean,
+        default: true
+    },
+
+    urAbilities: {
+        type: Array,
+        default: []
+    },
+
+    omegaAbility: {
+        type: Object,
+        default: null
+    }
+
+}, { _id: false })
+
+// =========================
+// PLAYER
+// =========================
+
+const RaidPlayerSchema = new mongoose.Schema({
+
+    userId: String,
+
+    name: String,
+
+    damage: {
+        type: Number,
+        default: 0
+    },
+
+    totalDamage: {
+        type: Number,
+        default: 0
+    },
+
+    currentCharacter: {
+        type: Number,
+        default: 0
+    },
+
+    finished: {
+        type: Boolean,
+        default: false
+    },
+
+    characters: {
+        type: [CharacterSchema],
+        default: []
+    }
+
+}, { _id: false })
+
+// =========================
+// LEADERBOARD
+// =========================
+
+const LeaderboardSchema = new mongoose.Schema({
+
+    userId: String,
+
+    name: String,
+
+    damage: Number
+
+}, { _id: false })
+
+// =========================
+// CO-OP
+// =========================
+
 const CoOpSchema = new mongoose.Schema({
 
     // =========================
-    // CO-OP STATUS
+    // STATUS
     // =========================
 
     active: {
@@ -102,67 +193,17 @@ const CoOpSchema = new mongoose.Schema({
     // =========================
 
     players: {
-
-        type: Array,
-
+        type: [RaidPlayerSchema],
         default: []
-
     },
-
-    // كل لاعب سيكون بالشكل التالي
-
-    /*
-    {
-
-        userId,
-
-        name,
-
-        damage,
-
-        totalDamage,
-
-        currentCharacter,
-
-        finished,
-
-        characters:[
-
-            {
-
-                name,
-
-                power,
-
-                hp,
-
-                maxHp,
-
-                shield,
-
-                alive,
-
-                urAbilities,
-
-                omegaAbility
-
-            }
-
-        ]
-
-    }
-    */
 
     // =========================
     // DAMAGE RANKING
     // =========================
 
     leaderboard: {
-
-        type: Array,
-
+        type: [LeaderboardSchema],
         default: []
-
     },
 
     // =========================
@@ -170,11 +211,8 @@ const CoOpSchema = new mongoose.Schema({
     // =========================
 
     battleLog: {
-
-        type: Array,
-
+        type: [String],
         default: []
-
     },
 
     // =========================
@@ -182,11 +220,8 @@ const CoOpSchema = new mongoose.Schema({
     // =========================
 
     rewardsClaimed: {
-
-        type: Array,
-
+        type: [String],
         default: []
-
     }
 
 })
