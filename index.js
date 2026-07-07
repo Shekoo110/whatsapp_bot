@@ -3892,7 +3892,542 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+    
+// =========================
+// Equipment Inventory
+// =========================
 
+if (text === '.inventory') {
+
+    const player = await Player.findOne({
+
+        userId
+
+    })
+
+    if (!player) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: '❌ لا يوجد حساب.'
+
+            }
+
+        )
+
+    }
+
+    if (
+
+        !player.inventory ||
+
+        player.inventory.length === 0
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: '🎒 حقيبة المعدات فارغة.'
+
+            }
+
+        )
+
+    }
+
+    let message =
+
+`🎒 حقيبة المعدات
+
+━━━━━━━━━━━━━━
+
+`
+
+    player.inventory.forEach(
+
+        (item, index) => {
+
+            message +=
+
+`${index + 1}. ${item.name}
+
+${"⭐".repeat(item.stars || 1)}
+
+🏷 ${item.rarity}
+
+🎖 ${item.quality || "Normal"}
+
+🆔 ${item.uid}
+
+━━━━━━━━━━━━━━
+
+`
+
+        }
+
+    )
+
+    message +=
+
+`\n💡 للتجهيز:
+
+.equip رقم`
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text: message
+
+        }
+
+    )
+
+}
+    // =========================
+// Equipped Items
+// =========================
+
+if (text === '.equipment') {
+
+    const player = await Player.findOne({
+
+        userId
+
+    })
+
+    if (!player) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: '❌ لا يوجد حساب.'
+
+            }
+
+        )
+
+    }
+
+    const weapon =
+        player.equipment?.weapon
+
+    const armor =
+        player.equipment?.armor
+
+    const accessory =
+        player.equipment?.accessory
+
+    let message =
+`⚔️ المعدات المجهزة
+
+━━━━━━━━━━━━━━
+
+`
+
+    // Weapon
+    message += `⚔️ السلاح\n`
+
+    if (weapon) {
+
+        message +=
+`${weapon.name}
+${"⭐".repeat(weapon.stars || 1)}
+🎖 ${weapon.quality || "Normal"}
+
+`
+
+    } else {
+
+        message += `لا يوجد\n\n`
+
+    }
+
+    // Armor
+    message += `🛡️ الدرع\n`
+
+    if (armor) {
+
+        message +=
+`${armor.name}
+${"⭐".repeat(armor.stars || 1)}
+🎖 ${armor.quality || "Normal"}
+
+`
+
+    } else {
+
+        message += `لا يوجد\n\n`
+
+    }
+
+    // Accessory
+    message += `💍 الإكسسوار\n`
+
+    if (accessory) {
+
+        message +=
+`${accessory.name}
+${"⭐".repeat(accessory.stars || 1)}
+🎖 ${accessory.quality || "Normal"}
+
+`
+
+    } else {
+
+        message += `لا يوجد\n\n`
+
+    }
+
+    // Bonus
+    const bonus =
+
+        equipmentSystem.calculateEquipmentStats(
+
+            player
+
+        )
+
+    message +=
+`━━━━━━━━━━━━━━
+
+📊 إجمالي الإحصائيات
+
+⚔ Attack +${bonus.attack}
+
+🛡 Defense +${bonus.defense}
+
+❤️ HP +${bonus.hp}
+
+🎯 Crit +${bonus.critRate}%
+
+💥 Crit Damage +${bonus.critDamage}%
+
+👹 Boss Damage +${bonus.bossDamage}%
+
+👻 Dodge +${bonus.dodge}%
+
+🎯 Accuracy +${bonus.accuracy}%
+
+🩸 Lifesteal +${bonus.lifesteal}%
+
+🛡 Shield +${bonus.shield}%
+
+🪞 Reflect +${bonus.reflect}%`
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text: message
+
+        }
+
+    )
+
+}
+    // =========================
+// Equip Item
+// =========================
+
+if (text.startsWith('.equip')) {
+
+    const args = text.split(' ')
+
+    if (!args[1]) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+`📌 الاستخدام
+
+.equip رقم_القطعة
+
+مثال:
+
+.equip 1`
+
+            }
+
+        )
+
+    }
+
+    const player = await Player.findOne({
+
+        userId
+
+    })
+
+    if (!player) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: "❌ لا يوجد حساب."
+
+            }
+
+        )
+
+    }
+
+    if (
+
+        !player.inventory ||
+
+        player.inventory.length === 0
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: "🎒 حقيبة المعدات فارغة."
+
+            }
+
+        )
+
+    }
+
+    const index =
+
+        Number(args[1]) - 1
+
+    if (
+
+        isNaN(index) ||
+
+        index < 0 ||
+
+        index >= player.inventory.length
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: "❌ رقم القطعة غير صحيح."
+
+            }
+
+        )
+
+    }
+
+    const item =
+
+        player.inventory[index]
+
+    const result =
+
+        equipmentSystem.equipItem(
+
+            player,
+
+            item.uid
+
+        )
+
+    if (!result.success) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: result.message
+
+            }
+
+        )
+
+    }
+
+    await player.save()
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text:
+`✅ تم تجهيز
+
+${item.name}
+
+${"⭐".repeat(item.stars || 1)}
+
+🎖 الجودة:
+${item.quality || "Normal"}
+
+📍 النوع:
+${item.type}`
+
+        }
+
+    )
+
+}
+    // =========================
+// Unequip Item
+// =========================
+
+if (text.startsWith('.unequip')) {
+
+    const args = text.split(' ')
+
+    if (!args[1]) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+`📌 الاستخدام
+
+.unequip weapon
+.unequip armor
+.unequip accessory`
+
+            }
+
+        )
+
+    }
+
+    const slot =
+
+        args[1].toLowerCase()
+
+    if (
+
+        !["weapon", "armor", "accessory"]
+
+        .includes(slot)
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+"❌ النوع غير صحيح."
+
+            }
+
+        )
+
+    }
+
+    const player = await Player.findOne({
+
+        userId
+
+    })
+
+    if (!player) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+"❌ لا يوجد حساب."
+
+            }
+
+        )
+
+    }
+
+    const result =
+
+        equipmentSystem.unequipItem(
+
+            player,
+
+            slot
+
+        )
+
+    if (!result.success) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+
+                result.message
+
+            }
+
+        )
+
+    }
+
+    await player.save()
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text:
+`✅ تم خلع
+
+${slot}
+
+وإعادته إلى الحقيبة.`
+
+        }
+
+    )
+
+}
+    
     if (text === '.co-op') {
 
     const result =
