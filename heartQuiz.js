@@ -1,5 +1,7 @@
 const questions = require("./questions")
 const imageQuestions = require("./imageQuestions")
+const repeatQuestions = require("./repeatQuestions")
+// أو ضع المصفوفة نفسها إذا لم تجعلها بملف مستقل
 
 const MAX_PLAYERS = 8
 const MIN_PLAYERS = 3
@@ -96,6 +98,39 @@ function getRandomQuestion(room) {
     )
 
     return question
+
+}
+
+function getRandomRepeatQuestion(room) {
+
+    const available =
+        repeatQuestions.filter(
+            name =>
+                !room.usedRepeats.includes(name)
+        )
+
+    if (!available.length) {
+
+        room.usedRepeats = []
+
+        return getRandomRepeatQuestion(room)
+
+    }
+
+    const count =
+        Math.min(
+            Math.floor(Math.random() * 3) + 1,
+            available.length
+        )
+
+    const selected =
+        [...available]
+            .sort(() => Math.random() - 0.5)
+            .slice(0, count)
+
+    room.usedRepeats.push(...selected)
+
+    return selected
 
 }
 function getRandomImageQuestion(room) {
@@ -291,7 +326,7 @@ async function sendHeartQuestion(sock, jid) {
     room.questionSolved = false
     room.playerProgress = {}
 
-    const mode = Math.floor(Math.random() * 2)
+    const mode = Math.floor(Math.random() * 3)
 
     // سؤال نصي
     if (mode === 0) {
@@ -318,19 +353,38 @@ async function sendHeartQuestion(sock, jid) {
         })
 
     }
+    
+// اكتب التالي
+if (mode === 1) {
 
+    const answers =
+        getRandomRepeatQuestion(room)
+
+    room.currentQuestion = {
+
+        type: "repeat",
+
+        answers: answers.map(normalize)
+
+    }
+
+    return await sock.sendMessage(jid, {
+
+        text:
+`✍️ اكتب التالي:
+
+${answers.map(a => `*${a}*`).join(" - ")}`
+
+    })
+
+}
     // سؤال صورة
 const image = getRandomImageQuestion(room)
 
 room.currentQuestion = {
-    type: image.answers.length > 1 ? "multi" : "single",
-
-    answers: image.answers.map(a => normalize(a)),
-
-    required:
-        image.answers.length >= 3
-            ? 3
-            : image.answers.length
+    type: "image",
+    answers: image.answers.map(normalize),
+    required: 1
 }
 
 return await sock.sendMessage(jid, {
@@ -342,6 +396,11 @@ return await sock.sendMessage(jid, {
 async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     const room = getRoom(jid)
+    if (!room.players.includes(userId)) {
+
+    return false
+
+}
 
     if (!room.started) return false
     if (!room.currentQuestion) return false
@@ -405,16 +464,15 @@ async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     let matchedCount = 0
 
-    for (const correct of uniqueAnswers) {
+for (const correct of uniqueAnswers) {
 
-        const regex =
-            new RegExp(`(^|\\s)${correct}(\\s|$)`)
+    if (fullText.includes(correct)) {
 
-        if (regex.test(fullText)) {
-            matchedCount++
-        }
+        matchedCount++
 
     }
+
+}
 
     const required =
         room.currentQuestion.required ||
@@ -602,6 +660,7 @@ module.exports = {
     createHeartEvent,
     joinHeartEvent,
     getRandomQuestion,
+    getRandomRepeatQuestion,
     getRandomImageQuestion,
     normalize,
     HEARTS,
