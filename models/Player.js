@@ -472,17 +472,65 @@ dailyReward: {
 },
 
     
-    // =========================
-    // BOXES
-    // =========================
-    boxes: {
-        basic: { type: Number, default: 0 },
-        rare: { type: Number, default: 0 },
-        epic: { type: Number, default: 0 },
-        legendary: { type: Number, default: 0 },
-        sss_chance: { type: Number, default: 0 },
-        sss_high: { type: Number, default: 0 }
+// =========================
+// BOXES
+// =========================
+boxes: {
+
+    // Character Boxes
+    basic: {
+        type: Number,
+        default: 0
+    },
+
+    rare: {
+        type: Number,
+        default: 0
+    },
+
+    epic: {
+        type: Number,
+        default: 0
+    },
+
+    legendary: {
+        type: Number,
+        default: 0
+    },
+
+    // Equipment Boxes
+    rareEquipment: {
+        type: Number,
+        default: 0
+    },
+
+    epicEquipment: {
+        type: Number,
+        default: 0
+    },
+
+    legendEquipment: {
+        type: Number,
+        default: 0
+    },
+
+    mythicalEquipment: {
+        type: Number,
+        default: 0
+    },
+
+    // SSS Boxes
+    sss_chance: {
+        type: Number,
+        default: 0
+    },
+
+    sss_high: {
+        type: Number,
+        default: 0
     }
+
+}
 
 })
 
