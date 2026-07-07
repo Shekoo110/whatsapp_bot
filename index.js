@@ -1,4 +1,12 @@
 const fs = require('fs')
+// =========================
+// Co-Op System
+// =========================
+const equipmentSystem = require('./systems/equipmentSystem')
+const CoOp = require('./models/CoOp')
+const coopManager = require('./systems/coopManager')
+
+const coopBattle = require('./systems/coopBattle')
 const heartQuiz = require("./heartQuiz")
 async function cleanEmptyClans() {
 
@@ -2766,6 +2774,17 @@ if (!global.auctionStarted) {
 
 }
 
+if (!global.coopStarted) {
+
+    global.coopStarted = true
+
+    coopManager.startLoop(sock)
+
+    console.log(
+        '✅ Co-Op System Started'
+    )
+
+}
 if (!global.eventsStarted) {
 
     global.eventsStarted = true
@@ -3874,6 +3893,563 @@ ${loserClan.name}
     // الأوامر العادية هنا
     // =========================
 
+    if (text === '.co-op') {
+
+    const result =
+        await coopManager.joinPlayer(
+
+            userId,
+
+            pushName ||
+            msg.pushName ||
+            "Player"
+
+        )
+
+    if (!result.success) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+                `❌ ${result.message}`
+
+            }
+
+        )
+
+    }
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text:
+
+`✅ تم الانضمام إلى الـ Co-Op
+
+👤 ${result.player.name}
+
+👥 عدد المشاركين:
+${result.players}/${result.maxPlayers}
+
+⏳ انتظر بدء القتال.`
+
+        }
+
+    )
+
+}
+    // =========================
+// Co-Op Attack
+// =========================
+
+if (text === '.مقاتلة') {
+
+    const result = await coopBattle.playerAttack(
+
+        sock,
+
+        userId
+
+    )
+
+    if (!result.success) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+                `❌ ${result.message}`
+
+            }
+
+        )
+
+    }
+
+    let reply =
+`⚔️ لقد هاجمت البوس!
+
+💥 Damage:
+${result.damage.toLocaleString()}`
+
+    if (result.critical) {
+
+        reply +=
+
+`\n\n💢 Critical Hit!`
+
+    }
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text: reply
+
+        }
+
+    )
+
+}
+    // =========================
+// Co-Op Status
+// =========================
+
+if (text === '.coop') {
+
+    const coop = await CoOp.findOne()
+
+    if (
+
+        !coop ||
+
+        !coop.active
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+`❌ لا يوجد Co-Op نشط حالياً.`
+
+            }
+
+        )
+
+    }
+
+    const players =
+
+        coop.players.length
+
+    const maxPlayers = {
+
+        A: 5,
+
+        SS: 5,
+
+        RAID: 8
+
+    }[coop.boss.rank] || 5
+
+    let current = "لا أحد"
+
+    if (
+
+        coop.status === "battle"
+
+    ) {
+
+        const alive =
+
+            coop.players.filter(
+
+                p => !p.finished
+
+            )
+
+        if (
+
+            alive[coop.currentTurn]
+
+        ) {
+
+            current =
+
+                alive[
+                    coop.currentTurn
+                ].name
+
+        }
+
+    }
+
+    const time =
+
+        coop.status === "waiting"
+
+        ?
+
+        Math.max(
+
+            0,
+
+            Math.floor(
+
+                (coop.joinEnd -
+
+                Date.now())
+
+                / 1000
+
+            )
+
+        )
+
+        :
+
+        Math.max(
+
+            0,
+
+            Math.floor(
+
+                (coop.turnEnd -
+
+                Date.now())
+
+                / 1000
+
+            )
+
+        )
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+text:
+
+`🌍 CO-OP RAID
+
+👹 ${coop.boss.name}
+
+🎮 ${coop.boss.anime}
+
+🏆 Rank: ${coop.boss.rank}
+
+❤️ HP
+${coop.boss.hp.toLocaleString()} / ${coop.boss.maxHp.toLocaleString()}
+
+👥 Players
+${players}/${maxPlayers}
+
+⚔ Round
+${coop.round}
+
+👤 Current Turn
+${current}
+
+⏳ ${time}s
+
+📌 Status:
+${coop.status}`
+
+        }
+
+    )
+
+}
+    // =========================
+// Co-Op Leaderboard
+// =========================
+
+if (text === '.leaderboard') {
+
+    const coop = await CoOp.findOne()
+
+    if (
+
+        !coop ||
+
+        !coop.active
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+                "❌ لا يوجد Co-Op نشط حالياً."
+
+            }
+
+        )
+
+    }
+
+    if (
+
+        !coop.leaderboard.length
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+                "📊 لم يسجل أي لاعب ضرراً بعد."
+
+            }
+
+        )
+
+    }
+
+    const top =
+
+        [...coop.leaderboard]
+
+        .sort(
+
+            (a, b) =>
+
+            b.damage - a.damage
+
+        )
+
+        .slice(0, 10)
+
+    let textMsg =
+`🏆 ترتيب الضرر
+
+👹 ${coop.boss.name}
+
+━━━━━━━━━━━━━━
+
+`
+
+    top.forEach(
+
+        (player, index) => {
+
+            const icon =
+
+                index === 0 ? "🥇" :
+
+                index === 1 ? "🥈" :
+
+                index === 2 ? "🥉" :
+
+                `${index + 1}.`
+
+            textMsg +=
+
+`${icon} ${player.name}
+
+💥 ${player.damage.toLocaleString()}
+
+`
+
+        }
+
+    )
+
+    textMsg +=
+
+`━━━━━━━━━━━━━━
+
+❤️ Boss HP
+
+${coop.boss.hp.toLocaleString()} / ${coop.boss.maxHp.toLocaleString()}`
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text: textMsg
+
+        }
+
+    )
+
+}
+
+    if (text === '.spawncoop') {
+
+    if (!isOwner(msg)) {
+
+        return sock.sendMessage(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: '❌ هذا الأمر للمطور فقط'
+
+            }
+
+        )
+
+    }
+
+    const spawned = await coopManager.forceSpawn(
+
+        sock
+
+    )
+
+    if (!spawned) {
+
+        return sock.sendMessage(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: '❌ يوجد Co-Op نشط بالفعل.'
+
+            }
+
+        )
+
+    }
+
+    return sock.sendMessage(
+
+        msg.key.remoteJid,
+
+        {
+
+            text:
+`✅ تم إنشاء Co-Op بنجاح.
+
+⏳ بدأ التسجيل الآن لمدة دقيقة.
+📢 تم إرسال الإعلان إلى مجموعات الـ Co-Op.`
+
+        }
+
+    )
+
+}
+    
+if (text === '.cooptime') {
+
+    const coop = await CoOp.findOne()
+
+    if (!coop) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: '❌ لا توجد بيانات Co-Op.'
+
+            }
+
+        )
+
+    }
+
+    if (coop.active) {
+
+        const seconds =
+
+            coop.status === "waiting"
+
+            ?
+
+            Math.max(
+
+                0,
+
+                Math.floor(
+
+                    (coop.joinEnd -
+
+                    Date.now()) / 1000
+
+                )
+
+            )
+
+            :
+
+            Math.max(
+
+                0,
+
+                Math.floor(
+
+                    (coop.turnEnd -
+
+                    Date.now()) / 1000
+
+                )
+
+            )
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+
+`🌍 يوجد Co-Op نشط الآن.
+
+📌 الحالة:
+${coop.status}
+
+⏳ الوقت المتبقي:
+${seconds} ثانية`
+
+            }
+
+        )
+
+    }
+
+    const minutes = Math.max(
+
+        0,
+
+        Math.floor(
+
+            (coop.nextSpawn -
+
+            Date.now()) / 60000
+
+        )
+
+    )
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text:
+
+`⏰ الغارة القادمة بعد:
+
+${minutes} دقيقة`
+
+        }
+
+    )
+
+}
     if (text === ".اعطاء_هيوكي") {
 
     const Player = require("./models/Player")
