@@ -917,54 +917,97 @@ async function endBattle(sock, victory) {
 
     await coop.save()
 
+    let rewardResults = []
+
     if (victory) {
 
-        await coopRewards.giveRewards(
-
+        rewardResults = await coopRewards.giveRewards(
             coop
-
         )
 
     }
 
     let text = ""
 
+    const mentions = []
+
     if (victory) {
 
-        text += "🎉 تم هزيمة البوس!\n\n"
-
-    } else {
-
-        text += "💀 فشل الفريق في هزيمة البوس.\n\n"
-
-    }
-
-    text += "🏆 أعلى الضرر:\n\n"
-
-    const top =
-
-        [...coop.leaderboard]
-
-        .sort(
-
-            (a, b) =>
-
-            b.damage - a.damage
-
-        )
-
-        .slice(0, 10)
-
-    top.forEach((p, i) => {
-
         text +=
+`🏆 *تم القضاء على ${coop.boss.name}!*
 
-`${i + 1}. ${p.name}
-💥 ${p.damage.toLocaleString()}
+🎁 تم توزيع الجوائز على جميع المشاركين.
+
+━━━━━━━━━━━━━━
 
 `
 
-    })
+        for (const player of rewardResults) {
+
+            mentions.push(
+                player.userId
+            )
+
+            text +=
+
+`#${player.rank} @${player.userId.split("@")[0]}
+
+💥 Damage
+${player.damage.toLocaleString()}
+
+💰 Gold
+${player.rewards.gold.toLocaleString()}
+
+⭐ EXP
+${player.rewards.exp.toLocaleString()}
+
+🪙 Co-Op Coins
+${player.rewards.coins}
+`
+
+            if (
+
+                player.rewards.boxes.length
+
+            ) {
+
+                text +=
+
+`\n🎁 Rewards\n`
+
+                for (
+
+                    const box of player.rewards.boxes
+
+                ) {
+
+                    text +=
+
+`• ${box.id} x${box.amount}
+`
+
+                }
+
+            }
+
+            text +=
+
+`\n━━━━━━━━━━━━━━
+
+`
+
+        }
+
+    } else {
+
+        text =
+`💀 فشل الفريق في هزيمة البوس.
+
+👹 ${coop.boss.name}
+
+حظًا أوفر في الجولة القادمة!`
+
+    }
 
     for (const group of [
 
@@ -982,13 +1025,25 @@ async function endBattle(sock, victory) {
 
                 {
 
-                    text
+                    text,
+
+                    mentions
 
                 }
 
             )
 
-        } catch {}
+        } catch (err) {
+
+            console.log(
+
+                "Co-Op Result:",
+
+                err.message
+
+            )
+
+        }
 
     }
 
@@ -1007,6 +1062,12 @@ async function endBattle(sock, victory) {
     coop.currentTurn = 0
 
     coop.round = 1
+
+    coop.boss = {}
+
+    coop.turnEnd = 0
+
+    coop.joinEnd = 0
 
     coop.nextSpawn =
 
