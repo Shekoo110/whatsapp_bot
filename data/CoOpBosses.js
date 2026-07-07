@@ -9,7 +9,7 @@ module.exports = [
 
     rank: "A",
 
-    image: "",
+    image: "https://files.catbox.moe/vjcj5v.jpg",
 
     hp: 3500000,
 
@@ -36,7 +36,7 @@ module.exports = [
 
     rank: "A",
 
-    image: "",
+    image: "https://files.catbox.moe/jxjwgm.jpg",
 
     hp: 3500000,
 
@@ -63,7 +63,7 @@ module.exports = [
 
     rank: "A",
 
-    image: "",
+    image: "https://files.catbox.moe/wf1bsj.jpg",
 
     hp: 3500000,
 
@@ -94,7 +94,7 @@ module.exports = [
 
     rank: "SS",
 
-    image: "",
+    image: "https://files.catbox.moe/odwksk.jpg",
 
     hp: 5000000,
 
@@ -125,7 +125,7 @@ module.exports = [
 
     rank: "SS",
 
-    image: "",
+    image: "https://files.catbox.moe/z52pwf.jpg",
 
     hp: 5000000,
 
@@ -156,7 +156,7 @@ module.exports = [
 
     rank: "SS",
 
-    image: "",
+    image: "https://files.catbox.moe/0qymf4.jpg",
 
     hp: 5000000,
 
@@ -187,7 +187,7 @@ module.exports = [
 
     rank: "SS",
 
-    image: "",
+    image: "https://files.catbox.moe/4x34rs.jpg",
 
     hp: 5000000,
 
@@ -222,7 +222,7 @@ module.exports = [
 
     rank: "RAID",
 
-    image: "",
+    image: "https://files.catbox.moe/ynhv1g.jpg",
 
     hp: 8000000,
 
@@ -276,7 +276,7 @@ module.exports = [
 
     rank: "RAID",
 
-    image: "",
+    image: "https://files.catbox.moe/hwv9o9.jpg",
 
     hp: 8000000,
 
@@ -330,7 +330,7 @@ module.exports = [
 
     rank: "RAID",
 
-    image: "",
+    image: "https://files.catbox.moe/q3m07f.jpg",
 
     hp: 8000000,
 
