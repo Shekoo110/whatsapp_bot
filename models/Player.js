@@ -247,32 +247,9 @@ specialAbilities: {
     },
 
     inventory: {
-        type: [
-            {
-                id: String,
-                name: String,
-                type: String, // weapon / armor / accessory
-                rarity: String,
-
-                attack: { type: Number, default: 0 },
-defense: { type: Number, default: 0 },
-hp: { type: Number, default: 0 },
-
-critRate: { type: Number, default: 0 },
-critDamage: { type: Number, default: 0 },
-
-dodge: { type: Number, default: 0 },
-
-accuracy: { type: Number, default: 0 },
-
-shield: { type: Number, default: 0 },
-lifesteal: { type: Number, default: 0 },
-
-price: { type: Number, default: 0 }
-            }
-        ],
-        default: []
-    },
+    type: [mongoose.Schema.Types.Mixed],
+    default: []
+},
 
     maxInventory: { type: Number, default: 20 },
 
