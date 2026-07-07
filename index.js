@@ -3893,6 +3893,230 @@ ${loserClan.name}
     // الأوامر العادية هنا
     // =========================
     
+    // =========================
+// Open Equipment Box
+// =========================
+
+if (text.startsWith('.open')) {
+
+    const args = text.trim().split(/\s+/)
+
+    if (!args[1]) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text:
+`📦 الاستخدام
+
+.open rare
+.open epic
+.open legendary
+.open mythical`
+
+            }
+
+        )
+
+    }
+
+    const type = args[1].toLowerCase()
+
+    const map = {
+
+        rare: "rareEquipment",
+
+        epic: "epicEquipment",
+
+        legendary: "legendEquipment",
+
+        mythical: "mythicalEquipment"
+
+    }
+
+    const boxId = map[type]
+
+    if (!boxId) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: "❌ نوع الصندوق غير صحيح."
+
+            }
+
+        )
+
+    }
+
+    const player = await Player.findOne({
+
+        userId
+
+    })
+
+    if (!player) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: "❌ لا يوجد حساب."
+
+            }
+
+        )
+
+    }
+
+    if (
+
+        !player.boxes ||
+
+        player.boxes[boxId] <= 0
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: "📦 لا تملك هذا الصندوق."
+
+            }
+
+        )
+
+    }
+
+    if (
+
+        player.inventory.length >=
+
+        player.maxInventory
+
+    ) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: "🎒 حقيبة المعدات ممتلئة."
+
+            }
+
+        )
+
+    }
+
+    const item =
+
+        equipmentSystem.openEquipmentBox(
+
+            boxId
+
+        )
+
+    if (!item) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+                text: "❌ حدث خطأ أثناء فتح الصندوق."
+
+            }
+
+        )
+
+    }
+
+    item.uid =
+
+        Date.now().toString(36) +
+
+        Math.random()
+
+        .toString(36)
+
+        .slice(2, 8)
+
+    player.inventory.push(item)
+
+    player.boxes[boxId]--
+
+    await player.save()
+
+    let message =
+`🎉 حصلت على معدة جديدة!
+
+🛡 ${item.name}
+
+⭐ ${item.rarity}
+
+🎖 الجودة: ${item.quality}
+
+⭐ النجوم: ${item.stars}
+
+━━━━━━━━━━━━━━
+📊 الإحصائيات
+`
+
+    for (const stat in item.stats) {
+
+        message +=
+`\n• ${stat}: +${item.stats[stat]}`
+
+    }
+
+    if (
+
+        item.affixes &&
+
+        item.affixes.length
+
+    ) {
+
+        message +=
+
+`\n\n✨ الخصائص الإضافية`
+
+        for (const affix of item.affixes) {
+
+            message +=
+`\n• ${affix.name}: +${affix.value}`
+
+        }
+
+    }
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text: message
+
+        }
+
+    )
+
+}
 // =========================
 // Equipment Inventory
 // =========================
