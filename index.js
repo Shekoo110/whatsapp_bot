@@ -4654,42 +4654,29 @@ ${slot}
     
     if (text === '.co-op') {
 
+    const playerName = msg.pushName || "Player"
+
     const result =
         await coopManager.joinPlayer(
-
             userId,
-
-            pushName ||
-            msg.pushName ||
-            "Player"
-
+            playerName
         )
 
     if (!result.success) {
 
         return safeSend(
-
             msg.key.remoteJid,
-
             {
-
-                text:
-                `❌ ${result.message}`
-
+                text: `❌ ${result.message}`
             }
-
         )
 
     }
 
     return safeSend(
-
         msg.key.remoteJid,
-
         {
-
             text:
-
 `✅ تم الانضمام إلى الـ Co-Op
 
 👤 ${result.player.name}
@@ -4698,9 +4685,7 @@ ${slot}
 ${result.players}/${result.maxPlayers}
 
 ⏳ انتظر بدء القتال.`
-
         }
-
     )
 
 }
