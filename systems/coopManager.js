@@ -124,7 +124,7 @@ async function createCoOp() {
 
     }
 
-    coop.nextSpawn = Date.now() + CONFIG.spawnEvery
+    
 
     await coop.save()
 
@@ -459,41 +459,29 @@ async function startBattle(sock) {
 // Finish Co-Op
 // =========================
 
-async function finishCoOp() {
+async function finishCoOp(sock) {
 
     const coop = await CoOp.findOne()
 
     if (!coop) return
 
     coop.active = false
-
     coop.status = "idle"
-
     coop.players = []
-
     coop.leaderboard = []
-
     coop.battleLog = []
-
     coop.rewardsClaimed = []
-
     coop.currentTurn = 0
-
     coop.round = 1
-
     coop.boss = {}
-
     coop.turnEnd = 0
-
     coop.joinEnd = 0
 
-    coop.nextSpawn =
-
-        Date.now() +
-
-        CONFIG.spawnEvery
-
     await coop.save()
+
+    if (sock) {
+        scheduleNextCoOp(sock)
+    }
 
 }
 
@@ -506,97 +494,76 @@ let coopTimer = null
 async function scheduleNextCoOp(sock) {
 
     if (coopTimer) {
-
         clearTimeout(coopTimer)
-
+        coopTimer = null
     }
 
-    const coop = await CoOp.findOne()
+    let coop = await CoOp.findOne()
 
-    let delay = CONFIG.spawnEvery
+    if (!coop) {
+        coop = new CoOp({
+            active: false,
+            status: "idle",
+            nextSpawn: Date.now() + CONFIG.spawnEvery
+        })
 
-    if (
-
-        coop &&
-
-        coop.nextSpawn &&
-
-        coop.nextSpawn > Date.now()
-
-    ) {
-
-        delay = coop.nextSpawn - Date.now()
-
+        await coop.save()
     }
 
-    coopTimer = setTimeout(
+    // إذا لم يكن هناك موعد محفوظ
+    if (!coop.nextSpawn || coop.nextSpawn <= 0) {
 
-        async () => {
+        coop.nextSpawn = Date.now() + CONFIG.spawnEvery
 
-            try {
+        await coop.save()
+    }
 
-                const current = await CoOp.findOne()
+    // إذا كان هناك Co-Op نشط فلا ننشئ واحداً جديداً
+    if (coop.active) {
 
-                if (
-
-                    current &&
-
-                    current.active
-
-                ) {
-
-                    current.nextSpawn =
-
-                        Date.now() +
-
-                        CONFIG.spawnEvery
-
-                    await current.save()
-
-                    return scheduleNextCoOp(sock)
-
-                }
-
-                await announceCoOp(sock)
-
-                setTimeout(
-
-                    async () => {
-
-                        await startBattle(sock)
-
-                    },
-
-                    CONFIG.joinTime
-
-                )
-
-            } catch (err) {
-
-                console.log(
-
-                    "Co-Op Loop:",
-
-                    err.message
-
-                )
-
-            }
-
+        coopTimer = setTimeout(() => {
             scheduleNextCoOp(sock)
+        }, 30000) // يفحص كل 30 ثانية
 
-        },
+        return
+    }
 
-        delay
+    const now = Date.now()
 
-    )
+    // إذا حان الوقت أو تأخرنا عنه (البوت كان مطفياً)
+    if (now >= coop.nextSpawn) {
 
-}
+        await announceCoOp(sock)
 
-function startLoop(sock) {
+const updated = await CoOp.findOne()
+
+updated.nextSpawn = now + CONFIG.spawnEvery
+
+await updated.save()
+
+setTimeout(async () => {
+
+    await startBattle(sock)
 
     scheduleNextCoOp(sock)
 
+}, CONFIG.joinTime)
+
+return
+    }
+
+    // الوقت المتبقي
+    const delay = coop.nextSpawn - now
+
+    coopTimer = setTimeout(async () => {
+
+        await scheduleNextCoOp(sock)
+
+    }, delay)
+
+}
+function startLoop(sock) {
+    scheduleNextCoOp(sock)
 }
 // =========================
 // Force Spawn
@@ -619,6 +586,11 @@ async function forceSpawn(sock) {
     }
 
     await announceCoOp(sock)
+    const current = await CoOp.findOne()
+
+current.nextSpawn = Date.now() + CONFIG.spawnEvery
+
+await current.save()
 
     setTimeout(
 
@@ -636,19 +608,11 @@ async function forceSpawn(sock) {
 
 }
 module.exports = {
-
     createCoOp,
-
     announceCoOp,
-
     joinPlayer,
-
     startBattle,
-
     finishCoOp,
-
     startLoop,
-
     forceSpawn
-
 }
