@@ -1,4 +1,5 @@
 const CoOp = require('../models/CoOp')
+const coopManager = require('./coopManager')
 
 const coopSkills = require('./coopSkills')
 
@@ -1070,12 +1071,14 @@ ${player.rewards.coins}
     coop.joinEnd = 0
 
     coop.nextSpawn =
+    Date.now() +
+    (4 * 60 * 60 * 1000)
 
-        Date.now() +
+await coop.save()
 
-        (4 * 60 * 60 * 1000)
+const coopManager = require('./coopManager')
 
-    await coop.save()
+coopManager.startLoop(sock)
 
 }
 // =========================
