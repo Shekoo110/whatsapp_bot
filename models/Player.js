@@ -9,11 +9,28 @@ const PlayerSchema = new mongoose.Schema({
     },
 
     // =========================
-    // BASIC
-    // =========================
-    pulls: { type: Number, default: 5 },
-    towerTickets: { type: Number, default: 0 },
-    lastReset: { type: Number, default: Date.now },
+// BASIC
+// =========================
+
+pulls: {
+    type: Number,
+    default: 5
+},
+
+sssPity: {
+    type: Number,
+    default: 0
+},
+
+towerTickets: {
+    type: Number,
+    default: 0
+},
+
+lastReset: {
+    type: Number,
+    default: Date.now
+},
 
     characters: {
         type: Array,
