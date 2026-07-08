@@ -22801,11 +22801,6 @@ player.characters.push({
 
 player.pulls -= 1
 
-const pityLeft =
-player.sssPity === 0
-? 30
-: 30 - player.sssPity
-
 await player.save()
 
 let imagePath = null
@@ -22876,7 +22871,7 @@ return sock.sendMessage(msg.key.remoteJid, {
 🌌 𝑨𝒏𝒊𝒎𝒆 ➤ ${randomCharacter.anime}
 
 🎟️ السحبات المتبقية ➤ ${player.pulls}/5
-🎯 الضمان القادم بعد ➤ ${pityLeft} سحبة
+🎯 عداد الضمان ➤ ${player.sssPity}/30
 
 ╰━━━━━━━━━━━━━━━━━━━━━━╯`
 })
