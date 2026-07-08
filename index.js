@@ -22629,6 +22629,21 @@ ${seconds} ثانية
         }
     )
 }
+        player.sssPity = (player.sssPity || 0) + 1
+
+let guaranteedSSS = false
+
+if (player.sssPity >= 30) {
+
+    guaranteedSSS = true
+    player.sssPity = 0
+
+}
+
+const pityLeft =
+guaranteedSSS
+? 30
+: 30 - player.sssPity
 
 let luckBonus = 0
 
@@ -22636,18 +22651,32 @@ if ((player.level || 1) >= 10) {
     luckBonus = 3
 }
 
-let chance = Math.random() * 100
-
-chance -= luckBonus
-
 let rarity = 'عادي'
 
-if (chance <= 5) {
+if (guaranteedSSS) {
+
     rarity = 'SSS'
-} else if (chance <= 15) {
-    rarity = 'اسطوري'
-} else if (chance <= 40) {
-    rarity = 'ممتاز'
+
+} else {
+
+    let chance = Math.random() * 100
+
+    chance -= luckBonus
+
+    if (chance <= 5) {
+
+        rarity = 'SSS'
+
+    } else if (chance <= 22) {
+
+        rarity = 'اسطوري'
+
+    } else if (chance <= 50) {
+
+        rarity = 'ممتاز'
+
+    }
+
 }
 
 const filteredCharacters =
@@ -22772,6 +22801,11 @@ player.characters.push({
 
 player.pulls -= 1
 
+const pityLeft =
+player.sssPity === 0
+? 30
+: 30 - player.sssPity
+
 await player.save()
 
 let imagePath = null
@@ -22784,6 +22818,9 @@ if (randomCharacter.rarity !== 'SSS') {
 }
 
 if (randomCharacter.rarity === 'SSS') {
+    const pityText = guaranteedSSS
+? "\n🎯 هذه الشخصية حصلت عليها من الضمان!"
+: ""
 
     return sock.sendMessage(msg.key.remoteJid, {
         image: {
@@ -22810,7 +22847,7 @@ if (randomCharacter.rarity === 'SSS') {
 
 🌌 الأنمي : ${randomCharacter.anime}
 
-🏆 هذه الشخصية تمتلك قوة تتجاوز حدود الأساطير`
+🏆 هذه الشخصية تمتلك قوة تتجاوز حدود الأساطير${pityText}`
     })
 }
 
@@ -22839,6 +22876,7 @@ return sock.sendMessage(msg.key.remoteJid, {
 🌌 𝑨𝒏𝒊𝒎𝒆 ➤ ${randomCharacter.anime}
 
 🎟️ السحبات المتبقية ➤ ${player.pulls}/5
+🎯 الضمان القادم بعد ➤ ${pityLeft} سحبة
 
 ╰━━━━━━━━━━━━━━━━━━━━━━╯`
 })
