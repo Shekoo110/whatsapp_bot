@@ -10138,5 +10138,32 @@
   "rarity": "SSS",
   "ability": "إكسكاليبر المظلم",
   "image": "https://files.catbox.moe/ffn7v9.jpg"
+},
+  {
+  "name": "Yennefer",
+  "form": "ساحرة فينغيربيرغ",
+  "anime": "The Witcher",
+  "power": 6910,
+  "rarity": "SSS",
+  "ability": "عاصفة السحر",
+  "image": "https://files.catbox.moe/xgub6t.jpg"
+},
+{
+  "name": "Ciri",
+  "form": "وريثة الدم القديم",
+  "anime": "The Witcher",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "اندفاع الأبعاد",
+  "image": "https://files.catbox.moe/bc14vy.jpg"
+},
+{
+  "name": "Triss",
+  "form": "ساحرة المملكة",
+  "anime": "The Witcher",
+  "power": 6890,
+  "rarity": "SSS",
+  "ability": "لهيب العنقاء",
+  "image": "https://files.catbox.moe/vxxkt9.jpg"
 }
 ]
