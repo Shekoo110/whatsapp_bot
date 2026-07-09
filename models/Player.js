@@ -22,11 +22,20 @@ sssPity: {
     default: 0
 },
 
-towerTickets: {
+bannerPity: {
     type: Number,
     default: 0
 },
 
+bannerParticipated: {
+    type: Boolean,
+    default: false
+},
+
+towerTickets: {
+    type: Number,
+    default: 0
+},
 lastReset: {
     type: Number,
     default: Date.now
