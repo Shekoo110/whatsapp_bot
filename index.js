@@ -23592,7 +23592,10 @@ if (!owned) {
 
 const latest =
     characters.find(
-        c => c.name === owned.name
+        c =>
+            c.name === owned.name &&
+            c.rarity === owned.rarity &&
+            c.form === owned.form
     )
 
 const character = latest
