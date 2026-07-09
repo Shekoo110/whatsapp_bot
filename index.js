@@ -6592,21 +6592,41 @@ ${err.message}`
             text: '❌ لا تملك شخصيات.'
         })
 
-    const evolvedCharacters =
-        player.characters.filter(
-            c =>
-                c.evolutionLevel >= 1 &&
-                c.urAbilities &&
-                c.urAbilities.length > 0
-        )
+    if (index < 1 || index > player.characters.length)
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ رقم الشخصية غير صحيح.'
+    })
 
-    if (index < 1 || index > evolvedCharacters.length)
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ رقم الشخصية غير صحيح.'
-        })
+const owned =
+    player.characters[index - 1]
 
-    const character =
-        evolvedCharacters[index - 1]
+if (
+    owned.evolutionLevel < 1 ||
+    !owned.urAbilities ||
+    owned.urAbilities.length === 0
+)
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ هذه الشخصية لا تملك قدرات EX.'
+    })
+
+const latest =
+    characters.find(
+        c =>
+            c.name === owned.name &&
+            c.rarity === owned.rarity &&
+            c.form === owned.form
+    )
+
+const character = latest
+? {
+    ...owned,
+    image: latest.image,
+    anime: latest.anime,
+    ability: latest.ability,
+    rarity: latest.rarity,
+    form: latest.form
+}
+: owned
 
     let abilitiesText = ''
 
