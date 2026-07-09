@@ -1,4 +1,8 @@
 const fs = require('fs')
+const Banner = require('./models/Banner')
+const {
+    refreshBanner
+} = require('./systems/bannerManager')
 // =========================
 // Co-Op System
 // =========================
@@ -3892,7 +3896,496 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+    // =========================
+// .بنر
+// =========================
+
+if (text === '.بنر') {
+
+    const banner =
+        await refreshBanner()
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!banner.character) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ لا يوجد بنر حالياً`
+            }
+        )
+
+    }
+
+    const pity =
+        player?.bannerPity || 0
+
+    const pityLeft =
+        pity === 0
+        ? 30
+        : 30 - pity
+
+    const pulls =
+        player?.pulls || 0
+
+    const caption =
+`🌌 ═════〔 LIMITED BANNER 〕═════ 🌌
+
+👑 ${banner.character.name}
+
+⚔️ القوة
+${banner.character.power}
+
+🌌 الأنمي
+${banner.character.anime}
+
+━━━━━━━━━━━━
+
+🎯 عداد الضمان
+${pity}/30
+
+🎟️ السحبات المتبقية
+${pulls}/5
+
+🌍 السحبات العالمية
+${banner.globalPulls}/500
+
+━━━━━━━━━━━━
+
+🎁 عند وصول المجتمع إلى 500 سحبة
+
+💰 500,000 ذهب
+🎟️ +5 سحبات
+📦 SSS Chance Box ×1
+
+━━━━━━━━━━━━
+
+⏳ يتجدد يومياً
+
+🕛 12:00 AM 🇸🇦
+
+📌 المتبقي للضمان
+${pityLeft} سحبة
+
+━━━━━━━━━━━━
+
+🎮 اكتب
+
+.سحب_بنر
+
+للسحب من البنر المحدود`
+
+    // =========================
+    // إذا لم توجد صورة
+    // =========================
+
+    if (!banner.character.image) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: caption
+            }
+        )
+
+    }
+
+    // =========================
+    // صورة محلية
+    // =========================
+
+    if (
+        !banner.character.image.startsWith('http')
+    ) {
+
+        const imagePath =
+            path.join(
+                __dirname,
+                banner.character.image
+            )
+
+        if (!fs.existsSync(imagePath)) {
+
+            return sock.sendMessage(
+                msg.key.remoteJid,
+                {
+                    text: caption
+                }
+            )
+
+        }
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                image:
+                    fs.readFileSync(imagePath),
+
+                caption
+            }
+        )
+
+    }
+
+    // =========================
+    // صورة رابط
+    // =========================
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url:
+                banner.character.image
+            },
+
+            caption
+        }
+    )
+
+}
+
     
+    if (text === '.سحب_بنر') {
+
+    await refreshBanner(sock)
+
+    const banner = await Banner.findOne()
+
+    if (!banner || !banner.character) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا يوجد بنر حالياً'
+            }
+        )
+
+    }
+
+    let player = await Player.findOne({ userId })
+
+    if (!player) {
+
+        player = new Player({
+            userId,
+            pulls: 5,
+            bannerPity: 0,
+            lastReset: Math.floor(Date.now() / (60 * 60 * 1000)),
+            characters: []
+        })
+
+    }
+        if (
+    player.characters.length >=
+    (player.maxCharacters || 30)
+) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ المخزون ممتلئ
+
+📦 السعة:
+${player.maxCharacters || 30}`
+        }
+    )
+
+}
+        const cooldown = 60 * 60 * 1000
+
+const currentPeriod =
+Math.floor(Date.now() / cooldown)
+
+if (player.lastReset !== currentPeriod) {
+
+    player.pulls = 5
+    player.lastReset = currentPeriod
+
+}
+
+if (player.pulls <= 0) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ انتهت السحبات
+
+⏳ تتجدد كل ساعة`
+        }
+    )
+
+}
+        player.bannerPity =
+(player.bannerPity || 0) + 1
+
+let guaranteed = false
+
+if (player.bannerPity >= 30) {
+
+    guaranteed = true
+    player.bannerPity = 0
+
+}
+        const pityLeft =
+guaranteed
+? 30
+: 30 - player.bannerPity
+        let rarity = 'عادي'
+
+let luckBonus = 0
+
+if ((player.level || 1) >= 10)
+    luckBonus = 3
+
+if (guaranteed) {
+
+    rarity = 'SSS'
+
+} else {
+
+    let chance = Math.random() * 100
+
+    chance -= luckBonus
+
+    if (chance <= 5) {
+
+        rarity = 'SSS'
+
+    } else if (chance <= 22) {
+
+        rarity = 'اسطوري'
+
+    } else if (chance <= 50) {
+
+        rarity = 'ممتاز'
+
+    }
+
+}
+        let randomCharacter
+
+if (rarity !== 'SSS') {
+
+    const pool =
+    characters.filter(
+        c => c.rarity === rarity
+    )
+
+    randomCharacter =
+    pool[
+        Math.floor(
+            Math.random() *
+            pool.length
+        )
+    ]
+
+}
+        else {
+
+    if (guaranteed || Math.random() < 0.70) {
+
+        randomCharacter =
+        banner.character
+
+    } else {
+
+        const sss =
+        characters.filter(
+            c => c.rarity === 'SSS'
+        )
+
+        randomCharacter =
+        sss[
+            Math.floor(
+                Math.random() *
+                sss.length
+            )
+        ]
+
+    }
+
+}
+        if (!randomCharacter) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: "❌ تعذر اختيار شخصية."
+        }
+    )
+
+}
+        
+    if (player.dailyMissions) {
+
+    player.dailyMissions.pulls += 1
+
+    if (randomCharacter.rarity === 'اسطوري') {
+
+        player.dailyMissions.gotLegendary += 1
+
+    }
+
+    if (randomCharacter.rarity === 'SSS') {
+
+        player.dailyMissions.gotSSS = true
+
+    }
+
+    player.markModified('dailyMissions')
+
+}
+player.characters.push({
+
+    ...randomCharacter,
+
+    originalPower: randomCharacter.power,
+
+    evolutionLevel: 0,
+
+    urAbilities: []
+
+})
+
+player.pulls--
+        player.bannerParticipated = true
+        banner.globalPulls++
+
+const reachedReward = banner.globalPulls >= 500
+if (reachedReward) {
+
+    banner.globalPulls = 0
+
+    const players =
+        await Player.find({
+
+            bannerParticipated: true
+
+        })
+
+    for (const p of players) {
+
+        p.money =
+            (p.money || 0) + 500000
+
+        p.pulls =
+            (p.pulls || 0) + 5
+
+        if (!p.boxes) {
+
+            p.boxes = {}
+
+        }
+
+        p.boxes.sss_chance =
+            (p.boxes.sss_chance || 0) + 1
+
+        p.bannerParticipated = false
+
+        await p.save()
+
+    }
+
+}
+
+        await player.save()
+
+await banner.save()
+
+const caption =
+`╭━━〔 🌌 LIMITED BANNER 🌌 〕━━╮
+
+👑 ${randomCharacter.name}
+
+🌟 التصنيف ➤ ${randomCharacter.rarity}
+
+⚔ القوة ➤ ${randomCharacter.power}
+
+🌌 الأنمي ➤ ${randomCharacter.anime}
+
+━━━━━━━━━━━━
+
+🎟️ السحبات المتبقية ➤ ${player.pulls}/5
+
+🎯 عداد الضمان ➤ ${guaranteed ? 30 : player.bannerPity}/30
+
+📌 المتبقي للضمان ➤ ${pityLeft} سحبة
+
+${guaranteed ? "🎯 حصلت عليها من ضمان البنر!" : ""}
+
+╰━━━━━━━━━━━━━━━━━━━━━━╯`
+
+// ======================
+// إذا لا توجد صورة
+// ======================
+
+if (!randomCharacter.image) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: caption
+        }
+    )
+
+}
+
+// ======================
+// إذا الصورة رابط
+// ======================
+
+if (randomCharacter.image.startsWith("http")) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            image: {
+                url: randomCharacter.image
+            },
+            caption
+        }
+    )
+
+}
+
+// ======================
+// إذا الصورة داخل المشروع
+// ======================
+
+const imagePath =
+path.join(
+    __dirname,
+    randomCharacter.image
+)
+
+if (!fs.existsSync(imagePath)) {
+
+    return sock.sendMessage(
+        msg.key.remoteJid,
+        {
+            text: caption
+        }
+    )
+
+}
+
+return sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: fs.readFileSync(imagePath),
+        caption
+    }
+)
+        
     // =========================
 // Open Equipment Box
 // =========================
