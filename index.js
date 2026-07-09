@@ -3904,7 +3904,7 @@ ${loserClan.name}
 if (text === '.بنر') {
 
     const banner =
-        await refreshBanner()
+    await refreshBanner(sock)
 
     const player =
         await Player.findOne({
@@ -4300,13 +4300,22 @@ if (reachedReward) {
         await player.save()
 
 await banner.save()
+        
+        const bannerText =
+randomCharacter.name === banner.character.name
+? "🌌 الشخصية المميزة لهذا اليوم"
+: "✨ حصلت على SSS عشوائية خارج البنر!"
 
 const caption =
 `╭━━〔 🌌 LIMITED BANNER 🌌 〕━━╮
 
 👑 ${randomCharacter.name}
 
-🌟 التصنيف ➤ ${randomCharacter.rarity}
+${randomCharacter.rarity === "SSS"
+? `${bannerText}
+
+`
+: ""}🌟 التصنيف ➤ ${randomCharacter.rarity}
 
 ⚔ القوة ➤ ${randomCharacter.power}
 
@@ -4316,7 +4325,7 @@ const caption =
 
 🎟️ السحبات المتبقية ➤ ${player.pulls}/5
 
-🎯 عداد الضمان ➤ ${guaranteed ? 30 : player.bannerPity}/30
+🎯 عداد الضمان ➤ ${player.bannerPity}/30
 
 📌 المتبقي للضمان ➤ ${pityLeft} سحبة
 
