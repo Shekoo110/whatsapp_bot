@@ -23580,39 +23580,61 @@ try {
         })
     }
 
-    const character = player.characters[number]
+    const owned = player.characters[number]
 
-    if (!character) {
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ رقم الشخصية غير موجود'
-        })
-    }
+if (!owned) {
 
-    const captionSSS = `╔═══════════════════════╗
-║ 👑 𝗦𝗦𝗦 • 𝗠𝗬𝗧𝗛𝗜𝗖 👑
-╚═══════════════════════╝
+    return safeSend(msg.key.remoteJid, {
+        text: '❌ رقم الشخصية غير موجود'
+    })
 
-⚜️ الاسم
-➤ ${character.name}
+}
 
-🔥 الهيئة
-➤ ${character.form || 'غير معروفة'}
+const latest =
+    characters.find(
+        c => c.name === owned.name
+    )
 
-💠 الندرة
-➤ ${character.rarity}
+const character = latest
+? {
+    ...owned,
+    image: latest.image,
+    anime: latest.anime,
+    ability: latest.ability,
+    rarity: latest.rarity,
+    form: latest.form || owned.form
+}
+: owned
 
-⚔️ القوة
-➤ ${character.power}
 
-🌌 الأنمي
-➤ ${character.anime}
+    const captionSSS =
+`┏━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 
-✨ القدرة
-➤ ${character.ability || 'لا توجد'}
+            👑 ${character.name}
 
-━━━━━━━━━━━━━━━
-🏆 شخصية أسطورية نادرة
-━━━━━━━━━━━━━━━`
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+🌠 RARITY
+➜ ${character.rarity}
+
+⚔ POWER
+➜ ${character.power}
+
+🌌 ANIME
+➜ ${character.anime}
+
+✨ SKILL
+➜ ${character.ability || "لا توجد"}
+
+🔥 FORM
+➜ ${character.form || "الأساسية"}
+
+💎 EVOLUTION
+➜ +${character.evolutionLevel || 0}
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+📖 معلومات الشخصية من مجموعتك.`
 
     const captionNormal = `╔════════════════════╗
 🖼️ 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑
