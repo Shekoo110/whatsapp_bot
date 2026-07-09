@@ -1,3 +1,5 @@
+const fs = require("fs")
+const path = require("path")
 const Banner = require('../models/Banner')
 const characters = require('../characters.json')
 
@@ -54,7 +56,7 @@ function getBannerCharacters() {
 // تجديد البنر
 // =========================
 
-async function refreshBanner() {
+async function refreshBanner(sock) {
 
     const banner = await getBanner()
 
@@ -120,7 +122,98 @@ async function refreshBanner() {
 
     await banner.save()
 
-    return banner
+const groups = [
+
+    "120363020823525909@g.us",
+
+    "120363409897316453@g.us"
+
+]
+
+const text =
+`🌌 ═════〔 LIMITED BANNER 〕═════ 🌌
+
+🎉 تم تجديد البنر اليومي!
+
+👑 Gojo Satoru
+
+⚔ القوة ➤ 13850
+🌌 الأنمي ➤ Jujutsu Kaisen
+
+━━━━━━━━━━━━
+
+⏳ متاح لمدة 24 ساعة
+
+🎮 اكتب:
+
+.بنر
+
+لمشاهدة البنر والسحب.
+
+🍀 حظًا موفقًا للجميع!`
+
+for (const jid of groups) {
+
+    try {
+
+        if (
+            character.image &&
+            character.image.startsWith("http")
+        ) {
+
+            await sock.sendMessage(
+                jid,
+                {
+                    image: {
+                        url: character.image
+                    },
+                    caption: text
+                }
+            )
+
+} else {
+
+    const fs = require("fs")
+    const path = require("path")
+
+    const imagePath = path.join(
+        __dirname,
+        "..",
+        character.image
+    )
+
+    if (fs.existsSync(imagePath)) {
+
+        await sock.sendMessage(
+            jid,
+            {
+                image: fs.readFileSync(imagePath),
+                caption: text
+            }
+        )
+
+    } else {
+
+        await sock.sendMessage(
+            jid,
+            {
+                text
+            }
+        )
+
+    }
+
+}
+
+    } catch (e) {
+
+        console.log(e)
+
+    }
+
+}
+
+return banner
 
 }
 
