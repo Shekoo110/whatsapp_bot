@@ -135,10 +135,11 @@ const text =
 
 🎉 تم تجديد البنر اليومي!
 
-👑 Gojo Satoru
+👑 ${banner.character.name}
 
-⚔ القوة ➤ 13850
-🌌 الأنمي ➤ Jujutsu Kaisen
+⚔ القوة ➤ ${banner.character.power}
+
+🌌 الأنمي ➤ ${banner.character.anime}
 
 ━━━━━━━━━━━━
 
