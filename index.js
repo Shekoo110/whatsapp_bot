@@ -4394,7 +4394,7 @@ return sock.sendMessage(
         caption
     }
 )
-        
+        } // <-- أغلق .سحب_بنر هنا
     // =========================
 // Open Equipment Box
 // =========================
