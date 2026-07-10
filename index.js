@@ -360,6 +360,45 @@ const QRCode = require("qrcode")
 const cooldowns = new Map()
 const urAbilities =
     require('./urAbilities')
+function getRandomAbilities(count = 7) {
+
+    const pool = [...urAbilities]
+    const result = []
+
+    while (result.length < count && pool.length) {
+
+        const totalChance =
+            pool.reduce((sum, a) => sum + a.chance, 0)
+
+        let random =
+            Math.random() * totalChance
+
+        let index = 0
+
+        for (let i = 0; i < pool.length; i++) {
+
+            random -= pool[i].chance
+
+            if (random <= 0) {
+
+                index = i
+                break
+
+            }
+
+        }
+
+        result.push(pool[index])
+
+        pool.splice(index, 1)
+
+    }
+
+    return result
+
+}
+
+
 const cheerio = require("cheerio");
 
 console.log("cheerio loaded OK");
@@ -3896,6 +3935,132 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+    if (text === ".اعطاء_EX") {
+
+    const Player = require("./models/Player")
+
+    const userId = "85126839013435@lid"
+
+    const player = await Player.findOne({ userId })
+
+    if (!player) {
+        return safeSend(msg.key.remoteJid, {
+            text: "❌ اللاعب غير موجود."
+        })
+    }
+
+    const charactersToGive = [
+
+        {
+            name: "Imu",
+            form: "الحاكم الخفي",
+            anime: "One Piece",
+            ability: "السيطرة المطلقة",
+            image: "https://files.catbox.moe/q4z49x.jpg"
+        },
+
+        {
+            name: "Roger",
+            form: "ملك القراصنة",
+            anime: "One Piece",
+            ability: "الهاكي الأسطوري",
+            image: "https://files.catbox.moe/djkqcx.jpg"
+        },
+
+        {
+            name: "Loki",
+            form: "أمير العمالقة",
+            anime: "One Piece",
+            ability: "قوة إلباف",
+            image: "https://files.catbox.moe/dwqig7.jpg"
+        },
+
+        {
+            name: "Diablo",
+            form: "الشيطان الأسود",
+            anime: "Tensura",
+            ability: "السحر الشيطاني",
+            image: "https://files.catbox.moe/p5e4bg.jpg"
+        }
+
+    ]
+
+    let added = 0
+
+    for (const data of charactersToGive) {
+
+        if (
+            player.characters.some(
+                c =>
+                    c.name === data.name &&
+                    c.rarity === "SSS" &&
+                    c.form === data.form
+            )
+        ) {
+            continue
+        }
+
+        // اختيار 7 قدرات حسب نسب chance
+        const randomAbilities = getRandomAbilities(7)
+
+        player.characters.push({
+
+            name: data.name,
+            form: data.form,
+            anime: data.anime,
+
+            rarity: "SSS",
+
+            power: 25000,
+
+            ability: data.ability,
+
+            image: data.image,
+
+            evolutionLevel: 6,
+            evolutionType: "fixed",
+
+            level: 1,
+            xp: 0,
+
+            locked: false,
+
+            obtainedAt: Date.now(),
+
+            urAbilities: randomAbilities
+
+        })
+
+        added++
+
+    }
+
+    player.markModified("characters")
+
+    await player.save()
+
+    return safeSend(msg.key.remoteJid, {
+
+        text:
+`✅ تم إعطاء اللاعب ${added} شخصية EX.
+
+👤 ${userId}
+
+👑 Imu
+👑 Roger
+👑 Loki
+👑 Diablo
+
+⭐ القوة: 25000
+
+💎 التطوير: +6
+
+🎲 لكل شخصية 7 قدرات EX عشوائية حسب نسب الظهور.`
+
+    })
+
+}
 
     // =========================
 // .بنر
