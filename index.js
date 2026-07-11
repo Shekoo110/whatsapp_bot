@@ -450,7 +450,7 @@ function normalizeName(name) {
         .replace(/\s+/g, '')
         .trim()
 }
-const axios = require("axios")
+
 async function askGemini(prompt) {
 
     try {
