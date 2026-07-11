@@ -465,19 +465,38 @@ async function askGemini(prompt) {
 
                 messages: [
 
-                    {
+    {
 
-                        role: "user",
+        role: "system",
 
-                        content: prompt
+        content:
+`أنت حكم لعبة تخمين شخصيات الأنمي.
 
-                    }
+أجب فقط بإحدى الكلمات التالية:
 
-                ],
+نعم
+لا
+لا أعلم
 
-                temperature: 0.2,
+لا تشرح.
+لا تخمن.
+إذا لم تكن متأكداً 100% فأجب: لا أعلم.`
 
-                max_tokens: 300
+    },
+
+    {
+
+        role: "user",
+
+        content: prompt
+
+    }
+
+],
+
+temperature: 0,
+top_p: 0.01,
+max_tokens: 5
 
             },
 
@@ -497,7 +516,20 @@ async function askGemini(prompt) {
 
         )
 
-        return data.choices[0].message.content.trim()
+        let answer =
+    data.choices[0].message.content
+        .trim()
+
+if (answer.includes("لا أعلم"))
+    return "لا أعلم"
+
+if (answer.includes("نعم"))
+    return "نعم"
+
+if (answer.includes("لا"))
+    return "لا"
+
+return "لا أعلم"
 
     } catch (err) {
 
@@ -14918,37 +14950,34 @@ if (animeMatch) {
     )
 }
 
-    const answer =
-    await askGemini(
+    const answer = await askGemini(
+`أنت حكم رسمي في لعبة تخمين شخصيات الأنمي.
 
-`أنت حكم لعبة تخمين شخصيات أنمي.
+الشخصية الصحيحة:
 
-الشخصية: ${character.name}
+الاسم: ${character.name}
 الأنمي: ${character.anime}
 
-سؤال اللاعب:
-${text}
+القواعد:
 
-إذا كان السؤال عن الأنمي نفسه فاعتمد على قيمة الأنمي المذكورة أعلاه فقط.
+- استخدم المعلومات الرسمية فقط.
+- لا تخمن إطلاقًا.
+- إذا لم تكن متأكدًا 100% فأجب: لا أعلم.
+- إذا كانت العبارة صحيحة فأجب: نعم.
+- إذا كانت خاطئة فأجب: لا.
+- إذا كان السؤال عن الأنمي فاعتمد فقط على قيمة الأنمي المذكورة أعلاه.
+- لا تشرح.
+- لا تضف أي كلمات أو علامات ترقيم.
 
-أمثلة:
+الإجابات المسموح بها فقط:
 
-إذا كان الأنمي Dragon Ball
-وسأل اللاعب:
-هل الأنمي هو Dragon Ball؟
-الإجابة: نعم
-
-إذا كان الأنمي Naruto
-وسأل اللاعب:
-هل الأنمي هو Dragon Ball؟
-الإجابة: لا
-
-أجب فقط بإحدى الكلمات التالية:
 نعم
 لا
-غير معروف
+لا أعلم
 
-ممنوع أي شرح إضافي.`
+سؤال اللاعب:
+
+${text}`
 )
 
     return safeSend(
