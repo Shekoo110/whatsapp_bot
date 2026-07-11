@@ -436,14 +436,7 @@ const bosses = require('./bosses')
 const xo =
     require('./xo')
 const characters = require('./characters.json')
-const { GoogleGenAI } =
-require("@google/genai")
 
-const ai =
-new GoogleGenAI({
-    apiKey:
-    process.env.GEMINI_API_KEY
-})
 
 function normalizeName(name) {
 
@@ -457,35 +450,69 @@ function normalizeName(name) {
         .replace(/\s+/g, '')
         .trim()
 }
-
+const axios = require("axios")
 async function askGemini(prompt) {
 
     try {
 
-        const response =
-            await ai.models.generateContent({
-                model: "gemini-2.5-flash",
-                contents: prompt
-            })
+        const { data } = await axios.post(
 
-        console.log(
-            "Gemini Response:",
-            response.text
+            "https://api.groq.com/openai/v1/chat/completions",
+
+            {
+
+                model: "llama-3.3-70b-versatile",
+
+                messages: [
+
+                    {
+
+                        role: "user",
+
+                        content: prompt
+
+                    }
+
+                ],
+
+                temperature: 0.2,
+
+                max_tokens: 300
+
+            },
+
+            {
+
+                headers: {
+
+                    Authorization:
+`Bearer ${process.env.GROQ_API_KEY}`,
+
+                    "Content-Type":
+"application/json"
+
+                }
+
+            }
+
         )
 
-        return (
-            response.text || ""
-        ).trim()
+        return data.choices[0].message.content.trim()
 
     } catch (err) {
 
         console.log(
-            "Gemini Error:",
-            err
+
+            "Groq Error:",
+
+            err.response?.data || err.message
+
         )
 
         return "❌ خطأ"
+
     }
+
 }
 
 const BEAST_GROUPS = [
