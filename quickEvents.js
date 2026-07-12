@@ -1,9 +1,9 @@
 const Player = require('./models/Player')
 const characters = require('./characters.json')
 
-const EVENT_GROUPS = [
-'120363400448225715@g.us',
-'120363020823525909@g.us'
+'120363020823525909@g.us',
+'120363409897316453@g.us',
+'120363116482407260@g.us'
 ]
 
 const quickEvents = {
