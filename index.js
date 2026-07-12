@@ -3348,12 +3348,31 @@ if (
     )
 ) {
 
+    if (text !== '.تشغيل') {
+        return
+    }
+
+    const metadata =
+        await sock.groupMetadata(
+            msg.key.remoteJid
+        )
+
+    const participant =
+        metadata.participants.find(
+            p => p.id === userId
+        )
+
+    const isAdmin =
+        participant?.admin === "admin" ||
+        participant?.admin === "superadmin"
+
     if (
-        text !== '.تشغيل' ||
-        userId.split('@')[0] !== ownerId
+        !isOwner(msg) &&
+        !isAdmin
     ) {
         return
     }
+
 }
 
 if (msg.key.fromMe) return
