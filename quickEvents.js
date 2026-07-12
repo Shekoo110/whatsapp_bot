@@ -1,6 +1,6 @@
 const Player = require('./models/Player')
 const characters = require('./characters.json')
-
+const eventGroups = [
 '120363020823525909@g.us',
 '120363409897316453@g.us',
 '120363116482407260@g.us'
