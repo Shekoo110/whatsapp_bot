@@ -185,7 +185,8 @@ const allowedGroups = [
 '120363020823525909@g.us',
 
 '120363400448225715@g.us',
-    '120363116482407260@g.us'
+
+'120363116482407260@g.us'
 
 ]
 const {
@@ -10678,18 +10679,38 @@ if (text === '.استرجاع_sss') {
 if (text === '.ايقاف') {
 
     if (
-        userId.split('@')[0] !==
-        ownerId
-    ) {
-        return
-    }
-
-    if (
         !allowedGroups.includes(
             msg.key.remoteJid
         )
     ) {
         return
+    }
+
+    const metadata =
+        await sock.groupMetadata(
+            msg.key.remoteJid
+        )
+
+    const participant =
+        metadata.participants.find(
+            p => p.id === userId
+        )
+
+    const isAdmin =
+        participant?.admin === "admin" ||
+        participant?.admin === "superadmin"
+
+    if (
+        !isOwner(msg) &&
+        !isAdmin
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ هذا الأمر للمطور أو مشرفي المجموعة فقط."
+            }
+        )
     }
 
     disabledGroups.add(
@@ -10708,18 +10729,38 @@ if (text === '.ايقاف') {
 if (text === '.تشغيل') {
 
     if (
-        userId.split('@')[0] !==
-        ownerId
-    ) {
-        return
-    }
-
-    if (
         !allowedGroups.includes(
             msg.key.remoteJid
         )
     ) {
         return
+    }
+
+    const metadata =
+        await sock.groupMetadata(
+            msg.key.remoteJid
+        )
+
+    const participant =
+        metadata.participants.find(
+            p => p.id === userId
+        )
+
+    const isAdmin =
+        participant?.admin === "admin" ||
+        participant?.admin === "superadmin"
+
+    if (
+        !isOwner(msg) &&
+        !isAdmin
+    ) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ هذا الأمر للمطور أو مشرفي المجموعة فقط."
+            }
+        )
     }
 
     disabledGroups.delete(
