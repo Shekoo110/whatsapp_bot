@@ -3089,7 +3089,7 @@ console.log(
                 currentBoss = null
 
                 await spawnBoss(sock)
-                )
+                
 
                 currentBoss =
                     await Boss.findOne()
