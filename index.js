@@ -2534,7 +2534,7 @@ ${wins1} - ${wins2}
 return
 }
 
-async function spawnBoss(sock, groupId) {
+async function spawnBoss(sock) {
 
     console.log('🔥 SPAWN BOSS CALLED')
     console.trace()
@@ -3066,7 +3066,7 @@ console.log(
 
             console.log("👑 لا يوجد زعيم محفوظ")
 
-            await spawnBoss(sock, GROUP_ID)
+            await spawnBoss(sock)
 
             currentBoss = await Boss.findOne()
         }
@@ -3088,9 +3088,7 @@ console.log(
 
                 currentBoss = null
 
-                await spawnBoss(
-                    sock,
-                    GROUP_ID
+                await spawnBoss(sock)
                 )
 
                 currentBoss =
@@ -3135,7 +3133,7 @@ console.log(
 
                 currentBoss = null
 
-                await spawnBoss(sock, GROUP_ID)
+                await spawnBoss(sock)
 
                 currentBoss = await Boss.findOne()
             }
@@ -3204,13 +3202,11 @@ if (!global.quickEventsStarted) {
             '✅ تم استعادة الزعيم المحفوظ'
         )
 
-    } else {
+   } else {
 
-        await spawnBoss(
-            sock,
-            GROUP_ID
-        )
-    }
+    await spawnBoss(sock)
+
+}
     }
 
 
