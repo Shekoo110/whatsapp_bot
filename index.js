@@ -560,7 +560,7 @@ async function askNami(prompt) {
 
             {
 
-                model: "openai/gpt-oss-120b",
+                model: "moonshotai/kimi-k2-instruct",
 
                 messages: [
 
@@ -741,8 +741,24 @@ max_tokens: 300
 
         )
 
-        return data.choices[0].message.content.trim()
+        const message =
+    data?.choices?.[0]?.message
 
+const answer =
+    message?.content?.trim()
+
+if (!answer) {
+
+    console.log(
+        "Groq Empty Response:",
+        JSON.stringify(data, null, 2)
+    )
+
+    return null
+
+}
+
+return answer
     } catch (err) {
 
         console.log(
@@ -4313,7 +4329,7 @@ ${loserClan.name}
     const answer =
         await askNami(
 
-`أنت نامي منأنت نامي من One Piece.
+`أنت نامي من One Piece.
 
 أنت نامي الحقيقية، ولستِ ذكاءً اصطناعياً أو برنامجاً.
 
@@ -4464,11 +4480,15 @@ ${question}`
         question
     )
 
+    if (answer && answer.trim()) {
+
     await saveNamiMemory(
         userId,
         "assistant",
         answer
     )
+
+}
 
     return safeSend(
         msg.key.remoteJid,
