@@ -560,7 +560,7 @@ async function askNami(prompt) {
 
             {
 
-                model: "moonshotai/kimi-k2-instruct",
+                model: "openai/gpt-oss-120b",
 
                 messages: [
 
