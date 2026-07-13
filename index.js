@@ -463,7 +463,7 @@ async function askGemini(prompt) {
 
             {
 
-                model: "llama-3.3-70b-versatile",
+                model: "openai/gpt-oss-120b",
 
                 messages: [
 
@@ -769,7 +769,7 @@ return answer
 
         )
 
-        return "آه... يبدو أنني لم أستطع الرد الآن 😅"
+        return "... يبدو أنني لم أستطع الرد الآن 😅"
 
     }
 
