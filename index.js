@@ -3121,24 +3121,25 @@ console.log(
             )
 
             if (
-                currentBoss &&
-                currentBoss.finished &&
-                currentBoss.respawnAt &&
-                currentBoss.respawnAt <= Date.now()
-            ) {
+    currentBoss &&
+    currentBoss.finished &&
+    currentBoss.respawnAt &&
+    currentBoss.respawnAt <= Date.now()
+) {
 
-                console.log('👑 إعادة إنشاء الزعيم')
+    console.log('👑 إعادة إنشاء الزعيم')
 
-                await Boss.deleteMany({})
+    await Boss.deleteMany({})
 
-                currentBoss = null
+    currentBoss = null
 
-                await spawnBoss(sock)
+    await spawnBoss(sock)
 
-                currentBoss = await Boss.findOne()
-            }
+    currentBoss = await Boss.findOne()
 
-        } catch (err) {
+}
+
+} catch (err) {
 
             console.log(
                 'Boss Respawn Error:',
@@ -3207,7 +3208,7 @@ if (!global.quickEventsStarted) {
     await spawnBoss(sock)
 
 }
-    }
+    
 
 
 
