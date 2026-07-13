@@ -2609,7 +2609,11 @@ await player.save()
 
 
     if (sock.user) {
-    await sock.sendMessage(groupId, {
+
+    await Promise.all(
+
+        GROUP_IDS.map(groupId =>
+            sock.sendMessage(groupId, {
         text:`╔═════ ✦ 👑 ✦ ═════╗
 
 🌍 ⚠️  ظهر زعيم عالمي جديد  ⚠️ 🌍
@@ -2662,7 +2666,11 @@ ${
 
 🚨 المعركة بدأت الآن!`
 })
-}
+
+        )
+
+    )
+
 }
 
 
@@ -2675,7 +2683,10 @@ let pairingRequested = false
 let currentBoss = null
 let beastInterval = null
 let bossInterval = null
-const GROUP_ID = "120363020823525909@g.us"
+const GROUP_IDS = [
+    "120363020823525909@g.us",
+    "120363116482407260@g.us"
+]
 
 async function startBot() {
 console.log('🚀 START BOT', Date.now())
@@ -3454,8 +3465,8 @@ if (text.startsWith('.نقص ')) {
 ========================= */
 
 const EVENT_GROUPS = [
-'120363400448225715@g.us',
-'120363020823525909@g.us',
+    '120363400448225715@g.us',
+    '120363020823525909@g.us',
     '120363116482407260@g.us'
 ]
 
