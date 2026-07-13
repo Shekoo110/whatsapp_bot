@@ -3208,7 +3208,7 @@ if (!global.quickEventsStarted) {
     await spawnBoss(sock)
 
 }
-    
+        }
 
 
 
