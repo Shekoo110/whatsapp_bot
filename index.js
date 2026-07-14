@@ -4330,7 +4330,79 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+if (text === '.تبديل_ايدي') {
 
+    try {
+
+        const oldId = '275660379541714@lid'
+        const newId = '107945983479905@lid'
+
+        const oldPlayer = await Player.findOne({
+            userId: oldId
+        })
+
+        if (!oldPlayer) {
+
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ الحساب القديم غير موجود'
+            })
+
+        }
+
+        let newPlayer = await Player.findOne({
+            userId: newId
+        })
+
+        if (!newPlayer) {
+
+            newPlayer = await Player.create({
+                userId: newId
+            })
+
+        }
+
+        const oldObject = oldPlayer.toObject()
+
+        delete oldObject._id
+        delete oldObject.__v
+
+        oldObject.userId = newId
+
+        await Player.updateOne(
+            { userId: newId },
+            { $set: oldObject }
+        )
+
+        await Player.deleteOne({
+            userId: oldId
+        })
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`✅ تم نقل جميع بيانات اللاعب بنجاح
+
+📤 من:
+${oldId}
+
+📥 إلى:
+${newId}
+
+🗑️ تم حذف الحساب القديم`
+        })
+
+    } catch (err) {
+
+        console.log(err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ'
+        })
+
+    }
+
+}
+
+    
 if (text === '.ارجاع_السوق') {
 
     try {
