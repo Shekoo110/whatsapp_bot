@@ -13251,7 +13251,7 @@ for (const char of player.characters) {
         (char.evolutionLevel || 0) > 0
     ) {
         evolved.add(
-`${char.name}|${char.rarity}|${char.power}|${char.form || ''}`
+`${char.name}|${char.form || ''}`
 )
     }
 
@@ -13274,7 +13274,7 @@ for (const char of player.characters) {
 
     if (
     evolved.has(
-`${char.name}|${char.rarity}|${char.power}|${char.form || ''}`
+`${char.name}|${char.form || ''}`
     )
 ) {
 
@@ -13459,7 +13459,6 @@ const hasEvolved =
     player.characters.some(
         c =>
             c.name === char.name &&
-            c.power === char.power &&
             (c.form || '') === (char.form || '') &&
             (c.evolutionLevel || 0) > 0
     )
