@@ -4346,29 +4346,9 @@ if (text === '.ترحيل_الشظايا') {
 
             let newKey = key
 
-            // إذا المفتاح قديم (اسم فقط)
-            if (!key.includes('|')) {
+            if (key.includes('|')) {
 
-                const char = characters.find(
-                    c =>
-                        c.name === key &&
-                        c.rarity === 'SSS'
-                )
-
-                if (char) {
-
-                    newKey =
-`${char.name}|SSS|${char.power}`
-
-                }
-
-            } else {
-
-                const parts = key.split('|')
-
-                // حذف الـ form إذا كان موجود
-                newKey =
-`${parts[0]}|${parts[1]}|${parts[2]}`
+                newKey = key.split('|')[0]
 
             }
 
@@ -4380,6 +4360,7 @@ if (text === '.ترحيل_الشظايا') {
         }
 
         player.shards = newShards
+
         player.markModified('shards')
 
         await player.save()
@@ -4390,7 +4371,7 @@ if (text === '.ترحيل_الشظايا') {
 
     return safeSend(msg.key.remoteJid, {
         text:
-`✅ تم ترحيل الشظايا
+`✅ تم ترحيل الشظايا للنظام القديم
 
 👤 تم إصلاح ${fixed} لاعب`
     })
@@ -13336,8 +13317,7 @@ for (const char of player.characters) {
         continue
     }
 
-    const shardKey =
-`${char.name}|${char.rarity}|${char.power}|${char.form || ''}`
+    const shardKey = char.name
 
     if (
     evolved.has(
@@ -13546,8 +13526,7 @@ if (!hasEvolved && normalCopies.length <= 1) {
         1
     )
 
-    const shardKey =
-`${char.name}|${char.rarity}|${char.power}|${char.form || ''}`
+    const shardKey = char.name
 
 const currentShards =
     player.shards.get(
@@ -13662,20 +13641,12 @@ text:
 const shardData =
 available[index]
 
-const [
-    name,
-    ,
-    power,
-    form
-] = shardData.name.split('|')
-
+const name = shardData.name
 const char =
 characters.find(
 c =>
     c.name === name &&
-    c.rarity === 'SSS' &&
-    Number(c.power) === Number(power) &&
-    (c.form || '') === (form || '')
+    c.rarity === 'SSS'
 )
 
 if (!char) {
