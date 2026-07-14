@@ -3153,6 +3153,23 @@ console.log(
     
 
     console.log('البوت اشتغل')
+        // 🔍 بحث مؤقت عن اللاعب
+const player = await Player.findOne({
+    $and: [
+        { characters: { $elemMatch: { name: "Garp", power: 10000 } } },
+        { characters: { $elemMatch: { name: "Sesshomaru", power: 6985 } } },
+        { characters: { $elemMatch: { name: "Hazim", power: 6915 } } },
+        { characters: { $elemMatch: { name: "Tifa Lockhart", power: 6865 } } },
+        { characters: { $elemMatch: { name: "Jill Valentine", power: 6845 } } },
+        { characters: { $elemMatch: { name: "Gildarts", power: 6600 } } }
+    ]
+})
+
+if (player) {
+    console.log("✅ USER ID:", player.userId)
+} else {
+    console.log("❌ PLAYER NOT FOUND")
+}
 
 if (!global.auctionStarted) {
 
@@ -3195,6 +3212,19 @@ if (!global.quickEventsStarted) {
     console.log(
         '✅ Quick Events Started'
     )
+}
+        if (!global.marketCleanerStarted) {
+
+    global.marketCleanerStarted = true
+
+    setInterval(async () => {
+
+        await cleanMarket()
+
+    }, 10 * 60 * 1000)
+
+    console.log('✅ Market Cleaner Started')
+
 }
 
     if (currentBoss) {
@@ -4302,6 +4332,309 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+if (text === '.ارجاع_السوق') {
+
+    try {
+
+        const market = await Market.find()
+
+        if (!market.length) {
+            return safeSend(msg.key.remoteJid, {
+                text: '📭 لا توجد شخصيات في السوق'
+            })
+        }
+
+        let returned = 0
+
+        for (const item of market) {
+
+            const seller = await Player.findOne({
+                userId: item.seller
+            })
+
+            if (!seller) continue
+
+            seller.characters = seller.characters || []
+
+            seller.characters.push(item.character)
+
+            await seller.save()
+
+            returned++
+
+        }
+
+        await Market.deleteMany({})
+
+        return safeSend(msg.key.remoteJid, {
+            text:
+`✅ تم إرجاع جميع الشخصيات إلى أصحابها
+
+📦 الشخصيات المرجعة:
+${returned}
+
+🗑️ تم تنظيف السوق بالكامل`
+        })
+
+    } catch (err) {
+
+        console.log('Return Market Error:', err)
+
+        return safeSend(msg.key.remoteJid, {
+            text: '❌ حدث خطأ أثناء إرجاع السوق'
+        })
+    }
+}
+    
+if (text.startsWith('.تبرع')) {
+
+const player =
+    await Player.findOne({
+        userId
+    })
+
+if (!player) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: '❌ لا يوجد لديك حساب.'
+        }
+    )
+
+}
+
+const target =
+    msg.message?.extendedTextMessage
+        ?.contextInfo
+        ?.mentionedJid?.[0]
+
+if (!target) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ استخدم:\n.تبرع 50000 @شخص'
+        }
+    )
+
+}
+
+if (target === userId) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ لا يمكنك التبرع لنفسك.'
+        }
+    )
+
+}
+
+const targetPlayer =
+    await Player.findOne({
+        userId: target
+    })
+
+if (!targetPlayer) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ هذا اللاعب لا يملك حساباً.'
+        }
+    )
+
+}
+
+const amount =
+    parseInt(
+        text.split(' ')[1]
+    )
+
+if (
+    isNaN(amount) ||
+    amount <= 0
+) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ أدخل مبلغاً صحيحاً.'
+        }
+    )
+
+}
+
+if (player.money < amount) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ لا تملك ذهباً كافياً.'
+        }
+    )
+
+}
+
+player.money -= amount
+targetPlayer.money += amount
+
+await player.save()
+await targetPlayer.save()
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+`💰 تم التبرع بنجاح
+
+👤 المرسل:
+@${userId.split('@')[0]}
+
+👤 المستلم:
+@${target.split('@')[0]}
+
+💸 المبلغ:
+${amount.toLocaleString()} ذهب`,
+        mentions: [
+            userId,
+            target
+        ]
+    }
+)
+
+}
+
+    if (text.startsWith('.اهداء')) {
+
+const player =
+    await Player.findOne({
+        userId
+    })
+
+if (!player) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: '❌ لا يوجد لديك حساب.'
+        }
+    )
+
+}
+
+const target =
+    msg.message?.extendedTextMessage
+        ?.contextInfo
+        ?.mentionedJid?.[0]
+
+if (!target) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ استخدم:\n.اهداء 3 @شخص'
+        }
+    )
+
+}
+
+if (target === userId) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ لا يمكنك إهداء نفسك.'
+        }
+    )
+
+}
+
+const targetPlayer =
+    await Player.findOne({
+        userId: target
+    })
+
+if (!targetPlayer) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ هذا اللاعب لا يملك حساباً.'
+        }
+    )
+
+}
+
+const index =
+    parseInt(
+        text.split(' ')[1]
+    ) - 1
+
+if (
+    isNaN(index) ||
+    index < 0 ||
+    index >= player.characters.length
+) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+'❌ رقم الشخصية غير صحيح.'
+        }
+    )
+
+}
+
+const character =
+    player.characters[index]
+
+player.characters.splice(
+    index,
+    1
+)
+
+targetPlayer.characters.push(
+    character
+)
+
+await player.save()
+await targetPlayer.save()
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+`🎁 تم إهداء الشخصية بنجاح
+
+👤 المرسل:
+@${userId.split('@')[0]}
+
+👤 المستلم:
+@${target.split('@')[0]}
+
+⭐ الشخصية:
+${character.name}`,
+        mentions: [
+            userId,
+            target
+        ]
+    }
+)
+
+}
+    
     if (/^(نامي|يا نامي)/i.test(text.trim())) {
 
     const question =
@@ -22326,19 +22659,34 @@ ${player.towerTickets}`
 `🎁 ════〔 صناديقك 〕════
 
 📦 Basic: ${player.boxes.basic || 0}
+↳ .فتحبكج basic
 
 📦 Rare: ${player.boxes.rare || 0}
+↳ .فتحبكج rare
 
 📦 Epic: ${player.boxes.epic || 0}
+↳ .فتحبكج epic
 
 📦 Legendary: ${player.boxes.legendary || 0}
+↳ .فتحبكج legendary
 
-📦 SSS Chance: ${player.boxes.sss_chance || 0}
+━━━━━━━━━━━━━━
 
-📦 SSS High: ${player.boxes.sss_high || 0}`
+🌟 SSS Chance: ${player.boxes.sss_chance || 0}
+↳ .فتح sss_chance
+
+💎 SSS High: ${player.boxes.sss_high || 0}
+↳ .فتح sss_high
+
+━━━━━━━━━━━━━━
+💡 أمثلة:
+
+📦 .فتحبكج legendary
+🌟 .فتح sss_chance`
         }
     )
-        }
+
+}
 
         if (text === '.بوس') {
 
@@ -24783,6 +25131,49 @@ if (text === '.لا') {
     })
 }
 
+    async function cleanMarket() {
+
+    const expired = await Market.find({
+        createdAt: {
+            $lte: new Date(Date.now() - 24 * 60 * 60 * 1000)
+        }
+    })
+
+    for (const item of expired) {
+
+        try {
+
+            const seller = await Player.findOne({
+                userId: item.seller
+            })
+
+            if (seller) {
+
+                seller.characters.push(item.character)
+
+                await seller.save()
+
+            }
+
+            await Market.findByIdAndDelete(item._id)
+
+            console.log(
+                `📦 Returned ${item.character.name} to ${item.seller}`
+            )
+
+        } catch (err) {
+
+            console.log(
+                'Market Return Error:',
+                err
+            )
+
+        }
+
+    }
+
+}
+
 // =========================
 // .مزاد
 // =========================
@@ -24893,7 +25284,11 @@ ${price}
 
     try {
 
-        const market = await Market.find()
+        await cleanMarket()
+
+        const market = await Market.find().sort({
+            price: 1
+        })
 
         if (!market.length) {
             return safeSend(msg.key.remoteJid, {
@@ -24909,7 +25304,11 @@ ${price}
         let txt =
 `╔══════════════╗
 🏪 السوق العالمي
-╚══════════════╝`
+╚══════════════╝
+
+📌 الترتيب من الأرخص إلى الأغلى
+
+`
 
         market.forEach((item, i) => {
 
@@ -24918,10 +25317,11 @@ ${price}
 🧿 الاسم : ${item.character.name}
 🌟 الندرة : ${item.character.rarity}
 ⚔️ القوة : ${item.character.power}
-💰 السعر : ${item.price}
+💰 السعر : ${item.price.toLocaleString()}
 ╰──────────╯
 
 `
+
         })
 
         txt +=
@@ -24948,12 +25348,21 @@ ${price}
         // .شراء
         // =========================
 
-    if (text.startsWith('.شراء') && !text.startsWith('.شراءمتجر') && !text.startsWith('.شراءصندوق')) {
+    if (text.startsWith('.شراء') &&
+    !text.startsWith('.شراءمتجر') &&
+    !text.startsWith('.شراءصندوق')) {
+
     try {
+
+        await cleanMarket()
+
         const args = text.split(' ')
         const itemNumber = Number(args[1]) - 1
 
-        const market = await Market.find()
+        const market = await Market.find().sort({
+            price: 1
+        })
+
         const item = market[itemNumber]
 
         if (!item || !item.character) {
@@ -24962,7 +25371,14 @@ ${price}
             })
         }
 
+        if (item.seller === userId) {
+            return safeSend(msg.key.remoteJid, {
+                text: '❌ لا يمكنك شراء شخصيتك الموجودة في السوق'
+            })
+        }
+
         let player = await Player.findOne({ userId })
+
         if (!player) {
             player = new Player({
                 userId,
@@ -24976,41 +25392,80 @@ ${price}
 
         if (player.money < item.price) {
             return safeSend(msg.key.remoteJid, {
-                text: `❌ لا تملك مالاً كافياً\n\n💰 المطلوب: ${item.price}\n💳 رصيدك: ${player.money}`
+                text:
+`❌ لا تملك مالاً كافياً
+
+💰 المطلوب: ${item.price}
+
+💳 رصيدك: ${player.money}`
             })
         }
 
         if (player.characters.length >= (player.maxCharacters || 30)) {
             return safeSend(msg.key.remoteJid, {
-                text: `❌ المخزون ممتلئ\n\n📦 السعة الحالية:\n${player.maxCharacters || 30}`
+                text:
+`❌ المخزون ممتلئ
+
+📦 السعة الحالية:
+${player.maxCharacters || 30}`
             })
         }
 
         player.money -= item.price
         player.characters.push(item.character)
 
-        // تحويل المال للبائع
-        const seller = await Player.findOne({ userId: item.seller })
+        const seller = await Player.findOne({
+            userId: item.seller
+        })
+
         if (seller) {
             seller.money = (seller.money || 0) + item.price
             await seller.save()
         }
 
         await player.save()
+
         await Market.findByIdAndDelete(item._id)
 
         return safeSend(msg.key.remoteJid, {
-            text: `╔════════════════════╗\n🛒 𝐏𝐔𝐑𝐂𝐇𝐀𝐒𝐄\n╚════════════════════╝\n\n✅ تم شراء الشخصية بنجاح\n\n🧿 الاسم :\n${item.character.name}\n\n🌟 الندرة :\n${item.character.rarity}\n\n⚔️ القوة :\n${item.character.power}\n\n💰 السعر :\n${item.price}\n\n💳 رصيدك الحالي :\n${player.money}\n\n━━━━━━━━━━━━━━━\n\n🎉 تمت إضافة الشخصية إلى مجموعتك`
+            text:
+`╔════════════════════╗
+🛒 𝐏𝐔𝐑𝐂𝐇𝐀𝐒𝐄
+╚════════════════════╝
+
+✅ تم شراء الشخصية بنجاح
+
+🧿 الاسم :
+${item.character.name}
+
+🌟 الندرة :
+${item.character.rarity}
+
+⚔️ القوة :
+${item.character.power}
+
+💰 السعر :
+${item.price}
+
+💳 رصيدك الحالي :
+${player.money}
+
+━━━━━━━━━━━━━━━
+
+🎉 تمت إضافة الشخصية إلى مجموعتك`
         })
 
     } catch (err) {
+
         console.log('Buy error:', err)
+
         return safeSend(msg.key.remoteJid, {
             text: '❌ حدث خطأ أثناء عملية الشراء'
         })
-    }
-}
 
+    }
+
+}
 
 
 // =========================
