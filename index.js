@@ -4330,6 +4330,73 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+if (text === '.ترحيل_الشظايا') {
+
+    const players = await Player.find()
+
+    let fixed = 0
+
+    for (const player of players) {
+
+        if (!player.shards) continue
+
+        const newShards = new Map()
+
+        for (const [key, value] of player.shards.entries()) {
+
+            let newKey = key
+
+            // إذا المفتاح قديم (اسم فقط)
+            if (!key.includes('|')) {
+
+                const char = characters.find(
+                    c =>
+                        c.name === key &&
+                        c.rarity === 'SSS'
+                )
+
+                if (char) {
+
+                    newKey =
+`${char.name}|SSS|${char.power}`
+
+                }
+
+            } else {
+
+                const parts = key.split('|')
+
+                // حذف الـ form إذا كان موجود
+                newKey =
+`${parts[0]}|${parts[1]}|${parts[2]}`
+
+            }
+
+            newShards.set(
+                newKey,
+                (newShards.get(newKey) || 0) + value
+            )
+
+        }
+
+        player.shards = newShards
+        player.markModified('shards')
+
+        await player.save()
+
+        fixed++
+
+    }
+
+    return safeSend(msg.key.remoteJid, {
+        text:
+`✅ تم ترحيل الشظايا
+
+👤 تم إصلاح ${fixed} لاعب`
+    })
+
+}
+    
 if (text === '.تبديل_ايدي') {
 
     try {
@@ -14122,7 +14189,7 @@ for (
     count++
 
     const displayName =
-        name.replaceAll('_', ' ')
+    name.split('|')[0].replaceAll('_', ' ')
 
     const icon =
     amount >= 2
