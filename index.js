@@ -13242,46 +13242,78 @@ if (text.startsWith('.ترتيب ')) {
     const keep = []
     const count = {}
 
-    for (const char of player.characters) {
+    const evolved = new Set()
 
-        if (char.rarity !== 'SSS') {
-            keep.push(char)
-            continue
-        }
+for (const char of player.characters) {
 
-        if (
-            (char.evolutionLevel || 0) > 0
-        ) {
-            keep.push(char)
-            continue
-        }
-
-        count[char.name] =
-            (count[char.name] || 0) + 1
-
-        if (count[char.name] === 1) {
-
-            keep.push(char)
-
-        } else {
-
-            const current =
-                player.shards.get(
-                    char.name
-                ) || 0
-
-            player.shards.set(
-                char.name,
-                current + 1
-            )
-
-            converted.push(
-                `👑 ${char.name} +1`
-            )
-
-            totalShards++
-        }
+    if (
+        char.rarity === 'SSS' &&
+        (char.evolutionLevel || 0) > 0
+    ) {
+        evolved.add(
+`${char.name}|${char.rarity}|${char.power}|${char.form || ''}`
+)
     }
+
+}
+
+for (const char of player.characters) {
+
+    if (char.rarity !== 'SSS') {
+        keep.push(char)
+        continue
+    }
+
+    if ((char.evolutionLevel || 0) > 0) {
+        keep.push(char)
+        continue
+    }
+
+    const shardKey =
+`${char.name}|${char.rarity}|${char.power}|${char.form || ''}`
+
+    if (
+    evolved.has(
+`${char.name}|${char.rarity}|${char.power}|${char.form || ''}`
+    )
+) {
+
+        const current =
+            player.shards.get(shardKey) || 0
+
+        player.shards.set(
+            shardKey,
+            current + 1
+        )
+
+        converted.push(`👑 ${char.name} +1`)
+        totalShards++
+        continue
+    }
+
+    count[shardKey] =
+        (count[shardKey] || 0) + 1
+
+    if (count[shardKey] === 1) {
+
+        keep.push(char)
+
+    } else {
+
+        const current =
+            player.shards.get(shardKey) || 0
+
+        player.shards.set(
+            shardKey,
+            current + 1
+        )
+
+        converted.push(`👑 ${char.name} +1`)
+        totalShards++
+
+    }
+
+}
 
     if (!totalShards) {
 
@@ -13389,6 +13421,15 @@ if (!player.shards) {
             }
         )
     }
+    
+    if ((char.evolutionLevel || 0) > 0) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: '❌ لا يمكن تحويل الشخصيات المطورة.'
+        }
+    )
+    }
 
     console.log(
     'Character:',
@@ -13404,22 +13445,35 @@ console.log(
     'Character Name:',
     char.name
 )
-    const copies =
-        player.characters.filter(
-            c => c.name === char.name
-        )
+    const normalCopies =
+    player.characters.filter(
+        c =>
+            c.name === char.name &&
+            c.power === char.power &&
+            (c.form || '') === (char.form || '') &&
+            c.rarity === 'SSS' &&
+            (c.evolutionLevel || 0) === 0
+    )
 
-    if (copies.length <= 1) {
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
+const hasEvolved =
+    player.characters.some(
+        c =>
+            c.name === char.name &&
+            c.power === char.power &&
+            (c.form || '') === (char.form || '') &&
+            (c.evolutionLevel || 0) > 0
+    )
+if (!hasEvolved && normalCopies.length <= 1) {
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
 `❌ لا يمكن تحويل آخر نسخة
 
 👑 ${char.name}`
-            }
-        )
-    }
+        }
+    )
+}
 
     player.characters.splice(
         index,
@@ -13427,8 +13481,7 @@ console.log(
     )
 
     const shardKey =
-    char.name
-        .replaceAll('.', '_')
+`${char.name}|${char.rarity}|${char.power}|${char.form || ''}`
 
 const currentShards =
     player.shards.get(
@@ -13543,18 +13596,20 @@ text:
 const shardData =
 available[index]
 
-const cleanName =
-shardData.name
-.replaceAll('_', ' ')
-.trim()
-.toLowerCase()
+const [
+    name,
+    ,
+    power,
+    form
+] = shardData.name.split('|')
 
 const char =
 characters.find(
 c =>
-c.name.trim().toLowerCase() ===
-cleanName &&
-c.rarity === 'SSS'
+    c.name === name &&
+    c.rarity === 'SSS' &&
+    Number(c.power) === Number(power) &&
+    (c.form || '') === (form || '')
 )
 
 if (!char) {
