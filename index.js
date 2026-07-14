@@ -22918,6 +22918,23 @@ await Player.updateOne(
 const strongest = me.characters.sort(
     (a, b) => b.power - a.power
 )[0]
+            const latest = characters.find(
+    c =>
+        c.name === strongest.name &&
+        c.rarity === strongest.rarity &&
+        c.form === strongest.form
+)
+
+const fighter = latest
+? {
+    ...strongest,
+    image: latest.image,
+    anime: latest.anime,
+    ability: latest.ability,
+    rarity: latest.rarity,
+    form: latest.form || strongest.form
+}
+: strongest
 
 let damage = strongest.power
 
@@ -24139,8 +24156,8 @@ if (strongest.rarity === 'SSS') {
 }
 
 if (
-    strongest.image.startsWith("http://") ||
-    strongest.image.startsWith("https://")
+    fighter.image.startsWith("http://") ||
+    fighter.image.startsWith("https://")
 ) {
 
     return sock.sendMessage(
