@@ -4686,16 +4686,23 @@ return safeSend(
     msg.key.remoteJid,
     {
         text:
-`🎁 تم إهداء الشخصية بنجاح
+`╔════════════════════╗
+🎁 𝐆𝐈𝐅𝐓
+╚════════════════════╝
 
-👤 المرسل:
-@${userId.split('@')[0]}
+✅ تم الإهداء بنجاح
 
-👤 المستلم:
-@${target.split('@')[0]}
+👤 @${userId.split('@')[0]}
+➡️
+👤 @${target.split('@')[0]}
 
-⭐ الشخصية:
-${character.name}`,
+━━━━━━━━━━━━━━
+
+🧿 ${character.name}
+🌟 ${character.rarity}
+⚔️ ${character.power}
+
+━━━━━━━━━━━━━━`,
         mentions: [
             userId,
             target
@@ -24123,7 +24130,7 @@ if (strongest.rarity === 'SSS') {
         msg.key.remoteJid,
         {
             image: {
-                url: strongest.image
+                url: fighter.image
             },
 
             caption: attackCaption
@@ -24140,7 +24147,7 @@ if (
         msg.key.remoteJid,
         {
             image: {
-                url: strongest.image
+                url: fighter.image
             },
             caption: attackCaption
         }
@@ -24148,7 +24155,7 @@ if (
 }
 
 const imagePath =
-    path.join(__dirname, strongest.image)
+    path.join(__dirname, fighter.image)
 
 if (!fs.existsSync(imagePath)) {
 
@@ -25441,11 +25448,7 @@ ${price}
             })
         }
 
-        if (item.seller === userId) {
-            return safeSend(msg.key.remoteJid, {
-                text: '❌ لا يمكنك شراء شخصيتك الموجودة في السوق'
-            })
-        }
+        
 
         let player = await Player.findOne({ userId })
 
