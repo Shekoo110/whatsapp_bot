@@ -1660,11 +1660,25 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    const player =
-    
-    console.log(
-        '✅ Beasts Loaded'
-    )
+    const player = await Player.findOne({
+        $and: [
+            { characters: { $elemMatch: { name: "Garp", power: 10000 } } },
+            { characters: { $elemMatch: { name: "Sesshomaru", power: 6985 } } },
+            { characters: { $elemMatch: { name: "Hazim", power: 6915 } } },
+            { characters: { $elemMatch: { name: "Tifa Lockhart", power: 6865 } } },
+            { characters: { $elemMatch: { name: "Jill Valentine", power: 6845 } } },
+            { characters: { $elemMatch: { name: "Gildarts", power: 6600 } } }
+        ]
+    })
+
+    if (player) {
+        console.log("✅ USER ID:", player.userId)
+    } else {
+        console.log("❌ PLAYER NOT FOUND")
+    }
+
+    console.log('✅ Beasts Loaded')
+
     await checkRespawn()
 
 setInterval(
@@ -3153,23 +3167,7 @@ console.log(
     
 
     console.log('البوت اشتغل')
-        // 🔍 بحث مؤقت عن اللاعب
-const player = await Player.findOne({
-    $and: [
-        { characters: { $elemMatch: { name: "Garp", power: 10000 } } },
-        { characters: { $elemMatch: { name: "Sesshomaru", power: 6985 } } },
-        { characters: { $elemMatch: { name: "Hazim", power: 6915 } } },
-        { characters: { $elemMatch: { name: "Tifa Lockhart", power: 6865 } } },
-        { characters: { $elemMatch: { name: "Jill Valentine", power: 6845 } } },
-        { characters: { $elemMatch: { name: "Gildarts", power: 6600 } } }
-    ]
-})
-
-if (player) {
-    console.log("✅ USER ID:", player.userId)
-} else {
-    console.log("❌ PLAYER NOT FOUND")
-}
+    
 
 if (!global.auctionStarted) {
 
