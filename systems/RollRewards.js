@@ -73,9 +73,10 @@ async function createEXReward() {
     const character =
         getRandomSSSCharacter()
 
-    character.rarity = 'EX'
+    character.rarity = 'SSS'
     character.power = 25000
     character.evolutionLevel = 6
+    character.evolutionType = 'fixed'
 
     addRandomAbilities(
         character,
@@ -91,9 +92,10 @@ async function createURIIIReward() {
     const character =
         getRandomSSSCharacter()
 
-    character.rarity = 'UR III'
+    character.rarity = 'SSS'
     character.power = 19000
     character.evolutionLevel = 4
+    character.evolutionType = 'fixed'
 
     addRandomAbilities(
         character,
@@ -109,9 +111,10 @@ async function createURIReward() {
     const character =
         getRandomSSSCharacter()
 
-    character.rarity = 'UR I'
+    character.rarity = 'SSS'
     character.power = 16000
     character.evolutionLevel = 3
+    character.evolutionType = 'fixed'
 
     addRandomAbilities(
         character,
