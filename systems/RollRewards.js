@@ -1,5 +1,5 @@
 const characters = require('../characters.json')
-const urAbilities = require('./urAbilities')
+const urAbilities = require('../urAbilities')
 
 function getRandomSSSCharacter() {
 
