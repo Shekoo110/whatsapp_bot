@@ -1,4 +1,9 @@
 const fs = require('fs')
+const {
+    createEXReward,
+    createURIIIReward,
+    createURIReward
+} = require('./systems/RollRewards')
 const Banner = require('./models/Banner')
 const {
     refreshBanner
@@ -4381,11 +4386,11 @@ if (text === '.فعاليه') {
         msg.key.remoteJid,
         {
             text:
-`🎉 ═══════〔 فعالية جديدة 〕═══════ 🎉
+`🎉 ═══════〔 فعالية الروليت 〕═══════ 🎉
 
 📢 تم فتح التسجيل!
 
-للمشاركة اكتب:
+✍️ للمشاركة اكتب:
 
 .تسجيل_فعاليه
 
@@ -4394,10 +4399,24 @@ if (text === '.فعاليه') {
 🏆 سيتم اختيار 3 فائزين عشوائياً
 
 🥇 شخصية EX
-🥈 شخصية UR II
-🥉 شخصية SSS++
+⚔️ 25000 قوة
+🧬 7 قدرات عشوائية
 
-⏳ بانتظار المشاركين...`
+🥈 شخصية UR III
+⚔️ 19000 قوة
+🧬 5 قدرات عشوائية
+
+🥉 شخصية UR I
+⚔️ 16000 قوة
+🧬 4 قدرات عشوائية
+
+━━━━━━━━━━━━━━━
+
+📜 لمعرفة المشاركين:
+
+.قائمة_الفعاليه
+
+🍀 بالتوفيق للجميع!`
         }
     )
 
@@ -4441,13 +4460,19 @@ if (text === '.تسجيل_فعاليه') {
         msg.key.remoteJid,
         {
             text:
-`✅ تم تسجيلك في الفعالية.
+`🎉 تم تسجيلك بنجاح!
 
-🎟️ رقمك:
+👤 اللاعب:
+@${userId.split('@')[0]}
+
+🎟️ رقمك في السحب:
 ${eventParticipants.length}
 
-👥 عدد المشاركين:
-${eventParticipants.length}`
+👥 إجمالي المشاركين:
+${eventParticipants.length}
+
+🍀 نتمنى لك التوفيق!`,
+            mentions: [userId]
         }
     )
 
@@ -4472,18 +4497,23 @@ if (text === '.قائمة_الفعاليه') {
             msg.key.remoteJid,
             {
                 text:
-`📋 قائمة المشاركين
+`🎟️ ═══════〔 قائمة المشاركين 〕═══════ 🎟️
 
-🚫 لا يوجد أي مشارك حتى الآن.`
+🚫 لا يوجد أي مشارك حتى الآن.
+
+✍️ للمشاركة:
+
+.تسجيل_فعاليه`
             }
         )
     }
 
-    let list = eventParticipants
-        .map((id, i) =>
-`${i + 1}- @${id.split('@')[0]}`
+    const list = eventParticipants
+        .map(
+            (id, i) =>
+`〔${i + 1}〕 @${id.split('@')[0]}`
         )
-        .join('\n')
+        .join('\n\n')
 
     return safeSend(
         msg.key.remoteJid,
@@ -4496,7 +4526,9 @@ ${list}
 ━━━━━━━━━━━━━━━
 
 👥 إجمالي المشاركين:
-${eventParticipants.length}`,
+${eventParticipants.length}
+
+🍀 سيتم اختيار 3 فائزين عشوائياً.`,
             mentions: eventParticipants
         }
     )
@@ -4521,10 +4553,13 @@ if (text === '.الغاء_فعاليه') {
         return safeSend(
             msg.key.remoteJid,
             {
-                text: '❌ لا توجد فعالية مفتوحة.'
+                text: '❌ لا توجد فعالية مفتوحة حالياً.'
             }
         )
     }
+
+    const participantsCount =
+        eventParticipants.length
 
     eventActive = false
     eventParticipants = []
@@ -4534,14 +4569,324 @@ if (text === '.الغاء_فعاليه') {
         msg.key.remoteJid,
         {
             text:
-`❌ تم إلغاء الفعالية.
+`🛑 ═══════〔 إلغاء الفعالية 〕═══════ 🛑
 
-🗑️ تم حذف جميع المشاركين.`
+❌ تم إلغاء الفعالية بنجاح.
+
+🗑️ تم حذف جميع المشاركين.
+
+👥 عدد المشاركين الذين تم حذفهم:
+${participantsCount}
+
+━━━━━━━━━━━━━━━
+
+📢 يمكن بدء فعالية جديدة باستخدام:
+
+.فعاليه`
         }
     )
 
 }
-    
+    if (text === '.بدأ_فعاليه') {
+
+    if (!isOwner(msg)) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ هذا الأمر للمطور فقط.'
+            }
+        )
+    }
+
+    if (!eventActive) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد فعالية مفتوحة.'
+            }
+        )
+    }
+
+    if (msg.key.remoteJid !== eventStartedBy) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+                '❌ يجب تنفيذ الأمر داخل قروب الفعالية.'
+            }
+        )
+    }
+
+    if (eventParticipants.length < 3) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ يجب وجود 3 مشاركين على الأقل.
+
+👥 المشاركون الحاليون:
+${eventParticipants.length}`
+            }
+        )
+    }
+
+    const players =
+        [...eventParticipants]
+
+    for (
+        let i = players.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            )
+
+        ;[
+            players[i],
+            players[j]
+        ] = [
+            players[j],
+            players[i]
+        ]
+
+    }
+
+    const firstWinner =
+        players[0]
+
+    const secondWinner =
+        players[1]
+
+    const thirdWinner =
+        players[2]
+
+    const firstPlayer =
+        await Player.findOne({
+            userId: firstWinner
+        })
+
+    const secondPlayer =
+        await Player.findOne({
+            userId: secondWinner
+        })
+
+    const thirdPlayer =
+        await Player.findOne({
+            userId: thirdWinner
+        })
+
+    if (
+        !firstPlayer ||
+        !secondPlayer ||
+        !thirdPlayer
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+'❌ تعذر العثور على أحد حسابات الفائزين.'
+            }
+        )
+
+    }
+
+    const firstReward =
+    await createEXReward()
+
+    const secondReward =
+        await createURIIIReward()
+
+    const thirdReward =
+        await createURIReward()
+
+    firstPlayer.characters.push(
+        firstReward
+    )
+
+    secondPlayer.characters.push(
+        secondReward
+    )
+
+    thirdPlayer.characters.push(
+        thirdReward
+    )
+
+    firstPlayer.markModified(
+        'characters'
+    )
+
+    secondPlayer.markModified(
+        'characters'
+    )
+
+    thirdPlayer.markModified(
+        'characters'
+    )
+
+    await firstPlayer.save()
+
+    await secondPlayer.save()
+
+    await thirdPlayer.save()
+
+    await safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`🎉 تم اختيار الفائزين!
+
+⏳ جاري تجهيز الجوائز...`
+        }
+    )
+
+// =========================
+// 🥇 الفائز الأول (EX)
+// =========================
+
+
+const exCaption =
+`🏆 ═══════〔 الفائز الأول 〕═══════ 🏆
+
+🥇 الفائز:
+@${firstWinner.split('@')[0]}
+
+🎉 مبروك!
+
+👑 ${firstReward.name}
+
+⭐ EX
+
+⚔️ القوة:
+${firstReward.power}
+
+💎 التطوير:
++${firstReward.evolutionLevel}
+
+━━━━━━━━━━━━━━━
+
+🎲 حصلت على شخصية EX
+بـ 7 قدرات عشوائية.`
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: {
+            url: firstReward.image
+        },
+        caption: exCaption,
+        mentions: [firstWinner]
+    }
+)
+// =========================
+// 🥈 الفائز الثاني (UR III)
+// =========================
+
+const urIIICharacter = secondReward
+
+const urIIICaption =
+`🏆 ═══════〔 الفائز الثاني 〕═══════ 🏆
+
+🥈 الفائز:
+@${secondWinner.split('@')[0]}
+
+🎉 مبروك!
+
+👑 ${urIIICharacter.name}
+
+⭐ UR III
+
+⚔️ القوة:
+${urIIICharacter.power}
+
+💎 التطوير:
++${urIIICharacter.evolutionLevel}
+
+━━━━━━━━━━━━━━━
+
+🎲 حصلت على شخصية
+UR III.`
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: {
+            url: urIIICharacter.image
+        },
+        caption: urIIICaption,
+        mentions: [secondWinner]
+    }
+)
+
+
+// =========================
+// 🥉 الفائز الثالث (UR I)
+// =========================
+
+const urICharacter = thirdReward
+
+const urICaption =
+`🏆 ═══════〔 الفائز الثالث 〕═══════ 🏆
+
+🥉 الفائز:
+@${thirdWinner.split('@')[0]}
+
+🎉 مبروك!
+
+👑 ${urICharacter.name}
+
+⭐ UR I
+
+⚔️ القوة:
+${urICharacter.power}
+
+💎 التطوير:
++${urICharacter.evolutionLevel}
+
+━━━━━━━━━━━━━━━
+
+🎲 حصلت على شخصية
+UR I.`
+
+await sock.sendMessage(
+    msg.key.remoteJid,
+    {
+        image: {
+            url: urICharacter.image
+        },
+        caption: urICaption,
+        mentions: [thirdWinner]
+    }
+)
+
+
+// =========================
+// إنهاء الفعالية
+// =========================
+
+eventActive = false
+eventParticipants = []
+eventStartedBy = null
+
+return safeSend(
+    msg.key.remoteJid,
+    {
+        text:
+`🎊 ═══════〔 انتهت الفعالية 〕═══════ 🎊
+
+✅ تم توزيع جميع الجوائز بنجاح.
+
+🧹 تم تنظيف قائمة المشاركين.
+
+🎉 نلتقي في الفعالية القادمة!`
+    }
+)
+
+}
+        
 if (text === '.ترحيل_الشظايا') {
 
     const players = await Player.find()
