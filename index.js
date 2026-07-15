@@ -2700,6 +2700,16 @@ let pairingRequested = false
 let currentBoss = null
 let beastInterval = null
 let bossInterval = null
+// =========================
+// Event System
+// =========================
+
+let eventActive = false
+
+let eventParticipants = []
+
+let eventStartedBy = null
+
 const GROUP_IDS = [
     "120363020823525909@g.us",
     "120363116482407260@g.us"
@@ -2715,7 +2725,15 @@ console.log('🚀 START BOT', Date.now())
 
     const { state, saveCreds } =
         await useMultiFileAuthState('auth')
-    
+    // =========================
+// Event System
+// =========================
+
+let eventActive = false
+
+let eventParticipants = []
+
+let eventStartedBy = null
 console.log('AUTH EXISTS:',
     fs.existsSync('./auth')
 )
@@ -4330,6 +4348,200 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+// =========================
+// .فعاليه
+// =========================
+
+if (text === '.فعاليه') {
+
+    if (!isOwner(msg)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ هذا الأمر للمطور فقط'
+            }
+        )
+    }
+
+    if (eventActive) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ توجد فعالية مفتوحة بالفعل'
+            }
+        )
+    }
+
+    eventActive = true
+    eventParticipants = []
+    eventStartedBy = msg.key.remoteJid
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`🎉 ═══════〔 فعالية جديدة 〕═══════ 🎉
+
+📢 تم فتح التسجيل!
+
+للمشاركة اكتب:
+
+.تسجيل_فعاليه
+
+━━━━━━━━━━━━━━━
+
+🏆 سيتم اختيار 3 فائزين عشوائياً
+
+🥇 شخصية EX
+🥈 شخصية UR II
+🥉 شخصية SSS++
+
+⏳ بانتظار المشاركين...`
+        }
+    )
+
+}
+    // =========================
+// .تسجيل_فعاليه
+// =========================
+
+if (text === '.تسجيل_فعاليه') {
+
+    if (!eventActive) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد فعالية مفتوحة حالياً.'
+            }
+        )
+    }
+
+    if (msg.key.remoteJid !== eventStartedBy) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ التسجيل يكون في قروب الفعالية فقط.'
+            }
+        )
+    }
+
+    if (eventParticipants.includes(userId)) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ أنت مسجل بالفعل.'
+            }
+        )
+    }
+
+    eventParticipants.push(userId)
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم تسجيلك في الفعالية.
+
+🎟️ رقمك:
+${eventParticipants.length}
+
+👥 عدد المشاركين:
+${eventParticipants.length}`
+        }
+    )
+
+}
+// =========================
+// .قائمة_الفعاليه
+// =========================
+
+if (text === '.قائمة_الفعاليه') {
+
+    if (!eventActive) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد فعالية مفتوحة حالياً.'
+            }
+        )
+    }
+
+    if (!eventParticipants.length) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`📋 قائمة المشاركين
+
+🚫 لا يوجد أي مشارك حتى الآن.`
+            }
+        )
+    }
+
+    let list = eventParticipants
+        .map((id, i) =>
+`${i + 1}- @${id.split('@')[0]}`
+        )
+        .join('\n')
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`🎟️ ═══════〔 المشاركون 〕═══════ 🎟️
+
+${list}
+
+━━━━━━━━━━━━━━━
+
+👥 إجمالي المشاركين:
+${eventParticipants.length}`,
+            mentions: eventParticipants
+        }
+    )
+
+}
+    // =========================
+// .الغاء_فعاليه
+// =========================
+
+if (text === '.الغاء_فعاليه') {
+
+    if (!isOwner(msg)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ هذا الأمر للمطور فقط'
+            }
+        )
+    }
+
+    if (!eventActive) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد فعالية مفتوحة.'
+            }
+        )
+    }
+
+    eventActive = false
+    eventParticipants = []
+    eventStartedBy = null
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`❌ تم إلغاء الفعالية.
+
+🗑️ تم حذف جميع المشاركين.`
+        }
+    )
+
+}
+    
 if (text === '.ترحيل_الشظايا') {
 
     const players = await Player.find()
@@ -4375,78 +4587,6 @@ if (text === '.ترحيل_الشظايا') {
 
 👤 تم إصلاح ${fixed} لاعب`
     })
-
-}
-    
-if (text === '.تبديل_ايدي') {
-
-    try {
-
-        const oldId = '275660379541714@lid'
-        const newId = '107945983479905@lid'
-
-        const oldPlayer = await Player.findOne({
-            userId: oldId
-        })
-
-        if (!oldPlayer) {
-
-            return safeSend(msg.key.remoteJid, {
-                text: '❌ الحساب القديم غير موجود'
-            })
-
-        }
-
-        let newPlayer = await Player.findOne({
-            userId: newId
-        })
-
-        if (!newPlayer) {
-
-            newPlayer = await Player.create({
-                userId: newId
-            })
-
-        }
-
-        const oldObject = oldPlayer.toObject()
-
-        delete oldObject._id
-        delete oldObject.__v
-
-        oldObject.userId = newId
-
-        await Player.updateOne(
-            { userId: newId },
-            { $set: oldObject }
-        )
-
-        await Player.deleteOne({
-            userId: oldId
-        })
-
-        return safeSend(msg.key.remoteJid, {
-            text:
-`✅ تم نقل جميع بيانات اللاعب بنجاح
-
-📤 من:
-${oldId}
-
-📥 إلى:
-${newId}
-
-🗑️ تم حذف الحساب القديم`
-        })
-
-    } catch (err) {
-
-        console.log(err)
-
-        return safeSend(msg.key.remoteJid, {
-            text: '❌ حدث خطأ'
-        })
-
-    }
 
 }
 
