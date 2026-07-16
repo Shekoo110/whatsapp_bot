@@ -2788,7 +2788,7 @@ if (!state.creds.registered) {
 
             const code =
                 await sock.requestPairingCode(
-                    "201105749333"
+                    "966530450199"
                 )
 
             console.log(
