@@ -4353,6 +4353,101 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+    
+    if (text.startsWith('.قائمة_sss')) {
+
+    const args = text.split(' ')
+
+    let page = parseInt(args[1]) || 1
+
+    const perPage = 50
+
+    const sssCharacters = characters
+        .filter(c => c.rarity === 'SSS')
+        .sort((a, b) => a.name.localeCompare(b.name))
+
+    if (!sssCharacters.length) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ لا توجد شخصيات SSS.'
+            }
+        )
+
+    }
+
+    const totalPages =
+        Math.ceil(
+            sssCharacters.length / perPage
+        )
+
+    if (page < 1)
+        page = 1
+
+    if (page > totalPages)
+        page = totalPages
+
+    const start =
+        (page - 1) * perPage
+
+    const end =
+        start + perPage
+
+    const pageCharacters =
+        sssCharacters.slice(
+            start,
+            end
+        )
+
+    let textMsg =
+`👑 ═════〔 شخصيات SSS 〕═════ 👑
+
+📦 العدد:
+${sssCharacters.length}
+
+📄 الصفحة:
+${page}/${totalPages}
+
+━━━━━━━━━━━━━━━━━━
+
+`
+
+    pageCharacters.forEach((c, i) => {
+
+        textMsg +=
+`${start + i + 1}️⃣ ${c.name}
+⭐ ${c.rarity}
+
+`
+
+    })
+
+    textMsg +=
+`━━━━━━━━━━━━━━━━━━
+
+📖 للانتقال لصفحة أخرى:
+
+.قائمة_sss ${page + 1}`
+
+    if (page === totalPages) {
+
+        textMsg =
+textMsg.replace(
+`.قائمة_sss ${page + 1}`,
+'✅ هذه آخر صفحة'
+)
+
+    }
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: textMsg
+        }
+    )
+
+}
 
 // =========================
 // .فعاليه
@@ -25119,24 +25214,43 @@ player.characters.push({
 player.pulls -= 1
 
 await player.save()
+            const latest =
+    characters.find(
+        c =>
+            c.name === randomCharacter.name &&
+            c.rarity === randomCharacter.rarity &&
+            c.form === randomCharacter.form
+    )
+
+const character =
+latest
+? {
+    ...randomCharacter,
+    image: latest.image,
+    anime: latest.anime,
+    ability: latest.ability,
+    rarity: latest.rarity,
+    form: latest.form || randomCharacter.form
+}
+: randomCharacter
 
 let imagePath = null
 
-if (randomCharacter.rarity !== 'SSS') {
+if (character.rarity !== 'SSS') {
     imagePath = path.join(
         __dirname,
-        randomCharacter.image
+        character.image
     )
 }
 
-if (randomCharacter.rarity === 'SSS') {
+if (character.rarity === 'SSS') {
     const pityText = guaranteedSSS
 ? "\n🎯 هذه الشخصية حصلت عليها من الضمان!"
 : ""
 
     return sock.sendMessage(msg.key.remoteJid, {
         image: {
-            url: randomCharacter.image
+            url: character.image
         },
         caption:
 `🌌 ═══════〔 إيقاظ أسطوري 〕═══════ 🌌
@@ -25146,10 +25260,10 @@ if (randomCharacter.rarity === 'SSS') {
 
 ━━━━━━━━━━━━━━
 
-👑 ${randomCharacter.name}
+👑 ${character.name}
 
 🌟 التصنيف : SSS
-⚔️ القوة : ${randomCharacter.power}
+⚔️ القوة : ${character.power}
 
 ━━━━━━━━━━━━━━
 
@@ -25157,7 +25271,7 @@ if (randomCharacter.rarity === 'SSS') {
 
 لقد حصلت على إحدى أندر الشخصيات في اللعبة
 
-🌌 الأنمي : ${randomCharacter.anime}
+🌌 الأنمي : ${character.anime}
 
 🏆 هذه الشخصية تمتلك قوة تتجاوز حدود الأساطير${pityText}`
     })
@@ -25170,8 +25284,8 @@ if (!fs.existsSync(imagePath)) {
 
 `❌ الصورة غير موجودة
 
-الاسم: ${randomCharacter.name}
-المسار: ${randomCharacter.image}`
+الاسم: ${character.name}
+المسار: ${character.image}`
 })
 }
 
@@ -25182,10 +25296,10 @@ return sock.sendMessage(msg.key.remoteJid, {
 
 `╭━━〔 ✦ 𝐂𝐇𝐀𝐑𝐀𝐂𝐓𝐄𝐑 𝐑𝐄𝐒𝐔𝐋𝐓 ✦ 〕━━╮
 
-🧿 𝑵𝒂𝒎𝒆 ➤ ${randomCharacter.name}
-🌟 𝑹𝒂𝒓𝒊𝒕𝒚 ➤ ${randomCharacter.rarity}
-⚔️ 𝑷𝒐𝒘𝒆𝒓 ➤ ${randomCharacter.power}
-🌌 𝑨𝒏𝒊𝒎𝒆 ➤ ${randomCharacter.anime}
+🧿 𝑵𝒂𝒎𝒆 ➤ ${character.name}
+🌟 𝑹𝒂𝒓𝒊𝒕𝒚 ➤ ${character.rarity}
+⚔️ 𝑷𝒐𝒘𝒆𝒓 ➤ ${character.power}
+🌌 𝑨𝒏𝒊𝒎𝒆 ➤ ${character.anime}
 
 🎟️ السحبات المتبقية ➤ ${player.pulls}/5
 🎯 عداد الضمان ➤ ${player.sssPity}/30
