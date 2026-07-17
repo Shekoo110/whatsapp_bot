@@ -789,12 +789,6 @@ if (raid.hp <= 0) {
 // حفظ الضرر
 // =====================
 
-if (!raid.damageMap) {
-
-    raid.damageMap = {}
-
-}
-
 raid.damageMap[userId] =
 (
     raid.damageMap[userId] || 0
@@ -1117,6 +1111,15 @@ targetId
         }
 
         raid.active = false
+
+raid.phase2 = false
+raid.phase3 = false
+
+raid.totalDamage = 0
+raid.damageMap = {}
+
+raid.hp = 0
+raid.maxHp = 0
 
 raid.endedAt = Date.now()
 
