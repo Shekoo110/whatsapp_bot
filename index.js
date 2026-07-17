@@ -4369,11 +4369,1075 @@ ${loserClan.name}
     }
 
 }
+// ========================================
+// نظام الانتقالات
+// ========================================
 
+const Trade = require('./models/Trade')
+
+const MAX_TRADES_PER_PLAYER = 3
+
+function normalizeTradeName(name = '') {
+
+    return name
+        .toLowerCase()
+        .replace(/[^\p{L}\p{N}]/gu, '')
+
+}
+
+function getCharacterByIndex(player, index) {
+
+    const sss = player.characters.filter(c => c.rarity === 'SSS')
+
+    if (
+        index < 1 ||
+        index > sss.length
+    ) return null
+
+    return sss[index - 1]
+
+}
+
+function getCharacterByName(player, input) {
+
+    const split =
+        input.split('#')
+
+    const wantedName =
+        normalizeTradeName(split[0])
+
+    const wantedCopy =
+        Number(split[1] || 1)
+
+    let count = 0
+
+    for (const ch of player.characters) {
+
+        if (ch.rarity !== 'SSS')
+            continue
+
+        const name1 =
+            normalizeTradeName(ch.name)
+
+        const name2 =
+            normalizeTradeName(ch.originalName || '')
+
+        if (
+            name1.includes(wantedName) ||
+            wantedName.includes(name1) ||
+            name2.includes(wantedName) ||
+            wantedName.includes(name2)
+        ) {
+
+            count++
+
+            if (count === wantedCopy)
+                return ch
+
+        }
+
+    }
+
+    return null
+
+}
+
+function findTradeCharacter(player, input) {
+
+    if (/^\d+$/.test(input)) {
+
+        return getCharacterByIndex(
+            player,
+            Number(input)
+        )
+
+    }
+
+    return getCharacterByName(
+        player,
+        input
+    )
+
+}
 
     // =========================
     // الأوامر العادية هنا
     // =========================
+    // ========================================
+// .انتقال
+// ========================================
+
+if (text.startsWith('.انتقال')) {
+
+    const args = text.trim().split(/\s+/)
+
+    // =========================
+    // شرح الأمر
+    // =========================
+
+    if (args.length < 2) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`╔══════〔 🔄 نظام الانتقالات 〕══════╗
+
+يمكنك عرض شخصية SSS للتبديل.
+
+طريقة الاستخدام:
+
+.انتقال الشخصية الشخصيات_المطلوبة
+
+مثال:
+
+.انتقال Aizen Imu Kaido Akashi
+
+أو إذا لديك أكثر من نسخة:
+
+.انتقال Aizen#2 Imu Kaido
+
+أو باستخدام رقم الشخصية داخل قائمة SSS:
+
+.انتقال 5 Imu Kaido
+
+━━━━━━━━━━━━━━━━━━
+
+• الحد الأقصى 3 عروض.
+• الشخصية يجب أن تكون SSS.
+• لا يمكن عرض شخصية مطورة.
+• لا يمكن عرض شخصية موجودة في عرض آخر.
+
+╚══════════════════════╝`
+            }
+        )
+
+    }
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: "❌ لا يوجد حساب."
+            }
+        )
+
+    }
+
+    // =========================
+    // عدد العروض
+    // =========================
+
+    const myTrades =
+        await Trade.countDocuments({
+
+            ownerId: userId,
+
+            status: "open"
+
+        })
+
+    if (myTrades >= MAX_TRADES_PER_PLAYER) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ لديك بالفعل ${MAX_TRADES_PER_PLAYER} عروض انتقال.
+
+قم بحذف أحد العروض أولاً.`
+            }
+        )
+
+    }
+
+    const offeredInput =
+        args[1]
+
+    const wanted =
+        args.slice(2)
+
+    if (!wanted.length) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ اكتب الشخصيات المطلوبة بعد الشخصية المعروضة."
+            }
+        )
+
+    }
+
+    const character =
+        findTradeCharacter(
+            player,
+            offeredInput
+        )
+
+    if (!character) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ لم يتم العثور على الشخصية."
+            }
+        )
+
+    }
+        // =========================
+    // يجب أن تكون SSS
+    // =========================
+
+    if (character.rarity !== "SSS") {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ يسمح فقط بعرض شخصيات SSS."
+            }
+        )
+
+    }
+
+    // =========================
+    // يمنع الشخصيات المطورة
+    // =========================
+
+    if (
+        character.evolutionLevel &&
+        character.evolutionLevel > 0
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ لا يمكن عرض شخصية مطورة."
+            }
+        )
+
+    }
+
+    // =========================
+    // هل الشخصية معروضة؟
+    // =========================
+
+    const alreadyListed =
+        await Trade.findOne({
+
+            ownerId: userId,
+
+            status: "open",
+
+            offeredCharacterId:
+                character.id ||
+                character.uid ||
+                character._id ||
+                character.obtainId
+
+        })
+
+    if (alreadyListed) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ هذه الشخصية موجودة بالفعل في عرض انتقال."
+            }
+        )
+
+    }
+
+    // =========================
+    // إنشاء العرض
+    // =========================
+
+    const trade = new Trade({
+
+        ownerId: userId,
+
+        offeredCharacterId:
+            character.id ||
+            character.uid ||
+            character._id ||
+            character.obtainId,
+
+        offeredCharacter: {
+
+            name: character.name,
+
+            power:
+                character.power,
+
+            image:
+                character.image ||
+
+                character.imageUrl ||
+
+                ""
+
+        },
+
+        wantedCharacters:
+            wanted,
+
+        status: "open",
+
+        createdAt:
+            Date.now()
+
+    })
+
+    await trade.save()
+
+    // =========================
+    // رسالة النجاح
+    // =========================
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+
+text:
+
+`╔══════〔 🔄 تم إنشاء عرض انتقال 〕══════╗
+
+🆔 رقم العرض
+
+#${trade._id.toString().slice(-6)}
+
+━━━━━━━━━━━━━━━━━━
+
+🎴 الشخصية المعروضة
+
+🌟 ${character.name}
+
+⚔️ القوة
+
+${character.power.toLocaleString()}
+
+━━━━━━━━━━━━━━━━━━
+
+🎯 الشخصيات المطلوبة
+
+${wanted.map(x=>"• "+x).join("\n")}
+
+━━━━━━━━━━━━━━━━━━
+
+📢 يمكن لأي لاعب يملك إحدى هذه الشخصيات قبول العرض من خلال:
+
+.قبول_انتقال
+
+╚══════════════════════╝`
+
+        }
+
+    )
+
+}
+    // =========================
+// .عرض_انتقال
+// =========================
+
+if (text === '.عرض_انتقال') {
+
+const trades =
+await Trade.find({
+
+status: 'open'
+
+})
+.sort({
+createdAt: -1
+})
+
+if (!trades.length) {
+
+return safeSend(
+msg.key.remoteJid,
+{
+text:
+`📭 لا توجد أي عروض انتقال حالياً.
+
+استخدم
+
+.انتقال
+
+لإنشاء عرض جديد.`
+}
+)
+
+}
+
+let message =
+
+`╔══════〔 🔄 سوق الانتقالات 〕══════╗
+
+يمكنك استبدال شخصيات SSS بين اللاعبين.
+
+━━━━━━━━━━━━━━━━━━
+
+📖 الطريقة:
+
+1️⃣ افتح أحد العروض.
+
+2️⃣ إذا كنت تملك إحدى الشخصيات المطلوبة.
+
+3️⃣ اكتب:
+
+.قبول_انتقال رقم_العرض اسم_شخصيتك
+
+مثال:
+
+.قبول_انتقال 5 Shanks
+
+━━━━━━━━━━━━━━━━━━
+
+`
+    for (let i = 0; i < trades.length; i++) {
+
+    const trade = trades[i]
+
+    let ownerName = "لاعب"
+
+    try {
+
+        const contact =
+            await sock.onWhatsApp(
+                trade.ownerId
+            )
+
+        if (
+            contact &&
+            contact[0]
+        ) {
+
+            ownerName =
+                contact[0].notify ||
+                contact[0].name ||
+                ownerName
+
+        }
+
+    } catch {}
+
+    message +=
+
+`╔════〔 ${i + 1} 〕════
+
+👤 صاحب العرض
+
+${ownerName}
+
+━━━━━━━━━━━━━━
+
+🌟 يعرض
+
+${trade.offeredCharacter.name}
+
+⚔️ القوة
+
+${trade.offeredCharacter.power.toLocaleString()}
+
+━━━━━━━━━━━━━━
+
+🎯 يريد
+
+${trade.wantedCharacters
+.map(x => `• ${x}`)
+.join("\n")}
+
+╚══════════════
+
+`
+
+}
+    message +=
+
+`━━━━━━━━━━━━━━━━━━
+
+📌 لقبول أحد العروض:
+
+.قبول_انتقال رقم_العرض اسم_شخصيتك
+
+مثال:
+
+.قبول_انتقال 3 Shanks#2
+
+إذا كان لديك أكثر من نسخة من نفس الشخصية يمكنك كتابة:
+
+Shanks#2
+
+أو اختيارها برقمها داخل مجموعتك.
+
+━━━━━━━━━━━━━━━━━━
+
+📊 إجمالي العروض:
+
+${trades.length}
+`
+
+return safeSend(
+
+    msg.key.remoteJid,
+
+    {
+        text: message
+    }
+
+)
+
+}
+    // ========================================
+// .قبول_انتقال
+// ========================================
+
+if (text.startsWith('.قبول_انتقال')) {
+
+    const args =
+        text.trim().split(/\s+/)
+
+    if (args.length < 3) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ الاستخدام الصحيح
+
+.قبول_انتقال رقم_العرض شخصيتك
+
+مثال
+
+.قبول_انتقال 3 Shanks
+
+أو
+
+.قبول_انتقال 3 Shanks#2
+
+أو
+
+.قبول_انتقال 3 5`
+            }
+        )
+
+    }
+
+    const tradeNumber =
+        Number(args[1])
+
+    if (
+        isNaN(tradeNumber) ||
+        tradeNumber < 1
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ رقم العرض غير صحيح."
+            }
+        )
+
+    }
+
+    const trades =
+        await Trade.find({
+            status: "open"
+        }).sort({
+            createdAt: -1
+        })
+
+    const trade =
+        trades[tradeNumber - 1]
+
+    if (!trade) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ هذا العرض غير موجود."
+            }
+        )
+
+    }
+
+    if (
+        trade.ownerId === userId
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ لا يمكنك قبول عرضك بنفسك."
+            }
+        )
+
+    }
+
+    const player =
+        await Player.findOne({
+            userId
+        })
+
+    if (!player) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ لا يوجد حساب."
+            }
+        )
+
+    }
+
+    const myCharacter =
+        findTradeCharacter(
+            player,
+            args[2]
+        )
+
+    if (!myCharacter) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ لم يتم العثور على الشخصية."
+            }
+        )
+
+    }
+
+    if (
+        myCharacter.rarity !== "SSS"
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ يجب أن تكون الشخصية SSS."
+            }
+        )
+
+    }
+
+    if (
+        myCharacter.evolutionLevel > 0
+    ) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ لا يمكن تبديل شخصية مطورة."
+            }
+        )
+
+    }
+        // =========================
+    // هل الشخصية مطلوبة؟
+    // =========================
+
+    const wanted =
+        trade.wantedCharacters.some(x => {
+
+            const a =
+                normalizeTradeName(x)
+
+            const b =
+                normalizeTradeName(myCharacter.name)
+
+            const c =
+                normalizeTradeName(
+                    myCharacter.originalName || ""
+                )
+
+            return (
+                a.includes(b) ||
+                b.includes(a) ||
+                a.includes(c) ||
+                c.includes(a)
+            )
+
+        })
+
+    if (!wanted) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ هذه الشخصية ليست ضمن الشخصيات المطلوبة في هذا العرض."
+            }
+        )
+
+    }
+
+    // =========================
+    // صاحب العرض
+    // =========================
+
+    const owner =
+        await Player.findOne({
+
+            userId:
+                trade.ownerId
+
+        })
+
+    if (!owner) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ تعذر العثور على صاحب العرض."
+            }
+        )
+
+    }
+
+    // =========================
+    // إيجاد شخصية صاحب العرض
+    // =========================
+
+    const ownerIndex =
+        owner.characters.findIndex(c =>
+
+            (c.id || c.uid || c._id || c.obtainId)
+
+            ===
+
+            trade.offeredCharacterId
+
+        )
+
+    if (ownerIndex === -1) {
+
+        trade.status = "cancelled"
+
+        await trade.save()
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ تم إلغاء العرض لأن الشخصية لم تعد موجودة."
+            }
+        )
+
+    }
+
+    // =========================
+    // إيجاد شخصية اللاعب
+    // =========================
+
+    const myIndex =
+        player.characters.findIndex(c =>
+
+            c === myCharacter
+
+        )
+
+    if (myIndex === -1) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ حدث خطأ أثناء إيجاد الشخصية."
+            }
+        )
+
+    }
+
+    // =========================
+    // تنفيذ التبديل
+    // =========================
+
+    const temp =
+        owner.characters[ownerIndex]
+
+    owner.characters[ownerIndex] =
+        player.characters[myIndex]
+
+    player.characters[myIndex] =
+        temp
+
+    await owner.save()
+
+    await player.save()
+
+    trade.status = "done"
+
+    trade.acceptedBy = userId
+
+    trade.acceptedAt = Date.now()
+
+    await trade.save()
+
+    await safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`╔══════〔 🤝 تم إتمام الانتقال 〕══════╗
+
+🎉 تمت الصفقة بنجاح
+
+━━━━━━━━━━━━━━━━━━
+
+👤 @${trade.ownerId.split("@")[0]}
+
+أرسل
+
+🌟 ${temp.name}
+
+━━━━━━━━━━━━━━
+
+👤 @${userId.split("@")[0]}
+
+أرسل
+
+🌟 ${myCharacter.name}
+
+━━━━━━━━━━━━━━
+
+✅ تم تبديل الشخصيتين بنجاح.
+
+╚══════════════════════╝`,
+            mentions: [
+                trade.ownerId,
+                userId
+            ]
+        }
+    )
+
+    return
+
+}
+
+    // ========================================
+// .حذف_انتقال
+// ========================================
+
+if (text.startsWith('.حذف_انتقال')) {
+
+    const args =
+        text.trim().split(/\s+/)
+
+    if (args.length < 2) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ الاستخدام
+
+.حذف_انتقال رقم_العرض`
+            }
+        )
+
+    }
+
+    const number =
+        Number(args[1])
+
+    if (isNaN(number)) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ رقم العرض غير صحيح."
+            }
+        )
+
+    }
+
+    const trades =
+        await Trade.find({
+            status: "open"
+        }).sort({
+            createdAt: -1
+        })
+
+    const trade =
+        trades[number - 1]
+
+    if (!trade) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ هذا العرض غير موجود."
+            }
+        )
+
+    }
+
+    if (trade.ownerId !== userId) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text:
+"❌ لا يمكنك حذف عرض لا تملكه."
+            }
+        )
+
+    }
+
+    trade.status = "cancelled"
+
+    await trade.save()
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+text:
+
+`🗑️ تم حذف عرض الانتقال بنجاح.
+
+🌟 الشخصية:
+
+${trade.offeredCharacter.name}
+
+أصبحت متاحة مرة أخرى.`
+
+        }
+
+    )
+
+}
+    // ========================================
+// .انتقالاتي
+// ========================================
+
+if (text === '.انتقالاتي') {
+
+    const trades =
+    await Trade.find({
+
+        ownerId: userId,
+
+        status: "open"
+
+    }).sort({
+
+        createdAt: -1
+
+    })
+
+    if (!trades.length) {
+
+        return safeSend(
+
+            msg.key.remoteJid,
+
+            {
+
+text:
+`📭 ليس لديك أي عروض انتقال حالياً.
+
+أنشئ عرضاً باستخدام:
+
+.انتقال`
+
+            }
+
+        )
+
+    }
+
+    let message =
+
+`╔══════〔 📋 انتقالاتي 〕══════╗
+
+إجمالي العروض:
+
+${trades.length}/${MAX_TRADES_PER_PLAYER}
+
+━━━━━━━━━━━━━━━━━━
+
+`
+
+    for (
+
+        let i = 0;
+
+        i < trades.length;
+
+        i++
+
+    ) {
+
+        const trade =
+        trades[i]
+
+        message +=
+
+`╔════〔 ${i + 1} 〕════
+
+🌟 الشخصية
+
+${trade.offeredCharacter.name}
+
+⚔️ القوة
+
+${trade.offeredCharacter.power.toLocaleString()}
+
+━━━━━━━━━━━━━━
+
+🎯 المطلوب
+
+${trade.wantedCharacters
+.map(x => `• ${x}`)
+.join("\n")}
+
+━━━━━━━━━━━━━━
+
+🗑️ للحذف
+
+.حذف_انتقال ${i + 1}
+
+╚══════════════
+
+`
+
+    }
+
+    return safeSend(
+
+        msg.key.remoteJid,
+
+        {
+
+            text: message
+
+        }
+
+    )
+
+}
 
     if (text === '.غزو_رايد') {
 
