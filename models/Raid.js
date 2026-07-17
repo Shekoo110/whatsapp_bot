@@ -64,10 +64,29 @@ const RaidSchema = new mongoose.Schema({
         default: 0
     },
 
-    critRate: {
-        type: Number,
-        default: 10
-    },
+    bossCritRate: {
+    type: Number,
+    default: 10
+},
+    passive: {
+    type: String,
+    default: ""
+},
+
+passiveValue: {
+    type: Number,
+    default: 0
+},
+
+rewardMultiplier: {
+    type: Number,
+    default: 1
+},
+
+difficulty: {
+    type: Number,
+    default: 1
+},
 
     // =========================
     // مراحل الزعيم
