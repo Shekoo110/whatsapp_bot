@@ -1,5 +1,16 @@
 const fs = require('fs')
 const {
+    announceRaid,
+    isRaidRunning
+} = require('./systems/raidManager')
+const {
+    attackRaid,
+    getRaidInfo
+} = require('./systems/raidManager')
+const {
+    startRaidScheduler
+} = require('./systems/raidManager')
+const {
     createEXReward,
     createURIIIReward,
     createURIReward
@@ -3225,6 +3236,17 @@ if (!global.eventsStarted) {
         '✅ Auto Events Started'
     )
 }
+        if (!global.raidStarted) {
+
+    global.raidStarted = true
+
+    startRaidScheduler(sock)
+
+    console.log(
+        '✅ Raid System Started'
+    )
+
+}
 
 if (!global.quickEventsStarted) {
 
@@ -4353,6 +4375,67 @@ ${loserClan.name}
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+    if (text === '.غزو_رايد') {
+
+    const raid = await getRaidInfo()
+
+    if (!raid || !raid.active) {
+
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text:
+`❌ لا يوجد غزو نشط حالياً.
+
+⏳ انتظر الإعلان القادم.`
+            }
+        )
+
+    }
+
+    return await attackRaid({
+
+        sock,
+        jid: msg.key.remoteJid,
+        userId
+
+    })
+
+}
+    if (text === '.رسبن_رايد') {
+
+    if (!isOwner(msg)) {
+        return sock.sendMessage(
+            msg.key.remoteJid,
+            {
+                text: '❌ هذا الأمر للمطور فقط'
+            }
+        )
+    }
+
+    const running = await isRaidRunning()
+
+    if (running) {
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ يوجد رايد نشط بالفعل.'
+            }
+        )
+    }
+
+    await announceRaid(sock)
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+`✅ تم إنشاء الرايد وإرسال الإعلان إلى جميع القروبات.`
+        }
+    )
+
+}
     
     if (text.startsWith('.قائمة_sss')) {
 
