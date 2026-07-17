@@ -26646,7 +26646,10 @@ const currentLevel = me.level;
 levelUpMessage += `🎉 وصلت إلى المستوى ${currentLevel}\n`;
 levelUpMessage += `💰 حصلت على 500 مال\n`;
 
-const ability = levelAbilities[currentLevel];
+const ability =
+    currentLevel <= 100
+        ? levelAbilities[currentLevel]
+        : null;
 
 if (ability) {
 
@@ -26688,8 +26691,7 @@ ${ability.name}
 
 me.money += 500;
 
-
-// 🟢 صندوق كل 10 مستويات (مرة واحدة فقط)
+// 🟢 زيادة المخزون كل 10 مستويات (حتى 200)
 if (currentLevel % 10 === 0) {
 
     me.maxCharacters = (me.maxCharacters || 30) + 5;
@@ -26704,7 +26706,8 @@ ${me.maxCharacters}
 `;
 }
 
-    me.rewardedLevels ||= [];
+me.rewardedLevels ||= [];
+
 me.boxes ||= {
     basic: 0,
     rare: 0,
@@ -26716,7 +26719,12 @@ me.boxes ||= {
 
 if (!me.rewardedLevels.includes(currentLevel)) {
 
-    switch (currentLevel) {
+    const rewardLevel =
+        currentLevel > 100 && currentLevel < 200
+            ? currentLevel - 100
+            : currentLevel;
+
+    switch (rewardLevel) {
 
         case 10:
             me.boxes.basic += 5;
@@ -26762,20 +26770,92 @@ if (!me.rewardedLevels.includes(currentLevel)) {
             me.boxes.sss_chance += 1;
             levelUpMessage += `🎁 حصلت على صندوق فرصة SSS\n`;
             break;
-
-        case 100:
-            me.boxes.sss_high += 1;
-            levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`;
-            break;
     }
+
+    // مكافأة خاصة 100
+    if (currentLevel === 100) {
+
+        me.boxes.sss_high += 1;
+
+        levelUpMessage += `👑 حصلت على صندوق SSS عالي\n`;
+
+    }
+
+    // مكافأة خاصة 150
+    if (currentLevel === 150) {
+
+        me.boxes.sss_chance += 5;
+        me.boxes.sss_high += 3;
+
+        levelUpMessage +=
+`🎉 وصلت إلى المستوى 150
+
+🎁 SSS Chance ×5
+🎁 SSS High ×3
+`;
+
+    }
+
+    // مكافأة خاصة 200
+    
+if (currentLevel === 200) {
+
+    me.money += 2000000
+
+    me.boxes.sss_chance += 5
+    me.boxes.sss_high += 5
+
+    const sssCharacters = characters.filter(
+        c => c.rarity === 'SSS'
+    )
+
+    if (sssCharacters.length) {
+
+        const character = JSON.parse(
+            JSON.stringify(
+                sssCharacters[
+                    Math.floor(
+                        Math.random() *
+                        sssCharacters.length
+                    )
+                ]
+            )
+        )
+
+        character.originalPower = character.power
+        character.evolutionLevel = 0
+        character.currentHp = character.power
+        character.dead = false
+        character.urAbilities = []
+
+        me.characters.push(character)
+
+        levelUpMessage +=
+`👑 وصلت إلى أعلى مستوى!
+
+💰 2,000,000
+
+🎁 SSS Chance ×5
+🎁 SSS High ×5
+
+🌟 حصلت على شخصية SSS عشوائية
+
+👤 ${character.name}`
+    }
+
+}
 
     me.rewardedLevels.push(currentLevel);
 }
-    if (me.level >= 100) {
-    me.level = 100;
+
+// الحد الأقصى للمستوى
+if (me.level >= 200) {
+
+    me.level = 200;
     me.xp = 0;
     break;
-    }
+
+}
 }
 
 me.fights -= 1;
