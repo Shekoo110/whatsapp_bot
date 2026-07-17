@@ -4961,17 +4961,17 @@ if (text.startsWith('.قبول_انتقال')) {
     const trade =
         trades[tradeNumber - 1]
 
-    if (!trade) {
+    if (!trade || trade.status !== "open") {
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
-"❌ هذا العرض غير موجود."
-            }
-        )
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+"❌ هذا العرض غير متاح أو تم قبوله."
+        }
+    )
 
-    }
+}
 
     if (
         trade.ownerId === userId
@@ -5099,6 +5099,29 @@ if (text.startsWith('.قبول_انتقال')) {
                 trade.ownerId
 
         })
+    if (player.characters.length >= player.maxCharacters) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+"❌ مخزن شخصياتك ممتلئ."
+        }
+    )
+
+}
+
+if (owner.characters.length >= owner.maxCharacters) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
+"❌ مخزن صاحب العرض ممتلئ."
+        }
+    )
+
+}
 
     if (!owner) {
 
@@ -5169,7 +5192,9 @@ if (text.startsWith('.قبول_انتقال')) {
     // =========================
     // تنفيذ التبديل
     // =========================
+trade.status = "processing"
 
+await trade.save()
     const temp =
         owner.characters[ownerIndex]
 
@@ -5185,11 +5210,11 @@ if (text.startsWith('.قبول_انتقال')) {
 
     trade.status = "done"
 
-    trade.acceptedBy = userId
+trade.acceptedBy = userId
 
-    trade.acceptedAt = Date.now()
+trade.acceptedAt = Date.now()
 
-    await trade.save()
+await trade.save()
 
     await safeSend(
         msg.key.remoteJid,
