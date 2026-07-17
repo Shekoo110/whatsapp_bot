@@ -86,6 +86,13 @@ async function createRaid() {
     raid.anime = kingdom.anime
 
     raid.bossName = kingdom.boss
+    raid.bossAttack = kingdom.attack
+raid.bossDefense = kingdom.defense
+raid.bossCritRate = kingdom.critRate
+raid.passive = kingdom.passive
+raid.passiveValue = kingdom.passiveValue
+raid.rewardMultiplier = kingdom.rewardMultiplier
+raid.difficulty = kingdom.difficulty
 
     raid.maxHp = kingdom.hp
 
@@ -101,8 +108,6 @@ async function createRaid() {
 
     raid.startedAt = Date.now()
 
-    raid.bossAttack = 10000
-
     await raid.save()
 
     return {
@@ -114,7 +119,7 @@ async function createRaid() {
     }
 
 }
-const characters = require('../characters.json')
+
 
 // =========================
 // إعلان الرايد
@@ -125,15 +130,8 @@ async function announceRaid(sock) {
     const { raid, kingdom } =
         await createRaid()
 
-    const boss =
-        characters.find(c =>
-            c.name === raid.bossName
-        )
-
     const image =
-        boss?.image ||
-        boss?.imageUrl ||
-        null
+        kingdom.bossImage || null
 
     const caption =
 
