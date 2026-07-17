@@ -779,44 +779,56 @@ ${remain}
 
     raid.hp -= damage
 
-    if(
+if (raid.hp <= 0) {
 
-        raid.hp < 0
+    raid.hp = 0
 
-    ){
+}
 
-        raid.hp = 0
+// =====================
+// حفظ الضرر
+// =====================
 
-    }
-      // =====================
-    // حفظ الضرر
-    // =====================
+if (!raid.damageMap) {
 
-    if(!raid.damageMap){
+    raid.damageMap = {}
 
-        raid.damageMap = {}
+}
 
-    }
+raid.damageMap[userId] =
+(
+    raid.damageMap[userId] || 0
+) + damage
 
-    raid.damageMap[userId] =
-    (
-        raid.damageMap[userId] || 0
-    ) + damage
+raid.totalDamage =
+(
+    raid.totalDamage || 0
+) + damage
 
-    raid.totalDamage =
-    (
-        raid.totalDamage || 0
-    ) + damage
+// =====================
+// إذا مات الزعيم
+// لا يهاجم اللاعب
+// =====================
 
-    // =====================
-    // هجوم الزعيم
-    // =====================
+let bossResult = {
 
-    const bossResult =
-    bossAttack(
+    text: "🏆 تم القضاء على الزعيم!",
+
+    damage: 0,
+
+    playerDead: false
+
+}
+
+if (raid.hp > 0) {
+
+    bossResult = bossAttack(
         raid,
         player
     )
+
+}
+    
 
     // =====================
     // نسبة الصحة
