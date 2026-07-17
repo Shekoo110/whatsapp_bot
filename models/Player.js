@@ -201,6 +201,15 @@ lastBossAttack: {
     default: 0
 },
 
+// =========================
+// RAID SYSTEM
+// =========================
+
+lastRaidAttack: {
+    type: Number,
+    default: 0
+},
+
 bossHp: {
     type: Number,
     default: 0
