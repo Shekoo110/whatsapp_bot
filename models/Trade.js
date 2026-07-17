@@ -67,7 +67,10 @@ const TradeSchema = new mongoose.Schema({
         type: Number,
         default: Date.now
     }
-
+})
+TradeSchema.index({
+    ownerId: 1,
+    status: 1
 })
 
 module.exports = mongoose.model(
