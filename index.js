@@ -4536,12 +4536,9 @@ if (text.startsWith('.انتقال')) {
 
     const myTrades =
         await Trade.countDocuments({
-
-            ownerId: userId,
-
-            status: "open"
-
-        })
+    ownerId: userId,
+    status: "active"
+})
 
     if (myTrades >= MAX_TRADES_PER_PLAYER) {
 
@@ -4952,16 +4949,16 @@ if (text.startsWith('.قبول_انتقال')) {
     }
 
     const trades =
-        await Trade.find({
-            status: "open"
-        }).sort({
-            createdAt: -1
-        })
+    await Trade.find({
+        status: "active"
+    }).sort({
+        createdAt: -1
+    })
 
     const trade =
         trades[tradeNumber - 1]
 
-    if (!trade || trade.status !== "open") {
+    if (!trade || trade.status !== "active") {
 
     return safeSend(
         msg.key.remoteJid,
@@ -5208,7 +5205,7 @@ await trade.save()
 
     await player.save()
 
-    trade.status = "done"
+    trade.status = "completed"
 
 trade.acceptedBy = userId
 
@@ -5271,7 +5268,7 @@ if (text.startsWith('.حذف_انتقال')) {
             msg.key.remoteJid,
             {
                 text:
-`❌ الاستخدام
+`❌ الاستخدام الصحيح
 
 .حذف_انتقال رقم_العرض`
             }
@@ -5282,7 +5279,7 @@ if (text.startsWith('.حذف_انتقال')) {
     const number =
         Number(args[1])
 
-    if (isNaN(number)) {
+    if (isNaN(number) || number < 1) {
 
         return safeSend(
             msg.key.remoteJid,
@@ -5296,7 +5293,7 @@ if (text.startsWith('.حذف_انتقال')) {
 
     const trades =
         await Trade.find({
-            status: "open"
+            status: "active"
         }).sort({
             createdAt: -1
         })
@@ -5344,7 +5341,7 @@ text:
 
 🌟 الشخصية:
 
-${trade.offeredCharacter.name}
+${trade.offeredCharacterName}
 
 أصبحت متاحة مرة أخرى.`
 
@@ -5364,7 +5361,7 @@ if (text === '.انتقالاتي') {
 
         ownerId: userId,
 
-        status: "open"
+        status: "active"
 
     }).sort({
 
@@ -5397,7 +5394,7 @@ text:
 
 `╔══════〔 📋 انتقالاتي 〕══════╗
 
-إجمالي العروض:
+📦 إجمالي العروض:
 
 ${trades.length}/${MAX_TRADES_PER_PLAYER}
 
@@ -5420,19 +5417,19 @@ ${trades.length}/${MAX_TRADES_PER_PLAYER}
 
         message +=
 
-`╔════〔 ${i + 1} 〕════
+`╔════〔 ${i + 1} 〕════╗
 
-🌟 الشخصية
+🌟 الشخصية المعروضة
 
-${trade.offeredCharacter.name}
+${trade.offeredCharacterName}
 
 ⚔️ القوة
 
-${trade.offeredCharacter.power.toLocaleString()}
+${trade.offeredCharacterPower.toLocaleString()}
 
 ━━━━━━━━━━━━━━
 
-🎯 المطلوب
+🎯 الشخصيات المطلوبة
 
 ${trade.wantedCharacters
 .map(x => `• ${x}`)
@@ -5440,11 +5437,11 @@ ${trade.wantedCharacters
 
 ━━━━━━━━━━━━━━
 
-🗑️ للحذف
+🗑️ حذف العرض
 
 .حذف_انتقال ${i + 1}
 
-╚══════════════
+╚════════════════════╝
 
 `
 
