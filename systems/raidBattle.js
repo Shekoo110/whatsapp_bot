@@ -11,6 +11,10 @@ const raidAbilities =
 require('./raidAbilities')
 
 const {
+    applyRaidPassives
+} = require('./raidPassives')
+
+const {
     calculatePlayerDamage
 } =
 require('./raidUtils')
@@ -112,6 +116,13 @@ function resetCharacters(player){
         character.power
 
     }
+
+    // إعادة البونصات للوضع الطبيعي
+    player.damageBonus = 0
+    player.defenseBonus = 0
+    player.critRateBonus = 0
+    player.critDamageBonus = 0
+    player.dodgeBonus = 0
 
 }
 
@@ -596,7 +607,11 @@ text:
         )
 
     }
+// =====================
+// تفعيل الباسف للشخصيات
+// =====================
 
+applyRaidPassives(player)
     // =====================
     // جميع الشخصيات ماتت
     // =====================
@@ -848,19 +863,16 @@ const hpBar =
     "█".repeat(filled) +
     "░".repeat(barLength - filled)
 
-    await player.save()
+// =====================
+// رسالة القتال
+// =====================
 
-    await raid.save()
+await sock.sendMessage(
 
-    // =====================
-    // رسالة القتال
-    // =====================
+    jid,
 
-    await sock.sendMessage(
+    {
 
-        jid,
-
-        {
 
 text:
 
@@ -915,6 +927,18 @@ userId
         }
 
     )
+    // =====================
+// إزالة البونصات المؤقتة
+// =====================
+await raid.save()
+player.damageBonus = 0
+player.defenseBonus = 0
+player.critRateBonus = 0
+player.critDamageBonus = 0
+player.dodgeBonus = 0
+
+await player.save()
+    
       // =====================
     // انتهاء الرايد
     // =====================
