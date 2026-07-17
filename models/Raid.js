@@ -20,17 +20,48 @@ const RaidSchema = new mongoose.Schema({
         default: ""
     },
 
-    // اسم الزعيم
-    boss: {
-        type: String,
-        default: ""
-    },
-
     // صورة الزعيم
     bossImage: {
         type: String,
         default: ""
     },
+
+    // اسم الزعيم
+bossName: {
+    type: String,
+    default: ""
+},
+
+// المرحلة الثانية
+phase2: {
+    type: Boolean,
+    default: false
+},
+
+// المرحلة الثالثة
+phase3: {
+    type: Boolean,
+    default: false
+},
+
+// مجموع الضرر
+totalDamage: {
+    type: Number,
+    default: 0
+},
+
+// خريطة الضرر
+damageMap: {
+    type: Map,
+    of: Number,
+    default: {}
+},
+
+// وقت انتهاء الرايد
+endedAt: {
+    type: Number,
+    default: 0
+},
 
     // قدرة المملكة الحالية
     kingdomAbility: {
@@ -62,10 +93,10 @@ const RaidSchema = new mongoose.Schema({
     },
 
     // ضرر الزعيم
-    attack: {
-        type: Number,
-        default: 0
-    },
+bossAttack: {
+    type: Number,
+    default: 0
+},
 
     // دفاعه
     defense: {
