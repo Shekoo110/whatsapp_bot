@@ -4423,11 +4423,11 @@ function getCharacterByName(player, input) {
             normalizeTradeName(ch.originalName || '')
 
         if (
-            name1.includes(wantedName) ||
-            wantedName.includes(name1) ||
-            name2.includes(wantedName) ||
-            wantedName.includes(name2)
-        ) {
+    wantedName === name1 ||
+    wantedName === name2 ||
+    name1.includes(wantedName) ||
+    name2.includes(wantedName)
+) {
 
             count++
 
@@ -4661,41 +4661,39 @@ if (text.startsWith('.انتقال')) {
 
     const trade = new Trade({
 
-        ownerId: userId,
+    ownerId: userId,
 
-        offeredCharacterId:
-            character.id ||
-            character.uid ||
-            character._id ||
-            character.obtainId,
+    ownerName:
+        pushName || "",
 
-        offeredCharacter: {
+    offeredCharacterId:
+        character.id ||
+        character.uid ||
+        character._id ||
+        character.obtainId,
 
-            name: character.name,
+    offeredCharacterName:
+        character.name,
 
-            power:
-                character.power,
+    offeredCharacterPower:
+        character.power,
 
-            image:
-                character.image ||
+    offeredCharacterImage:
+        character.image ||
+        character.imageUrl ||
+        "",
 
-                character.imageUrl ||
+    wantedCharacters:
+        wanted,
 
-                ""
+    status: "active",
 
-        },
+    createdAt:
+        Date.now()
 
-        wantedCharacters:
-            wanted,
+})
 
-        status: "open",
-
-        createdAt:
-            Date.now()
-
-    })
-
-    await trade.save()
+await trade.save()
 
     // =========================
     // رسالة النجاح
@@ -4751,7 +4749,7 @@ if (text === '.عرض_انتقال') {
 const trades =
 await Trade.find({
 
-status: 'open'
+status: "active"
 
 })
 .sort({
@@ -4840,11 +4838,11 @@ ${ownerName}
 
 🌟 يعرض
 
-${trade.offeredCharacter.name}
+${trade.offeredCharacterName}
 
 ⚔️ القوة
 
-${trade.offeredCharacter.power.toLocaleString()}
+${trade.offeredCharacterPower.toLocaleString()}
 
 ━━━━━━━━━━━━━━
 
@@ -5189,7 +5187,6 @@ if (owner.characters.length >= owner.maxCharacters) {
     // =========================
     // تنفيذ التبديل
     // =========================
-trade.status = "processing"
 
 await trade.save()
     const temp =
