@@ -1,15 +1,14 @@
 const fs = require('fs')
 const {
     announceRaid,
-    isRaidRunning
-} = require('./systems/raidManager')
-const {
-    attackRaid,
-    getRaidInfo
-} = require('./systems/raidManager')
-const {
     startRaidScheduler
 } = require('./systems/raidManager')
+
+const {
+    attackRaid,
+    getRaidInfo,
+    isRaidRunning
+} = require('./systems/raidBattle')
 const {
     createEXReward,
     createURIIIReward,
@@ -4382,7 +4381,7 @@ ${loserClan.name}
 
     if (!raid || !raid.active) {
 
-        return sock.sendMessage(
+        return safeSend(
             msg.key.remoteJid,
             {
                 text:
@@ -4403,26 +4402,31 @@ ${loserClan.name}
     })
 
 }
-    if (text === '.رسبن_رايد') {
+
+if (text === '.رسبن_رايد') {
 
     if (!isOwner(msg)) {
-        return sock.sendMessage(
-            msg.key.remoteJid,
-            {
-                text: '❌ هذا الأمر للمطور فقط'
-            }
-        )
-    }
 
-    const running = await isRaidRunning()
-
-    if (running) {
         return safeSend(
             msg.key.remoteJid,
             {
-                text: '❌ يوجد رايد نشط بالفعل.'
+                text: '❌ هذا الأمر للمطور فقط.'
             }
         )
+
+    }
+
+    const raid = await getRaidInfo()
+
+    if (raid && raid.active) {
+
+        return safeSend(
+            msg.key.remoteJid,
+            {
+                text: '❌ يوجد غزو نشط بالفعل.'
+            }
+        )
+
     }
 
     await announceRaid(sock)
@@ -4431,7 +4435,9 @@ ${loserClan.name}
         msg.key.remoteJid,
         {
             text:
-`✅ تم إنشاء الرايد وإرسال الإعلان إلى جميع القروبات.`
+`✅ تم إنشاء الغزو بنجاح.
+
+📢 تم إرسال إعلان الرايد إلى جميع القروبات.`
         }
     )
 
