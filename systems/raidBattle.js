@@ -11,10 +11,6 @@ const raidAbilities =
 require('./raidAbilities')
 
 const {
-    applyRaidPassives
-} = require('./raidPassives')
-
-const {
     calculatePlayerDamage
 } =
 require('./raidUtils')
@@ -611,7 +607,6 @@ text:
 // تفعيل الباسف للشخصيات
 // =====================
 
-applyRaidPassives(player)
     // =====================
     // جميع الشخصيات ماتت
     // =====================
