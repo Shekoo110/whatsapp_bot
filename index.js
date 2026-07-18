@@ -4398,14 +4398,20 @@ function normalizeTradeName(name = '') {
 
 function getCharacterByIndex(player, index) {
 
-    const sss = player.characters.filter(c => c.rarity === 'SSS')
-
     if (
         index < 1 ||
-        index > sss.length
+        index > player.characters.length
     ) return null
 
-    return sss[index - 1]
+    const character = player.characters[index - 1]
+
+    if (!character) return null
+
+    // يسمح فقط بـ SSS
+    if (character.rarity !== "SSS")
+        return null
+
+    return character
 
 }
 
@@ -4458,12 +4464,10 @@ const name2 =
 function findTradeCharacter(player, input) {
 
     if (/^\d+$/.test(input)) {
-
         return getCharacterByIndex(
             player,
             Number(input)
         )
-
     }
 
     return getCharacterByName(
@@ -4476,6 +4480,8 @@ function findTradeCharacter(player, input) {
     // =========================
     // الأوامر العادية هنا
     // =========================
+
+    
     // ========================================
 // .انتقال
 // ========================================
@@ -4622,20 +4628,25 @@ if (text.startsWith('.انتقال')) {
     // يمنع الشخصيات المطورة
     // =========================
 
-    if (
-        character.evolutionLevel &&
-        character.evolutionLevel > 0
-    ) {
+    const evolvedRanks = [
+    "SSS+",
+    "SSS++",
+    "UR I",
+    "UR II",
+    "UR III",
+    "EX"
+]
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
-"❌ لا يمكن عرض شخصية مطورة."
-            }
-        )
+if (evolvedRanks.includes(character.rarity)) {
 
-    }
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: "❌ لا يمكن عرض شخصية مطورة."
+        }
+    )
+
+}
 
     // =========================
     // هل الشخصية معروضة؟
@@ -5019,19 +5030,25 @@ if (text.startsWith('.قبول_انتقال')) {
 
     }
 
-    if (
-        myCharacter.evolutionLevel > 0
-    ) {
+    const evolvedRanks = [
+    "SSS+",
+    "SSS++",
+    "UR I",
+    "UR II",
+    "UR III",
+    "EX"
+]
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
-"❌ لا يمكن تبديل شخصية مطورة."
-            }
-        )
+if (evolvedRanks.includes(myCharacter.rarity)) {
 
-    }
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: "❌ لا يمكن تبديل شخصية مطورة."
+        }
+    )
+
+}
         // =========================
     // هل الشخصية مطلوبة؟
     // =========================
