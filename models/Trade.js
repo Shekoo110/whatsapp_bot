@@ -14,11 +14,6 @@ const TradeSchema = new mongoose.Schema({
         default: ""
     },
 
-    // الشخصية المعروضة
-    offeredCharacterId: {
-        type: String,
-        required: true
-    },
 
     offeredCharacterName: {
         type: String,
