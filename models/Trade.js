@@ -37,15 +37,16 @@ const TradeSchema = new mongoose.Schema({
     },
 
     // حالة العرض
-    status: {
-        type: String,
-        enum: [
-            "active",
-            "completed",
-            "cancelled"
-        ],
-        default: "active"
-    },
+status: {
+    type: String,
+    enum: [
+        "active",
+        "processing",
+        "completed",
+        "cancelled"
+    ],
+    default: "active"
+},
 
     // من نفذ التبديل
     acceptedBy: {
