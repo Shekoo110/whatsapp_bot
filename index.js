@@ -5052,27 +5052,27 @@ if (evolvedRanks.includes(myCharacter.rarity)) {
     // =========================
 
     const wanted =
-        trade.wantedCharacters.some(x => {
+    trade.wantedCharacters.some(x => {
 
-            const a =
-                normalizeTradeName(x)
+        const wantedName =
+            normalizeTradeName(x)
 
-            const b =
-                normalizeTradeName(myCharacter.name)
-
-            const c =
-                normalizeTradeName(
-                    myCharacter.originalName || ""
-                )
-
-            return (
-                a.includes(b) ||
-                b.includes(a) ||
-                a.includes(c) ||
-                c.includes(a)
+        const myName =
+            normalizeTradeName(
+                myCharacter.name
             )
 
-        })
+        const myOriginal =
+            normalizeTradeName(
+                myCharacter.originalName || ""
+            )
+
+        return (
+            wantedName === myName ||
+            wantedName === myOriginal
+        )
+
+    })
 
     if (!wanted) {
 
