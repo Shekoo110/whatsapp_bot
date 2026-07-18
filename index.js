@@ -4403,15 +4403,7 @@ function getCharacterByIndex(player, index) {
         index > player.characters.length
     ) return null
 
-    const character = player.characters[index - 1]
-
-    if (!character) return null
-
-    // يسمح فقط بـ SSS
-    if (character.rarity !== "SSS")
-        return null
-
-    return character
+    return player.characters[index - 1]
 
 }
 
@@ -4596,6 +4588,12 @@ if (text.startsWith('.انتقال')) {
             player,
             offeredInput
         )
+    console.log(
+    "SELECTED:",
+    character?.name,
+    character?.rarity,
+    character?.evolutionLevel
+)
 
     if (!character) {
 
