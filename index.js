@@ -4803,28 +4803,8 @@ let message =
 
     const trade = trades[i]
 
-    let ownerName = "لاعب"
-
-    try {
-
-        const contact =
-            await sock.onWhatsApp(
-                trade.ownerId
-            )
-
-        if (
-            contact &&
-            contact[0]
-        ) {
-
-            ownerName =
-                contact[0].notify ||
-                contact[0].name ||
-                ownerName
-
-        }
-
-    } catch {}
+    const ownerName =
+    trade.ownerName || "لاعب"
 
     message +=
 
