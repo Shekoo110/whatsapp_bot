@@ -4417,16 +4417,18 @@ function getCharacterByName(player, input) {
             continue
 
         const name1 =
-            normalizeTradeName(ch.name)
+    normalizeTradeName(ch.name || '')
 
-        const name2 =
-            normalizeTradeName(ch.originalName || '')
+const name2 =
+    normalizeTradeName(ch.originalName || '')
 
         if (
     wantedName === name1 ||
     wantedName === name2 ||
     name1.includes(wantedName) ||
-    name2.includes(wantedName)
+    wantedName.includes(name1) ||
+    name2.includes(wantedName) ||
+    wantedName.includes(name2)
 ) {
 
             count++
@@ -4629,19 +4631,19 @@ if (text.startsWith('.انتقال')) {
     // =========================
 
     const alreadyListed =
-        await Trade.findOne({
+    await Trade.findOne({
 
-            ownerId: userId,
+        ownerId: userId,
 
-            status: "open",
+        status: "active",
 
-            offeredCharacterId:
-                character.id ||
-                character.uid ||
-                character._id ||
-                character.obtainId
+        offeredCharacterId:
+            character.id ||
+            character.uid ||
+            character._id ||
+            character.obtainId
 
-        })
+    })
 
     if (alreadyListed) {
 
@@ -4810,29 +4812,39 @@ let message =
 
 `╔════〔 ${i + 1} 〕════
 
-👤 صاحب العرض
+🆔 رقم العرض
+${i + 1}
 
+━━━━━━━━━━━━━━
+
+👤 صاحب العرض
 ${ownerName}
 
 ━━━━━━━━━━━━━━
 
-🌟 يعرض
-
+🌟 الشخصية المعروضة
 ${trade.offeredCharacterName}
 
 ⚔️ القوة
-
-${trade.offeredCharacterPower.toLocaleString()}
+${(trade.offeredCharacterPower || 0).toLocaleString()}
 
 ━━━━━━━━━━━━━━
 
-🎯 يريد
+🎯 الشخصيات المطلوبة
 
-${trade.wantedCharacters
-.map(x => `• ${x}`)
-.join("\n")}
+${
+trade.wantedCharacters?.length
+    ? trade.wantedCharacters.map(x => `• ${x}`).join("\n")
+    : "لا يوجد"
+}
 
-╚══════════════
+━━━━━━━━━━━━━━
+
+📥 للقبول
+
+.قبول_انتقال ${i + 1} اسم_شخصيتك
+
+╚══════════════╝
 
 `
 
@@ -5068,19 +5080,27 @@ if (text.startsWith('.قبول_انتقال')) {
     // =========================
 
     const owner =
-        await Player.findOne({
+await Player.findOne({
+    userId: trade.ownerId
+})
 
-            userId:
-                trade.ownerId
-
-        })
-    if (player.characters.length >= player.maxCharacters) {
+if (!owner) {
 
     return safeSend(
         msg.key.remoteJid,
         {
-            text:
-"❌ مخزن شخصياتك ممتلئ."
+            text: "❌ تعذر العثور على صاحب العرض."
+        }
+    )
+
+}
+
+if (player.characters.length >= player.maxCharacters) {
+
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text: "❌ مخزن شخصياتك ممتلئ."
         }
     )
 
@@ -5091,8 +5111,7 @@ if (owner.characters.length >= owner.maxCharacters) {
     return safeSend(
         msg.key.remoteJid,
         {
-            text:
-"❌ مخزن صاحب العرض ممتلئ."
+            text: "❌ مخزن صاحب العرض ممتلئ."
         }
     )
 
@@ -5168,6 +5187,8 @@ if (owner.characters.length >= owner.maxCharacters) {
     // تنفيذ التبديل
     // =========================
 
+trade.status = "processing"
+
 await trade.save()
     const temp =
         owner.characters[ownerIndex]
@@ -5204,7 +5225,7 @@ await trade.save()
 
 أرسل
 
-🌟 ${temp.name}
+🌟 ${trade.offeredCharacterName}
 
 ━━━━━━━━━━━━━━
 
@@ -5212,7 +5233,7 @@ await trade.save()
 
 أرسل
 
-🌟 ${myCharacter.name}
+🌟 ${player.characters[myIndex].name}
 
 ━━━━━━━━━━━━━━
 
