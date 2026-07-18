@@ -4642,19 +4642,15 @@ if (text.startsWith('.انتقال')) {
     // =========================
 
     const alreadyListed =
-    await Trade.findOne({
+await Trade.findOne({
 
-        ownerId: userId,
+    ownerId: userId,
 
-        status: "active",
+    status: "active",
 
-        offeredCharacterId:
-            character.id ||
-            character.uid ||
-            character._id ||
-            character.obtainId
+    offeredCharacterName: character.name
 
-    })
+})
 
     if (alreadyListed) {
 
@@ -4676,33 +4672,22 @@ if (text.startsWith('.انتقال')) {
 
     ownerId: userId,
 
-    ownerName:
-        pushName || "",
+    ownerName: pushName || "",
 
-    offeredCharacterId:
-        character.id ||
-        character.uid ||
-        character._id ||
-        character.obtainId,
+    offeredCharacterName: character.name,
 
-    offeredCharacterName:
-        character.name,
-
-    offeredCharacterPower:
-        character.power,
+    offeredCharacterPower: character.power,
 
     offeredCharacterImage:
         character.image ||
         character.imageUrl ||
         "",
 
-    wantedCharacters:
-        wanted,
+    wantedCharacters: wanted,
 
     status: "active",
 
-    createdAt:
-        Date.now()
+    createdAt: Date.now()
 
 })
 
@@ -5145,15 +5130,21 @@ if (owner.characters.length >= owner.maxCharacters) {
     // =========================
 
     const ownerIndex =
-        owner.characters.findIndex(c =>
+    owner.characters.findIndex(c => {
 
-            (c.id || c.uid || c._id || c.obtainId)
+        if (c.rarity !== "SSS")
+            return false
 
-            ===
+        const a = normalizeTradeName(c.name)
+        const b = normalizeTradeName(trade.offeredCharacterName)
 
-            trade.offeredCharacterId
-
+        return (
+            a === b ||
+            a.includes(b) ||
+            b.includes(a)
         )
+
+    })
 
     if (ownerIndex === -1) {
 
@@ -5244,8 +5235,7 @@ await trade.save()
 
 أرسل
 
-🌟 ${player.characters[myIndex].name}
-
+🌟 ${myCharacter.name}
 ━━━━━━━━━━━━━━
 
 ✅ تم تبديل الشخصيتين بنجاح.
