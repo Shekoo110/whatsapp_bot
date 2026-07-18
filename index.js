@@ -4413,7 +4413,7 @@ function getCharacterByName(player, input) {
         input.split('#')
 
     const wantedName =
-        normalizeTradeName(split[0])
+        normalizeTradeName(split[0].trim())
 
     const wantedCopy =
         Number(split[1] || 1)
@@ -4422,23 +4422,19 @@ function getCharacterByName(player, input) {
 
     for (const ch of player.characters) {
 
-        if (ch.rarity !== 'SSS')
+        if (ch.rarity !== "SSS")
             continue
 
         const name1 =
-    normalizeTradeName(ch.name || '')
+            normalizeTradeName(ch.name || "")
 
-const name2 =
-    normalizeTradeName(ch.originalName || '')
+        const name2 =
+            normalizeTradeName(ch.originalName || "")
 
         if (
-    wantedName === name1 ||
-    wantedName === name2 ||
-    name1.includes(wantedName) ||
-    wantedName.includes(name1) ||
-    name2.includes(wantedName) ||
-    wantedName.includes(name2)
-) {
+            wantedName === name1 ||
+            wantedName === name2
+        ) {
 
             count++
 
@@ -4454,13 +4450,6 @@ const name2 =
 }
 
 function findTradeCharacter(player, input) {
-
-    if (/^\d+$/.test(input)) {
-        return getCharacterByIndex(
-            player,
-            Number(input)
-        )
-    }
 
     return getCharacterByName(
         player,
@@ -4480,37 +4469,34 @@ function findTradeCharacter(player, input) {
 
 if (text.startsWith('.انتقال')) {
 
-    const args = text.trim().split(/\s+/)
+    const match =
+text.match(/^\.انتقال\s+"([^"]+)"\s*(.*)$/)
 
     // =========================
     // شرح الأمر
     // =========================
 
-    if (args.length < 2) {
+    if (!match) {
 
-        return safeSend(
-            msg.key.remoteJid,
-            {
-                text:
+    return safeSend(
+        msg.key.remoteJid,
+        {
+            text:
 `╔══════〔 🔄 نظام الانتقالات 〕══════╗
 
 يمكنك عرض شخصية SSS للتبديل.
 
 طريقة الاستخدام:
 
-.انتقال الشخصية الشخصيات_المطلوبة
+.انتقال "الشخصية" الشخصيات_المطلوبة
 
 مثال:
 
-.انتقال Aizen Imu Kaido Akashi
+.انتقال "Arthur Pendragon" Whis Oikawa Bokuto
 
-أو إذا لديك أكثر من نسخة:
+إذا لديك أكثر من نسخة:
 
-.انتقال Aizen#2 Imu Kaido
-
-أو باستخدام رقم الشخصية داخل قائمة SSS:
-
-.انتقال 5 Imu Kaido
+.انتقال "Shakuyaku#2" Whis
 
 ━━━━━━━━━━━━━━━━━━
 
@@ -4520,10 +4506,10 @@ if (text.startsWith('.انتقال')) {
 • لا يمكن عرض شخصية موجودة في عرض آخر.
 
 ╚══════════════════════╝`
-            }
-        )
+        }
+    )
 
-    }
+}
 
     const player =
         await Player.findOne({
@@ -4566,10 +4552,13 @@ if (text.startsWith('.انتقال')) {
     }
 
     const offeredInput =
-        args[1]
+    match[1]
 
-    const wanted =
-        args.slice(2)
+const wanted =
+    match[2]
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
 
     if (!wanted.length) {
 
@@ -4584,10 +4573,14 @@ if (text.startsWith('.انتقال')) {
     }
 
     const character =
-        findTradeCharacter(
-            player,
-            offeredInput
-        )
+    getCharacterByName(
+        {
+            characters: player.characters.filter(
+                c => c.rarity === "SSS"
+            )
+        },
+        offeredInput
+    )
     console.log(
     "SELECTED:",
     character?.name,
@@ -5145,21 +5138,30 @@ if (owner.characters.length >= owner.maxCharacters) {
     // =========================
 
     const ownerIndex =
-    owner.characters.findIndex(c => {
+owner.characters.findIndex(c => {
 
-        if (c.rarity !== "SSS")
-            return false
+    if (c.rarity !== "SSS")
+        return false
 
-        const a = normalizeTradeName(c.name)
-        const b = normalizeTradeName(trade.offeredCharacterName)
+    const a =
+        normalizeTradeName(c.name || "")
 
-        return (
-            a === b ||
-            a.includes(b) ||
-            b.includes(a)
+    const b =
+        normalizeTradeName(
+            trade.offeredCharacterName || ""
         )
 
-    })
+    const c2 =
+        normalizeTradeName(
+            c.originalName || ""
+        )
+
+    return (
+        a === b ||
+        c2 === b
+    )
+
+})
 
     if (ownerIndex === -1) {
 
@@ -5229,9 +5231,9 @@ trade.acceptedAt = Date.now()
 await trade.save()
 
     await safeSend(
-        msg.key.remoteJid,
-        {
-            text:
+    msg.key.remoteJid,
+    {
+        text:
 `╔══════〔 🤝 تم إتمام الانتقال 〕══════╗
 
 🎉 تمت الصفقة بنجاح
@@ -5240,30 +5242,35 @@ await trade.save()
 
 👤 @${trade.ownerId.split("@")[0]}
 
-أرسل
+📤 أرسل
 
 🌟 ${trade.offeredCharacterName}
+🌟 SSS
+⚔️ ${trade.offeredCharacterPower.toLocaleString()}
 
 ━━━━━━━━━━━━━━
 
 👤 @${userId.split("@")[0]}
 
-أرسل
+📤 أرسل
 
 🌟 ${myCharacter.name}
+🌟 SSS
+⚔️ ${myCharacter.power.toLocaleString()}
+
 ━━━━━━━━━━━━━━
 
 ✅ تم تبديل الشخصيتين بنجاح.
 
 ╚══════════════════════╝`,
-            mentions: [
-                trade.ownerId,
-                userId
-            ]
-        }
-    )
+        mentions: [
+            trade.ownerId,
+            userId
+        ]
+    }
+)
 
-    return
+return
 
 }
 
