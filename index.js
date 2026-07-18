@@ -3463,6 +3463,17 @@ const userId =
 msg.key.participant ||
 msg.key.remoteJid
 
+const pushName = msg.pushName || ""
+
+await Player.updateOne(
+    { userId },
+    {
+        $set: {
+            name: pushName
+        }
+    }
+)
+
     // =========================
 // فعالية القلوب
 // =========================
@@ -26128,6 +26139,8 @@ if (!player) {
 
     player = new Player({
     userId,
+    name: pushName || "",
+
 
     pulls: 5,
 
