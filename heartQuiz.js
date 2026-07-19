@@ -398,8 +398,11 @@ async function checkHeartAnswer(sock, msg, jid, userId, answer) {
     const room = getRoom(jid)
     if (!room.players.includes(userId)) {
 
-    return false
+    await sock.sendMessage(jid, {
+        text: "❌ أنت لم تسجل أو أنك مقصي من الفعالية."
+    })
 
+    return true
 }
 
     if (!room.started) return false
@@ -579,14 +582,19 @@ if (!target) {
         room.eliminatedOrder.push(target)
     }
 
+    // إزالة اللاعب من الفعالية نهائياً
+    room.players = room.players.filter(
+        id => id !== target
+    )
+
     await sock.sendMessage(
-    jid,
-    {
-        text:
+        jid,
+        {
+            text:
 `💀 @${target.split("@")[0]} أقصي من قبل @${attackerId.split("@")[0]}`,
-        mentions: [
-            attackerId,
-            target
+            mentions: [
+                attackerId,
+                target
             ]
         }
     )
