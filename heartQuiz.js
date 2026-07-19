@@ -396,13 +396,9 @@ return await sock.sendMessage(jid, {
 async function checkHeartAnswer(sock, msg, jid, userId, answer) {
 
     const room = getRoom(jid)
-    if (!room.players.includes(userId)) {
 
-    await sock.sendMessage(jid, {
-        text: "❌ أنت لم تسجل أو أنك مقصي من الفعالية."
-    })
-
-    return true
+if (!room.players.includes(userId)) {
+    return false
 }
 
     if (!room.started) return false
