@@ -15449,13 +15449,17 @@ text:
 const shardData =
 available[index]
 
-const name = shardData.name
+const name =
+    shardData.name.replace(/．/g, ".")
+
 const char =
-characters.find(
-c =>
-    c.name === name &&
-    c.rarity === 'SSS'
-)
+    characters.find(c =>
+        c.rarity === "SSS" &&
+        (
+            c.name === name ||
+            c.name.replace(/\./g, "．") === shardData.name
+        )
+    )
 
 if (!char) {
 
@@ -15474,9 +15478,12 @@ player.characters.push({
 })
 
 
+const shardKey =
+    name.replace(/\./g, "．")
+
 player.shards.set(
-shardData.name,
-shardData.amount - 1
+    shardKey,
+    shardData.amount - 1
 )
 
 player.markModified(
