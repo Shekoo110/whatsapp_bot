@@ -1675,24 +1675,6 @@ mongoose.connect(process.env.MONGO_URI)
 
     console.log('✅ MongoDB Connected')
 
-    const player = await Player.findOne({
-        $and: [
-            { characters: { $elemMatch: { name: "Phrolova", power: 7000 } } },
-            { characters: { $elemMatch: { name: "Kaiser", power: 7000 } } },
-            { characters: { $elemMatch: { name: "Demiourgos DCLXVI", power: 7000 } } },
-            { characters: { $elemMatch: { name: "Jyu Viole Grace", power: 7000 } } },
-            { characters: { $elemMatch: { name: "Changli", power: 6950 } } },
-            { characters: { $elemMatch: { name: "Mohg", power: 6925 } } }
-        ]
-    })
-
-    if (player) {
-        console.log("✅ USER ID:", player.userId)
-        console.log("👤 NAME:", player.name || "Unknown")
-    } else {
-        console.log("❌ PLAYER NOT FOUND")
-    }
-
     console.log('✅ Beasts Loaded')
     await checkRespawn()
 
@@ -4461,7 +4443,57 @@ function findTradeCharacter(player, input) {
     // =========================
     // الأوامر العادية هنا
     // =========================
+    
+if (text.startsWith('.نقل_حساب')) {
 
+    const args = text.trim().split(/\s+/)
+
+    if (args.length < 3) {
+        return safeSend(msg.key.remoteJid, {
+            text:
+`الاستخدام:
+
+.نقل_حساب القديم الجديد
+
+مثال:
+.نقل_حساب 189099491209429@lid 109002730020880@lid`
+        })
+    }
+
+    const oldId = args[1]
+    const newId = args[2]
+
+    const oldPlayer = await Player.findOne({
+        userId: oldId
+    })
+
+    if (!oldPlayer) {
+        return safeSend(msg.key.remoteJid, {
+            text: "❌ الحساب القديم غير موجود."
+        })
+    }
+
+    const data = oldPlayer.toObject()
+
+    delete data._id
+    delete data.__v
+
+    data.userId = newId
+
+    await Player.deleteOne({
+        userId: newId
+    })
+
+    await Player.create(data)
+
+    await Player.deleteOne({
+        userId: oldId
+    })
+
+    return safeSend(msg.key.remoteJid, {
+        text: "✅ تم نقل الحساب بالكامل."
+    })
+}
     
     // ========================================
 // .انتقال
