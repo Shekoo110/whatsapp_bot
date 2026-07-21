@@ -1677,23 +1677,23 @@ mongoose.connect(process.env.MONGO_URI)
 
     const player = await Player.findOne({
         $and: [
-            { characters: { $elemMatch: { name: "Garp", power: 10000 } } },
-            { characters: { $elemMatch: { name: "Sesshomaru", power: 6985 } } },
-            { characters: { $elemMatch: { name: "Hazim", power: 6915 } } },
-            { characters: { $elemMatch: { name: "Tifa Lockhart", power: 6865 } } },
-            { characters: { $elemMatch: { name: "Jill Valentine", power: 6845 } } },
-            { characters: { $elemMatch: { name: "Gildarts", power: 6600 } } }
+            { characters: { $elemMatch: { name: "Phrolova", power: 7000 } } },
+            { characters: { $elemMatch: { name: "Kaiser", power: 7000 } } },
+            { characters: { $elemMatch: { name: "Demiourgos DCLXVI", power: 7000 } } },
+            { characters: { $elemMatch: { name: "Jyu Viole Grace", power: 7000 } } },
+            { characters: { $elemMatch: { name: "Changli", power: 6950 } } },
+            { characters: { $elemMatch: { name: "Mohg", power: 6925 } } }
         ]
     })
 
     if (player) {
         console.log("✅ USER ID:", player.userId)
+        console.log("👤 NAME:", player.name || "Unknown")
     } else {
         console.log("❌ PLAYER NOT FOUND")
     }
 
     console.log('✅ Beasts Loaded')
-
     await checkRespawn()
 
 setInterval(
@@ -15093,8 +15093,8 @@ for (const char of player.characters) {
         continue
     }
 
-    const shardKey = char.name
-
+    const shardKey =
+    char.name.replace(/\./g, "．")
     if (
     evolved.has(
 `${char.name}|${char.form || ''}`
@@ -15302,8 +15302,8 @@ if (!hasEvolved && normalCopies.length <= 1) {
         1
     )
 
-    const shardKey = char.name
-
+    const shardKey =
+    char.name.replace(/\./g, "．")
 const currentShards =
     player.shards.get(
         shardKey
