@@ -4954,7 +4954,7 @@
   "power": 6600,
   "rarity": "SSS",
   "ability": "التحول الشيطاني الكامل",
-  "image": "https://files.catbox.moe/nny5e2.jpg"
+  "image": "https://files.catbox.moe/u4m584.jpg"
 },
 
 {
@@ -5633,7 +5633,7 @@
   "name": "Gon",
   "form": "النسخة البالغة",
   "anime": "Hunter x Hunter",
-  "power": 5800,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "التضحية المطلقة",
   "image": "https://files.catbox.moe/n4h685.jpg"
@@ -6323,7 +6323,7 @@
   "name": "Alibaba",
   "form": "أمون الكامل",
   "anime": "Magi",
-  "power": 6000,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "لهب أمون",
   "image": "https://files.catbox.moe/1902d9.jpg"
@@ -6653,7 +6653,7 @@
   "name": "Magellan",
   "form": "حارس الإمبل داون",
   "anime": "One Piece",
-  "power": 4700,
+  "power": 6600,
   "rarity": "SSS",
   "ability": "سم الهلاك",
   "image": "https://files.catbox.moe/xf16px.jpg"
@@ -6661,7 +6661,7 @@
 
 {
   "name": "Enel",
-  "form": "إله الرعد",
+  "form": "ضربة الرعد",
   "anime": "One Piece",
   "power": 6600,
   "rarity": "SSS",
@@ -7150,7 +7150,7 @@
     "power": 7000,
     "rarity": "SSS",
     "ability": "استراتيجية الاستدعاء المطلقة",
-    "image": "https://files.catbox.moe/i4gb0c.jpg"
+    "image": "https://files.catbox.moe/31p3eb.jpg"
   },
   {
     "name": "Xun",
@@ -7874,7 +7874,7 @@
   "power": 7000,
   "rarity": "SSS",
   "ability": "الشفاء والسيطرة الزمنية",
-  "image": "https://files.catbox.moe/knbtn9.jpg"
+  "image": "https://files.catbox.moe/lm8tis.jpg"
 },
 
 {
@@ -10165,5 +10165,706 @@
   "rarity": "SSS",
   "ability": "لهيب العنقاء",
   "image": "https://files.catbox.moe/vxxkt9.jpg"
+},
+  {
+  "name": "Sebastian Moran",
+  "form": "القناص الأسطوري",
+  "anime": "Moriarty the Patriot",
+  "power": 6880,
+  "rarity": "SSS",
+  "ability": "الرماية المطلقة",
+  "image": "https://files.catbox.moe/wag3to.jpg"
+},
+{
+  "name": "Mycroft Holmes",
+  "form": "رئيس الاستخبارات",
+  "anime": "Moriarty the Patriot",
+  "power": 6790,
+  "rarity": "SSS",
+  "ability": "العقل الاستراتيجي",
+  "image": "https://files.catbox.moe/i7tj9w.jpg"
+},
+{
+  "name": "John Watson",
+  "form": "الطبيب العسكري",
+  "anime": "Moriarty the Patriot",
+  "power": 6675,
+  "rarity": "SSS",
+  "ability": "الرماية الدقيقة",
+  "image": "https://files.catbox.moe/w8l83c.jpg"
+},
+{
+  "name": "Fred Porlock",
+  "form": "العميل السري",
+  "anime": "Moriarty the Patriot",
+  "power": 6640,
+  "rarity": "SSS",
+  "ability": "التخفي المحترف",
+  "image": "https://files.catbox.moe/mr9yu4.jpg"
+},
+
+{
+  "name": "Ethan Winters",
+  "form": "الناجي",
+  "anime": "Resident Evil",
+  "power": 6925,
+  "rarity": "SSS",
+  "ability": "التجدد الحيوي",
+  "image": "https://files.catbox.moe/8l5zp7.jpg"
+},
+{
+  "name": "Rose Winters",
+  "form": "القوة الكاملة",
+  "anime": "Resident Evil",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "الطاقة المتحولة",
+  "image": "https://files.catbox.moe/x0li2n.jpg"
+},
+{
+  "name": "Qifrey",
+  "form": "الساحر المقنع",
+  "anime": "Witch Hat Atelier",
+  "power": 6895,
+  "rarity": "SSS",
+  "ability": "الرسم السحري",
+  "image": "https://files.catbox.moe/flh188.jpg"
+},
+{
+  "name": "Coco",
+  "form": "الساحرة الموهوبة",
+  "anime": "Witch Hat Atelier",
+  "power": 6735,
+  "rarity": "SSS",
+  "ability": "دوائر السحر",
+  "image": "https://files.catbox.moe/2buzrn.jpg"
+},
+{
+  "name": "Olruggio",
+  "form": "الساحر الهادئ",
+  "anime": "Witch Hat Atelier",
+  "power": 6760,
+  "rarity": "SSS",
+  "ability": "رياح السحر",
+  "image": "https://files.catbox.moe/wfd2lm.jpg"
+},
+{
+  "name": "Brushbuddy",
+  "form": "المساعد السحري",
+  "anime": "Witch Hat Atelier",
+  "power": 6615,
+  "rarity": "SSS",
+  "ability": "الرسم السريع",
+  "image": "https://files.catbox.moe/e648so.jpg"
+},
+
+{
+  "name": "Legoshi",
+  "form": "الذئب الرمادي",
+  "anime": "Beastars",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "المخالب الحادة",
+  "image": "https://files.catbox.moe/afu7ki.jpg"
+},
+{
+  "name": "Haru",
+  "form": "الأرنب الأبيض",
+  "anime": "Beastars",
+  "power": 6620,
+  "rarity": "SSS",
+  "ability": "الإرادة القوية",
+  "image": "https://files.catbox.moe/blihk5.jpg"
+},
+{
+  "name": "Gouhin",
+  "form": "الباندا المقاتل",
+  "anime": "Beastars",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "القبضة الحديدية",
+  "image": "https://files.catbox.moe/5hm66i.jpg"
+},
+
+{
+  "name": "Noé Archiviste",
+  "form": "مصاص الدماء",
+  "anime": "The Case Study of Vanitas",
+  "power": 6905,
+  "rarity": "SSS",
+  "ability": "امتصاص الذكريات",
+  "image": "https://files.catbox.moe/jmdwyj.jpg"
+},
+{
+  "name": "Vanitas",
+  "form": "حامل الكتاب",
+  "anime": "The Case Study of Vanitas",
+  "power": 6975,
+  "rarity": "SSS",
+  "ability": "كتاب فانيتاس",
+  "image": "https://files.catbox.moe/3niqul.jpg"
+},
+
+{
+  "name": "Vladilena Milizé",
+  "form": "القائدة العسكرية",
+  "anime": "86",
+  "power": 6700,
+  "rarity": "SSS",
+  "ability": "القيادة التكتيكية",
+  "image": "https://files.catbox.moe/gl5cff.jpg"
+},
+
+{
+  "name": "Soma Yukihira",
+  "form": "الطاهي المبدع",
+  "anime": "Food Wars!",
+  "power": 6810,
+  "rarity": "SSS",
+  "ability": "الطبخ الاحترافي",
+  "image": "https://files.catbox.moe/3qcxgo.jpg"
+},
+
+{
+  "name": "Caine",
+  "form": "مدير السيرك",
+  "anime": "The Amazing Digital Circus",
+  "power": 6990,
+  "rarity": "SSS",
+  "ability": "التحكم الرقمي",
+  "image": "https://files.catbox.moe/kk8rhy.jpg"
+},
+{
+  "name": "Jax",
+  "form": "المشاكس",
+  "anime": "The Amazing Digital Circus",
+  "power": 6755,
+  "rarity": "SSS",
+  "ability": "الخداع السريع",
+  "image": "https://files.catbox.moe/52g573.jpg"
+},
+{
+  "name": "Gangle",
+  "form": "الأقنعة المتغيرة",
+  "anime": "The Amazing Digital Circus",
+  "power": 6680,
+  "rarity": "SSS",
+  "ability": "تبديل المشاعر",
+  "image": "https://files.catbox.moe/6e3u57.jpg"
+},
+{
+  "name": "Zooble",
+  "form": "الجسد المتغير",
+  "anime": "The Amazing Digital Circus",
+  "power": 6725,
+  "rarity": "SSS",
+  "ability": "إعادة التشكيل",
+  "image": "https://files.catbox.moe/kp9if4.jpg"
+},
+{
+  "name": "Ragatha",
+  "form": "الدمية القماشية",
+  "anime": "The Amazing Digital Circus",
+  "power": 6745,
+  "rarity": "SSS",
+  "ability": "الصمود الدائم",
+  "image": "https://files.catbox.moe/eae26f.jpg"
+},
+{
+  "name": "Pomni",
+  "form": "الوافدة الجديدة",
+  "anime": "The Amazing Digital Circus",
+  "power": 6785,
+  "rarity": "SSS",
+  "ability": "التكيف السريع",
+  "image": "https://files.catbox.moe/wht7uh.jpg"
+},
+{
+  "name": "Kinger",
+  "form": "ملك الشطرنج",
+  "anime": "The Amazing Digital Circus",
+  "power": 6825,
+  "rarity": "SSS",
+  "ability": "الفوضى الملكية",
+  "image": "https://files.catbox.moe/ce4ztv.jpg"
+},
+{
+  "name": "The Gloink Queen",
+  "form": "الملكة المتوارية",
+  "anime": "The Amazing Digital Circus",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "استدعاء المخلوقات",
+  "image": "https://files.catbox.moe/ahx5lv.jpg"
+},
+
+{
+  "name": "Sans",
+  "form": "القاضي",
+  "anime": "Undertale",
+  "power": 6995,
+  "rarity": "SSS",
+  "ability": "عظام العدالة",
+  "image": "https://files.catbox.moe/ygyur5.jpg"
+},
+{
+  "name": "Chara",
+  "form": "الإرادة الحمراء",
+  "anime": "Undertale",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "الضربة القاضية",
+  "image": "https://files.catbox.moe/qsj72d.jpg"
+},
+{
+  "name": "Undyne",
+  "form": "القائدة الملكية",
+  "anime": "Undertale",
+  "power": 6910,
+  "rarity": "SSS",
+  "ability": "رمح العدالة",
+  "image": "https://files.catbox.moe/u34qt1.jpg"
+},
+{
+  "name": "Asgore",
+  "form": "ملك الوحوش",
+  "anime": "Undertale",
+  "power": 6960,
+  "rarity": "SSS",
+  "ability": "الرمحين الناريين",
+  "image": "https://files.catbox.moe/orihm6.jpg"
+},
+{
+  "name": "Flowey",
+  "form": "الزهرة الملعونة",
+  "anime": "Undertale",
+  "power": 6890,
+  "rarity": "SSS",
+  "ability": "الجذور القاتلة",
+  "image": "https://files.catbox.moe/mlpwbm.jpg"
+},
+{
+  "name": "Papyrus",
+  "form": "الحارس الطموح",
+  "anime": "Undertale",
+  "power": 6850,
+  "rarity": "SSS",
+  "ability": "العظام العملاقة",
+  "image": "https://files.catbox.moe/0hr41u.jpg"
+},
+  {
+  "name": "Mereoleona",
+  "form": "أسد اللهب",
+  "anime": "Black Clover",
+  "power": 6995,
+  "rarity": "SSS",
+  "ability": "لهب الجحيم",
+  "image": "https://files.catbox.moe/cnk22u.jpg"
+},
+{
+  "name": "Alice",
+  "form": "الطاهية المبتكرة",
+  "anime": "Food Wars!",
+  "power": 6765,
+  "rarity": "SSS",
+  "ability": "فن الطهي الجزيئي",
+  "image": "https://files.catbox.moe/9d63fc.jpg"
+},
+{
+  "name": "Rindo",
+  "form": "ملكة النكهات",
+  "anime": "Food Wars!",
+  "power": 6915,
+  "rarity": "SSS",
+  "ability": "إبداع المكونات النادرة",
+  "image": "https://files.catbox.moe/xppy5o.jpg"
+},
+{
+  "name": "Erina",
+  "form": "ملكة الطهاة",
+  "anime": "Food Wars!",
+  "power": 6960,
+  "rarity": "SSS",
+  "ability": "لسان التذوق الاستثنائي",
+  "image": "https://files.catbox.moe/nhtjqh.jpg"
+},
+{
+  "name": "Minato",
+  "form": "الهوكاغي الرابع",
+  "anime": "Naruto",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "الرعد الطائر",
+  "image": "https://files.catbox.moe/6hdigd.jpg"
+},
+  {
+  "name": "Shinobu",
+  "form": "هاشيرا الحشرة",
+  "anime": "Demon Slayer",
+  "power": 6880,
+  "rarity": "SSS",
+  "ability": "تنفس الحشرة",
+  "image": "https://files.catbox.moe/ub7orq.jpg"
+},
+{
+  "name": "Giyu Tomioka",
+  "form": "هاشيرا الماء",
+  "anime": "Demon Slayer",
+  "power": 6960,
+  "rarity": "SSS",
+  "ability": "تنفس الماء",
+  "image": "https://files.catbox.moe/14qgvd.jpg"
+},
+{
+  "name": "Kanao Tsuyuri",
+  "form": "وريثة الزهرة",
+  "anime": "Demon Slayer",
+  "power": 6830,
+  "rarity": "SSS",
+  "ability": "تنفس الزهرة",
+  "image": "https://files.catbox.moe/an9n9z.jpg"
+},
+{
+  "name": "Tanjiro Kamado",
+  "form": "الشكل النهائي",
+  "anime": "Demon Slayer",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "تنفس الشمس",
+  "image": "https://files.catbox.moe/kde9m8.jpg"
+},
+{
+  "name": "Inosuke Hashibira",
+  "form": "سيد الجبال",
+  "anime": "Demon Slayer",
+  "power": 6890,
+  "rarity": "SSS",
+  "ability": "تنفس الوحش",
+  "image": "https://files.catbox.moe/j6n37p.jpg"
+},
+{
+  "name": "Zenitsu",
+  "form": "سرعة البرق",
+  "anime": "Demon Slayer",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "تنفس الرعد",
+  "image": "https://files.catbox.moe/tht8u0.jpg"
+},
+{
+  "name": "Mitsuri",
+  "form": "هاشيرا الحب",
+  "anime": "Demon Slayer",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "تنفس الحب",
+  "image": "https://files.catbox.moe/1ffbs3.jpg"
+},
+{
+  "name": "Muichiro Tokito",
+  "form": "هاشيرا الضباب",
+  "anime": "Demon Slayer",
+  "power": 6970,
+  "rarity": "SSS",
+  "ability": "تنفس الضباب",
+  "image": "https://files.catbox.moe/216j8a.jpg"
+},
+
+{
+  "name": "Emma",
+  "form": "قائدة الهروب",
+  "anime": "The Promised Neverland",
+  "power": 6760,
+  "rarity": "SSS",
+  "ability": "العزيمة المطلقة",
+  "image": "https://files.catbox.moe/yeaf9e.jpg"
+},
+{
+  "name": "Ray",
+  "form": "العبقري الهادئ",
+  "anime": "The Promised Neverland",
+  "power": 6850,
+  "rarity": "SSS",
+  "ability": "الذكاء التكتيكي",
+  "image": "https://files.catbox.moe/9ljw7c.jpg"
+},
+{
+  "name": "Norman",
+  "form": "المخطط العبقري",
+  "anime": "The Promised Neverland",
+  "power": 6930,
+  "rarity": "SSS",
+  "ability": "التخطيط المحكم",
+  "image": "https://files.catbox.moe/3u880l.jpg"
+},
+
+{
+  "name": "Machi",
+  "form": "ناسجة الخيوط",
+  "anime": "Hunter x Hunter",
+  "power": 6840,
+  "rarity": "SSS",
+  "ability": "خيوط النين",
+  "image": "https://files.catbox.moe/5dskky.jpg"
+},
+{
+  "name": "Shizuku",
+  "form": "حاملة المكنسة",
+  "anime": "Hunter x Hunter",
+  "power": 6800,
+  "rarity": "SSS",
+  "ability": "المكنسة الممتصة",
+  "image": "https://files.catbox.moe/audwx9.jpg"
+},
+{
+  "name": "Illumi",
+  "form": "القاتل المحترف",
+  "anime": "Hunter x Hunter",
+  "power": 6980,
+  "rarity": "SSS",
+  "ability": "إبر التحكم",
+  "image": "https://files.catbox.moe/s4qzv1.jpg"
+},
+{
+  "name": "Kurapika",
+  "form": "عيون القرمز",
+  "anime": "Hunter x Hunter",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سلاسل العدالة",
+  "image": "https://files.catbox.moe/07mpst.jpg"
+},
+
+{
+  "name": "Yona",
+  "form": "الأميرة الحمراء",
+  "anime": "Yona of the Dawn",
+  "power": 6810,
+  "rarity": "SSS",
+  "ability": "رماية القوس",
+  "image": "https://files.catbox.moe/hts7ab.jpg"
+},
+{
+  "name": "Hak",
+  "form": "وحش الرعد",
+  "anime": "Yona of the Dawn",
+  "power": 6960,
+  "rarity": "SSS",
+  "ability": "رمح التنين",
+  "image": "https://files.catbox.moe/uzaydc.jpg"
+},
+{
+  "name": "Zeno",
+  "form": "التنين الأصفر",
+  "anime": "Yona of the Dawn",
+  "power": 6995,
+  "rarity": "SSS",
+  "ability": "التجدد الخالد",
+  "image": "https://files.catbox.moe/jo87ci.jpg"
+},
+{
+  "name": "Kija",
+  "form": "التنين الأبيض",
+  "anime": "Yona of the Dawn",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "مخلب التنين",
+  "image": "https://files.catbox.moe/n8ecva.jpg"
+},
+{
+  "name": "Jae ha",
+  "form": "التنين الأخضر",
+  "anime": "Yona of the Dawn",
+  "power": 6880,
+  "rarity": "SSS",
+  "ability": "ساق التنين",
+  "image": "https://files.catbox.moe/a9tdt1.jpg"
+},
+{
+  "name": "Shin ah",
+  "form": "التنين الأزرق",
+  "anime": "Yona of the Dawn",
+  "power": 6920,
+  "rarity": "SSS",
+  "ability": "عين التنين",
+  "image": "https://files.catbox.moe/zkr9ue.jpg"
+},
+{
+  "name": "Yoon",
+  "form": "المعالج الذكي",
+  "anime": "Yona of the Dawn",
+  "power": 6720,
+  "rarity": "SSS",
+  "ability": "الطب الميداني",
+  "image": "https://files.catbox.moe/3u9juu.jpg"
+},
+  {
+  "name": "Veldora",
+  "form": "تنين العاصفة",
+  "anime": "That Time I Got Reincarnated as a Slime",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "عاصفة التنين",
+  "image": "https://files.catbox.moe/s13abt.jpg"
+},
+{
+  "name": "Violet",
+  "form": "الشيطانة البدائية",
+  "anime": "That Time I Got Reincarnated as a Slime",
+  "power": 6950,
+  "rarity": "SSS",
+  "ability": "السحر البدائي",
+  "image": "https://files.catbox.moe/kpwqlx.jpg"
+},
+{
+  "name": "Milim Nava",
+  "form": "سيدة الدمار",
+  "anime": "That Time I Got Reincarnated as a Slime",
+  "power": 6995,
+  "rarity": "SSS",
+  "ability": "قبضة التنين",
+  "image": "https://files.catbox.moe/a4cuq5.jpg"
+},
+
+{
+  "name": "Frieren",
+  "form": "الساحرة الخالدة",
+  "anime": "Frieren: Beyond Journey's End",
+  "power": 6970,
+  "rarity": "SSS",
+  "ability": "السحر القديم",
+  "image": "https://files.catbox.moe/ehqkcb.jpg"
+},
+
+{
+  "name": "Koro sensei",
+  "form": "المعلم الأسرع",
+  "anime": "Assassination Classroom",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "سرعة ماخ 20",
+  "image": "https://files.catbox.moe/d8yt2o.jpg"
+},
+{
+  "name": "Karma Akabane",
+  "form": "العبقري المشاكس",
+  "anime": "Assassination Classroom",
+  "power": 6820,
+  "rarity": "SSS",
+  "ability": "القتال التكتيكي",
+  "image": "https://files.catbox.moe/ssa7g7.jpg"
+},
+
+{
+  "name": "Yato",
+  "form": "التائه",
+  "anime": "Noragami",
+  "power": 6930,
+  "rarity": "SSS",
+  "ability": "ضربة الساكورا",
+  "image": "https://files.catbox.moe/4depay.jpg"
+},
+
+{
+  "name": "Kirito",
+  "form": "السياف الأسود",
+  "anime": "Sword Art Online",
+  "power": 6965,
+  "rarity": "SSS",
+  "ability": "السيفان التوأمان",
+  "image": "https://files.catbox.moe/tcyxo9.jpg"
+},
+{
+  "name": "Asuna",
+  "form": "فلاش البرق",
+  "anime": "Sword Art Online",
+  "power": 6890,
+  "rarity": "SSS",
+  "ability": "اندفاع البرق",
+  "image": "https://files.catbox.moe/pn1oxu.jpg"
+},
+
+{
+  "name": "Ragna",
+  "form": "صياد التنانين",
+  "anime": "Ragna Crimson",
+  "power": 6985,
+  "rarity": "SSS",
+  "ability": "هالة التنين الفضي",
+  "image": "https://files.catbox.moe/s5guu5.jpg"
+},
+
+{
+  "name": "Reinhard",
+  "form": "قديس السيف",
+  "anime": "Re:ZERO",
+  "power": 7000,
+  "rarity": "SSS",
+  "ability": "سيف التنين",
+  "image": "https://files.catbox.moe/wz9nsv.jpg"
+},
+
+{
+  "name": "Shigeo Kageyama",
+  "form": "100%",
+  "anime": "Mob Psycho 100",
+  "power": 6975,
+  "rarity": "SSS",
+  "ability": "القوة النفسية",
+  "image": "https://files.catbox.moe/0iurnb.jpg"
+},
+  {
+  "name": "Kaori Miyazono",
+  "form": "عازفة الكمان",
+  "anime": "Your Lie in April",
+  "power": 6840,
+  "rarity": "SSS",
+  "ability": "لحن الربيع",
+  "image": "https://files.catbox.moe/d815lz.jpg"
+},
+{
+  "name": "Violet Evergarden",
+  "form": "دمية الذكريات",
+  "anime": "Violet Evergarden",
+  "power": 6920,
+  "rarity": "SSS",
+  "ability": "الكتابة المؤثرة",
+  "image": "https://files.catbox.moe/wp0666.jpg"
+},
+  {
+  "name": "Ron Kamonohashi",
+  "form": "المحقق العبقري",
+  "anime": "Ron Kamonohashi's Forbidden Deductions",
+  "power": 6900,
+  "rarity": "SSS",
+  "ability": "الاستنتاج الفائق",
+  "image": "https://files.catbox.moe/r7b4i5.jpg"
+},
+  {
+  "name": "Irene Adler",
+  "form": "سيدة الغموض",
+  "anime": "Moriarty the Patriot",
+  "power": 6840,
+  "rarity": "SSS",
+  "ability": "التمويه المتقن",
+  "image": "https://files.catbox.moe/7wayee.jpg"
+},
+  {
+  "name": "Albert Moriarty",
+  "form": "زعيم النبلاء",
+  "anime": "Moriarty the Patriot",
+  "power": 6940,
+  "rarity": "SSS",
+  "ability": "القيادة الاستراتيجية",
+  "image": "https://files.catbox.moe/ivdfn7.jpg"
+},
+  {
+  "name": "Morgiana",
+  "form": "وريثة الفاناليس",
+  "anime": "Magi",
+  "power": 6965,
+  "rarity": "SSS",
+  "ability": "قوة الفاناليس",
+  "image": "https://files.catbox.moe/gpxv8e.jpg"
 }
 ]
