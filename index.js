@@ -3441,6 +3441,11 @@ msg.message.extendedTextMessage?.text
 
 if (!text) return
 
+    // منع استخدام البوت في الخاص
+if (!msg.key.remoteJid.endsWith("@g.us")) {
+    return
+}
+
 const userId =
 msg.key.participant ||
 msg.key.remoteJid
