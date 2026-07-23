@@ -27424,17 +27424,41 @@ ${price}
 
         market.forEach((item, i) => {
 
-            txt +=
+    const expireAt =
+        new Date(item.createdAt).getTime() +
+        24 * 60 * 60 * 1000
+
+    let remaining =
+        Math.max(0, expireAt - Date.now())
+
+    const hours =
+        String(Math.floor(remaining / 3600000)).padStart(2, "0")
+
+    remaining %= 3600000
+
+    const minutes =
+        String(Math.floor(remaining / 60000)).padStart(2, "0")
+
+    remaining %= 60000
+
+    const seconds =
+        String(Math.floor(remaining / 1000)).padStart(2, "0")
+
+    const timeLeft =
+        `${hours}:${minutes}:${seconds}`
+
+    txt +=
 `╭─〔 #${i + 1} 〕─╮
 🧿 الاسم : ${item.character.name}
 🌟 الندرة : ${item.character.rarity}
 ⚔️ القوة : ${item.character.power}
 💰 السعر : ${item.price.toLocaleString()}
+⏳ يعود خلال : ${timeLeft}
 ╰──────────╯
 
 `
 
-        })
+})
 
         txt +=
 `━━━━━━━━━━━━━━━━━━
