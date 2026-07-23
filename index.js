@@ -4448,6 +4448,85 @@ function findTradeCharacter(player, input) {
     // =========================
     // الأوامر العادية هنا
     // =========================
+    if (text === ".ترتيب_الكل") {
+
+    const player = await Player.findOne({ userId })
+
+    if (!player)
+        return safeSend(msg.key.remoteJid,{
+            text:"❌ لا يوجد حساب."
+        })
+
+    player.characters.sort((a,b)=>{
+
+        if (b.power !== a.power)
+            return b.power - a.power
+
+        return a.name.localeCompare(b.name)
+
+    })
+
+    await player.save()
+
+    return safeSend(msg.key.remoteJid,{
+        text:"✅ تم ترتيب جميع الشخصيات من الأقوى إلى الأضعف."
+    })
+
+}
+    if (text === ".بيع_الكل") {
+
+    const player = await Player.findOne({ userId })
+
+    if (!player)
+        return safeSend(msg.key.remoteJid,{
+            text:"❌ لا يوجد حساب."
+        })
+
+    let money = 0
+    let sold = 0
+
+    const kept = []
+
+    for (const c of player.characters) {
+
+        if (c.rarity === "عادي") {
+
+            money += 500
+            sold++
+            continue
+
+        }
+
+        if (c.rarity === "ممتاز") {
+
+            money += 1500
+            sold++
+            continue
+
+        }
+
+        kept.push(c)
+
+    }
+
+    if (!sold)
+        return safeSend(msg.key.remoteJid,{
+            text:"❌ لا توجد شخصيات عادي أو ممتاز للبيع."
+        })
+
+    player.characters = kept
+    player.money += money
+
+    await player.save()
+
+    return safeSend(msg.key.remoteJid,{
+        text:
+`✅ تم بيع ${sold} شخصية.
+
+💰 حصلت على ${money.toLocaleString()} عملة.`
+    })
+
+}
     
 if (text.startsWith('.نقل_حساب')) {
 
@@ -16168,9 +16247,15 @@ ${deadKurama.respawnAt.toLocaleString()}`
 }
 
 const strongest =
-    player.characters.sort(
-        (a, b) => b.power - a.power
-    )[0]
+    player.characters.reduce((best, current) => {
+
+        if (!best) return current
+
+        return current.power > best.power
+            ? current
+            : best
+
+    }, null)
 
 let damage =
     Math.floor(strongest.power * 2)
