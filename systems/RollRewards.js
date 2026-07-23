@@ -98,9 +98,9 @@ async function createURIIIReward() {
     character.evolutionType = 'fixed'
 
     addRandomAbilities(
-        character,
-        5
-    )
+    character,
+    4
+)
 
     return character
 
@@ -117,9 +117,9 @@ async function createURIReward() {
     character.evolutionType = 'fixed'
 
     addRandomAbilities(
-        character,
-        4
-    )
+    character,
+    3
+)
 
     return character
 
