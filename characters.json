@@ -10513,7 +10513,7 @@
   "power": 6960,
   "rarity": "SSS",
   "ability": "تنفس الماء",
-  "image": "https://files.catbox.moe/14qgvd.jpg"
+  "image": "https://i.postimg.cc/YqpBTmfV/6497bd4df1105adffbd8cd010607763b.jpg"
 },
 {
   "name": "Kanao Tsuyuri",
@@ -10857,6 +10857,15 @@
   "rarity": "SSS",
   "ability": "القيادة الاستراتيجية",
   "image": "https://files.catbox.moe/ivdfn7.jpg"
+},
+  {
+  "name": "Muzan",
+  "form": "الملك الشيطاني الكامل",
+  "anime": "Demon Slayer",
+  "power": 6990,
+  "rarity": "SSS",
+  "ability": "التجدد المطلق",
+  "image": "https://i.postimg.cc/dQh53QQ7/138e511f3897082f13b1bb5ab5799295.jpg"
 },
   {
   "name": "Morgiana",
