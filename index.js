@@ -3097,37 +3097,41 @@ console.log(
 )
         if (!currentBoss) {
 
-            console.log("👑 لا يوجد زعيم محفوظ")
+    console.log("👑 لا يوجد زعيم محفوظ")
 
-            await spawnBoss(sock)
+    await spawnBoss(sock)
 
-            currentBoss = await Boss.findOne()
-        }
+    currentBoss = await Boss.findOne()
 
-        if (currentBoss) {
+}
 
-            currentBoss.finished =
-                currentBoss.finished ?? false
+if (currentBoss) {
 
-            currentBoss.killer =
-                currentBoss.killer ?? null
+    currentBoss.finished =
+        currentBoss.finished ?? false
 
-            if (
-                currentBoss.finished &&
-                !currentBoss.respawnAt
-            ) {
+    currentBoss.killer =
+        currentBoss.killer ?? null
 
-                await Boss.deleteMany({})
+    if (
+        currentBoss.finished &&
+        !currentBoss.respawnAt
+    ) {
 
-                currentBoss = null
+        const nextIndex =
+            ((currentBoss.bossIndex || 0) + 1) % bosses.length
 
-                await spawnBoss(sock)
-                
+        await Boss.deleteMany({})
 
-                currentBoss =
-                    await Boss.findOne()
-            }
-        }
+        currentBoss = null
+
+        await spawnBoss(sock, nextIndex)
+
+        currentBoss = await Boss.findOne()
+
+    }
+
+}
     
 
 
