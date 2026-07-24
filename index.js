@@ -2545,7 +2545,7 @@ ${wins1} - ${wins2}
 return
 }
 
-async function spawnBoss(sock) {
+async function spawnBoss(sock, index = 0) {
 
     console.log('🔥 SPAWN BOSS CALLED')
     console.trace()
@@ -2571,8 +2571,10 @@ async function spawnBoss(sock) {
         }
     }
 
-    currentBoss = {
-    ...bosses[Math.floor(Math.random() * bosses.length)],
+    const nextIndex = index % bosses.length
+
+currentBoss = {
+    ...bosses[nextIndex],
 
     abilities: randomAbilities,
 
@@ -2583,7 +2585,9 @@ async function spawnBoss(sock) {
 
     finished: false,
     killer: null,
-    respawnAt: null
+    respawnAt: null,
+
+    bossIndex: nextIndex
 }
 
     await Boss.deleteMany({})
@@ -3134,7 +3138,7 @@ console.log(
         JSON.stringify(savedBoss, null, 2)
     )
 
-    currentBoss = savedBoss
+    currentBoss = savedBoss || null
 
     // ✅ لازم يكون داخل startBot
     if (!bossInterval) {
@@ -3158,11 +3162,14 @@ console.log(
 
     console.log('👑 إعادة إنشاء الزعيم')
 
+    const nextIndex =
+        ((currentBoss.bossIndex || 0) + 1) % bosses.length
+
     await Boss.deleteMany({})
 
     currentBoss = null
 
-    await spawnBoss(sock)
+    await spawnBoss(sock, nextIndex)
 
     currentBoss = await Boss.findOne()
 
