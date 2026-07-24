@@ -32,6 +32,11 @@ const BossSchema = new mongoose.Schema({
     respawnAt: {
         type: Number,
         default: null
+    },
+
+    bossIndex: {
+        type: Number,
+        default: 0
     }
 
 })
